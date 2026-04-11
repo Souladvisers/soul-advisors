@@ -336,7 +336,16 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
     </div>
     <div class="editor-section">
       <div class="editor-section-title">Photo</div>
-      <div class="form-group"><label>Photo URL (paste a direct image link)</label><input type="url" id="e-photo" placeholder="https://..."></div>
+      <div class="form-group">
+        <label>Upload Photo</label>
+        <div id="photo-upload-area" style="border:2px dashed var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color 0.2s;" onclick="document.getElementById('e-photo-file').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="handlePhotoDrop(event)">
+          <img id="photo-preview" src="" alt="" style="display:none;max-height:120px;border-radius:var(--radius);margin-bottom:0.75rem;">
+          <div id="photo-upload-hint" style="font-size:0.82rem;color:var(--muted);">Click or drag an image here</div>
+        </div>
+        <input type="file" id="e-photo-file" accept="image/*" style="display:none" onchange="handlePhotoSelect(this)">
+        <input type="hidden" id="e-photo">
+        <div id="e-photo-b64" style="display:none"></div>
+      </div>
     </div>
     <div class="editor-section">
       <div class="editor-section-title">About</div>
@@ -704,6 +713,7 @@ async function attemptLogin() {
     const admin = CONFIG.members.find(m => m.isAdmin && m.passwordHash === hash);
     if (admin) {
       sessionStorage.setItem('soul_session', admin.id);
+      window._sessionHash = hash;
       closeLogin();
       isAdmin = true;
       renderAdmin();
@@ -716,6 +726,7 @@ async function attemptLogin() {
   const member = CONFIG.members.find(m => m.id === target);
   if (member && member.passwordHash === hash) {
     sessionStorage.setItem('soul_session', member.id);
+    window._sessionHash = hash;
     isLoggedIn = true;
     closeLogin();
     showEditBar(member);
@@ -746,6 +757,16 @@ function openEditor() {
   document.getElementById('e-whatsapp').value = m.whatsapp || '';
   document.getElementById('e-email').value = m.email || '';
   document.getElementById('e-photo').value = m.photo || '';
+  document.getElementById('e-photo-b64').textContent = '';
+  const preview = document.getElementById('photo-preview');
+  const hint = document.getElementById('photo-upload-hint');
+  if (m.photo) {
+    preview.src = m.photo; preview.style.display = 'block';
+    hint.textContent = 'Click or drag to replace photo';
+  } else {
+    preview.src = ''; preview.style.display = 'none';
+    hint.textContent = 'Click or drag an image here';
+  }
   document.getElementById('e-bio').value = m.bio || '';
   document.getElementById('e-years').value = m.yearsExperience || '';
   document.getElementById('e-credentials').value = (m.credentials || []).join('\n');
@@ -788,6 +809,33 @@ function addTestimonialEditor(t, i) {
   el.appendChild(div);
 }
 
+function handlePhotoSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b64 = e.target.result;
+    document.getElementById('e-photo-b64').textContent = b64;
+    document.getElementById('e-photo').value = '';
+    const preview = document.getElementById('photo-preview');
+    preview.src = b64; preview.style.display = 'block';
+    document.getElementById('photo-upload-hint').textContent = file.name + ' — ready to upload';
+  };
+  reader.readAsDataURL(file);
+}
+
+function handlePhotoDrop(event) {
+  event.preventDefault();
+  document.getElementById('photo-upload-area').style.borderColor = 'var(--border)';
+  const file = event.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  const input = document.getElementById('e-photo-file');
+  input.files = dt.files;
+  handlePhotoSelect(input);
+}
+
 async function saveProfile() {
   const m = currentMember;
   const newPw = document.getElementById('e-new-password').value;
@@ -811,11 +859,42 @@ async function saveProfile() {
     })).filter(t => t.title || t.body),
   };
   if (newPw) updated.passwordHash = await sha256(newPw);
-  Object.assign(m, updated);
-  localStorage.setItem('profile_' + m.id, JSON.stringify(updated));
-  renderProfile(m);
-  document.getElementById('save-msg').classList.remove('hidden');
-  setTimeout(() => document.getElementById('save-msg').classList.add('hidden'), 2500);
+
+  const saveBtn = document.querySelector('.editor-footer .btn-solid');
+  const saveMsg = document.getElementById('save-msg');
+  saveBtn.textContent = 'Saving…'; saveBtn.disabled = true;
+
+  try {
+    const photoBase64 = document.getElementById('e-photo-b64').textContent || null;
+    const res = await fetch('/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subdomain: m.subdomain,
+        passwordHash: window._sessionHash,
+        profileData: updated,
+        photoBase64,
+      }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Save failed');
+    if (json.photo) updated.photo = json.photo;
+    Object.assign(m, updated);
+    renderProfile(m);
+    saveMsg.textContent = '✓ Saved to server';
+    saveMsg.style.color = '';
+  } catch (err) {
+    // Fallback: save locally so work isn't lost
+    Object.assign(m, updated);
+    localStorage.setItem('profile_' + m.id, JSON.stringify(updated));
+    renderProfile(m);
+    saveMsg.textContent = '⚠ Saved locally only: ' + err.message;
+    saveMsg.style.color = '#e24b4a';
+  }
+
+  saveBtn.textContent = 'Save Changes'; saveBtn.disabled = false;
+  saveMsg.classList.remove('hidden');
+  setTimeout(() => saveMsg.classList.add('hidden'), 4000);
   closeEditor();
 }
 
