@@ -133,6 +133,12 @@ section { padding: 72px 2rem; }
 .stat-box { padding: 1.1rem; border: 1px solid var(--border); border-radius: var(--radius); }
 .stat-num { font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 600; color: var(--accent); line-height: 1; display: block; margin-bottom: 0.2rem; }
 .stat-label { font-size: 0.75rem; color: var(--muted); }
+/* ── BLOCK EDITOR ── */
+.block-editor-item { display: grid; grid-template-columns: 1fr 1fr auto; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+.block-editor-item input { font-size: 0.82rem; padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); width: 100%; }
+.block-editor-item input::placeholder { color: var(--muted); }
+.block-remove-btn { background: none; border: 1px solid rgba(226,75,74,0.3); border-radius: var(--radius); color: #e24b4a; cursor: pointer; padding: 5px 9px; font-size: 0.8rem; white-space: nowrap; }
+.block-remove-btn:hover { background: #e24b4a; color: white; }
 .about-quote { padding: 1.75rem; background: var(--cream); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; font-family: 'Lora', serif; font-style: italic; font-size: 1rem; color: var(--mid); line-height: 1.75; margin-bottom: 1.75rem; }
 .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
 .tag { padding: 5px 12px; border: 1px solid var(--border); border-radius: 2px; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent-dark); background: rgba(184,151,90,0.06); }
@@ -387,6 +393,17 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
       <div class="form-group"><label>Specialisations (one per line)</label><textarea id="e-specs" rows="4" placeholder="Estate Planning&#10;Islamic Finance"></textarea></div>
     </div>
     <div class="editor-section">
+      <div class="editor-section-title">Stat Blocks</div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.75rem;">These appear as the 4 boxes on your profile (e.g. MDRT, years, agent code). Add up to 4.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:0.4rem;margin-bottom:0.4rem;padding:0 0 0.25rem;">
+        <span style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;">Value</span>
+        <span style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;">Label</span>
+        <span></span>
+      </div>
+      <div id="stat-blocks-editor"></div>
+      <button class="add-btn" onclick="addStatBlock()">+ Add Block</button>
+    </div>
+    <div class="editor-section">
       <div class="editor-section-title">Accent Colour</div>
       <div class="color-picker-row">
         <input type="color" id="e-accent" value="#B8975A" oninput="updateColorPreview()">
@@ -517,12 +534,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
           <div class="section-label">About</div>
           <h2 class="section-title">Planning with purpose.<br>Walking the journey with you.</h2>
           <p id="about-bio">—</p>
-          <div class="about-stats">
-            <div class="stat-box"><span class="stat-num" id="stat-years">—</span><span class="stat-label">Years in financial services</span></div>
-            <div class="stat-box"><span class="stat-num" id="stat-cred1">—</span><span class="stat-label">Top achievement</span></div>
-            <div class="stat-box"><span class="stat-num" id="stat-agency">SP</span><span class="stat-label">Prudential Strategic Partners</span></div>
-            <div class="stat-box"><span class="stat-num" id="stat-code">—</span><span class="stat-label">Agent Code</span></div>
-          </div>
+          <div class="about-stats" id="about-stats"></div>
         </div>
         <div>
           <div class="about-quote" id="about-quote">"The best investment you can make is in the people and futures you care about most."</div>
@@ -764,9 +776,17 @@ function renderProfile(m) {
   document.getElementById('hero-bio').textContent = m.bio;
   document.getElementById('hero-years').textContent = m.yearsExperience || '—';
   document.getElementById('about-bio').textContent = m.bio;
-  document.getElementById('stat-years').textContent = m.yearsExperience || '—';
-  document.getElementById('stat-cred1').textContent = (m.credentials && m.credentials[0]) || '—';
-  document.getElementById('stat-code').textContent = m.agentCode || '—';
+  // Stat blocks — use custom if set, else fall back to defaults
+  const defaultBlocks = [
+    { value: m.yearsExperience || '—', label: 'Years in financial services' },
+    { value: (m.credentials && m.credentials[0]) || '—', label: 'Top achievement' },
+    { value: 'SP', label: 'Prudential Strategic Partners' },
+    { value: m.agentCode || '—', label: 'Agent Code' },
+  ];
+  const blocks = (m.statBlocks && m.statBlocks.length) ? m.statBlocks : defaultBlocks;
+  document.getElementById('about-stats').innerHTML = blocks.map(b =>
+    `<div class="stat-box"><span class="stat-num">${esc(b.value)}</span><span class="stat-label">${esc(b.label)}</span></div>`
+  ).join('');
   document.getElementById('meta-code').textContent = m.agentCode || '—';
   document.getElementById('footer-name').textContent = m.name;
 
@@ -1002,6 +1022,13 @@ function openEditor() {
   document.getElementById('e-email').value = m.email || '';
   document.getElementById('e-photo').value = m.photo || '';
   document.getElementById('e-calendly').value = m.calendlyUrl || '';
+  const defaultBlocks = [
+    { value: m.yearsExperience || '', label: 'Years in financial services' },
+    { value: (m.credentials && m.credentials[0]) || '', label: 'Top achievement' },
+    { value: 'SP', label: 'Prudential Strategic Partners' },
+    { value: m.agentCode || '', label: 'Agent Code' },
+  ];
+  renderStatBlockEditors((m.statBlocks && m.statBlocks.length) ? m.statBlocks : defaultBlocks);
   document.getElementById('e-photo-b64').textContent = '';
   const preview = document.getElementById('photo-preview');
   const hint = document.getElementById('photo-upload-hint');
@@ -1052,6 +1079,25 @@ function addTestimonialEditor(t, i) {
     <div class="form-group"><label>Testimonial Body</label><textarea class="t-body" rows="3">${esc(t?.body||'')}</textarea></div>
     <div class="form-group"><label>Client Name</label><input type="text" class="t-name" value="${esc(t?.name||'')}"></div>
     <div class="form-group"><label>Client Role</label><input type="text" class="t-role" value="${esc(t?.role||'')}"></div>
+  `;
+  el.appendChild(div);
+}
+
+function renderStatBlockEditors(blocks) {
+  const el = document.getElementById('stat-blocks-editor');
+  el.innerHTML = '';
+  blocks.forEach(b => addStatBlock(b));
+}
+
+function addStatBlock(b) {
+  const el = document.getElementById('stat-blocks-editor');
+  if (el.children.length >= 4) return;
+  const div = document.createElement('div');
+  div.className = 'block-editor-item';
+  div.innerHTML = `
+    <input class="block-value" placeholder="e.g. MDRT" value="${esc(b?.value||'')}">
+    <input class="block-label" placeholder="e.g. Top achievement" value="${esc(b?.label||'')}">
+    <button class="block-remove-btn" onclick="this.closest('.block-editor-item').remove()">✕</button>
   `;
   el.appendChild(div);
 }
@@ -1111,6 +1157,10 @@ async function saveProfile() {
     specialisations: document.getElementById('e-specs').value.split('\n').map(s=>s.trim()).filter(Boolean),
     accent: document.getElementById('e-accent').value,
     calendlyUrl: document.getElementById('e-calendly').value.trim(),
+    statBlocks: Array.from(document.querySelectorAll('.block-editor-item')).map(el => ({
+      value: el.querySelector('.block-value').value.trim(),
+      label: el.querySelector('.block-label').value.trim(),
+    })).filter(b => b.value || b.label),
     testimonials: Array.from(document.querySelectorAll('.testi-editor-item')).map(el => ({
       title: el.querySelector('.t-title').value,
       body: el.querySelector('.t-body').value,
