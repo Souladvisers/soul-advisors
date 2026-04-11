@@ -38,13 +38,17 @@
           "title": "My one and only trusted consultant",
           "body": "Arief has been managing my family's financial affairs for over a decade. He knows our priorities and never recommends anything that doesn't fit who we are.",
           "name": "Faridah H.",
-          "role": "Educator"
+          "role": "Educator",
+          "avatar": "",
+          "photo": ""
         },
         {
           "title": "Finally, an advisor who explained faraid properly",
           "body": "I had questions about Islamic inheritance for years. Arief sat with me for two hours, walked through faraid, hibah, and CPF nominations — and I left with a plan.",
           "name": "Rozana Z.",
-          "role": "Civil Servant"
+          "role": "Civil Servant",
+          "avatar": "",
+          "photo": ""
         }
       ],
       "calendlyUrl": "https://calendly.com/pru-aarief/30min",
