@@ -66,6 +66,10 @@
         {
           "value": "PSM",
           "label": "Prudential Service Mark"
+        },
+        {
+          "value": "Dean's List",
+          "label": "Nanyang Business School"
         }
       ],
       "pageText": {
