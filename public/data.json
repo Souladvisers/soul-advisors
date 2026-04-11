@@ -16,37 +16,17 @@
       "phone": "+6591234567",
       "whatsapp": "6591234567",
       "email": "arief@soul-advisors.sg",
-      "photo": "",
-      "bio": "With over 18 years in financial services, I believe planning is a deeply personal journey. I specialise in estate planning (Islamic and conventional), wealth protection, and leadership development for financial professionals. I hold an MSc in Asset & Wealth Management from NTU and serve on the boards of LBKM, TAA Trust Fund, and Amal Care.",
+      "photo": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AJQAB/9k=",
+      "bio": "test",
       "credentials": [
-        "MDRT",
-        "ChFC/S",
-        "MSc Asset & Wealth Management — NTU",
-        "Bachelor of Accountancy"
+        "MDRT"
       ],
       "specialisations": [
-        "Estate Planning",
-        "Islamic Finance",
-        "Faraid & Hibah",
-        "ILPs",
-        "Leadership Training"
+        "Estate Planning"
       ],
       "accent": "#B8975A",
       "yearsExperience": "18+",
-      "testimonials": [
-        {
-          "title": "My one and only trusted consultant",
-          "body": "Arief has been managing my family's financial affairs for over a decade. He knows our priorities and never recommends anything that doesn't fit who we are.",
-          "name": "Faridah H.",
-          "role": "Educator"
-        },
-        {
-          "title": "Finally, an advisor who explained faraid properly",
-          "body": "I had questions about Islamic inheritance for years. Arief sat with me for two hours, walked through faraid, hibah, and CPF nominations — and I left with a plan.",
-          "name": "Rozana Z.",
-          "role": "Civil Servant"
-        }
-      ],
+      "testimonials": [],
       "calendlyUrl": "https://calendly.com/pru-aarief/30min",
       "isAdmin": true,
       "passwordHash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
