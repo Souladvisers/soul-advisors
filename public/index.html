@@ -1293,6 +1293,9 @@ async function saveProfile() {
   const saveMsg = document.getElementById('save-msg');
   saveBtn.textContent = 'Saving…'; saveBtn.disabled = true;
 
+  let success = false;
+  let msg = '';
+
   try {
     const photoBase64 = document.getElementById('e-photo-b64').textContent || null;
     const res = await fetch('/api/save', {
@@ -1308,23 +1311,28 @@ async function saveProfile() {
     const json = await res.json();
     if (!res.ok) throw new Error(json.error || 'Save failed');
     if (json.photo) updated.photo = json.photo;
-    Object.assign(m, updated);
-    renderProfile(m);
-    saveMsg.textContent = '✓ Saved to server';
-    saveMsg.style.color = '';
+    success = true;
+    msg = '✓ Saved';
   } catch (err) {
     // Fallback: save locally so work isn't lost
-    Object.assign(m, updated);
     localStorage.setItem('profile_' + m.id, JSON.stringify(updated));
-    renderProfile(m);
-    saveMsg.textContent = '⚠ Saved locally only: ' + err.message;
-    saveMsg.style.color = '#e24b4a';
+    msg = '⚠ Saved locally only: ' + err.message;
   }
 
+  // Apply changes and re-render
+  Object.assign(m, updated);
+
+  // Close editor first, then re-render profile underneath
+  closeEditor();
+  renderProfile(m);
+  // Re-show edit bar (renderProfile redraws page but session is still active)
+  showEditBar(m);
+
   saveBtn.textContent = 'Save Changes'; saveBtn.disabled = false;
+  saveMsg.textContent = msg;
+  saveMsg.style.color = success ? '' : '#e24b4a';
   saveMsg.classList.remove('hidden');
   setTimeout(() => saveMsg.classList.add('hidden'), 4000);
-  closeEditor();
 }
 
 /* ── ADMIN ── */
