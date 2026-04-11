@@ -1,7 +1,7 @@
 {
   "agency": {
     "name": "SOUL Advisors",
-    "parent": "Prudential Singapore",
+    "parent": "SOUL Advisors",
     "agencyCode": "BZ2-28803",
     "adminSubdomain": "admin",
     "baseUrl": "soul-advisors.sg"
@@ -66,7 +66,7 @@
         },
         {
           "value": "PSM",
-          "label": "Prudential Service Mark"
+          "label": "SOUL Advisors Service Mark"
         },
         {
           "value": "Dean's List",
@@ -98,7 +98,7 @@
       "whatsapp": "6598765432",
       "email": "sarah@soul-advisors.sg",
       "photo": "",
-      "bio": "I joined Prudential 8 years ago with a simple belief: that every family deserves financial security, regardless of where they start. My focus is on young families, health planning, and helping clients understand what they're buying.",
+      "bio": "I joined SOUL Advisors 8 years ago with a simple belief: that every family deserves financial security, regardless of where they start. My focus is on young families, health planning, and helping clients understand what they're buying.",
       "credentials": [
         "MDRT",
         "CFP",

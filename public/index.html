@@ -530,7 +530,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   <section class="hero">
     <div class="hero-inner">
       <div>
-        <div class="hero-eyebrow" id="hero-eyebrow">SOUL Advisors · Prudential Singapore</div>
+        <div class="hero-eyebrow" id="hero-eyebrow">SOUL Advisors</div>
         <h1 id="hero-name">—</h1>
         <h2 id="hero-title">—</h2>
         <p id="hero-bio">—</p>
@@ -608,7 +608,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
       </div>
       <div class="contact-meta">
         <div>Agent Code <span id="meta-code">—</span></div>
-        <div>Prudential Singapore <span>Strategic Partners</span></div>
+        <div>SOUL Advisors</div>
       </div>
     </div>
   </section>
@@ -628,7 +628,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   </section>
 
   <footer>
-    &copy; 2026 <span id="footer-name">SOUL Advisors</span> · Prudential Assurance Company Singapore (Pte) Limited ·
+    &copy; 2026 <span id="footer-name">SOUL Advisors</span> ·
     <a href="#">Privacy Policy</a>
   </footer>
 
@@ -783,7 +783,7 @@ async function submitTestimonial() {
 function getLocalConfig() {
   const stored = localStorage.getItem('soul_config');
   if (stored) return JSON.parse(stored);
-  return { agency: { name: 'SOUL Advisors', parent: 'Prudential Singapore', agencyCode: 'BZ2-28803', baseUrl: 'soul-advisors.sg' }, members: [] };
+  return { agency: { name: 'SOUL Advisors', parent: 'SOUL Advisors', agencyCode: 'BZ2-28803', baseUrl: 'soul-advisors.sg' }, members: [] };
 }
 
 function mergeLocalOverrides() {
@@ -810,7 +810,7 @@ function renderProfile(m) {
   const defaultBlocks = [
     { value: m.yearsExperience || '—', label: 'Years in financial services' },
     { value: (m.credentials && m.credentials[0]) || '—', label: 'Top achievement' },
-    { value: 'SP', label: 'Prudential Strategic Partners' },
+    { value: 'SP', label: 'SOUL Advisors Strategic Partners' },
     { value: m.agentCode || '—', label: 'Agent Code' },
   ];
   const blocks = (m.statBlocks && m.statBlocks.length) ? m.statBlocks : defaultBlocks;
@@ -942,7 +942,7 @@ function shareProfileWhatsapp() {
   const url = `${window.location.origin}?sub=${m.subdomain}`;
   const specs = (m.specialisations || []).slice(0, 2).join(' & ') || 'financial planning';
   const firstName = m.name.split(' ')[0];
-  const msg = `Hi! I'd like to introduce you to ${m.name}, my financial consultant at Prudential Singapore.\n\nHe specialises in ${specs} and has been really helpful to me. I think you'd benefit from speaking with him too.\n\nHave a look at his profile — you can even book a free 30-min consultation directly:\n${url}`;
+  const msg = `Hi! I'd like to introduce you to ${m.name}, my financial consultant at SOUL Advisors.\n\nHe specialises in ${specs} and has been really helpful to me. I think you'd benefit from speaking with him too.\n\nHave a look at his profile — you can even book a free 30-min consultation directly:\n${url}`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
 function copyProfileLink() {
@@ -1091,7 +1091,7 @@ function openEditor() {
   const defaultBlocks = [
     { value: m.yearsExperience || '', label: 'Years in financial services' },
     { value: (m.credentials && m.credentials[0]) || '', label: 'Top achievement' },
-    { value: 'SP', label: 'Prudential Strategic Partners' },
+    { value: 'SP', label: 'SOUL Advisors Strategic Partners' },
     { value: m.agentCode || '', label: 'Agent Code' },
   ];
   renderStatBlockEditors((m.statBlocks && m.statBlocks.length) ? m.statBlocks : defaultBlocks);
