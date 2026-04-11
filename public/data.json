@@ -18,13 +18,34 @@
       "email": "arief@soul-advisors.sg",
       "photo": "",
       "bio": "With over 18 years in financial services, I believe planning is a deeply personal journey. I specialise in estate planning (Islamic and conventional), wealth protection, and leadership development for financial professionals. I hold an MSc in Asset & Wealth Management from NTU and serve on the boards of LBKM, TAA Trust Fund, and Amal Care.",
-      "credentials": ["MDRT", "ChFC/S", "MSc Asset & Wealth Management — NTU", "Bachelor of Accountancy"],
-      "specialisations": ["Estate Planning", "Islamic Finance", "Faraid & Hibah", "ILPs", "Leadership Training"],
+      "credentials": [
+        "MDRT",
+        "ChFC/S",
+        "MSc Asset & Wealth Management — NTU",
+        "Bachelor of Accountancy"
+      ],
+      "specialisations": [
+        "Estate Planning",
+        "Islamic Finance",
+        "Faraid & Hibah",
+        "ILPs",
+        "Leadership Training"
+      ],
       "accent": "#B8975A",
       "yearsExperience": "18+",
       "testimonials": [
-        { "title": "My one and only trusted consultant", "body": "Arief has been managing my family's financial affairs for over a decade. He knows our priorities and never recommends anything that doesn't fit who we are.", "name": "Faridah H.", "role": "Educator" },
-        { "title": "Finally, an advisor who explained faraid properly", "body": "I had questions about Islamic inheritance for years. Arief sat with me for two hours, walked through faraid, hibah, and CPF nominations — and I left with a plan.", "name": "Rozana Z.", "role": "Civil Servant" }
+        {
+          "title": "My one and only trusted consultant",
+          "body": "Arief has been managing my family's financial affairs for over a decade. He knows our priorities and never recommends anything that doesn't fit who we are.",
+          "name": "Faridah H.",
+          "role": "Educator"
+        },
+        {
+          "title": "Finally, an advisor who explained faraid properly",
+          "body": "I had questions about Islamic inheritance for years. Arief sat with me for two hours, walked through faraid, hibah, and CPF nominations — and I left with a plan.",
+          "name": "Rozana Z.",
+          "role": "Civil Servant"
+        }
       ],
       "calendlyUrl": "https://calendly.com/pru-aarief/30min",
       "isAdmin": true,
@@ -41,12 +62,26 @@
       "email": "sarah@soul-advisors.sg",
       "photo": "",
       "bio": "I joined Prudential 8 years ago with a simple belief: that every family deserves financial security, regardless of where they start. My focus is on young families, health planning, and helping clients understand what they're buying.",
-      "credentials": ["MDRT", "CFP", "Bachelor of Business"],
-      "specialisations": ["Health Planning", "Young Families", "Education Funding", "Critical Illness"],
+      "credentials": [
+        "MDRT",
+        "CFP",
+        "Bachelor of Business"
+      ],
+      "specialisations": [
+        "Health Planning",
+        "Young Families",
+        "Education Funding",
+        "Critical Illness"
+      ],
       "accent": "#5A7FB8",
       "yearsExperience": "8",
       "testimonials": [
-        { "title": "She made insurance make sense", "body": "Sarah explained everything clearly without jargon. For the first time I actually understood what I was covered for.", "name": "Marcus T.", "role": "Software Engineer" }
+        {
+          "title": "She made insurance make sense",
+          "body": "Sarah explained everything clearly without jargon. For the first time I actually understood what I was covered for.",
+          "name": "Marcus T.",
+          "role": "Software Engineer"
+        }
       ],
       "calendlyUrl": "",
       "isAdmin": false,
@@ -63,12 +98,25 @@
       "email": "hafiz@soul-advisors.sg",
       "photo": "",
       "bio": "My clients describe me as patient, thorough, and always reachable. After 5 years in the field, I specialise in helping self-employed and gig economy workers who often fall through the cracks of conventional financial planning.",
-      "credentials": ["MDRT", "Diploma in Financial Planning"],
-      "specialisations": ["Self-Employed Planning", "Retirement", "Term Insurance", "CPF Planning"],
+      "credentials": [
+        "MDRT",
+        "Diploma in Financial Planning"
+      ],
+      "specialisations": [
+        "Self-Employed Planning",
+        "Retirement",
+        "Term Insurance",
+        "CPF Planning"
+      ],
       "accent": "#5AB87A",
       "yearsExperience": "5",
       "testimonials": [
-        { "title": "He gets the freelancer life", "body": "As a freelancer, most advisors didn't know how to plan for irregular income. Hafiz did. He built something that actually works for me.", "name": "Dani C.", "role": "Freelance Designer" }
+        {
+          "title": "He gets the freelancer life",
+          "body": "As a freelancer, most advisors didn't know how to plan for irregular income. Hafiz did. He built something that actually works for me.",
+          "name": "Dani C.",
+          "role": "Freelance Designer"
+        }
       ],
       "calendlyUrl": "",
       "isAdmin": false,
