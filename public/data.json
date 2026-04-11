@@ -57,13 +57,31 @@
       "statBlocks": [
         {
           "value": "18",
-          "label": "Years in financial services"
+          "label": "Years in financial Industry"
         },
         {
           "value": "MDRT",
           "label": "Top achievement"
+        },
+        {
+          "value": "PSM",
+          "label": "Prudential Service Mark"
         }
-      ]
+      ],
+      "pageText": {
+        "aboutLabel": "",
+        "aboutTitle": "",
+        "aboutQuote": "",
+        "testiLabel": "",
+        "testiTitle": "",
+        "testiSub": "",
+        "bookingLabel": "",
+        "bookingTitle": "",
+        "bookingSub": "",
+        "contactLabel": "",
+        "contactTitle": "",
+        "contactSub": ""
+      }
     },
     {
       "id": "member2",
