@@ -35,38 +35,12 @@ export default async function handler(req, res) {
   const member = currentData.members[memberIndex];
   if (member.passwordHash !== passwordHash) return res.status(401).json({ error: 'Incorrect password' });
 
-  // 3. Upload photo if provided
-  let photoUrl = profileData.photo || member.photo || '';
+  // 3. Handle photo — store base64 directly in data.json (works immediately, no CDN delay)
+  let photoUrl = member.photo || '';
   if (photoBase64 && photoBase64.startsWith('data:image/')) {
-    const match = photoBase64.match(/^data:image\/(\w+);base64,(.+)$/);
-    if (match) {
-      const ext = match[1] === 'jpeg' ? 'jpg' : match[1];
-      const content = match[2];
-      const photoPath = `public/photos/${subdomain}.${ext}`;
-
-      // Check if photo exists already (need its SHA to update)
-      let photoSha;
-      const existsRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${photoPath}`, { headers });
-      if (existsRes.ok) {
-        const existingFile = await existsRes.json();
-        photoSha = existingFile.sha;
-      }
-
-      const uploadRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${photoPath}`, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify({
-          message: `Upload photo for ${subdomain}`,
-          content,
-          ...(photoSha ? { sha: photoSha } : {}),
-        }),
-      });
-
-      if (uploadRes.ok) {
-        // Use raw GitHub URL — available immediately without waiting for Vercel redeploy
-        photoUrl = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${photoPath}`;
-      }
-    }
+    photoUrl = photoBase64; // stored directly as a data URL
+  } else if (profileData.photo && profileData.photo !== member.photo) {
+    photoUrl = profileData.photo;
   }
 
   // 4. Merge profile update (preserve protected fields)
