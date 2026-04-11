@@ -536,7 +536,7 @@ async function init() {
 
   const host = window.location.hostname;
   const parts = host.split('.');
-  let sub = parts.length >= 3 ? parts[0] : (new URLSearchParams(window.location.search).get('sub') || '');
+  let sub = (new URLSearchParams(window.location.search).get('sub')) || (parts.length >= 3 ? parts[0] : '');
 
   document.getElementById('loading').classList.add('hidden');
 
