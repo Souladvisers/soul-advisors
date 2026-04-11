@@ -364,8 +364,16 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
     </div>
     <div class="editor-section">
       <div class="editor-section-title">Testimonials</div>
+      <div style="background:rgba(184,151,90,0.08);border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem 1rem;margin-bottom:1rem;">
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem;">Share this link with clients to collect testimonials:</div>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <input id="testi-link" type="text" readonly style="flex:1;font-size:0.75rem;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;color:var(--mid);" value="">
+          <button class="btn btn-outline btn-sm" onclick="copyTestiLink()">Copy</button>
+        </div>
+        <div id="testi-link-copied" style="display:none;font-size:0.72rem;color:var(--accent);margin-top:0.4rem;">✓ Copied to clipboard</div>
+      </div>
       <div id="testi-editor-list"></div>
-      <button class="add-btn" onclick="addTestimonialEditor()">+ Add Testimonial</button>
+      <button class="add-btn" onclick="addTestimonialEditor()">+ Add Testimonial Manually</button>
     </div>
     <div class="editor-section">
       <div class="editor-section-title">Change Password</div>
@@ -394,6 +402,29 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
       <button class="btn btn-solid" onclick="saveMember()">Save Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIAL SUBMISSION FORM -->
+<div id="testimonial-view" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--cream);">
+  <div style="width:100%;max-width:520px;">
+    <div style="text-align:center;margin-bottom:2rem;">
+      <div style="font-family:'Lora',serif;font-size:1.5rem;font-weight:600;margin-bottom:0.25rem;">Share Your Experience</div>
+      <div id="testi-form-subtitle" style="color:var(--muted);font-size:0.9rem;">Leave a testimonial for your advisor</div>
+    </div>
+    <div id="testi-form-card" style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:2rem;">
+      <div class="form-group"><label>Your Name <span style="color:#e24b4a">*</span></label><input type="text" id="tf-name" placeholder="e.g. Ahmad Faris"></div>
+      <div class="form-group"><label>Your Role / Occupation</label><input type="text" id="tf-role" placeholder="e.g. Business Owner"></div>
+      <div class="form-group"><label>Headline — a short title for your story</label><input type="text" id="tf-title" placeholder="e.g. Finally understood my coverage"></div>
+      <div class="form-group"><label>Your Story <span style="color:#e24b4a">*</span></label><textarea id="tf-body" rows="5" placeholder="What was your experience working with this advisor?"></textarea></div>
+      <div id="tf-error" style="display:none;color:#e24b4a;font-size:0.82rem;margin-bottom:0.75rem;"></div>
+      <button class="btn btn-solid" style="width:100%;" onclick="submitTestimonial()">Submit Testimonial</button>
+    </div>
+    <div id="testi-form-success" class="hidden" style="text-align:center;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:3rem 2rem;">
+      <div style="font-size:2rem;margin-bottom:1rem;">✓</div>
+      <div style="font-family:'Lora',serif;font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">Thank you!</div>
+      <div style="color:var(--muted);font-size:0.9rem;">Your testimonial has been submitted and will appear on the profile shortly.</div>
     </div>
   </div>
 </div>
@@ -545,9 +576,27 @@ async function init() {
 
   const host = window.location.hostname;
   const parts = host.split('.');
-  let sub = (new URLSearchParams(window.location.search).get('sub')) || (parts.length >= 3 ? parts[0] : '');
+  const params = new URLSearchParams(window.location.search);
+  let sub = params.get('sub') || (parts.length >= 3 ? parts[0] : '');
+  const view = params.get('view');
 
   document.getElementById('loading').classList.add('hidden');
+
+  // Client testimonial submission form
+  if (view === 'testimonial' && sub) {
+    const member = CONFIG.members.find(m => m.subdomain === sub);
+    if (member) {
+      document.getElementById('testimonial-view').classList.remove('hidden');
+      document.getElementById('testi-form-subtitle').textContent =
+        `Leave a testimonial for ${member.name.split(' ')[0]}`;
+      document.getElementById('testimonial-view').dataset.sub = sub;
+      // Apply accent colour
+      document.documentElement.style.setProperty('--accent', member.accent || '#B8975A');
+    } else {
+      renderNotFound(sub);
+    }
+    return;
+  }
 
   if (sub === 'admin' || sub === 'Admin') {
     checkAdminSession();
@@ -560,6 +609,47 @@ async function init() {
     } else {
       renderNotFound(sub);
     }
+  }
+}
+
+function copyTestiLink() {
+  const link = document.getElementById('testi-link').value;
+  navigator.clipboard.writeText(link).then(() => {
+    const el = document.getElementById('testi-link-copied');
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 2500);
+  });
+}
+
+async function submitTestimonial() {
+  const sub = document.getElementById('testimonial-view').dataset.sub;
+  const name = document.getElementById('tf-name').value.trim();
+  const role = document.getElementById('tf-role').value.trim();
+  const title = document.getElementById('tf-title').value.trim();
+  const body = document.getElementById('tf-body').value.trim();
+  const errEl = document.getElementById('tf-error');
+
+  if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+  if (!body) { errEl.textContent = 'Please write your testimonial.'; errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+
+  const btn = document.querySelector('#testi-form-card .btn-solid');
+  btn.textContent = 'Submitting…'; btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/testimonial', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subdomain: sub, title, body, name, role }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Submission failed');
+    document.getElementById('testi-form-card').classList.add('hidden');
+    document.getElementById('testi-form-success').classList.remove('hidden');
+  } catch (err) {
+    errEl.textContent = 'Something went wrong: ' + err.message;
+    errEl.style.display = 'block';
+    btn.textContent = 'Submit Testimonial'; btn.disabled = false;
   }
 }
 
@@ -774,6 +864,8 @@ function openEditor() {
   document.getElementById('e-accent').value = m.accent || '#B8975A';
   updateColorPreview();
   renderTestiEditors(m.testimonials || []);
+  const baseUrl = window.location.origin;
+  document.getElementById('testi-link').value = `${baseUrl}?sub=${m.subdomain}&view=testimonial`;
   document.getElementById('editor-panel').classList.add('open');
 }
 
@@ -812,16 +904,26 @@ function addTestimonialEditor(t, i) {
 function handlePhotoSelect(input) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const b64 = e.target.result;
+  document.getElementById('photo-upload-hint').textContent = 'Compressing…';
+  const img = new Image();
+  const objectUrl = URL.createObjectURL(file);
+  img.onload = () => {
+    URL.revokeObjectURL(objectUrl);
+    const MAX = 1200;
+    let w = img.width, h = img.height;
+    if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    const b64 = canvas.toDataURL('image/jpeg', 0.82);
     document.getElementById('e-photo-b64').textContent = b64;
     document.getElementById('e-photo').value = '';
     const preview = document.getElementById('photo-preview');
     preview.src = b64; preview.style.display = 'block';
-    document.getElementById('photo-upload-hint').textContent = file.name + ' — ready to upload';
+    const kb = Math.round(b64.length * 0.75 / 1024);
+    document.getElementById('photo-upload-hint').textContent = `${file.name} (${kb} KB) — ready to upload`;
   };
-  reader.readAsDataURL(file);
+  img.src = objectUrl;
 }
 
 function handlePhotoDrop(event) {
