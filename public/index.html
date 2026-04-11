@@ -151,7 +151,13 @@ section { padding: 72px 2rem; }
 .testi-title { font-family: 'Lora', serif; font-size: 0.88rem; font-weight: 600; color: var(--dark); margin-bottom: 0.4rem; line-height: 1.35; }
 .testi-body { font-size: 0.82rem; color: var(--mid); line-height: 1.65; }
 .testi-meta { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
-.testi-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 600; color: var(--accent-dark); flex-shrink: 0; }
+.testi-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 600; color: var(--accent-dark); flex-shrink: 0; overflow: hidden; }
+.testi-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.testi-photo { width: 100%; max-height: 180px; object-fit: cover; border-radius: var(--radius); margin-bottom: 0.75rem; display: block; }
+/* testi image upload area */
+.testi-img-upload { border: 1px dashed var(--border); border-radius: var(--radius); padding: 0.6rem 0.75rem; cursor: pointer; font-size: 0.78rem; color: var(--muted); text-align: center; margin-top: 0.25rem; transition: border-color 0.2s; }
+.testi-img-upload:hover { border-color: var(--accent); color: var(--accent); }
+.testi-img-preview { max-height: 90px; border-radius: var(--radius); margin-top: 0.4rem; display: none; }
 .testi-name { font-size: 0.75rem; font-weight: 500; color: var(--mid); }
 .testi-role { font-size: 0.68rem; color: var(--muted); }
 
@@ -849,12 +855,19 @@ function renderTestimonials(list) {
   if (!list.length) { grid.innerHTML = '<p style="color:var(--muted);font-size:0.88rem;">No testimonials yet.</p>'; return; }
   grid.innerHTML = list.map(t => {
     const initials = (t.name || 'CL').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const avatarInner = t.avatar
+      ? `<img src="${t.avatar}" alt="${esc(t.name)}">`
+      : initials;
+    const photoHtml = t.photo
+      ? `<img src="${t.photo}" alt="Shared by ${esc(t.name)}" class="testi-photo">`
+      : '';
     return `<div class="testi-card">
       <div class="testi-handle">Client Testimonial</div>
+      ${photoHtml}
       <div class="testi-title">${esc(t.title)}</div>
       <div class="testi-body">${esc(t.body)}</div>
       <div class="testi-meta">
-        <div class="testi-avatar">${initials}</div>
+        <div class="testi-avatar">${avatarInner}</div>
         <div><div class="testi-name">${esc(t.name)}</div><div class="testi-role">${esc(t.role || '')}</div></div>
       </div>
     </div>`;
@@ -1073,14 +1086,51 @@ function addTestimonialEditor(t, i) {
   const div = document.createElement('div');
   div.className = 'testi-editor-item';
   div.dataset.idx = idx;
+  const uid = 't' + Date.now() + idx;
   div.innerHTML = `
     <button class="remove-btn" onclick="this.closest('.testi-editor-item').remove()">✕ Remove</button>
     <div class="form-group"><label>Headline</label><input type="text" class="t-title" value="${esc(t?.title||'')}"></div>
     <div class="form-group"><label>Testimonial Body</label><textarea class="t-body" rows="3">${esc(t?.body||'')}</textarea></div>
     <div class="form-group"><label>Client Name</label><input type="text" class="t-name" value="${esc(t?.name||'')}"></div>
     <div class="form-group"><label>Client Role</label><input type="text" class="t-role" value="${esc(t?.role||'')}"></div>
+    <div class="form-group">
+      <label>Client Photo <span style="font-weight:400;color:var(--muted);font-size:0.72rem;">— appears as their avatar</span></label>
+      <div class="testi-img-upload" onclick="document.getElementById('${uid}-avatar').click()">Click to upload client photo</div>
+      <input type="file" id="${uid}-avatar" accept="image/*" style="display:none" onchange="handleTestiImg(this,'${uid}-avatar-preview','t-avatar-b64-${uid}')">
+      <img id="${uid}-avatar-preview" class="testi-img-preview" ${t?.avatar ? `src="${t.avatar}" style="display:block"` : ''}>
+      <input type="hidden" class="t-avatar-b64" id="t-avatar-b64-${uid}" value="${t?.avatar||''}">
+    </div>
+    <div class="form-group">
+      <label>Shared Image <span style="font-weight:400;color:var(--muted);font-size:0.72rem;">— optional photo shown in the card</span></label>
+      <div class="testi-img-upload" onclick="document.getElementById('${uid}-photo').click()">Click to upload shared image</div>
+      <input type="file" id="${uid}-photo" accept="image/*" style="display:none" onchange="handleTestiImg(this,'${uid}-photo-preview','t-photo-b64-${uid}')">
+      <img id="${uid}-photo-preview" class="testi-img-preview" ${t?.photo ? `src="${t.photo}" style="display:block"` : ''}>
+      <input type="hidden" class="t-photo-b64" id="t-photo-b64-${uid}" value="${t?.photo||''}">
+    </div>
   `;
   el.appendChild(div);
+}
+
+function handleTestiImg(input, previewId, hiddenId) {
+  const file = input.files[0];
+  if (!file) return;
+  const img = new Image();
+  const objectUrl = URL.createObjectURL(file);
+  img.onload = () => {
+    URL.revokeObjectURL(objectUrl);
+    const MAX = 400;
+    let w = img.width, h = img.height;
+    if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+    else        { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    const b64 = canvas.toDataURL('image/jpeg', 0.8);
+    document.getElementById(hiddenId).value = b64;
+    const preview = document.getElementById(previewId);
+    preview.src = b64; preview.style.display = 'block';
+  };
+  img.src = objectUrl;
 }
 
 function renderStatBlockEditors(blocks) {
@@ -1166,6 +1216,8 @@ async function saveProfile() {
       body: el.querySelector('.t-body').value,
       name: el.querySelector('.t-name').value,
       role: el.querySelector('.t-role').value,
+      avatar: el.querySelector('[class="t-avatar-b64"]')?.value || '',
+      photo: el.querySelector('[class="t-photo-b64"]')?.value || '',
     })).filter(t => t.title || t.body),
   };
   if (newPw) updated.passwordHash = await sha256(newPw);
