@@ -909,6 +909,7 @@ function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function checkSession(member) {
   const session = sessionStorage.getItem('soul_session');
   if (session === member.id) {
+    window._sessionHash = sessionStorage.getItem('soul_hash') || '';
     isLoggedIn = true;
     showEditBar(member);
   }
@@ -918,6 +919,7 @@ function checkAdminSession() {
   const session = sessionStorage.getItem('soul_session');
   const admin = CONFIG.members.find(m => m.isAdmin && m.id === session);
   if (admin) {
+    window._sessionHash = sessionStorage.getItem('soul_hash') || '';
     isAdmin = true;
     renderAdmin();
   } else {
@@ -951,6 +953,7 @@ async function attemptLogin() {
     const admin = CONFIG.members.find(m => m.isAdmin && m.passwordHash === hash);
     if (admin) {
       sessionStorage.setItem('soul_session', admin.id);
+      sessionStorage.setItem('soul_hash', hash);
       window._sessionHash = hash;
       closeLogin();
       isAdmin = true;
@@ -964,6 +967,7 @@ async function attemptLogin() {
   const member = CONFIG.members.find(m => m.id === target);
   if (member && member.passwordHash === hash) {
     sessionStorage.setItem('soul_session', member.id);
+    sessionStorage.setItem('soul_hash', hash);
     window._sessionHash = hash;
     isLoggedIn = true;
     closeLogin();
@@ -977,6 +981,8 @@ document.getElementById('login-password').addEventListener('keydown', e => { if 
 
 function logout() {
   sessionStorage.removeItem('soul_session');
+  sessionStorage.removeItem('soul_hash');
+  window._sessionHash = '';
   location.reload();
 }
 
