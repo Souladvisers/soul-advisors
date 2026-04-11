@@ -26,6 +26,7 @@
         { "title": "My one and only trusted consultant", "body": "Arief has been managing my family's financial affairs for over a decade. He knows our priorities and never recommends anything that doesn't fit who we are.", "name": "Faridah H.", "role": "Educator" },
         { "title": "Finally, an advisor who explained faraid properly", "body": "I had questions about Islamic inheritance for years. Arief sat with me for two hours, walked through faraid, hibah, and CPF nominations — and I left with a plan.", "name": "Rozana Z.", "role": "Civil Servant" }
       ],
+      "calendlyUrl": "",
       "isAdmin": true,
       "passwordHash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
     },
@@ -47,6 +48,7 @@
       "testimonials": [
         { "title": "She made insurance make sense", "body": "Sarah explained everything clearly without jargon. For the first time I actually understood what I was covered for.", "name": "Marcus T.", "role": "Software Engineer" }
       ],
+      "calendlyUrl": "",
       "isAdmin": false,
       "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4d"
     },
@@ -68,6 +70,7 @@
       "testimonials": [
         { "title": "He gets the freelancer life", "body": "As a freelancer, most advisors didn't know how to plan for irregular income. Hafiz did. He built something that actually works for me.", "name": "Dani C.", "role": "Freelance Designer" }
       ],
+      "calendlyUrl": "",
       "isAdmin": false,
       "passwordHash": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
     }

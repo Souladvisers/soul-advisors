@@ -283,6 +283,38 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
 .back-top { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50; width: 38px; height: 38px; background: var(--accent); border: none; border-radius: 2px; color: white; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
 .back-top.visible { opacity: 1; }
 
+/* ── BOOKING SECTION ── */
+.booking-section { background: var(--cream); padding: 5rem 2rem; border-top: 1px solid var(--border); }
+.booking-section .section-inner { text-align: center; max-width: 600px; margin: 0 auto; }
+.booking-section .section-title { margin-bottom: 0.75rem; }
+.booking-section .section-sub { margin-bottom: 2rem; }
+.book-main-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.04em; padding: 16px 36px; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+.book-main-btn:hover { background: var(--accent-dark); }
+.book-main-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.book-sub { margin-top: 1.25rem; font-size: 0.85rem; color: var(--muted); }
+.book-sub a { color: var(--accent); text-decoration: none; font-weight: 500; }
+/* ── REFERRAL SECTION ── */
+.referral-section { background: white; padding: 4rem 2rem; border-top: 1px solid var(--border); }
+.referral-section .section-inner { text-align: center; max-width: 540px; margin: 0 auto; }
+.referral-icon { width: 52px; height: 52px; background: var(--accent-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; font-size: 1.4rem; }
+.referral-title { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.6rem; }
+.referral-sub { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.75rem; }
+.referral-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+/* ── BOOKING MODAL ── */
+.booking-modal-overlay { position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.booking-modal-box { background: white; border-radius: 8px; width: 100%; max-width: 920px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
+.booking-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.booking-modal-head h3 { font-family: 'Lora', serif; font-weight: 600; font-size: 1rem; margin: 0; }
+.booking-modal-close { background: none; border: none; font-size: 1.4rem; color: var(--muted); cursor: pointer; line-height: 1; padding: 4px 8px; }
+.booking-modal-close:hover { color: var(--dark); }
+#booking-embed { flex: 1; overflow: hidden; }
+#booking-embed iframe { width: 100%; height: 100%; border: none; }
+/* ── STICKY BOOK BAR (mobile) ── */
+.sticky-book-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: white; border-top: 1px solid var(--border); padding: 0.75rem 1rem; gap: 0.5rem; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); }
+@media(max-width:640px){ .sticky-book-bar { display: flex; } }
+.sticky-book-bar .book-main-btn { flex: 1; justify-content: center; padding: 12px 16px; font-size: 0.85rem; }
+.sticky-book-bar .btn-outline { padding: 12px 16px; font-size: 0.85rem; }
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .hero-inner,.about-grid{grid-template-columns:1fr;gap:2.5rem;}
@@ -376,6 +408,14 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
       <button class="add-btn" onclick="addTestimonialEditor()">+ Add Testimonial Manually</button>
     </div>
     <div class="editor-section">
+      <div class="editor-section-title">Booking Link</div>
+      <div class="form-group">
+        <label>Calendly URL <span style="font-weight:400;color:var(--muted);font-size:0.75rem;">(prospects book directly from your profile)</span></label>
+        <input type="url" id="e-calendly" placeholder="https://calendly.com/yourname">
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem;">Don't have one? Set up a free Calendly at <strong>calendly.com</strong> and connect your Google Calendar there.</div>
+      </div>
+    </div>
+    <div class="editor-section">
       <div class="editor-section-title">Change Password</div>
       <div class="form-group"><label>New Password (leave blank to keep current)</label><input type="password" id="e-new-password" placeholder="New password"></div>
     </div>
@@ -434,9 +474,9 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   <nav>
     <div class="nav-brand"><span id="nav-agency">SOUL</span> Advisors</div>
     <div class="nav-right" id="nav-right">
-      <a href="#testimonials" class="btn btn-ghost btn-sm">Wall of Trust</a>
-      <a id="nav-whatsapp" href="#" class="btn btn-outline btn-sm">WhatsApp</a>
-      <a id="nav-call" href="#" class="btn btn-solid btn-sm">Call Me</a>
+      <a href="#testimonials" class="btn btn-ghost btn-sm">Testimonials</a>
+      <a id="nav-whatsapp" href="#" class="btn btn-ghost btn-sm">WhatsApp</a>
+      <button id="nav-book-btn" class="btn btn-solid btn-sm" onclick="openBooking()">Book a Meeting</button>
     </div>
   </nav>
 
@@ -448,9 +488,9 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
         <h2 id="hero-title">—</h2>
         <p id="hero-bio">—</p>
         <div class="hero-actions">
-          <a id="hero-trust" href="#testimonials" class="btn btn-solid">Wall of Trust</a>
-          <a id="hero-call" href="#" class="btn btn-outline">Call Me</a>
+          <button id="hero-book-btn" class="btn btn-solid" onclick="openBooking()">📅 Book a Free Consultation</button>
           <a id="hero-wa" href="#" class="btn btn-outline">WhatsApp ↗</a>
+          <a id="hero-trust" href="#testimonials" class="btn btn-ghost">See Reviews</a>
         </div>
       </div>
       <div>
@@ -501,6 +541,20 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
     </div>
   </section>
 
+  <!-- BOOKING SECTION -->
+  <section class="booking-section" id="booking">
+    <div class="section-inner">
+      <div class="section-label">Free Consultation</div>
+      <h2 class="section-title">Not sure where to start?<br>Let's talk for 30 minutes.</h2>
+      <p class="section-sub">No obligation. No jargon. Just a real conversation about your goals and how I can help you protect what matters most.</p>
+      <button class="book-main-btn" onclick="openBooking()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book a Free Consultation
+      </button>
+      <div class="book-sub">Prefer to message first? <a id="book-wa-link" href="#">WhatsApp me ↗</a></div>
+    </div>
+  </section>
+
   <section class="contact-section" id="contact">
     <div class="section-inner">
       <div class="section-label">Get in Touch</div>
@@ -517,6 +571,20 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
     </div>
   </section>
 
+  <!-- REFERRAL SECTION -->
+  <section class="referral-section">
+    <div class="section-inner">
+      <div class="referral-icon">🤝</div>
+      <div class="referral-title">Know someone who could benefit?</div>
+      <p class="referral-sub">If I've helped you, chances are I can help someone you care about too. Share my profile with a friend or family member — it takes 10 seconds.</p>
+      <div class="referral-btns">
+        <button class="btn btn-solid" onclick="shareProfileWhatsapp()">Share via WhatsApp ↗</button>
+        <button class="btn btn-outline" onclick="copyProfileLink()">Copy Profile Link</button>
+      </div>
+      <div id="profile-link-copied" style="display:none;font-size:0.78rem;color:var(--accent);margin-top:0.75rem;">✓ Link copied to clipboard</div>
+    </div>
+  </section>
+
   <footer>
     &copy; 2026 <span id="footer-name">SOUL Advisors</span> · Prudential Assurance Company Singapore (Pte) Limited ·
     <a href="#">Privacy Policy</a>
@@ -529,6 +597,23 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   </div>
 
   <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+</div>
+
+<!-- BOOKING MODAL -->
+<div id="booking-modal" class="booking-modal-overlay hidden">
+  <div class="booking-modal-box">
+    <div class="booking-modal-head">
+      <h3>Book a Free 30-Min Consultation</h3>
+      <button class="booking-modal-close" onclick="closeBooking()">✕</button>
+    </div>
+    <div id="booking-embed"></div>
+  </div>
+</div>
+
+<!-- STICKY MOBILE BOOK BAR -->
+<div class="sticky-book-bar hidden" id="sticky-bar">
+  <button class="book-main-btn" onclick="openBooking()">📅 Book Free Consultation</button>
+  <a id="sticky-wa" href="#" class="btn btn-outline">WhatsApp</a>
 </div>
 
 <!-- ADMIN VIEW -->
@@ -696,12 +781,34 @@ function renderProfile(m) {
   document.getElementById('hero-eyebrow').textContent = `${CONFIG.agency.name} · ${CONFIG.agency.parent}`;
 
   const wa = m.whatsapp || m.phone?.replace(/\D/g,'');
-  document.getElementById('nav-whatsapp').href = `https://wa.me/${wa}?text=Hi%20${encodeURIComponent(m.name)}%2C%20I%27d%20like%20to%20find%20out%20more.`;
-  document.getElementById('nav-call').href = `tel:${m.phone}`;
-  document.getElementById('hero-call').href = `tel:${m.phone}`;
-  document.getElementById('hero-wa').href = `https://wa.me/${wa}?text=Hi%20${encodeURIComponent(m.name)}%2C%20I%27d%20like%20to%20find%20out%20more.`;
+  const waMsg = `https://wa.me/${wa}?text=${encodeURIComponent(`Hi ${m.name.split(' ')[0]}, I'd like to find out more about financial planning.`)}`;
+  document.getElementById('nav-whatsapp').href = waMsg;
+  document.getElementById('hero-wa').href = waMsg;
   document.getElementById('contact-call').href = `tel:${m.phone}`;
-  document.getElementById('contact-wa').href = `https://wa.me/${wa}?text=Hi%20${encodeURIComponent(m.name)}`;
+  document.getElementById('contact-wa').href = waMsg;
+  document.getElementById('book-wa-link').href = waMsg;
+  document.getElementById('sticky-wa').href = waMsg;
+
+  // Show/hide book button based on calendlyUrl
+  const hasBooking = !!m.calendlyUrl;
+  document.getElementById('nav-book-btn').style.display = hasBooking ? '' : 'none';
+
+  // Load Calendly script once if needed
+  if (hasBooking && !document.getElementById('calendly-script')) {
+    const s = document.createElement('link');
+    s.rel = 'stylesheet'; s.href = 'https://assets.calendly.com/assets/external/widget.css';
+    document.head.appendChild(s);
+    const js = document.createElement('script');
+    js.id = 'calendly-script';
+    js.src = 'https://assets.calendly.com/assets/external/widget.js';
+    document.head.appendChild(js);
+  }
+
+  // Show sticky bar on mobile after scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 400);
+    document.getElementById('sticky-bar').classList.toggle('hidden', window.scrollY < 300);
+  });
 
   const credsBar = document.getElementById('creds-bar');
   credsBar.innerHTML = (m.credentials || []).map(c => `<div class="cred-item"><div class="cred-dot"></div>${c}</div>`).join('');
@@ -732,6 +839,47 @@ function renderTestimonials(list) {
       </div>
     </div>`;
   }).join('');
+}
+
+/* ── BOOKING ── */
+function openBooking() {
+  const url = currentMember?.calendlyUrl;
+  if (!url) {
+    const wa = currentMember?.whatsapp || currentMember?.phone?.replace(/\D/g,'');
+    const name = currentMember?.name?.split(' ')[0] || '';
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Hi ${name}, I'd like to book a free consultation.`)}`, '_blank');
+    return;
+  }
+  if (window.Calendly) {
+    Calendly.initPopupWidget({ url });
+    return;
+  }
+  // Fallback inline modal
+  document.getElementById('booking-modal').classList.remove('hidden');
+  document.getElementById('booking-embed').innerHTML = `<iframe src="${url}" style="width:100%;height:100%;border:none;"></iframe>`;
+}
+function closeBooking() {
+  document.getElementById('booking-modal').classList.add('hidden');
+  document.getElementById('booking-embed').innerHTML = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBooking(); });
+
+/* ── SHARE / REFERRAL ── */
+function shareProfileWhatsapp() {
+  const m = currentMember;
+  const url = `${window.location.origin}?sub=${m.subdomain}`;
+  const specs = (m.specialisations || []).slice(0, 2).join(' & ') || 'financial planning';
+  const firstName = m.name.split(' ')[0];
+  const msg = `Hi! I'd like to introduce you to ${m.name}, my financial consultant at Prudential Singapore.\n\nHe specialises in ${specs} and has been really helpful to me. I think you'd benefit from speaking with him too.\n\nHave a look at his profile — you can even book a free 30-min consultation directly:\n${url}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+function copyProfileLink() {
+  const url = `${window.location.origin}?sub=${currentMember.subdomain}`;
+  navigator.clipboard.writeText(url).then(() => {
+    const el = document.getElementById('profile-link-copied');
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+  });
 }
 
 function applyAccent(color) {
@@ -847,6 +995,7 @@ function openEditor() {
   document.getElementById('e-whatsapp').value = m.whatsapp || '';
   document.getElementById('e-email').value = m.email || '';
   document.getElementById('e-photo').value = m.photo || '';
+  document.getElementById('e-calendly').value = m.calendlyUrl || '';
   document.getElementById('e-photo-b64').textContent = '';
   const preview = document.getElementById('photo-preview');
   const hint = document.getElementById('photo-upload-hint');
@@ -953,6 +1102,7 @@ async function saveProfile() {
     credentials: document.getElementById('e-credentials').value.split('\n').map(s=>s.trim()).filter(Boolean),
     specialisations: document.getElementById('e-specs').value.split('\n').map(s=>s.trim()).filter(Boolean),
     accent: document.getElementById('e-accent').value,
+    calendlyUrl: document.getElementById('e-calendly').value.trim(),
     testimonials: Array.from(document.querySelectorAll('.testi-editor-item')).map(el => ({
       title: el.querySelector('.t-title').value,
       body: el.querySelector('.t-body').value,
