@@ -63,7 +63,8 @@ export default async function handler(req, res) {
       });
 
       if (uploadRes.ok) {
-        photoUrl = `/photos/${subdomain}.${ext}`;
+        // Use raw GitHub URL — available immediately without waiting for Vercel redeploy
+        photoUrl = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${photoPath}`;
       }
     }
   }
