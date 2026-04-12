@@ -784,6 +784,9 @@ async function init() {
 
   if (sub === 'admin' || sub === 'Admin') {
     checkAdminSession();
+  } else if (!sub) {
+    // No sub given — show team landing page
+    renderLanding();
   } else {
     const member = CONFIG.members.find(m => m.subdomain === sub);
     if (member) {
@@ -1118,8 +1121,8 @@ async function attemptLogin() {
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
 
 function logout() {
-  ssSet('soul_session', '');
-  ssSet('soul_hash', '');
+  try { sessionStorage.removeItem('soul_session'); sessionStorage.removeItem('soul_hash'); } catch(e) {}
+  delete _memStore['soul_session']; delete _memStore['soul_hash'];
   window._sessionHash = '';
   location.reload();
 }
@@ -1578,13 +1581,44 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.add('hidden');
 }
 
+/* ── LANDING PAGE (no sub given) ── */
+function renderLanding() {
+  const advisors = CONFIG.members.filter(m => !m.isAdmin);
+  document.title = 'SOUL Advisors — Our Team';
+  document.body.innerHTML = `
+  <div style="min-height:100vh;background:#F9F6F1;font-family:'DM Sans',sans-serif;">
+    <div style="background:#1C1A17;padding:2rem;text-align:center;">
+      <div style="font-family:'Lora',serif;font-size:1.6rem;color:#E8D5A3;letter-spacing:0.04em;">SOUL Advisors</div>
+      <div style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-top:0.25rem;">Prudential Singapore Strategic Partners</div>
+    </div>
+    <div style="max-width:700px;margin:0 auto;padding:3rem 1.5rem;text-align:center;">
+      <div style="font-family:'Lora',serif;font-size:1.4rem;font-weight:600;margin-bottom:0.5rem;color:#1C1A17;">Meet Our Advisors</div>
+      <p style="color:#8A8278;font-size:0.9rem;margin-bottom:2.5rem;">Choose an advisor to view their profile and book a consultation.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;">
+        ${advisors.map(m => {
+          const initials = m.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+          const accent = m.accent || '#B8975A';
+          return `<a href="?sub=${m.subdomain}" style="text-decoration:none;background:white;border:1px solid #E8E4DF;border-radius:8px;padding:1.5rem 1rem;display:block;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+            <div style="width:56px;height:56px;border-radius:50%;background:${accent};color:white;font-family:'Lora',serif;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;">${initials}</div>
+            <div style="font-family:'Lora',serif;font-size:1rem;font-weight:600;color:#1C1A17;margin-bottom:0.25rem;">${esc(m.name)}</div>
+            <div style="font-size:0.78rem;color:#8A8278;">${esc(m.title||'')}</div>
+          </a>`;
+        }).join('')}
+      </div>
+      <p style="margin-top:3rem;font-size:0.78rem;color:#B0A99F;">Are you an advisor? <a href="?sub=admin" style="color:#B8975A;">Sign in →</a></p>
+    </div>
+  </div>`;
+}
+
 /* ── NOT FOUND ── */
 function renderNotFound(sub) {
+  const advisors = CONFIG ? CONFIG.members.filter(m => !m.isAdmin) : [];
   document.body.innerHTML = `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;text-align:center;padding:2rem;">
     <div>
       <div style="font-family:'Lora',serif;font-size:1.6rem;margin-bottom:0.5rem;">Profile not found</div>
-      <p style="color:#8A8278;font-size:0.9rem;">No SOUL Advisor found for <strong>${esc(sub || 'this subdomain')}</strong>.</p>
-      <p style="color:#8A8278;font-size:0.85rem;margin-top:1rem;">Are you an advisor? <a href="?sub=admin" style="color:#B8975A;">Sign in to admin →</a></p>
+      <p style="color:#8A8278;font-size:0.9rem;margin-bottom:1.5rem;">No SOUL Advisor found for <strong>"${esc(sub || '')}"</strong>.</p>
+      ${advisors.length ? `<div style="margin-bottom:1.5rem;">${advisors.map(m=>`<a href="?sub=${m.subdomain}" style="display:inline-block;margin:0.3rem;padding:0.5rem 1rem;background:#F3EFE9;border-radius:4px;color:#1C1A17;text-decoration:none;font-size:0.85rem;">${esc(m.name)}</a>`).join('')}</div>` : ''}
+      <p style="color:#8A8278;font-size:0.82rem;"><a href="/" style="color:#B8975A;">← View all advisors</a> · <a href="?sub=admin" style="color:#B8975A;">Admin sign in</a></p>
     </div>
   </div>`;
 }
