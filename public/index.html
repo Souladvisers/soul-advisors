@@ -1469,42 +1469,69 @@ function adminEditMember(id) {
 
 async function saveMember() {
   const pw = document.getElementById('m-password').value;
-  const data = {
-    name: document.getElementById('m-name').value,
-    subdomain: document.getElementById('m-subdomain').value.toLowerCase().trim(),
-    title: document.getElementById('m-title').value,
-    agentCode: document.getElementById('m-code').value,
-    phone: document.getElementById('m-phone').value,
-    email: document.getElementById('m-email').value,
-    accent: document.getElementById('m-accent').value,
+  const memberData = {
+    name:       document.getElementById('m-name').value.trim(),
+    subdomain:  document.getElementById('m-subdomain').value.toLowerCase().trim(),
+    title:      document.getElementById('m-title').value.trim(),
+    agentCode:  document.getElementById('m-code').value.trim(),
+    phone:      document.getElementById('m-phone').value.trim(),
+    email:      document.getElementById('m-email').value.trim(),
+    accent:     document.getElementById('m-accent').value,
   };
-  if (pw) data.passwordHash = await sha256(pw);
-
-  if (editingMemberId) {
-    const m = CONFIG.members.find(x => x.id === editingMemberId);
-    Object.assign(m, data);
-    const override = JSON.parse(localStorage.getItem('profile_' + m.id) || '{}');
-    Object.assign(override, data);
-    localStorage.setItem('profile_' + m.id, JSON.stringify(override));
-  } else {
-    const id = 'member_' + Date.now();
-    CONFIG.members.push({ id, bio: '', credentials: [], specialisations: [], testimonials: [], yearsExperience: '', photo: '', isAdmin: false, whatsapp: data.phone?.replace(/\D/g,''), passwordHash: data.passwordHash || '', ...data });
-    const localCfg = getLocalConfig();
-    localCfg.members = CONFIG.members;
-    localStorage.setItem('soul_config', JSON.stringify(localCfg));
+  if (!memberData.name || !memberData.subdomain) {
+    alert('Name and subdomain are required.');
+    return;
   }
-  closeModal();
-  renderAdmin();
+  if (pw) memberData.passwordHash = await sha256(pw);
+
+  const saveBtn = document.querySelector('#modal-overlay .btn-solid');
+  const origText = saveBtn.textContent;
+  saveBtn.textContent = 'Saving…';
+  saveBtn.disabled = true;
+
+  try {
+    const action = editingMemberId ? 'update' : 'add';
+    const body = { adminHash: window._sessionHash, action, memberData };
+    if (editingMemberId) body.memberId = editingMemberId;
+
+    const res = await fetch('/api/admin-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const json = await res.json();
+    if (!res.ok) { alert('Error: ' + (json.error || 'Could not save.')); return; }
+
+    // Refresh data from server so local state matches GitHub
+    const fresh = await fetch('/api/data').then(r => r.json());
+    CONFIG.members = fresh.members;
+    closeModal();
+    renderAdmin();
+  } catch (e) {
+    alert('Network error — please try again.');
+  } finally {
+    saveBtn.textContent = origText;
+    saveBtn.disabled = false;
+  }
 }
 
-function deleteMember(id) {
-  if (!confirm('Remove this team member? Their local profile data will also be cleared.')) return;
-  CONFIG.members = CONFIG.members.filter(m => m.id !== id);
-  localStorage.removeItem('profile_' + id);
-  const localCfg = getLocalConfig();
-  localCfg.members = CONFIG.members;
-  localStorage.setItem('soul_config', JSON.stringify(localCfg));
-  renderAdmin();
+async function deleteMember(id) {
+  if (!confirm('Remove this team member from the site? This cannot be undone.')) return;
+  try {
+    const res = await fetch('/api/admin-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminHash: window._sessionHash, action: 'delete', memberId: id }),
+    });
+    const json = await res.json();
+    if (!res.ok) { alert('Error: ' + (json.error || 'Could not delete.')); return; }
+
+    const fresh = await fetch('/api/data').then(r => r.json());
+    CONFIG.members = fresh.members;
+    renderAdmin();
+  } catch (e) {
+    alert('Network error — please try again.');
+  }
 }
 
 function closeModal() {
