@@ -750,6 +750,15 @@ async function init() {
       currentMember = member;
       renderProfile(member);
       checkSession(member);
+      // Auto-open login if ?edit=1 is in the URL (sent by admin via Send Link)
+      if (params.get('edit') === '1') {
+        setTimeout(() => {
+          window._loginTarget = member.id;
+          document.getElementById('login-subtitle').textContent = 'Sign in to edit your profile.';
+          document.getElementById('login-overlay').classList.remove('hidden');
+          setTimeout(() => document.getElementById('login-password').focus(), 100);
+        }, 400);
+      }
     } else {
       renderNotFound(sub);
     }
@@ -1403,9 +1412,9 @@ let _sendLinkName = '';
 function openSendLink(sub, name) {
   _sendLinkSub  = sub;
   _sendLinkName = name;
-  const url = `${window.location.origin}?sub=${sub}`;
-  document.getElementById('sendlink-title').textContent = 'Send Profile Link';
-  document.getElementById('sendlink-name').textContent  = `Share ${name}'s profile page with them or a prospect.`;
+  const url = `${window.location.origin}?sub=${sub}&edit=1`;
+  document.getElementById('sendlink-title').textContent = 'Send Edit Link';
+  document.getElementById('sendlink-name').textContent  = `Send ${name} their personal link to log in and set up their profile.`;
   document.getElementById('sendlink-url').textContent   = url;
   document.getElementById('sendlink-copy-btn').textContent = '📋 Copy Link';
   document.getElementById('sendlink-overlay').classList.remove('hidden');
@@ -1414,20 +1423,20 @@ function closeSendLink() {
   document.getElementById('sendlink-overlay').classList.add('hidden');
 }
 function sendLinkWhatsapp() {
-  const url = `${window.location.origin}?sub=${_sendLinkSub}`;
+  const url = `${window.location.origin}?sub=${_sendLinkSub}&edit=1`;
   const firstName = _sendLinkName.split(' ')[0];
-  const msg = `Hi ${firstName}! Here is your SOUL Advisors profile link. You can log in to edit your profile, add your photo, and share it with clients:\n\n${url}\n\nLet me know if you need help getting started! 😊`;
+  const msg = `Hi ${firstName}! Your SOUL Advisors profile has been created for you 🎉\n\nClick the link below to log in and set it up — you can add your photo, update your bio, and start sharing it with clients:\n\n${url}\n\nLet me know if you need help getting started! 😊`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
 function sendLinkEmail() {
-  const url = `${window.location.origin}?sub=${_sendLinkSub}`;
+  const url = `${window.location.origin}?sub=${_sendLinkSub}&edit=1`;
   const firstName = _sendLinkName.split(' ')[0];
-  const subject = encodeURIComponent(`Your SOUL Advisors Profile Link`);
-  const body = encodeURIComponent(`Hi ${firstName},\n\nHere is your SOUL Advisors profile link:\n${url}\n\nYou can log in to edit your profile, upload your photo, and share it with clients.\n\nLet me know if you need any help!\n\nBest regards`);
+  const subject = encodeURIComponent(`Your SOUL Advisors Profile is Ready`);
+  const body = encodeURIComponent(`Hi ${firstName},\n\nYour SOUL Advisors profile has been created! Click the link below to log in and set it up:\n\n${url}\n\nOnce you're in, you can:\n- Upload your photo\n- Update your bio and details\n- Share your profile link with clients\n\nLet me know if you need any help!\n\nBest regards`);
   window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
 }
 function sendLinkCopy() {
-  const url = `${window.location.origin}?sub=${_sendLinkSub}`;
+  const url = `${window.location.origin}?sub=${_sendLinkSub}&edit=1`;
   navigator.clipboard.writeText(url).then(() => {
     const btn = document.getElementById('sendlink-copy-btn');
     btn.textContent = '✓ Copied!';
