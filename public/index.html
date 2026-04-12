@@ -493,6 +493,23 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   </div>
 </div>
 
+<!-- SEND LINK MODAL -->
+<div id="sendlink-overlay" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1.5rem;">
+  <div class="modal-box" style="max-width:420px;width:100%;">
+    <h3 id="sendlink-title" style="margin-bottom:0.5rem;">Send Profile Link</h3>
+    <p id="sendlink-name" style="color:var(--muted);font-size:0.85rem;margin-bottom:1.25rem;"></p>
+    <div style="background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:0.75rem 1rem;font-size:0.82rem;font-family:monospace;word-break:break-all;color:var(--dark);margin-bottom:1.25rem;" id="sendlink-url"></div>
+    <div style="display:flex;flex-direction:column;gap:0.6rem;">
+      <button class="btn btn-solid" style="width:100%;justify-content:center;" onclick="sendLinkWhatsapp()">📱 Send via WhatsApp</button>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="sendLinkEmail()">✉️ Send via Email</button>
+      <button class="btn btn-ghost" style="width:100%;justify-content:center;" id="sendlink-copy-btn" onclick="sendLinkCopy()">📋 Copy Link</button>
+    </div>
+    <div style="text-align:center;margin-top:1.25rem;">
+      <button class="btn btn-ghost btn-sm" onclick="closeSendLink()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- TESTIMONIAL SUBMISSION FORM -->
 <div id="testimonial-view" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--cream);">
   <div style="width:100%;max-width:520px;">
@@ -1365,6 +1382,7 @@ function renderAdmin() {
         <div class="member-card-actions">
           <button class="btn btn-ghost btn-sm" onclick="adminEditMember('${m.id}')">✎ Edit</button>
           <button class="btn btn-ghost btn-sm" onclick="viewAs('${m.subdomain}')">View Profile</button>
+          <button class="btn btn-solid btn-sm" onclick="openSendLink('${m.subdomain}','${esc(m.name)}')">📤 Send Link</button>
           ${!m.isAdmin ? `<button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}')">✕</button>` : ''}
         </div>
       </div>
@@ -1377,6 +1395,44 @@ function renderAdmin() {
 
 function viewAs(sub) {
   window.open('?sub=' + sub, '_blank');
+}
+
+/* ── SEND LINK ── */
+let _sendLinkSub = '';
+let _sendLinkName = '';
+function openSendLink(sub, name) {
+  _sendLinkSub  = sub;
+  _sendLinkName = name;
+  const url = `${window.location.origin}?sub=${sub}`;
+  document.getElementById('sendlink-title').textContent = 'Send Profile Link';
+  document.getElementById('sendlink-name').textContent  = `Share ${name}'s profile page with them or a prospect.`;
+  document.getElementById('sendlink-url').textContent   = url;
+  document.getElementById('sendlink-copy-btn').textContent = '📋 Copy Link';
+  document.getElementById('sendlink-overlay').classList.remove('hidden');
+}
+function closeSendLink() {
+  document.getElementById('sendlink-overlay').classList.add('hidden');
+}
+function sendLinkWhatsapp() {
+  const url = `${window.location.origin}?sub=${_sendLinkSub}`;
+  const firstName = _sendLinkName.split(' ')[0];
+  const msg = `Hi ${firstName}! Here is your SOUL Advisors profile link. You can log in to edit your profile, add your photo, and share it with clients:\n\n${url}\n\nLet me know if you need help getting started! 😊`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+function sendLinkEmail() {
+  const url = `${window.location.origin}?sub=${_sendLinkSub}`;
+  const firstName = _sendLinkName.split(' ')[0];
+  const subject = encodeURIComponent(`Your SOUL Advisors Profile Link`);
+  const body = encodeURIComponent(`Hi ${firstName},\n\nHere is your SOUL Advisors profile link:\n${url}\n\nYou can log in to edit your profile, upload your photo, and share it with clients.\n\nLet me know if you need any help!\n\nBest regards`);
+  window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+}
+function sendLinkCopy() {
+  const url = `${window.location.origin}?sub=${_sendLinkSub}`;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('sendlink-copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy Link'; }, 2500);
+  });
 }
 
 function openAddMember() {
