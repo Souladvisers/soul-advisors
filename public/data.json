@@ -195,6 +195,25 @@
       "email": "",
       "accent": "#b8975a",
       "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    {
+      "id": "member_1776002496288",
+      "bio": "",
+      "credentials": [],
+      "specialisations": [],
+      "testimonials": [],
+      "yearsExperience": "",
+      "photo": "",
+      "isAdmin": false,
+      "whatsapp": "",
+      "name": "Iqbal Nikmatullah",
+      "subdomain": "iqbalnikmatullah",
+      "title": "Financial Consultant",
+      "agentCode": "",
+      "phone": "",
+      "email": "",
+      "accent": "#b8975a",
+      "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
     }
   ]
 }
