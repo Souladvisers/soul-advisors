@@ -1008,14 +1008,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBooking
 /* ── SHARE / REFERRAL ── */
 function shareProfileWhatsapp() {
   const m = currentMember;
-  const url = `${window.location.origin}?sub=${m.subdomain}`;
+  const url = `${window.location.origin}?sub=${encodeURIComponent(m.subdomain)}`;
   const specs = (m.specialisations || []).slice(0, 2).join(' & ') || 'financial planning';
   const firstName = m.name.split(' ')[0];
   const msg = `Hi! I'd like to introduce you to ${m.name}, my financial consultant at SOUL Advisors.\n\nHe specialises in ${specs} and has been really helpful to me. I think you'd benefit from speaking with him too.\n\nHave a look at his profile — you can even book a free 30-min consultation directly:\n${url}`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
 function copyProfileLink() {
-  const url = `${window.location.origin}?sub=${currentMember.subdomain}`;
+  const url = `${window.location.origin}?sub=${encodeURIComponent(currentMember.subdomain)}`;
   navigator.clipboard.writeText(url).then(() => {
     const el = document.getElementById('profile-link-copied');
     el.style.display = 'block';
@@ -1182,7 +1182,7 @@ function openEditor() {
   updateColorPreview();
   renderTestiEditors(m.testimonials || []);
   const baseUrl = window.location.origin;
-  document.getElementById('testi-link').value = `${baseUrl}?sub=${m.subdomain}&view=testimonial`;
+  document.getElementById('testi-link').value = `${baseUrl}?sub=${encodeURIComponent(m.subdomain)}&view=testimonial`;
   document.getElementById('editor-panel').classList.add('open');
 }
 
@@ -1455,7 +1455,7 @@ let _sendLinkName = '';
 function openSendLink(sub, name) {
   _sendLinkSub  = sub;
   _sendLinkName = name;
-  const url = `${window.location.origin}?sub=${sub}&edit=1`;
+  const url = `${window.location.origin}?sub=${encodeURIComponent(sub)}&edit=1`;
   document.getElementById('sendlink-title').textContent = 'Send Edit Link';
   document.getElementById('sendlink-name').textContent  = `Send ${name} their personal link to log in and set up their profile.`;
   document.getElementById('sendlink-url').textContent   = url;
@@ -1466,20 +1466,20 @@ function closeSendLink() {
   document.getElementById('sendlink-overlay').classList.add('hidden');
 }
 function sendLinkWhatsapp() {
-  const url = `${window.location.origin}?sub=${_sendLinkSub}&edit=1`;
+  const url = `${window.location.origin}?sub=${encodeURIComponent(_sendLinkSub)}&edit=1`;
   const firstName = _sendLinkName.split(' ')[0];
   const msg = `Hi ${firstName}! Your SOUL Advisors profile has been created for you 🎉\n\nClick the link below to log in and set it up — you can add your photo, update your bio, and start sharing it with clients:\n\n${url}\n\nLet me know if you need help getting started! 😊`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
 function sendLinkEmail() {
-  const url = `${window.location.origin}?sub=${_sendLinkSub}&edit=1`;
+  const url = `${window.location.origin}?sub=${encodeURIComponent(_sendLinkSub)}&edit=1`;
   const firstName = _sendLinkName.split(' ')[0];
   const subject = encodeURIComponent(`Your SOUL Advisors Profile is Ready`);
   const body = encodeURIComponent(`Hi ${firstName},\n\nYour SOUL Advisors profile has been created! Click the link below to log in and set it up:\n\n${url}\n\nOnce you're in, you can:\n- Upload your photo\n- Update your bio and details\n- Share your profile link with clients\n\nLet me know if you need any help!\n\nBest regards`);
   window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
 }
 function sendLinkCopy() {
-  const url = `${window.location.origin}?sub=${_sendLinkSub}&edit=1`;
+  const url = `${window.location.origin}?sub=${encodeURIComponent(_sendLinkSub)}&edit=1`;
   navigator.clipboard.writeText(url).then(() => {
     const btn = document.getElementById('sendlink-copy-btn');
     btn.textContent = '✓ Copied!';
@@ -1514,7 +1514,7 @@ async function saveMember() {
   const pw = document.getElementById('m-password').value;
   const memberData = {
     name:       document.getElementById('m-name').value.trim(),
-    subdomain:  document.getElementById('m-subdomain').value.toLowerCase().trim(),
+    subdomain:  document.getElementById('m-subdomain').value.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
     title:      document.getElementById('m-title').value.trim(),
     agentCode:  document.getElementById('m-code').value.trim(),
     phone:      document.getElementById('m-phone').value.trim(),
@@ -1598,7 +1598,7 @@ function renderLanding() {
         ${advisors.map(m => {
           const initials = m.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
           const accent = m.accent || '#B8975A';
-          return `<a href="?sub=${m.subdomain}" style="text-decoration:none;background:white;border:1px solid #E8E4DF;border-radius:8px;padding:1.5rem 1rem;display:block;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+          return `<a href="?sub=${encodeURIComponent(m.subdomain)}" style="text-decoration:none;background:white;border:1px solid #E8E4DF;border-radius:8px;padding:1.5rem 1rem;display:block;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
             <div style="width:56px;height:56px;border-radius:50%;background:${accent};color:white;font-family:'Lora',serif;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;">${initials}</div>
             <div style="font-family:'Lora',serif;font-size:1rem;font-weight:600;color:#1C1A17;margin-bottom:0.25rem;">${esc(m.name)}</div>
             <div style="font-size:0.78rem;color:#8A8278;">${esc(m.title||'')}</div>
@@ -1617,7 +1617,7 @@ function renderNotFound(sub) {
     <div>
       <div style="font-family:'Lora',serif;font-size:1.6rem;margin-bottom:0.5rem;">Profile not found</div>
       <p style="color:#8A8278;font-size:0.9rem;margin-bottom:1.5rem;">No SOUL Advisor found for <strong>"${esc(sub || '')}"</strong>.</p>
-      ${advisors.length ? `<div style="margin-bottom:1.5rem;">${advisors.map(m=>`<a href="?sub=${m.subdomain}" style="display:inline-block;margin:0.3rem;padding:0.5rem 1rem;background:#F3EFE9;border-radius:4px;color:#1C1A17;text-decoration:none;font-size:0.85rem;">${esc(m.name)}</a>`).join('')}</div>` : ''}
+      ${advisors.length ? `<div style="margin-bottom:1.5rem;">${advisors.map(m=>`<a href="?sub=${encodeURIComponent(m.subdomain)}" style="display:inline-block;margin:0.3rem;padding:0.5rem 1rem;background:#F3EFE9;border-radius:4px;color:#1C1A17;text-decoration:none;font-size:0.85rem;">${esc(m.name)}</a>`).join('')}</div>` : ''}
       <p style="color:#8A8278;font-size:0.82rem;"><a href="/" style="color:#B8975A;">← View all advisors</a> · <a href="?sub=admin" style="color:#B8975A;">Admin sign in</a></p>
     </div>
   </div>`;
