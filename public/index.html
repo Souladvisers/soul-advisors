@@ -680,6 +680,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   <nav>
     <div class="nav-brand"><span>SOUL</span> Advisors — <span style="font-size:0.8rem;color:var(--muted);">Admin</span></div>
     <div class="nav-right">
+      <button class="btn btn-solid btn-sm" onclick="syncAllToGitHub()" id="sync-btn">☁ Sync to Server</button>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Sign Out</button>
     </div>
   </nav>
@@ -1579,6 +1580,35 @@ async function deleteMember(id) {
 
 function closeModal() {
   document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+/* ── SYNC ALL MEMBERS TO GITHUB ── */
+async function syncAllToGitHub() {
+  const btn = document.getElementById('sync-btn');
+  btn.textContent = '⏳ Syncing…';
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/admin-sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminHash: window._sessionHash, members: CONFIG.members }),
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      alert('Sync failed: ' + (json.error || 'Unknown error'));
+      return;
+    }
+    // Reload fresh data from server
+    const fresh = await fetch('/api/data').then(r => r.json());
+    CONFIG.members = fresh.members;
+    renderAdmin();
+    btn.textContent = '✓ Synced!';
+    setTimeout(() => { btn.textContent = '☁ Sync to Server'; btn.disabled = false; }, 3000);
+  } catch(e) {
+    alert('Network error — please try again.');
+    btn.textContent = '☁ Sync to Server';
+    btn.disabled = false;
+  }
 }
 
 /* ── LANDING PAGE (no sub given) ── */
