@@ -747,12 +747,15 @@ function ssGet(k){ try{ return sessionStorage.getItem(k)||_memStore[k]||null; }c
 
 /* ── INIT ── */
 async function init() {
-  try {
-    const res = await fetch(DATA_URL + '?v=' + Date.now());
-    CONFIG = await res.json();
-  } catch(e) {
-    CONFIG = getLocalConfig();
+  // Retry up to 3 times — handles slow serverless cold starts on mobile
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch(DATA_URL + '?v=' + Date.now(), { cache: 'no-store' });
+      if (res.ok) { CONFIG = await res.json(); break; }
+    } catch(e) {}
+    if (attempt < 2) await new Promise(r => setTimeout(r, 800));
   }
+  if (!CONFIG) CONFIG = getLocalConfig();
   mergeLocalOverrides();
 
   const host = window.location.hostname;
