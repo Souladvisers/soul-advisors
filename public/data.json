@@ -291,12 +291,12 @@
       },
       "statBlocks": [
         {
-          "value": "10",
-          "label": "Years in financial services"
+          "value": "10 Years",
+          "label": "Financial Services & Estate Planning"
         },
         {
-          "value": "SP",
-          "label": "SOUL Advisors Strategic Partners"
+          "value": "SOUL Advisors",
+          "label": "Strategic Partners"
         },
         {
           "value": "",
