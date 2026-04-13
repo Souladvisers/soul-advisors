@@ -282,12 +282,8 @@
       },
       "statBlocks": [
         {
-          "value": "",
+          "value": "10",
           "label": "Years in financial services"
-        },
-        {
-          "value": "",
-          "label": "Top achievement"
         },
         {
           "value": "SP",
