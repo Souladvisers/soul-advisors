@@ -344,7 +344,7 @@
       "email": "minikmatullah@gmail.com",
       "accent": "#b8975a",
       "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
-      "calendlyUrl": "",
+      "calendlyUrl": "https://calendly.com/minikmatullah/new-meeting",
       "pageText": {
         "aboutLabel": "",
         "aboutTitle": "",
@@ -352,12 +352,12 @@
         "testiLabel": "",
         "testiTitle": "",
         "testiSub": "",
-        "bookingLabel": "",
-        "bookingTitle": "",
+        "bookingLabel": "Complimentary Discovery Consultation",
+        "bookingTitle": "Allow me to give you a hint of clarity:",
         "bookingSub": "",
-        "contactLabel": "",
-        "contactTitle": "",
-        "contactSub": ""
+        "contactLabel": "Call me maybe?",
+        "contactTitle": "Let's start something:",
+        "contactSub": "No matter how small or insignificant it may seem, that little bit of clarity may come in handy down the road.\n\nThank you for taking the first step and allowing me to help you."
       },
       "statBlocks": [
         {
