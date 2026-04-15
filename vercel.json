@@ -19,6 +19,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/elearning", "destination": "/elearning.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

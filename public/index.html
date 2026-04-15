@@ -652,6 +652,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   <div id="edit-bar" class="hidden">
     <span id="edit-bar-name">Editing your profile</span>
     <button class="btn btn-solid btn-sm" onclick="openEditor()">✎ Edit Profile</button>
+    <a href="/elearning" class="btn btn-ghost btn-sm" style="text-decoration:none;">📚 eLearning</a>
     <button class="btn btn-ghost btn-sm" onclick="logout()">Sign Out</button>
   </div>
 
@@ -681,6 +682,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
     <div class="nav-brand"><span>SOUL</span> Advisors — <span style="font-size:0.8rem;color:var(--muted);">Admin</span></div>
     <div class="nav-right">
       <button class="btn btn-solid btn-sm" onclick="syncAllToGitHub()" id="sync-btn">☁ Sync to Server</button>
+      <a href="/elearning" class="btn btn-ghost btn-sm" style="text-decoration:none;">📚 eLearning</a>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Sign Out</button>
     </div>
   </nav>
@@ -1097,6 +1099,7 @@ async function attemptLogin() {
       ssSet('soul_session', admin.id);
       ssSet('soul_hash', hash);
       window._sessionHash = hash;
+      localStorage.setItem('soul_agent_auth', JSON.stringify({ id: admin.id, ts: Date.now() }));
       closeLogin();
       isAdmin = true;
       renderAdmin();
@@ -1111,6 +1114,7 @@ async function attemptLogin() {
     ssSet('soul_session', member.id);
     ssSet('soul_hash', hash);
     window._sessionHash = hash;
+    localStorage.setItem('soul_agent_auth', JSON.stringify({ id: member.id, ts: Date.now() }));
     isLoggedIn = true;
     closeLogin();
     showEditBar(member);
