@@ -222,12 +222,7 @@ body.locked .hdr,body.locked .page{visibility:hidden;}
         <div class="fg">
           <label>Your Name</label>
           <select id="f-name">
-            <option value="">— Select name —</option>
-            <option>NORA</option>
-            <option>DZUL</option>
-            <option>SUHAIMI</option>
-            <option>IRSYAD</option>
-            <option>IQBAL</option>
+            <option value="">— Loading members… —</option>
           </select>
         </div>
         <div class="fg">
@@ -414,7 +409,45 @@ body.locked .hdr,body.locked .page{visibility:hidden;}
 // Full year Apr–Dec, weekly reporting, live GitHub save
 // ══════════════════════════════════════
 
-const FCS = ['NORA','DZUL','SUHAIMI','IRSYAD','IQBAL'];
+// FCS is populated dynamically from /api/data (non-admin members)
+let FCS = [];       // display keys, e.g. ['NORA','DZUL',...]
+let MEMBER_MAP = {}; // key → full name, e.g. { NORA: 'Noraziemah' }
+
+function memberKey(m) {
+  // Use first name uppercase as the tracker key
+  return m.name.split(' ')[0].toUpperCase();
+}
+
+async function loadMembers() {
+  try {
+    const res = await fetch('/api/data', { cache: 'no-store' });
+    const data = await res.json();
+    const nonAdmins = data.members.filter(m => !m.isAdmin);
+    FCS = nonAdmins.map(m => memberKey(m));
+    MEMBER_MAP = {};
+    nonAdmins.forEach(m => { MEMBER_MAP[memberKey(m)] = m.name; });
+    // Ensure DATA has entries for all members
+    Object.keys(MONTH_META).forEach(mon => {
+      if (!DATA[mon]) DATA[mon] = {};
+      FCS.forEach(fc => {
+        if (!DATA[mon][fc]) DATA[mon][fc] = { w1:Z(), w2:Z(), w3:Z(), w4:Z() };
+      });
+    });
+    populateNameDropdown();
+  } catch(e) { console.warn('Could not load members:', e); }
+}
+
+function populateNameDropdown(preselect) {
+  const sel = document.getElementById('f-name');
+  sel.innerHTML = '<option value="">— Select your name —</option>';
+  FCS.forEach(fc => {
+    const opt = document.createElement('option');
+    opt.value = fc;
+    opt.textContent = MEMBER_MAP[fc] || fc;
+    if (preselect && fc === preselect) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
 
 const MONTH_META = {
   Apr: { name:'April 2026',     days:30, weeks:['Apr 1–7','Apr 8–14','Apr 15–21','Apr 22–30'] },
@@ -428,12 +461,12 @@ const MONTH_META = {
   Dec: { name:'December 2026',  days:31, weeks:['Dec 1–7','Dec 8–14','Dec 15–21','Dec 22–31'] },
 };
 
-// DATA loaded from API — default empty
+// DATA loaded from API — members filled in dynamically after loadMembers()
 const Z = () => [0,0,0,0,0,0,0,0,0,0,0,0,0];
 let DATA = {};
 Object.keys(MONTH_META).forEach(m => {
   DATA[m] = {};
-  FCS.forEach(fc => { DATA[m][fc] = { w1:Z(), w2:Z(), w3:Z(), w4:Z() }; });
+  // FCS is empty at this point — loadMembers() fills it in later
 });
 
 // Detect current month + week from today's date
@@ -765,20 +798,24 @@ async function sha256sb(str) {
   return h.map(v=>v.toString(16).padStart(8,'0')).join('');
 }
 
-function unlockSalesBuilder(hash, name) {
+async function unlockSalesBuilder(hash, agentId) {
   agentHash = hash;
-  agentDisplayName = name;
   document.getElementById('sb-auth-gate').classList.add('hidden');
   document.body.classList.remove('locked');
-  // Pre-select agent name in dropdown if it matches
-  if (name) {
+  // Load members first (populates FCS + dropdown), then load data + build UI
+  await loadMembers();
+  // Pre-select the logged-in agent's name in the dropdown
+  if (agentId) {
     const sel = document.getElementById('f-name');
-    for (let i=0; i<sel.options.length; i++) {
-      if (sel.options[i].value.toUpperCase() === name.toUpperCase()) { sel.selectedIndex = i; break; }
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value.toUpperCase() === agentId.toUpperCase()) {
+        sel.selectedIndex = i; break;
+      }
     }
   }
-  // Load live data then build UI
-  loadData().then(() => { buildTable(); buildScorecard(); });
+  await loadData();
+  buildTable();
+  buildScorecard();
 }
 
 document.getElementById('sb-auth-pw').addEventListener('keydown', e => { if(e.key==='Enter') sbAuthLogin(); });
@@ -795,8 +832,9 @@ async function sbAuthLogin() {
     const data = await res.json();
     const match = data.members.find(m => m.passwordHash === hash);
     if (match) {
-      localStorage.setItem('soul_agent_auth', JSON.stringify({ id: match.id, name: match.name, hash, ts: Date.now() }));
-      unlockSalesBuilder(hash, match.name.split(' ').slice(-1)[0].toUpperCase());
+      const firstNameKey = match.name.split(' ')[0].toUpperCase();
+      localStorage.setItem('soul_agent_auth', JSON.stringify({ id: match.id, name: match.name, firstNameKey, hash, ts: Date.now() }));
+      unlockSalesBuilder(hash, firstNameKey);
     } else {
       errEl.style.display = 'block';
       btn.textContent = 'Sign In →'; btn.disabled = false;
@@ -829,8 +867,9 @@ async function sbAuthLogin() {
     if (stored) {
       const d = JSON.parse(stored);
       if (d.ts && Date.now() - d.ts < 30*24*60*60*1000 && d.hash) {
-        const shortName = d.name ? d.name.split(' ').slice(-1)[0].toUpperCase() : '';
-        unlockSalesBuilder(d.hash, shortName);
+        // Use stored firstNameKey (new), fall back to deriving from name (old)
+        const agentId = d.firstNameKey || (d.name ? d.name.split(' ')[0].toUpperCase() : '');
+        unlockSalesBuilder(d.hash, agentId);
         return;
       }
     }
