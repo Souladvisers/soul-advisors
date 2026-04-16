@@ -436,11 +436,17 @@ Object.keys(MONTH_META).forEach(m => {
   FCS.forEach(fc => { DATA[m][fc] = { w1:Z(), w2:Z(), w3:Z(), w4:Z() }; });
 });
 
-// Detect current month
+// Detect current month + week from today's date
 const NOW = new Date();
 const CUR_MONTH_KEY = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][NOW.getMonth()];
 let curMonth = MONTH_META[CUR_MONTH_KEY] ? CUR_MONTH_KEY : 'Apr';
-let curWeek = 1;
+
+// Week = which 7-day block of the month today falls in (1–4)
+function currentWeekNum(monthKey) {
+  const day = (monthKey === CUR_MONTH_KEY) ? NOW.getDate() : 1;
+  return Math.min(4, Math.ceil(day / 7));
+}
+let curWeek = currentWeekNum(curMonth);
 
 // Auth state
 let agentHash = null;
@@ -490,14 +496,19 @@ function scoreColor(score) {
 function populateWeekDropdown() {
   const sel = document.getElementById('f-week');
   const weeks = MONTH_META[curMonth].weeks;
+  const activeWeek = currentWeekNum(curMonth); // auto-detect current week
   sel.innerHTML = '';
   // Most recent week first
-  for (let i = weeks.length-1; i >= 0; i--) {
+  for (let i = weeks.length - 1; i >= 0; i--) {
     const opt = document.createElement('option');
-    opt.value = 'w' + (i+1);
-    opt.textContent = `Week ${i+1} · ${weeks[i]}, 2026`;
+    opt.value = 'w' + (i + 1);
+    const isCurrent = (curMonth === CUR_MONTH_KEY) && (i + 1 === activeWeek);
+    opt.textContent = `Week ${i+1} · ${weeks[i]}, 2026${isCurrent ? ' ← Current' : ''}`;
+    if (isCurrent) opt.selected = true;
     sel.appendChild(opt);
   }
+  // Default to current week if no match (future months → week 1)
+  if (!sel.value) sel.selectedIndex = sel.options.length - 1;
 }
 
 // ── LIVE SCORE ──
@@ -669,6 +680,12 @@ function showWeek(w, btn) {
 
 function changeMonth(m) {
   curMonth = m;
+  // Reset dashboard week to current week for this month (week 1 for future months)
+  curWeek = currentWeekNum(m);
+  // Highlight the matching week tab in dashboard
+  document.querySelectorAll('#week-tabs .fb').forEach((b, i) => {
+    b.classList.toggle('active', i === curWeek - 1);
+  });
   document.getElementById('dash-month').textContent = MONTH_META[m].name;
   populateWeekDropdown();
   buildTable();
@@ -800,6 +817,11 @@ async function sbAuthLogin() {
   }
   document.getElementById('dash-month').textContent = MONTH_META[curMonth].name;
   populateWeekDropdown();
+
+  // Set correct week tab active in dashboard based on today
+  document.querySelectorAll('#week-tabs .fb').forEach((b, i) => {
+    b.classList.toggle('active', i === curWeek - 1);
+  });
 
   // Check stored auth
   try {
