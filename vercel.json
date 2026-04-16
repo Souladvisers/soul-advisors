@@ -20,6 +20,7 @@
   ],
   "rewrites": [
     { "source": "/elearning", "destination": "/elearning.html" },
+    { "source": "/sales-builder", "destination": "/sales-builder.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

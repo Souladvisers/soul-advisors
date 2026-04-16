@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SP Sales Builder 2026 — SOUL Guild</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1a2e; --gold:#c9a84c; --gold-lt:#f5edda;
+  --cream:#faf8f3; --border:#e2d9cc; --text:#2c2c3e; --muted:#7a7a8c;
+  --green:#2d6a4f; --green-bg:#e8f5ee; --green-bd:#a8d5be;
+  --amber:#d68910; --amber-bg:#fef9e7; --amber-bd:#f0d080;
+  --red:#c0392b; --red-bg:#fdecea; --red-bd:#f5b7b1;
+  --blue:#1b6ca8; --blue-bg:#e8f4fd; --blue-bd:#90caf9;
+  --score-bg:#d4edda; --score-col:#155724;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);}
+
+/* HEADER */
+.hdr{background:var(--ink);border-bottom:3px solid var(--gold);display:flex;align-items:stretch;}
+.hdr-brand{padding:16px 24px;border-right:1px solid rgba(255,255,255,.08);}
+.hdr-brand .lg{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--gold);}
+.hdr-brand .sub{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;}
+.hdr-tabs{display:flex;flex:1;}
+.tab{padding:0 22px;display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .2s;}
+.tab:hover{color:rgba(255,255,255,.8);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding:0 20px;}
+.month-sel{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;padding:6px 12px;border-radius:4px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.target-badge{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:4px;font-family:'DM Mono',monospace;}
+
+/* PAGE */
+.page{display:none;}
+.page.active{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.page.active{animation:fi .25s ease;}
+
+/* ══ SUBMIT FORM ══ */
+.fw{max-width:720px;margin:0 auto;padding:28px 20px;}
+.ft{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.fs{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.fc{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.fch{background:var(--ink);padding:11px 18px;display:flex;align-items:center;gap:8px;}
+.fch span{font-size:13px;font-weight:600;color:#fff;}
+.fcb{padding:18px;}
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
+.fg label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);}
+.fg input,.fg select,.fg textarea{border:1px solid var(--border);border-radius:5px;padding:9px 11px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:#fff;width:100%;transition:border .15s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1);}
+.gr2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.gr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* Score metric boxes */
+.sm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.sm{border:1px solid var(--border);border-radius:7px;padding:12px 14px;background:var(--cream);position:relative;}
+.sm.scored{border-color:var(--green-bd);background:var(--green-bg);}
+.sm label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+.sm input{border:none;background:transparent;font-size:24px;font-family:'Playfair Display',serif;font-weight:700;color:var(--ink);width:100%;padding:0;}
+.sm input:focus{outline:none;}
+.sm .pt{position:absolute;top:10px;right:12px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--score-bg);color:var(--score-col);}
+.sm .tgt{font-size:10px;color:var(--muted);margin-top:3px;}
+.divider-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 0 6px;border-top:1px solid var(--border);margin-top:4px;}
+.sub-btn{width:100%;padding:13px;background:var(--ink);color:var(--gold);border:none;border-radius:7px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+.sub-btn:hover{background:#2a2a45;}
+.confirm{display:none;background:var(--green-bg);border:1px solid var(--green-bd);border-radius:7px;padding:14px 18px;margin-top:12px;text-align:center;}
+.confirm h3{font-size:14px;font-weight:600;color:var(--green);}
+.confirm p{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* ══ DASHBOARD / SCORECARD SHARED ══ */
+.dw{padding:24px 28px;}
+.dh{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.dh h2{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);}
+.dh p{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* Score summary bar */
+.score-bar{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:24px;}
+.sb-item{text-align:center;}
+.sb-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);}
+.sb-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:1px;}
+.sb-div{width:1px;height:40px;background:var(--border);}
+.sb-prog{flex:1;}
+.sb-prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+.sb-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.sb-fill{height:100%;border-radius:4px;background:var(--gold);transition:width .6s ease;}
+
+/* Main SP-format table */
+.sp-table-wrap{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:18px;}
+.sp-month-head{background:var(--ink);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+.sp-month-head h3{color:#fff;font-size:13px;font-weight:600;}
+.sp-month-head .legend{display:flex;gap:14px;font-size:10px;}
+.sp-month-head .leg{color:rgba(255,255,255,.5);}
+.sp-month-head .leg span{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:middle;}
+
+/* Table itself */
+.sp-tbl{width:100%;border-collapse:collapse;font-size:11.5px;}
+.sp-tbl th{background:#2a2a45;color:rgba(255,255,255,.7);padding:8px 10px;text-align:center;font-weight:500;font-size:10px;letter-spacing:.04em;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08);}
+.sp-tbl th.lh{text-align:left;}
+.sp-tbl th.grp{background:#1a1a2e;color:var(--gold);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid rgba(201,168,76,.2);}
+.sp-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);text-align:center;vertical-align:middle;}
+.sp-tbl td.name-cell{text-align:left;font-weight:600;color:var(--ink);min-width:120px;padding-left:14px;}
+.sp-tbl td.score-cell{background:var(--score-bg);color:var(--score-col);font-weight:700;font-family:'DM Mono',monospace;}
+.sp-tbl td.total-score{background:#c3e6cb;color:#155724;font-weight:700;font-size:13px;font-family:'Playfair Display',serif;}
+.sp-tbl tr:nth-child(even) td{background:#fdfcfa;}
+.sp-tbl tr:nth-child(even) td.score-cell{background:#c3e6cb;}
+.sp-tbl tr:nth-child(even) td.total-score{background:#b8dfc5;}
+.sp-tbl .total-row td{background:var(--ink);color:var(--gold);font-weight:600;border-color:rgba(255,255,255,.08);}
+.sp-tbl .total-row td.score-cell{background:#1a3a2a;color:#7ed6a0;}
+.sp-tbl .total-row td.total-score{background:#0d2a1a;color:#7ed6a0;font-size:13px;}
+
+/* Status badge */
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:600;}
+.s-g{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.s-a{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);}
+.s-r{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+
+/* Health scorecard cards */
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:20px;}
+.sc-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.sc-head{padding:12px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;}
+.sc-name{font-weight:600;font-size:14px;color:var(--ink);}
+.sc-role{font-size:10px;color:var(--muted);margin-top:1px;}
+.sc-body{padding:12px 16px;}
+.sc-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.sc-row:last-child{border-bottom:none;}
+.sc-lbl{color:var(--muted);}
+.sc-val{font-family:'DM Mono',monospace;font-weight:500;}
+.sc-foot{padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.score-ring{display:flex;align-items:center;gap:6px;}
+.ring-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;}
+.ring-lbl{font-size:10px;color:var(--muted);}
+.prog-mini{height:4px;background:var(--border);border-radius:2px;margin-top:3px;width:80px;}
+.prog-mini-fill{height:100%;border-radius:2px;}
+
+/* Action panel */
+.action-panel{background:#fff;border:1px solid var(--red-bd);border-radius:8px;overflow:hidden;margin-bottom:18px;}
+.ap-head{background:var(--red);padding:10px 16px;display:flex;align-items:center;gap:8px;}
+.ap-head span{font-size:13px;font-weight:600;color:#fff;}
+.ap-row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+.ap-row:last-child{border-bottom:none;}
+.ap-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.ap-row h4{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px;}
+.ap-row p{font-size:11px;color:var(--muted);line-height:1.5;}
+.atag{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;margin-top:4px;margin-right:4px;}
+
+/* Filter bar */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.fb{background:#fff;border:1px solid var(--border);border-radius:5px;padding:6px 12px;font-size:11px;font-weight:500;cursor:pointer;color:var(--muted);transition:all .15s;}
+.fb.active,.fb:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);}
+/* AUTH GATE */
+#sb-auth-gate{position:fixed;inset:0;background:#1a1a2e;z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+#sb-auth-gate.hidden{display:none;}
+.sb-auth-box{background:#fff;border-radius:8px;padding:2.5rem;max-width:380px;width:100%;text-align:center;}
+.sb-auth-box .lock{font-size:2rem;margin-bottom:0.75rem;}
+.sb-auth-box .brand{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold);margin-bottom:0.2rem;}
+.sb-auth-box h2{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:0.2rem;}
+.sb-auth-box p{font-size:0.8rem;color:var(--muted);margin-bottom:1.5rem;}
+.sb-auth-box input{width:100%;border:1px solid var(--border);border-radius:5px;padding:0.7rem 1rem;font-size:0.95rem;font-family:'DM Sans',sans-serif;margin-bottom:0.75rem;outline:none;}
+.sb-auth-box input:focus{border-color:var(--gold);}
+.sb-auth-box button{width:100%;background:var(--ink);color:var(--gold);border:none;padding:0.8rem;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;letter-spacing:0.04em;}
+.sb-auth-box button:disabled{opacity:0.6;}
+.sb-auth-error{color:var(--red);font-size:0.78rem;margin-top:0.4rem;display:none;}
+body.locked .hdr,body.locked .page{visibility:hidden;}
+</style>
+</head>
+<body class="locked">
+<!-- AUTH GATE -->
+<div id="sb-auth-gate" class="hidden">
+  <div class="sb-auth-box">
+    <div class="lock">🔒</div>
+    <div class="brand">SOUL Advisors</div>
+    <h2>Agent Access Only</h2>
+    <p>Sign in with your profile password to access the SP Sales Builder tracker.</p>
+    <input type="password" id="sb-auth-pw" placeholder="Enter your password">
+    <button id="sb-auth-btn" onclick="sbAuthLogin()">Sign In →</button>
+    <div class="sb-auth-error" id="sb-auth-error">Incorrect password. Please try again.</div>
+    <div style="margin-top:1rem;"><a href="/" style="font-size:0.75rem;color:var(--muted);text-decoration:none;">← Back to SOUL Advisors</a></div>
+  </div>
+</div>
+
+<div class="hdr">
+  <div class="hdr-brand">
+    <div class="lg">SP Sales Builder</div>
+    <div class="sub">SOUL Guild · 2026</div>
+  </div>
+  <div class="hdr-tabs">
+    <div class="tab active" onclick="showPage('submit')">📝 Submit Numbers</div>
+    <div class="tab" onclick="showPage('dashboard')">📊 Monthly Dashboard</div>
+    <div class="tab" onclick="showPage('scorecard')">🚦 Health Scorecard</div>
+  </div>
+  <div class="hdr-right">
+    <a href="/" style="color:rgba(255,255,255,0.4);font-size:11px;text-decoration:none;margin-right:4px;">← Back</a>
+    <select class="month-sel" onchange="changeMonth(this.value)" id="month-sel">
+      <option value="Apr">April 2026</option>
+      <option value="May">May 2026</option>
+      <option value="Jun">June 2026</option>
+      <option value="Jul">July 2026</option>
+      <option value="Aug">August 2026</option>
+      <option value="Sep">September 2026</option>
+      <option value="Oct">October 2026</option>
+      <option value="Nov">November 2026</option>
+      <option value="Dec">December 2026</option>
+    </select>
+    <div class="target-badge">25 pts/wk · 100 pts/mth</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE 1: SUBMIT FORM
+════════════════════════════════════ -->
+<div id="page-submit" class="page active">
+<div class="fw">
+  <h2 class="ft">SP Sales Builder — Weekly Submission</h2>
+  <p class="fs">Submit your numbers before Monday 9 AM Sales Builder session. Target: 25 pts this week.</p>
+
+  <!-- Who + Week -->
+  <div class="fc">
+    <div class="fch"><span>👤</span><span>Your Details</span></div>
+    <div class="fcb">
+      <div class="gr2">
+        <div class="fg">
+          <label>Your Name</label>
+          <select id="f-name">
+            <option value="">— Select name —</option>
+            <option>NORA</option>
+            <option>DZUL</option>
+            <option>SUHAIMI</option>
+            <option>IRSYAD</option>
+            <option>IQBAL</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Reporting Week</label>
+          <select id="f-week"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calling -->
+  <div class="fc">
+    <div class="fch"><span>📞</span><span>Calling Activity (Raw Data — No Score)</span></div>
+    <div class="fcb">
+      <div class="gr2">
+        <div class="fg"><label>Dialled</label><input type="number" id="f-dialled" min="0" placeholder="0"></div>
+        <div class="fg"><label>Reached</label><input type="number" id="f-reached" min="0" placeholder="0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointments — scored -->
+  <div class="fc">
+    <div class="fch"><span>🤝</span><span>Appointments (1 pt each for Seen)</span></div>
+    <div class="fcb">
+      <div class="sm-grid">
+        <div class="sm">
+          <label>Appts Made</label>
+          <input type="number" id="f-made" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">How many appointments scheduled</div>
+        </div>
+        <div class="sm">
+          <label>Appts Fixed (Confirmed)</label>
+          <input type="number" id="f-fixed" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">Confirmed by client</div>
+        </div>
+        <div class="sm scored">
+          <span class="pt">1 pt each</span>
+          <label>Appts Seen ✦ Scored</label>
+          <input type="number" id="f-seen" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">Meetings that actually happened</div>
+        </div>
+        <div class="sm scored">
+          <span class="pt">1 pt each</span>
+          <label>New Prospect Appts ✦ Scored</label>
+          <input type="number" id="f-np" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">First-time prospect meetings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cases — scored -->
+  <div class="fc">
+    <div class="fch"><span>📋</span><span>Cases (1 pt each)</span></div>
+    <div class="fcb">
+      <div class="sm-grid">
+        <div class="sm scored">
+          <span class="pt">1 pt each</span>
+          <label>Appts w/ Case Opened ✦</label>
+          <input type="number" id="f-co" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">Fact-find / case initiated</div>
+        </div>
+        <div class="sm scored">
+          <span class="pt">1 pt each</span>
+          <label>Appts w/ Closing Attempt ✦</label>
+          <input type="number" id="f-ca" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">Proposal presented, asked for close</div>
+        </div>
+        <div class="sm scored">
+          <span class="pt">1 pt each</span>
+          <label>Appts w/ Case Closed ✦</label>
+          <input type="number" id="f-cc" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">Policy submitted / accepted</div>
+        </div>
+        <div class="fc" style="border:none;margin:0;padding:0;background:transparent;">
+          <div style="display:flex;align-items:center;justify-content:center;height:100%;padding:10px;">
+            <div style="text-align:center;">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">LIVE SCORE THIS WEEK</div>
+              <div id="live-score" style="font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--ink);">0</div>
+              <div id="live-status" style="font-size:11px;color:var(--muted);margin-top:2px;">of 25 pts target</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prospecting — 0.5pt -->
+  <div class="fc">
+    <div class="fch"><span>🎯</span><span>Prospecting (0.5 pt each)</span></div>
+    <div class="fcb">
+      <div class="sm-grid">
+        <div class="sm scored" style="border-color:var(--amber-bd);background:var(--amber-bg);">
+          <span class="pt" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);">0.5 pt</span>
+          <label>Cold Leads ✦</label>
+          <input type="number" id="f-cold" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">New contacts added to pipeline</div>
+        </div>
+        <div class="sm scored" style="border-color:var(--amber-bd);background:var(--amber-bg);">
+          <span class="pt" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);">0.5 pt</span>
+          <label>Referral Leads ✦</label>
+          <input type="number" id="f-ref" min="0" placeholder="0" oninput="liveScore()">
+          <div class="tgt">Referrals received from clients</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Business PC -->
+  <div class="fc">
+    <div class="fch"><span>💼</span><span>Business Placed (PC)</span></div>
+    <div class="fcb">
+      <div class="gr2">
+        <div class="fg"><label>Bus. Opened (PC value opened)</label><input type="number" id="f-bo" min="0" placeholder="0"></div>
+        <div class="fg"><label>Bus. Closed (PC value closed)</label><input type="number" id="f-bc" min="0" placeholder="0"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="sub-btn" onclick="submitForm()">📤 Submit My Numbers</button>
+  <div class="confirm" id="confirm">
+    <h3>✅ Submitted — JazakAllah khair!</h3>
+    <p>Numbers recorded. See you at Sales Builder Monday.</p>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE 2: MONTHLY DASHBOARD
+════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+<div class="dw">
+  <div class="dh">
+    <div><h2>Monthly Dashboard — <span id="dash-month">April 2026</span></h2><p>SP Sales Builder format · Target 100 pts/month · 1,200 pts/year</p></div>
+  </div>
+
+  <!-- Score bar -->
+  <div class="score-bar" id="score-bar"></div>
+
+  <!-- Week tabs -->
+  <div class="filter-bar" id="week-tabs">
+    <button class="fb active" onclick="showWeek(1,this)">Week 1 · Apr 1–7</button>
+    <button class="fb" onclick="showWeek(2,this)">Week 2 · Apr 8–14</button>
+    <button class="fb" onclick="showWeek(3,this)">Week 3 · Apr 15–21</button>
+    <button class="fb" onclick="showWeek(4,this)">Week 4 · Apr 22–30</button>
+    <button class="fb" onclick="showWeek(0,this)">Monthly Summary</button>
+  </div>
+
+  <!-- The SP-format table -->
+  <div class="sp-table-wrap" id="main-table-wrap">
+    <div class="sp-month-head">
+      <h3 id="table-week-label">WEEK 1 · Apr 1–7, 2026</h3>
+      <div class="legend">
+        <span class="leg"><span style="background:var(--score-bg)"></span>Score columns (auto)</span>
+        <span class="leg">Blue = Input · Black = Formula</span>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="sp-tbl" id="main-table"></table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE 3: HEALTH SCORECARD
+════════════════════════════════════ -->
+<div id="page-scorecard" class="page">
+<div class="dw">
+  <div class="dh">
+    <div><h2>FC Health Scorecard</h2><p>Score-based status · Conversion analysis · Leader action guide</p></div>
+  </div>
+
+  <div class="action-panel" id="action-panel"></div>
+  <div class="sc-grid" id="sc-grid"></div>
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// SP SALES BUILDER TRACKER — SOUL Advisors 2026
+// Full year Apr–Dec, weekly reporting, live GitHub save
+// ══════════════════════════════════════
+
+const FCS = ['NORA','DZUL','SUHAIMI','IRSYAD','IQBAL'];
+
+const MONTH_META = {
+  Apr: { name:'April 2026',     days:30, weeks:['Apr 1–7','Apr 8–14','Apr 15–21','Apr 22–30'] },
+  May: { name:'May 2026',       days:31, weeks:['May 1–7','May 8–14','May 15–21','May 22–31'] },
+  Jun: { name:'June 2026',      days:30, weeks:['Jun 1–7','Jun 8–14','Jun 15–21','Jun 22–30'] },
+  Jul: { name:'July 2026',      days:31, weeks:['Jul 1–7','Jul 8–14','Jul 15–21','Jul 22–31'] },
+  Aug: { name:'August 2026',    days:31, weeks:['Aug 1–7','Aug 8–14','Aug 15–21','Aug 22–31'] },
+  Sep: { name:'September 2026', days:30, weeks:['Sep 1–7','Sep 8–14','Sep 15–21','Sep 22–30'] },
+  Oct: { name:'October 2026',   days:31, weeks:['Oct 1–7','Oct 8–14','Oct 15–21','Oct 22–31'] },
+  Nov: { name:'November 2026',  days:30, weeks:['Nov 1–7','Nov 8–14','Nov 15–21','Nov 22–30'] },
+  Dec: { name:'December 2026',  days:31, weeks:['Dec 1–7','Dec 8–14','Dec 15–21','Dec 22–31'] },
+};
+
+// DATA loaded from API — default empty
+const Z = () => [0,0,0,0,0,0,0,0,0,0,0,0,0];
+let DATA = {};
+Object.keys(MONTH_META).forEach(m => {
+  DATA[m] = {};
+  FCS.forEach(fc => { DATA[m][fc] = { w1:Z(), w2:Z(), w3:Z(), w4:Z() }; });
+});
+
+// Detect current month
+const NOW = new Date();
+const CUR_MONTH_KEY = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][NOW.getMonth()];
+let curMonth = MONTH_META[CUR_MONTH_KEY] ? CUR_MONTH_KEY : 'Apr';
+let curWeek = 1;
+
+// Auth state
+let agentHash = null;
+let agentDisplayName = null;
+
+// ── LOAD LIVE DATA ──
+async function loadData() {
+  try {
+    const r = await fetch('/api/sales-data?v=' + Date.now(), { cache:'no-store' });
+    if (!r.ok) return;
+    const json = await r.json();
+    if (json.submissions) {
+      Object.keys(json.submissions).forEach(m => {
+        if (!DATA[m]) return;
+        FCS.forEach(fc => {
+          const sub = json.submissions[m][fc];
+          if (sub) {
+            DATA[m][fc] = {
+              w1: sub.w1 || Z(), w2: sub.w2 || Z(),
+              w3: sub.w3 || Z(), w4: sub.w4 || Z(),
+            };
+          }
+        });
+      });
+    }
+  } catch(e) { console.warn('Could not load sales data:', e); }
+}
+
+function calcScore(d) {
+  return d[4]*1 + d[5]*1 + d[6]*1 + d[7]*1 + d[8]*1 + d[9]*0.5 + d[10]*0.5;
+}
+
+function getMonthly(fc) {
+  const wks = DATA[curMonth][fc];
+  const sum = Z();
+  ['w1','w2','w3','w4'].forEach(wk => wks[wk].forEach((v,i) => sum[i] += v));
+  return sum;
+}
+
+function scoreColor(score) {
+  if (score >= 20) return 'g';
+  if (score >= 10) return 'a';
+  return 'r';
+}
+
+// ── POPULATE WEEK DROPDOWN (submit form) ──
+function populateWeekDropdown() {
+  const sel = document.getElementById('f-week');
+  const weeks = MONTH_META[curMonth].weeks;
+  sel.innerHTML = '';
+  // Most recent week first
+  for (let i = weeks.length-1; i >= 0; i--) {
+    const opt = document.createElement('option');
+    opt.value = 'w' + (i+1);
+    opt.textContent = `Week ${i+1} · ${weeks[i]}, 2026`;
+    sel.appendChild(opt);
+  }
+}
+
+// ── LIVE SCORE ──
+function liveScore() {
+  const seen  = parseFloat(document.getElementById('f-seen').value)||0;
+  const np    = parseFloat(document.getElementById('f-np').value)||0;
+  const co    = parseFloat(document.getElementById('f-co').value)||0;
+  const ca    = parseFloat(document.getElementById('f-ca').value)||0;
+  const cc    = parseFloat(document.getElementById('f-cc').value)||0;
+  const cold  = parseFloat(document.getElementById('f-cold').value)||0;
+  const ref   = parseFloat(document.getElementById('f-ref').value)||0;
+  const s = seen+np+co+ca+cc+cold*.5+ref*.5;
+  const el = document.getElementById('live-score');
+  const sl = document.getElementById('live-status');
+  el.textContent = s%1===0 ? s : s.toFixed(1);
+  const pct = Math.min(100, Math.round(s/25*100));
+  el.style.color = s>=25?'var(--green)':s>=15?'var(--amber)':'var(--ink)';
+  sl.textContent = `${pct}% of 25 pts target`;
+}
+
+// ── BUILD TABLE ──
+function buildTable() {
+  const wl = MONTH_META[curMonth].weeks;
+  const tabs = document.querySelectorAll('#week-tabs .fb');
+  tabs.forEach((t,i) => { if (i<4) t.textContent = `Week ${i+1} · ${wl[i]}`; });
+
+  const isSummary = curWeek === 0;
+  document.getElementById('table-week-label').textContent =
+    isSummary ? `MONTHLY SUMMARY — ${MONTH_META[curMonth].name}`
+              : `WEEK ${curWeek} · ${wl[curWeek-1].toUpperCase()}, 2026`;
+
+  const rows = FCS.map(fc => {
+    const wkData = DATA[curMonth][fc];
+    const d = isSummary ? getMonthly(fc) : wkData[`w${curWeek}`];
+    return { fc, d, score: calcScore(d) };
+  });
+  const tot = Z();
+  rows.forEach(r => r.d.forEach((v,i) => tot[i] += v));
+  const totScore = calcScore(tot);
+
+  const cols = [
+    { label:'Agent Name', key:'name', grp:'' },
+    { label:'Dialled',    key:0, grp:'CALLING' },
+    { label:'Reached',    key:1, grp:'' },
+    { label:'Made',       key:2, grp:'APPOINTMENTS' },
+    { label:'Fixed',      key:3, grp:'' },
+    { label:'Seen',       key:4, grp:'' },
+    { label:'Score',      key:'s-seen', grp:'', score:true },
+    { label:'New Prosp.', key:5, grp:'PROSPECTING' },
+    { label:'Score',      key:'s-np', grp:'', score:true },
+    { label:'Case Opened',key:6, grp:'CASES' },
+    { label:'Score',      key:'s-co', grp:'', score:true },
+    { label:'Closing Att.',key:7, grp:'' },
+    { label:'Score',      key:'s-ca', grp:'', score:true },
+    { label:'Case Closed',key:8, grp:'' },
+    { label:'Score',      key:'s-cc', grp:'', score:true },
+    { label:'Cold Leads', key:9, grp:'LEADS' },
+    { label:'Score',      key:'s-cold', grp:'', score:true },
+    { label:'Referrals',  key:10, grp:'' },
+    { label:'Score',      key:'s-ref', grp:'', score:true },
+    { label:'Cases B.O.', key:11, grp:'PIPELINE' },
+    { label:'Cases B.C.', key:12, grp:'' },
+    { label:'TOTAL SCORE',key:'total', grp:'', score:true },
+  ];
+
+  function getVal(d, key, score) {
+    if (key === 'name') return '';
+    if (key === 'total') { const s = calcScore(d); return score ? (s%1===0?s:s.toFixed(1)) : s; }
+    if (typeof key === 'string' && key.startsWith('s-')) {
+      const map = {'s-seen':4,'s-np':5,'s-co':6,'s-ca':7,'s-cc':8,'s-cold':9,'s-ref':10};
+      const idx = map[key]; const v = d[idx];
+      if (key==='s-cold'||key==='s-ref') return v*0.5%1===0?v*0.5:(v*0.5).toFixed(1);
+      return v;
+    }
+    return d[key];
+  }
+
+  // Group headers
+  const grpRow = cols.map(c => c.grp ? `<th class="grp" style="text-align:center">${c.grp}</th>` : '<th class="grp"></th>').join('');
+  const headRow = cols.map(c => `<th class="${c.key==='name'?'lh':''}">${c.label}</th>`).join('');
+
+  const bodyRows = rows.map(r => {
+    const sc = scoreColor(r.score);
+    const cells = cols.map(c => {
+      if (c.key === 'name') return `<td class="sp-name">${r.fc}</td>`;
+      if (c.key === 'total') {
+        const s = r.score; const sv = s%1===0?s:s.toFixed(1);
+        return `<td class="sp-score sp-score-${sc}">${sv}</td>`;
+      }
+      const v = getVal(r.d, c.key, c.score);
+      return c.score ? `<td class="sp-pts">${v}</td>` : `<td>${v||'—'}</td>`;
+    }).join('');
+    return `<tr>${cells}</tr>`;
+  }).join('');
+
+  const totCells = cols.map(c => {
+    if (c.key==='name') return `<td class="sp-name" style="font-weight:700">TEAM TOTAL</td>`;
+    if (c.key==='total') { const sv = totScore%1===0?totScore:totScore.toFixed(1); return `<td class="sp-score">${sv}</td>`; }
+    const v = getVal(tot, c.key, c.score); return c.score?`<td class="sp-pts">${v}</td>`:`<td style="font-weight:600">${v||'—'}</td>`;
+  }).join('');
+
+  document.getElementById('main-table').innerHTML = `
+    <thead><tr>${grpRow}</tr><tr>${headRow}</tr></thead>
+    <tbody>${bodyRows}<tr style="background:#f5f3ee;border-top:2px solid var(--gold)">${totCells}</tr></tbody>`;
+
+  // Score bar
+  const totalPts = rows.reduce((a,r)=>a+r.score,0);
+  const maxPts = isSummary ? FCS.length*100 : FCS.length*25;
+  const pct2 = Math.min(100, Math.round(totalPts/maxPts*100));
+  const sv = totalPts%1===0?totalPts:totalPts.toFixed(1);
+  document.getElementById('score-bar').innerHTML = `
+    <div class="sb-item"><span class="sb-num">${sv}</span><span class="sb-lbl">Team Points</span></div>
+    <div class="sb-div"></div>
+    <div class="sb-item"><span class="sb-num">${maxPts}</span><span class="sb-lbl">Max Possible</span></div>
+    <div class="sb-div"></div>
+    <div class="sb-prog">
+      <div class="sb-prog-label"><span>Progress</span><span>${pct2}%</span></div>
+      <div class="sb-track"><div class="sb-fill" style="width:${pct2}%"></div></div>
+    </div>`;
+}
+
+// ── SCORECARD ──
+function buildScorecard() {
+  document.getElementById('action-panel').innerHTML = '';
+  const sc = document.getElementById('sc-grid');
+  sc.innerHTML = FCS.map(fc => {
+    const monthly = getMonthly(fc);
+    const score = calcScore(monthly);
+    const c = scoreColor(score);
+    const colorMap = { g:'var(--green)', a:'var(--amber)', r:'var(--red)' };
+    const bgMap    = { g:'var(--green-bg)', a:'var(--amber-bg)', r:'var(--red-bg)' };
+    const bdMap    = { g:'var(--green-bd)', a:'var(--amber-bd)', r:'var(--red-bd)' };
+    const pct = Math.min(100, Math.round(score/100*100));
+    const gaps = [];
+    if (monthly[4]<4)  gaps.push('Low face-to-face meetings');
+    if (monthly[5]<4)  gaps.push('Low new prospects');
+    if (monthly[10]<2) gaps.push('Low referrals');
+    if (monthly[6]<1)  gaps.push('No cases opened');
+    return `<div style="background:#fff;border:1px solid ${bdMap[c]};border-left:4px solid ${colorMap[c]};border-radius:6px;padding:16px 18px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-weight:600;font-size:14px;">${fc}</div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:${colorMap[c]}">${score%1===0?score:score.toFixed(1)}<span style="font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400"> / 100 pts</span></div>
+      </div>
+      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px;">
+        <div style="width:${pct}%;height:100%;background:${colorMap[c]};border-radius:3px;"></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted)">${gaps.length?'⚠ '+gaps.join(' · '):'✓ On track'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── NAVIGATION ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if (id==='dashboard') buildTable();
+  if (id==='scorecard') buildScorecard();
+}
+
+function showWeek(w, btn) {
+  curWeek = w;
+  document.querySelectorAll('#week-tabs .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildTable();
+}
+
+function changeMonth(m) {
+  curMonth = m;
+  document.getElementById('dash-month').textContent = MONTH_META[m].name;
+  populateWeekDropdown();
+  buildTable();
+  buildScorecard();
+}
+
+// ── SUBMIT ──
+async function submitForm() {
+  const nameEl = document.getElementById('f-name');
+  const weekEl = document.getElementById('f-week');
+  if (!nameEl.value) { alert('Please select your name.'); return; }
+
+  const values = [
+    parseInt(document.getElementById('f-dialled').value)||0,
+    parseInt(document.getElementById('f-reached').value)||0,
+    parseInt(document.getElementById('f-made').value)||0,
+    parseInt(document.getElementById('f-fixed').value)||0,
+    parseInt(document.getElementById('f-seen').value)||0,
+    parseInt(document.getElementById('f-np').value)||0,
+    parseInt(document.getElementById('f-co').value)||0,
+    parseInt(document.getElementById('f-ca').value)||0,
+    parseInt(document.getElementById('f-cc').value)||0,
+    parseInt(document.getElementById('f-cold').value)||0,
+    parseInt(document.getElementById('f-ref').value)||0,
+    parseInt(document.getElementById('f-bo').value)||0,
+    parseInt(document.getElementById('f-bc').value)||0,
+  ];
+
+  const btn = document.querySelector('.sub-btn');
+  btn.textContent = '⏳ Saving…'; btn.disabled = true;
+
+  // Save to GitHub if auth hash available
+  if (agentHash) {
+    try {
+      const res = await fetch('/api/sales-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          agentHash, agentName: nameEl.value,
+          month: curMonth, week: weekEl.value, values
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        alert('Save failed: ' + (json.error || 'Unknown error'));
+        btn.textContent = '📤 Submit My Numbers'; btn.disabled = false;
+        return;
+      }
+      // Update local DATA
+      DATA[curMonth][nameEl.value.toUpperCase()][weekEl.value] = values;
+    } catch(e) {
+      alert('Network error — numbers saved locally only.');
+    }
+  }
+
+  btn.textContent = '📤 Submit My Numbers'; btn.disabled = false;
+  const confirm = document.getElementById('confirm');
+  confirm.style.display = 'block';
+  confirm.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+// ── AUTH GATE ──
+async function sha256sb(str) {
+  try {
+    if (window.crypto && window.crypto.subtle) {
+      const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+  } catch(e){}
+  function rr(v,a){return(v>>>a)|(v<<(32-a));}
+  const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  let h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  const bytes=[...new TextEncoder().encode(str)];bytes.push(0x80);
+  while((bytes.length%64)!==56)bytes.push(0);
+  const bl=str.length*8;for(let i=7;i>=0;i--)bytes.push((bl/Math.pow(2,i*8))&0xff);
+  for(let i=0;i<bytes.length;i+=64){const w=[];for(let j=0;j<16;j++)w[j]=(bytes[i+j*4]<<24)|(bytes[i+j*4+1]<<16)|(bytes[i+j*4+2]<<8)|bytes[i+j*4+3];for(let j=16;j<64;j++){const s0=rr(w[j-15],7)^rr(w[j-15],18)^(w[j-15]>>>3);const s1=rr(w[j-2],17)^rr(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)>>>0;}let[a,b,c,d,e,f,g,hh]=h;for(let j=0;j<64;j++){const S1=rr(e,6)^rr(e,11)^rr(e,25);const ch=(e&f)^(~e&g);const T1=(hh+S1+ch+K[j]+w[j])>>>0;const S0=rr(a,2)^rr(a,13)^rr(a,22);const maj=(a&b)^(a&c)^(b&c);const T2=(S0+maj)>>>0;hh=g;g=f;f=e;e=(d+T1)>>>0;d=c;c=b;b=a;a=(T1+T2)>>>0;}h=[h[0]+a,h[1]+b,h[2]+c,h[3]+d,h[4]+e,h[5]+f,h[6]+g,h[7]+hh].map(v=>v>>>0);}
+  return h.map(v=>v.toString(16).padStart(8,'0')).join('');
+}
+
+function unlockSalesBuilder(hash, name) {
+  agentHash = hash;
+  agentDisplayName = name;
+  document.getElementById('sb-auth-gate').classList.add('hidden');
+  document.body.classList.remove('locked');
+  // Pre-select agent name in dropdown if it matches
+  if (name) {
+    const sel = document.getElementById('f-name');
+    for (let i=0; i<sel.options.length; i++) {
+      if (sel.options[i].value.toUpperCase() === name.toUpperCase()) { sel.selectedIndex = i; break; }
+    }
+  }
+  // Load live data then build UI
+  loadData().then(() => { buildTable(); buildScorecard(); });
+}
+
+document.getElementById('sb-auth-pw').addEventListener('keydown', e => { if(e.key==='Enter') sbAuthLogin(); });
+
+async function sbAuthLogin() {
+  const pw = document.getElementById('sb-auth-pw').value;
+  if (!pw) return;
+  const btn = document.getElementById('sb-auth-btn');
+  const errEl = document.getElementById('sb-auth-error');
+  btn.textContent = 'Checking…'; btn.disabled = true; errEl.style.display = 'none';
+  try {
+    const hash = await sha256sb(pw);
+    const res = await fetch('/api/data', { cache:'no-store' });
+    const data = await res.json();
+    const match = data.members.find(m => m.passwordHash === hash);
+    if (match) {
+      localStorage.setItem('soul_agent_auth', JSON.stringify({ id: match.id, name: match.name, hash, ts: Date.now() }));
+      unlockSalesBuilder(hash, match.name.split(' ').slice(-1)[0].toUpperCase());
+    } else {
+      errEl.style.display = 'block';
+      btn.textContent = 'Sign In →'; btn.disabled = false;
+    }
+  } catch(e) {
+    errEl.textContent = 'Network error — try again.';
+    errEl.style.display = 'block';
+    btn.textContent = 'Sign In →'; btn.disabled = false;
+  }
+}
+
+// ── BOOT ──
+(function boot() {
+  // Set current month in dropdown
+  const msel = document.getElementById('month-sel');
+  for (let i=0; i<msel.options.length; i++) {
+    if (msel.options[i].value === curMonth) { msel.selectedIndex = i; break; }
+  }
+  document.getElementById('dash-month').textContent = MONTH_META[curMonth].name;
+  populateWeekDropdown();
+
+  // Check stored auth
+  try {
+    const stored = localStorage.getItem('soul_agent_auth');
+    if (stored) {
+      const d = JSON.parse(stored);
+      if (d.ts && Date.now() - d.ts < 30*24*60*60*1000 && d.hash) {
+        const shortName = d.name ? d.name.split(' ').slice(-1)[0].toUpperCase() : '';
+        unlockSalesBuilder(d.hash, shortName);
+        return;
+      }
+    }
+    // Also check sessionStorage from main site
+    const ss = sessionStorage.getItem('soul_session');
+    if (ss) { unlockSalesBuilder('', ''); return; }
+  } catch(e) {}
+  // Show auth gate
+  document.getElementById('sb-auth-gate').classList.remove('hidden');
+})();
+</script>
+</body>
+</html>
