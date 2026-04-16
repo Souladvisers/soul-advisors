@@ -94,16 +94,12 @@
       "name": "Noraziemah",
       "title": "Senior Financial Consultant",
       "agentCode": "",
-      "phone": "+6598765432",
-      "whatsapp": "6598765432",
-      "email": "reachzie@gmail.com",
+      "phone": "+6591818251",
+      "whatsapp": "91818251",
+      "email": "norazainal@pruadviser.com.sg",
       "photo": "",
       "bio": "I joined SOUL Advisors 8 years ago with a simple belief: that every family deserves financial security, regardless of where they start. My focus is on young families, health planning, and helping clients understand what they're buying.",
-      "credentials": [
-        "MDRT",
-        "CFP",
-        "Bachelor of Business"
-      ],
+      "credentials": [],
       "specialisations": [
         "Health Planning",
         "Young Families",
@@ -111,18 +107,52 @@
         "Critical Illness"
       ],
       "accent": "#5a7fb8",
-      "yearsExperience": "8",
+      "yearsExperience": "5",
       "testimonials": [
         {
           "title": "She made insurance make sense",
           "body": "Sarah explained everything clearly without jargon. For the first time I actually understood what I was covered for.",
           "name": "Marcus T.",
-          "role": "Software Engineer"
+          "role": "Software Engineer",
+          "avatar": "",
+          "photo": ""
         }
       ],
       "calendlyUrl": "",
       "isAdmin": false,
-      "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+      "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "pageText": {
+        "aboutLabel": "",
+        "aboutTitle": "",
+        "aboutQuote": "",
+        "testiLabel": "",
+        "testiTitle": "",
+        "testiSub": "",
+        "bookingLabel": "",
+        "bookingTitle": "",
+        "bookingSub": "",
+        "contactLabel": "",
+        "contactTitle": "",
+        "contactSub": ""
+      },
+      "statBlocks": [
+        {
+          "value": "5",
+          "label": "Years in financial services"
+        },
+        {
+          "value": "",
+          "label": "Top achievement"
+        },
+        {
+          "value": "",
+          "label": "SOUL Advisors Strategic Partners"
+        },
+        {
+          "value": "",
+          "label": "Agent Code"
+        }
+      ]
     },
     {
       "id": "member3",
