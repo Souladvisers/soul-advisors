@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Care System — SOUL Advisors</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--gold:#c9a84c;--gold-lt:#f5edda;--cream:#faf8f3;--warm:#f2ede6;--border:#e2d9cc;--text:#2c2c3e;--muted:#7a7a8c;--green:#2d6a4f;--gbg:#e8f5ee;--gbd:#a8d5be;--amber:#d68910;--abg:#fef9e7;--abd:#f0d080;--red:#c0392b;--rbg:#fdecea;--rbd:#f5b7b1;--blue:#1b6ca8;--bbg:#e8f4fd;--bbd:#90caf9;--purple:#6c3483;--pbg:#f5eafb;--pbd:#d7a8e8;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
+
+/* ── AUTH GATE ── */
+#auth-gate{position:fixed;inset:0;background:#1a1a2e;z-index:99999;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+#auth-gate.hidden{display:none;}
+.auth-box{background:#fff;border-radius:8px;padding:2.5rem;max-width:380px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.4);}
+.auth-lock{font-size:2rem;margin-bottom:1rem;}
+.auth-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#c9a84c;letter-spacing:0.08em;margin-bottom:0.25rem;}
+.auth-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#1a1a2e;margin-bottom:0.25rem;}
+.auth-sub{font-size:0.82rem;color:#7a7a8c;margin-bottom:1.75rem;line-height:1.55;}
+.auth-box input{width:100%;border:1px solid #e2d9cc;border-radius:5px;padding:0.75rem 1rem;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:0.75rem;}
+.auth-box input:focus{border-color:#c9a84c;}
+.auth-btn{width:100%;background:#1a1a2e;color:#c9a84c;border:none;padding:0.85rem;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.04em;}
+.auth-btn:hover{background:#0d1520;}
+.auth-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.auth-error{color:#c0392b;font-size:0.8rem;margin-top:0.5rem;display:none;}
+/* Hide main content until auth passes */
+body.locked #login-screen, body.locked #app{visibility:hidden;}
+
+#login-screen{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;align-items:center;justify-content:center;}
+#login-screen.hidden{display:none;}
+.login-box{background:#fff;border-radius:12px;padding:36px 40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.login-logo{text-align:center;margin-bottom:24px;}
+.login-logo .icon{font-size:36px;margin-bottom:8px;}
+.login-logo h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink);}
+.login-logo p{font-size:12px;color:var(--muted);margin-top:3px;letter-spacing:.05em;text-transform:uppercase;}
+.user-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.user-btn{border:1.5px solid var(--border);border-radius:8px;padding:11px 10px;text-align:center;cursor:pointer;transition:all .2s;background:#fff;}
+.user-btn:hover{border-color:var(--gold);background:var(--gold-lt);}
+.user-btn.selected{border-color:var(--gold);background:var(--gold-lt);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
+.user-btn .ub-icon{font-size:22px;margin-bottom:4px;}
+.user-btn .ub-name{font-size:13px;font-weight:600;color:var(--ink);}
+.user-btn .ub-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.divider{height:1px;background:var(--border);margin:18px 0;}
+.pin-lbl{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center;}
+.pin-dots{display:flex;gap:10px;justify-content:center;margin-bottom:16px;}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:all .2s;}
+.pin-dot.filled{background:var(--gold);border-color:var(--gold);}
+.pin-dot.error{background:var(--red);border-color:var(--red);}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:220px;margin:0 auto;}
+.key{border:1.5px solid var(--border);border-radius:8px;padding:14px;text-align:center;cursor:pointer;font-size:18px;font-weight:600;color:var(--ink);background:#fff;transition:all .15s;font-family:'DM Mono',monospace;user-select:none;}
+.key:hover{background:var(--gold-lt);border-color:var(--gold);}
+.key:active{transform:scale(.94);}
+.login-error{text-align:center;color:var(--red);font-size:13px;font-weight:500;margin-top:12px;min-height:20px;}
+.login-footer{text-align:center;font-size:11px;color:var(--muted);margin-top:14px;}
+.hdr{background:var(--ink);border-bottom:3px solid var(--gold);display:flex;align-items:stretch;position:sticky;top:0;z-index:200;}
+.hdr-brand{padding:13px 20px;border-right:1px solid rgba(255,255,255,.08);display:flex;align-items:center;}
+.hdr-brand .lg{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold);}
+.hdr-brand .sub{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;}
+.hdr-tabs{display:flex;}
+.tab{padding:0 17px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .2s;white-space:nowrap;}
+.tab:hover{color:rgba(255,255,255,.8);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab .bdg{background:var(--red);color:#fff;border-radius:10px;font-size:9px;padding:1px 5px;font-weight:700;}
+.admin-tag{font-size:8px;background:rgba(201,168,76,.25);color:var(--gold);padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.04em;}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px;padding:0 16px;border-left:1px solid rgba(255,255,255,.08);}
+.sess-av{width:30px;height:30px;border-radius:50%;background:rgba(201,168,76,.2);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.sess-name{font-size:12px;color:rgba(255,255,255,.8);font-weight:500;}
+.sess-role{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;}
+.back-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:5px 11px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;display:flex;align-items:center;gap:4px;transition:all .2s;}
+.back-btn:hover{background:rgba(255,255,255,.14);color:rgba(255,255,255,.85);}
+.logout-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:5px 11px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.logout-btn:hover{background:rgba(192,57,43,.3);color:#fff;}
+.page{display:none;}
+.page.active{display:block;animation:fi .22s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.wrap{padding:22px 30px;}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;}
+.page-head h2{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--ink);}
+.page-head p{font-size:13px;color:var(--muted);margin-top:3px;}
+.btn-primary{background:var(--ink);color:var(--gold);border:none;padding:9px 16px;border-radius:6px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;}
+.btn-primary:hover{background:#2a2a45;}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--border);padding:7px 13px;border-radius:6px;font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--amber);}
+.role-banner{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:6px;margin-bottom:16px;font-size:13px;font-weight:500;}
+.rb-fc{background:var(--bbg);border:1px solid var(--bbd);color:var(--blue);}
+.rb-admin{background:var(--gbg);border:1px solid var(--gbd);color:var(--green);}
+.filter-strip{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+.pill{background:#fff;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer;color:var(--muted);transition:all .15s;display:flex;align-items:center;gap:4px;}
+.pill:hover,.pill.active{background:var(--ink);color:var(--gold);border-color:var(--ink);}
+.pill .ct{background:var(--gold);color:var(--ink);border-radius:10px;font-size:10px;padding:1px 5px;font-weight:700;}
+.pill.active .ct{background:rgba(201,168,76,.25);color:var(--gold);}
+.a-sec{margin-bottom:24px;}
+.a-sec-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;display:flex;align-items:center;gap:8px;}
+.a-sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.a-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:13px 16px;display:flex;align-items:center;gap:13px;margin-bottom:7px;transition:all .18s;}
+.a-card:hover{box-shadow:0 3px 12px rgba(26,26,46,.08);}
+.a-card.done{opacity:.5;background:var(--warm);}
+.a-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
+.a-info{flex:1;min-width:0;}
+.a-info .nm{font-weight:600;font-size:14px;color:var(--ink);}
+.a-info .dt{font-size:12px;color:var(--muted);margin-top:2px;}
+.a-info .pl{font-size:11px;color:var(--blue);font-family:'DM Mono',monospace;margin-top:2px;}
+.a-type{display:flex;flex-direction:column;align-items:flex-end;gap:5px;min-width:130px;}
+.tbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.tb-b{background:var(--pbg);color:var(--purple);border:1px solid var(--pbd);}
+.tb-a{background:var(--bbg);color:var(--blue);border:1px solid var(--bbd);}
+.tb-r{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.days{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.days.urg{color:var(--red);font-weight:700;}
+.days.now{color:var(--green);font-weight:700;}
+.a-acts{display:flex;gap:7px;align-items:center;}
+.btn-draft{background:var(--ink);color:var(--gold);border:none;padding:7px 12px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s;}
+.btn-draft:hover{background:#2a2a45;}
+.btn-sent{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);padding:7px 11px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-sent:hover{background:var(--green);color:#fff;}
+.overlay{position:fixed;inset:0;background:rgba(26,26,46,.6);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:12px;width:100%;max-width:560px;box-shadow:0 20px 60px rgba(26,26,46,.3);max-height:90vh;overflow-y:auto;}
+.m-head{background:var(--ink);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:12px 12px 0 0;position:sticky;top:0;}
+.m-head h3{color:#fff;font-size:14px;font-weight:600;}
+.m-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;line-height:1;}
+.m-close:hover{color:#fff;}
+.m-body{padding:20px;}
+.m-client{display:flex;align-items:center;gap:12px;margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid var(--border);}
+.m-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
+.mtypes{display:flex;gap:8px;margin-bottom:12px;}
+.mtype{flex:1;padding:7px;border:1px solid var(--border);border-radius:6px;text-align:center;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);transition:all .15s;}
+.mtype.active{border-color:var(--gold);background:var(--gold-lt);color:var(--amber);}
+.draft-lbl{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.draft-box{width:100%;border:1px solid var(--border);border-radius:7px;padding:12px 13px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);min-height:155px;resize:vertical;line-height:1.65;}
+.draft-box:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1);}
+.draft-acts{display:flex;gap:8px;margin-top:11px;}
+.btn-copy{flex:1;background:var(--ink);color:var(--gold);border:none;padding:11px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-copy:hover{background:#2a2a45;}
+.btn-wa{flex:1;background:#25D366;color:#fff;border:none;padding:11px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-wa:hover{background:#1da851;}
+.pdpa-note{font-size:11px;color:var(--muted);line-height:1.5;background:var(--warm);border-radius:5px;padding:9px 12px;margin-top:10px;border-left:3px solid var(--border);}
+.form-wrap{max-width:640px;margin:0 auto;padding:22px 18px;}
+.form-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.form-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;}
+.fcard{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px;}
+.fcard-head{background:var(--ink);padding:10px 18px;display:flex;align-items:center;gap:7px;}
+.fcard-head span{font-size:13px;font-weight:600;color:#fff;}
+.fcard-body{padding:16px 18px;}
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:11px;}
+.fg:last-child{margin-bottom:0;}
+.fg label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);}
+.fg input,.fg select,.fg textarea{border:1px solid var(--border);border-radius:5px;padding:9px 11px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:#fff;width:100%;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1);}
+.fg input:disabled,.fg select:disabled{background:var(--warm);color:var(--muted);}
+.gr2{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.consent-box{display:flex;gap:10px;align-items:flex-start;padding:11px;background:var(--gbg);border:1px solid var(--gbd);border-radius:6px;}
+.consent-box input[type=checkbox]{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--green);}
+.consent-box label{font-size:12px;color:var(--green);line-height:1.5;font-weight:500;}
+.form-submit{width:100%;padding:12px;background:var(--ink);color:var(--gold);border:none;border-radius:7px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:4px;}
+.form-submit:hover{background:#2a2a45;}
+.form-ok{display:none;background:var(--gbg);border:1px solid var(--gbd);border-radius:7px;padding:13px 18px;margin-top:11px;text-align:center;}
+.form-ok h3{font-size:14px;font-weight:600;color:var(--green);}
+.ctable{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.ct-head{background:var(--ink);}
+.ct-th{padding:10px 12px;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55);}
+.ct-row{border-bottom:1px solid var(--border);align-items:center;}
+.ct-row:hover{background:var(--cream);}
+.ct-row:last-child{border-bottom:none;}
+.ct-td{padding:10px 12px;font-size:12.5px;}
+.search-bar{display:flex;gap:10px;margin-bottom:13px;}
+.sinput{flex:1;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);}
+.sinput:focus{outline:none;border-color:var(--gold);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px;}
+.scard{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;}
+.snum{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--ink);}
+.slbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
+.ssub{font-size:12px;color:var(--muted);margin-top:4px;}
+.lb{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.lb-head{background:var(--ink);padding:11px 18px;}
+.lb-head h3{color:#fff;font-size:13px;font-weight:600;}
+.lb-row{display:flex;align-items:center;gap:13px;padding:11px 18px;border-bottom:1px solid var(--border);}
+.lb-row:last-child{border-bottom:none;}
+.lb-rank{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);width:18px;}
+.lb-name{font-weight:600;font-size:13px;color:var(--ink);flex:1;}
+.lb-bar{height:4px;background:var(--border);border-radius:2px;width:90px;}
+.lb-fill{height:100%;border-radius:2px;background:var(--green);}
+.lb-score{font-family:'DM Mono',monospace;font-size:12px;color:var(--green);font-weight:500;}
+.pin-row{background:#fff;border:1px solid var(--border);border-radius:8px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.pin-info h4{font-size:14px;font-weight:600;color:var(--ink);}
+.pin-info p{font-size:12px;color:var(--muted);margin-top:2px;}
+.pin-val{font-family:'DM Mono',monospace;font-size:14px;background:var(--warm);padding:4px 11px;border-radius:4px;}
+.pin-chg{background:var(--ink);color:var(--gold);border:none;padding:7px 13px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--ink);}::-webkit-scrollbar-thumb{background:rgba(201,168,76,.4);border-radius:3px;}
+</style>
+</head>
+<body class="locked">
+
+<!-- ── AUTH GATE ── -->
+<div id="auth-gate">
+  <div class="auth-box">
+    <div class="auth-lock">🔒</div>
+    <div class="auth-logo">SOUL Advisors</div>
+    <div class="auth-title">Agent Access Only</div>
+    <div class="auth-sub">Client Care is for SOUL Advisors agents only. Sign in with your profile password to continue.</div>
+    <input type="password" id="auth-pw" placeholder="Enter your password" autocomplete="current-password">
+    <button class="auth-btn" id="auth-btn" onclick="authLogin()">Sign In to Continue →</button>
+    <div class="auth-error" id="auth-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ── PIN LOGIN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">💛</div>
+      <h1>SOUL Guild</h1>
+      <p>Client Care System</p>
+    </div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;">Select your profile</div>
+    <div class="user-grid" id="user-grid"></div>
+    <div class="divider"></div>
+    <div class="pin-lbl" id="pin-lbl">Enter your 4-digit PIN</div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
+    </div>
+    <div class="keypad">
+      <div class="key" onclick="pk('1')">1</div><div class="key" onclick="pk('2')">2</div><div class="key" onclick="pk('3')">3</div>
+      <div class="key" onclick="pk('4')">4</div><div class="key" onclick="pk('5')">5</div><div class="key" onclick="pk('6')">6</div>
+      <div class="key" onclick="pk('7')">7</div><div class="key" onclick="pk('8')">8</div><div class="key" onclick="pk('9')">9</div>
+      <div class="key" onclick="pk('clr')" style="font-size:12px;color:var(--muted)">CLR</div>
+      <div class="key" onclick="pk('0')">0</div>
+      <div class="key" onclick="pk('del')" style="font-size:14px;color:var(--muted)">⌫</div>
+    </div>
+    <div class="login-error" id="lerr"></div>
+    <div class="login-footer">Forgot PIN? Contact Abdullah Arief (Admin).</div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app" style="display:none;">
+  <div class="hdr">
+    <div class="hdr-brand"><div><div class="lg">Client Care</div><div class="sub">SOUL Guild</div></div></div>
+    <div class="hdr-tabs" id="nav-tabs"></div>
+    <div class="hdr-right">
+      <div class="sess-av" id="sess-av"></div>
+      <div><div class="sess-name" id="sess-nm"></div><div class="sess-role" id="sess-role"></div></div>
+      <a href="/" class="back-btn">← Profile</a>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <div id="page-alerts" class="page"></div>
+  <div id="page-add" class="page"></div>
+  <div id="page-clients" class="page"></div>
+  <div id="page-stats" class="page"></div>
+  <div id="page-admin" class="page"></div>
+</div>
+
+<!-- ── DRAFT MODAL ── -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="m-head"><h3 id="m-title">Draft Message</h3><button class="m-close" onclick="closeModal()">✕</button></div>
+    <div class="m-body">
+      <div class="m-client"><div class="m-av" id="m-av"></div><div><div style="font-weight:600;font-size:14px;color:var(--ink)" id="m-name"></div><div style="font-size:12px;color:var(--muted)" id="m-detail"></div></div></div>
+      <div class="mtypes" id="mtypes"></div>
+      <div class="draft-lbl">Message Draft — Edit before sending</div>
+      <textarea class="draft-box" id="draft"></textarea>
+      <div class="draft-acts">
+        <button class="btn-copy" onclick="copyDraft()">📋 Copy</button>
+        <button class="btn-wa" onclick="openWA()">💬 WhatsApp</button>
+      </div>
+      <div class="pdpa-note">⚖️ <strong>PDPA reminder:</strong> Review and personalise before sending. Client has consented. You are responsible for the final message. Do not share with third parties.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AUTH GATE ──
+const K_sha=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e4cf2,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+async function sha256el(str){
+  if(typeof crypto!=='undefined'&&crypto.subtle){
+    const b=new TextEncoder().encode(str);
+    const h=await crypto.subtle.digest('SHA-256',b);
+    return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function rr(x,n){return(x>>>n)|(x<<(32-n));}
+  let h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  const bytes=[...new TextEncoder().encode(str)];bytes.push(0x80);
+  while((bytes.length%64)!==56)bytes.push(0);
+  const bl=str.length*8;for(let i=7;i>=0;i--)bytes.push((bl/Math.pow(2,i*8))&0xff);
+  for(let i=0;i<bytes.length;i+=64){const w=[];for(let j=0;j<16;j++)w[j]=(bytes[i+j*4]<<24)|(bytes[i+j*4+1]<<16)|(bytes[i+j*4+2]<<8)|bytes[i+j*4+3];for(let j=16;j<64;j++){const s0=rr(w[j-15],7)^rr(w[j-15],18)^(w[j-15]>>>3);const s1=rr(w[j-2],17)^rr(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)>>>0;}let[a,b,c,d,e,f,g,hh]=h;for(let j=0;j<64;j++){const S1=rr(e,6)^rr(e,11)^rr(e,25);const ch=(e&f)^(~e&g);const T1=(hh+S1+ch+K_sha[j]+w[j])>>>0;const S0=rr(a,2)^rr(a,13)^rr(a,22);const maj=(a&b)^(a&c)^(b&c);const T2=(S0+maj)>>>0;hh=g;g=f;f=e;e=(d+T1)>>>0;d=c;c=b;b=a;a=(T1+T2)>>>0;}h=[h[0]+a,h[1]+b,h[2]+c,h[3]+d,h[4]+e,h[5]+f,h[6]+g,h[7]+hh].map(v=>v>>>0);}
+  return h.map(v=>v.toString(16).padStart(8,'0')).join('');
+}
+
+function unlockContent(){
+  document.getElementById('auth-gate').classList.add('hidden');
+  document.body.classList.remove('locked');
+}
+
+(function checkAuth(){
+  const stored=localStorage.getItem('soul_agent_auth');
+  if(stored){try{const d=JSON.parse(stored);if(d.ts&&Date.now()-d.ts<30*24*60*60*1000){unlockContent();return;}}catch(e){}}
+  try{const ss=sessionStorage.getItem('soul_session');if(ss){unlockContent();return;}}catch(e){}
+})();
+
+document.getElementById('auth-pw').addEventListener('keydown',e=>{if(e.key==='Enter')authLogin();});
+
+async function authLogin(){
+  const pw=document.getElementById('auth-pw').value;
+  if(!pw)return;
+  const btn=document.getElementById('auth-btn');
+  const errEl=document.getElementById('auth-error');
+  btn.textContent='Checking…';btn.disabled=true;errEl.style.display='none';
+  try{
+    const hash=await sha256el(pw);
+    const res=await fetch('/api/data',{cache:'no-store'});
+    const data=await res.json();
+    const match=data.members.find(m=>m.passwordHash===hash);
+    if(match){
+      localStorage.setItem('soul_agent_auth',JSON.stringify({id:match.id,ts:Date.now()}));
+      unlockContent();
+    }else{
+      errEl.style.display='block';
+      btn.textContent='Sign In to Continue →';btn.disabled=false;
+    }
+  }catch(e){
+    errEl.textContent='Network error — please try again.';
+    errEl.style.display='block';
+    btn.textContent='Sign In to Continue →';btn.disabled=false;
+  }
+}
+
+// ── CONFIG ──
+const PINS_KEY='soul_pins_v1',SESS_KEY='soul_cc_session_v1',CL_KEY='soul_clients_v1',SENT_KEY='soul_sent_v1';
+const DEFAULT_USERS=[
+  {id:'admin',name:'Abdullah Arief',role:'admin',emoji:'👑',pin:'1234'},
+  {id:'NORA',name:'Nora',role:'fc',emoji:'🌸',pin:'1111'},
+  {id:'DZUL',name:'Dzul',role:'fc',emoji:'⚡',pin:'2222'},
+  {id:'SUHAIMI',name:'Suhaimi',role:'fc',emoji:'🌿',pin:'3333'},
+  {id:'IRSYAD',name:'Irsyad',role:'fc',emoji:'🔥',pin:'4444'},
+  {id:'IQBAL',name:'Iqbal',role:'fc',emoji:'💎',pin:'5555'},
+];
+function lPins(){try{const s=JSON.parse(localStorage.getItem(PINS_KEY));if(s&&s.length)return s;}catch{}localStorage.setItem(PINS_KEY,JSON.stringify(DEFAULT_USERS));return DEFAULT_USERS;}
+function sPins(a){localStorage.setItem(PINS_KEY,JSON.stringify(a));}
+function lClients(){try{return JSON.parse(localStorage.getItem(CL_KEY))||[];}catch{return[];}}
+function sClients(a){localStorage.setItem(CL_KEY,JSON.stringify(a));}
+function lSent(){try{return JSON.parse(localStorage.getItem(SENT_KEY))||{};}catch{return{};}}
+function sSent(o){localStorage.setItem(SENT_KEY,JSON.stringify(o));}
+
+let CU=null;
+let selUid=null,pinBuf='';
+
+// ── LOGIN ──
+function buildLoginUsers(){
+  document.getElementById('user-grid').innerHTML=lPins().map(u=>`
+    <div class="user-btn" id="ub-${u.id}" onclick="selUser('${u.id}')">
+      <div class="ub-icon">${u.emoji}</div>
+      <div class="ub-name">${u.name}</div>
+      <div class="ub-sub">${u.role==='admin'?'Admin · All Access':'FC · My Clients'}</div>
+    </div>`).join('');
+}
+function selUser(id){
+  selUid=id;pinBuf='';updDots();document.getElementById('lerr').textContent='';
+  document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('ub-'+id).classList.add('selected');
+  const u=lPins().find(x=>x.id===id);
+  document.getElementById('pin-lbl').textContent=`PIN for ${u.name}`;
+}
+function pk(k){
+  if(!selUid){document.getElementById('lerr').textContent='Select your profile first.';return;}
+  if(k==='del')pinBuf=pinBuf.slice(0,-1);
+  else if(k==='clr')pinBuf='';
+  else if(pinBuf.length<4)pinBuf+=k;
+  updDots();
+  if(pinBuf.length===4)doLogin();
+}
+function updDots(err=false){
+  for(let i=0;i<4;i++){const d=document.getElementById('d'+i);d.className='pin-dot';if(err)d.classList.add('error');else if(i<pinBuf.length)d.classList.add('filled');}
+}
+function doLogin(){
+  const u=lPins().find(x=>x.id===selUid);
+  if(!u)return;
+  if(pinBuf===u.pin){
+    CU={id:u.id,name:u.name,role:u.role,emoji:u.emoji};
+    sessionStorage.setItem(SESS_KEY,JSON.stringify(CU));
+    document.getElementById('lerr').textContent='';
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app').style.display='block';
+    bootApp();
+  } else {
+    updDots(true);document.getElementById('lerr').textContent='Wrong PIN. Try again.';
+    pinBuf='';setTimeout(()=>updDots(),800);
+  }
+}
+function logout(){
+  sessionStorage.removeItem(SESS_KEY);CU=null;selUid=null;pinBuf='';
+  updDots();document.getElementById('lerr').textContent='';
+  document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('pin-lbl').textContent='Enter your 4-digit PIN';
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').classList.remove('hidden');
+}
+
+// ── BOOT ──
+function bootApp(){
+  document.getElementById('sess-av').textContent=CU.emoji;
+  document.getElementById('sess-nm').textContent=CU.name;
+  document.getElementById('sess-role').textContent=CU.role==='admin'?'Admin · All Access':'FC · Own Clients Only';
+  const tabs=[
+    {id:'alerts',label:'🔔 Reminders',badge:true},
+    {id:'add',label:'➕ Add Client'},
+    {id:'clients',label:'👥 Clients'},
+    {id:'stats',label:'📊 Stats',adm:true},
+    {id:'admin',label:'⚙️ Admin',adm:true},
+  ];
+  document.getElementById('nav-tabs').innerHTML=tabs.filter(t=>!t.adm||isAdm()).map(t=>`
+    <div class="tab" id="tab-${t.id}" onclick="showPage('${t.id}')">
+      ${t.label}${t.badge?` <span class="bdg" id="alert-bdg">0</span>`:''}
+      ${t.adm?`<span class="admin-tag">ADMIN</span>`:''}
+    </div>`).join('');
+  seedDemo();
+  showPage('alerts');
+}
+function isAdm(){return CU&&CU.role==='admin';}
+function visClients(){const a=lClients();return isAdm()?a:a.filter(c=>c.fc===CU.id);}
+
+// ── ROUTING ──
+function showPage(id){
+  if(!isAdm()&&(id==='stats'||id==='admin')){showPage('alerts');return;}
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const t=document.getElementById('tab-'+id);if(t)t.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='alerts')rAlerts();
+  if(id==='add')rAddForm();
+  if(id==='clients')rClients();
+  if(id==='stats')rStats();
+  if(id==='admin')rAdmin();
+}
+
+// ── HELPERS ──
+function daysUntil(ds){if(!ds)return 999;const t=new Date();t.setHours(0,0,0,0);const d=new Date(ds);let n=new Date(t.getFullYear(),d.getMonth(),d.getDate());if(n<t)n.setFullYear(t.getFullYear()+1);return Math.round((n-t)/86400000);}
+function yearsOld(ds){if(!ds)return 0;return new Date().getFullYear()-new Date(ds).getFullYear();}
+function fmtD(s){if(!s)return'—';return new Date(s).toLocaleDateString('en-SG',{day:'numeric',month:'short',year:'numeric'});}
+function fmtBday(s){if(!s)return'—';return new Date(s).toLocaleDateString('en-SG',{day:'numeric',month:'short'});}
+function avColors(n){const c=[['#1b6ca8','#e8f4fd'],['#2d6a4f','#e8f5ee'],['#6c3483','#f5eafb'],['#d68910','#fef9e7'],['#c0392b','#fdecea'],['#1a1a2e','#f0f0f5']];return c[(n.charCodeAt(0)||0)%c.length];}
+function ini(n){return n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');}
+
+// ── ALERTS ──
+let afilt='all';
+function rAlerts(){
+  const clients=visClients().filter(c=>c.consent);
+  const sent=lSent();
+  const today=new Date();today.setHours(0,0,0,0);
+  const items=[];
+  clients.forEach(c=>{
+    const bdd=daysUntil(c.dob),and=daysUntil(c.inception),any=yearsOld(c.inception);
+    const incp=c.inception?new Date(c.inception):null;
+    const ds=incp?Math.round((today-incp)/86400000):999;
+    if(bdd<=30){const k=`${c.id}_b_${today.getFullYear()}`;items.push({c,type:'b',days:bdd,key:k,done:!!sent[k]});}
+    if(and<=30&&any>=1){const k=`${c.id}_a_${today.getFullYear()}`;items.push({c,type:'a',days:and,yrs:any,key:k,done:!!sent[k]});}
+    if(ds>=350&&ds<=380){const k=`${c.id}_r_${today.getFullYear()}`;items.push({c,type:'r',days:0,key:k,done:!!sent[k]});}
+  });
+  items.sort((a,b)=>a.done!==b.done?(a.done?1:-1):a.days-b.days);
+  const ct={all:items.length,today:items.filter(i=>i.days===0).length,week:items.filter(i=>i.days<=7).length,
+    bday:items.filter(i=>i.type==='b').length,ann:items.filter(i=>i.type==='a').length,
+    review:items.filter(i=>i.type==='r').length,pending:items.filter(i=>!i.done).length,done:items.filter(i=>i.done).length};
+  const bdg=document.getElementById('alert-bdg');if(bdg)bdg.textContent=ct.pending;
+  let fil=items;
+  if(afilt==='today')fil=items.filter(i=>i.days===0);
+  else if(afilt==='week')fil=items.filter(i=>i.days<=7);
+  else if(afilt==='bday')fil=items.filter(i=>i.type==='b');
+  else if(afilt==='ann')fil=items.filter(i=>i.type==='a');
+  else if(afilt==='review')fil=items.filter(i=>i.type==='r');
+  else if(afilt==='pending')fil=items.filter(i=>!i.done);
+  else if(afilt==='done')fil=items.filter(i=>i.done);
+  const urg=fil.filter(i=>!i.done&&i.days===0),wk=fil.filter(i=>!i.done&&i.days>0&&i.days<=7),up=fil.filter(i=>!i.done&&i.days>7),dn=fil.filter(i=>i.done);
+  const banner=isAdm()
+    ?`<div class="role-banner rb-admin">👑 Admin view — all ${clients.length} clients across all FCs</div>`
+    :`<div class="role-banner rb-fc">👤 Showing your ${clients.length} client${clients.length!==1?'s':''} only</div>`;
+  const pillData=[['all','All'],['today','Today'],['week','This Week'],['bday','🎂 Birthdays'],['ann','📋 Ann.'],['review','⭐ Reviews'],['pending','⏳ Pending'],['done','✅ Done']];
+  const pills=`<div class="filter-strip">${pillData.map(([k,l])=>`<div class="pill${afilt===k?' active':''}" onclick="setAF('${k}')">${l} <span class="ct">${ct[k]}</span></div>`).join('')}</div>`;
+  const sec=(t,a)=>a.length?`<div class="a-sec"><div class="a-sec-title">${t}</div>${a.map(aC).join('')}</div>`:'';
+  const cards=fil.length===0
+    ?`<div style="text-align:center;padding:44px;color:var(--muted)"><div style="font-size:36px;margin-bottom:10px">🎉</div><div style="font-size:15px;font-weight:600;color:var(--ink)">All clear!</div><div style="font-size:13px;margin-top:4px">No reminders match this filter.</div></div>`
+    :sec('🚨 Today — Send Now',urg)+sec('📅 This Week',wk)+sec('⏰ Upcoming — Next 30 Days',up)+sec('✅ Done',dn);
+  document.getElementById('page-alerts').innerHTML=`<div class="wrap">
+    <div class="page-head"><div><h2>Reminders</h2><p>${ct.pending} pending · ${ct.done} done · next 30 days</p></div><button class="btn-primary" onclick="showPage('add')">+ Add Client</button></div>
+    ${banner}${pills}${cards}</div>`;
+}
+function aC(item){
+  const c=item.c;const[fg,bg]=avColors(c.name);
+  const tl=item.type==='b'?'Birthday':item.type==='a'?'Policy Anniversary':'1-Year Review';
+  const tc=item.type==='b'?'tb-b':item.type==='a'?'tb-a':'tb-r';
+  const te=item.type==='b'?'🎂':item.type==='a'?'📋':'⭐';
+  const dT=item.days===0?`<span class="days now">Today!</span>`:item.days<=3?`<span class="days urg">in ${item.days}d</span>`:`<span class="days">in ${item.days} days</span>`;
+  const fcLbl=isAdm()?` · FC: <strong>${c.fc}</strong>`:'';
+  const annD=item.type==='a'?` · Year ${item.yrs}`:'';
+  return`<div class="a-card${item.done?' done':''}">
+    <div class="a-av" style="background:${bg};color:${fg}">${ini(c.name)}</div>
+    <div class="a-info">
+      <div class="nm">${c.name} <span style="font-size:11px;color:var(--muted);font-weight:400">(${c.nick})</span></div>
+      <div class="dt">${c.phone}${annD}${fcLbl}</div>
+      ${c.policy?`<div class="pl">${c.policy}${c.product?' · '+c.product:''}</div>`:''}
+    </div>
+    <div class="a-type"><span class="tbadge ${tc}">${te} ${tl}</span>${dT}</div>
+    <div class="a-acts">
+      ${!item.done
+        ?`<button class="btn-draft" onclick="openDraft('${item.key}','${item.type}','${c.id}')">✍️ Draft</button><button class="btn-sent" onclick="markDone('${item.key}')">✓ Sent</button>`
+        :`<span style="font-size:12px;color:var(--green);font-weight:600">✓ Done</span><button class="btn-ghost" style="font-size:11px;padding:4px 9px" onclick="unDone('${item.key}')">Undo</button>`}
+    </div>
+  </div>`;
+}
+function setAF(f){afilt=f;rAlerts();}
+function markDone(k){const s=lSent();s[k]={at:new Date().toISOString(),by:CU.id};sSent(s);rAlerts();}
+function unDone(k){const s=lSent();delete s[k];sSent(s);rAlerts();}
+
+// ── TEMPLATES ──
+const T={
+  b:{
+    muslim:(c,fc)=>`Assalamualaikum ${c.nick}! 🌙\n\nHappy Birthday! Semoga Allah SWT panjangkan umur, murahkan rezeki, dan berkati kehidupan you dan keluarga. 🤲\n\nWishing you a wonderful day ahead!\n\nWarm regards,\n${fc}\nSOUL Guild · Prudential`,
+    def:(c,fc)=>`Hi ${c.nick}! 🎂\n\nHappy Birthday! Wishing you a wonderful year ahead filled with good health, happiness, and success. 🎉\n\nWarm regards,\n${fc}\nSOUL Guild · Prudential`,
+  },
+  a:{
+    muslim:(c,fc,y)=>`Assalamualaikum ${c.nick}!\n\nAlhamdulillah, it's been ${y} year${y>1?'s':''} since you started your protection journey with us! 🤲\n\nJazakAllah khair for your continued trust. I'd love to do a quick check-in this week to make sure your coverage still meets your family's needs.\n\nAre you free for 15 minutes?\n\nWarm regards,\n${fc}\nSOUL Guild · Prudential`,
+    def:(c,fc,y)=>`Hi ${c.nick}! 📋\n\nHappy ${y}${y===1?'st':y===2?'nd':y===3?'rd':'th'} Policy Anniversary! 🎉\n\nThank you for your trust. I'd love to do a quick annual review — are you free for a 15-min chat this week?\n\nWarm regards,\n${fc}\nSOUL Guild · Prudential`,
+  },
+  r:{
+    muslim:(c,fc)=>`Assalamualaikum ${c.nick}!\n\nAlhamdulillah, it's been about a year since we last sat down — how time flies! 🤲\n\nAs part of our service commitment, I'd like to do your annual policy review to make sure everything is on track for you and your family. Takes about 20–30 mins.\n\nAre you available this week or next?\n\nWarm regards,\n${fc}\nSOUL Guild · Prudential`,
+    def:(c,fc)=>`Hi ${c.nick}! ⭐\n\nIt's been about a year — I'd like to do your annual policy review to make sure your protection is still working for you. About 20–30 mins. Are you free this week or next?\n\nWarm regards,\n${fc}\nSOUL Guild · Prudential`,
+  },
+};
+let mPhone='',mType='',mCid='';
+function openDraft(key,type,cid){
+  const c=lClients().find(x=>x.id===cid);if(!c)return;
+  mPhone=c.phone;mType=type;mCid=cid;
+  const[fg,bg]=avColors(c.name);
+  document.getElementById('m-av').style.cssText=`background:${bg};color:${fg};width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;`;
+  document.getElementById('m-av').textContent=ini(c.name);
+  document.getElementById('m-name').textContent=c.name;
+  const yrs=yearsOld(c.inception);
+  document.getElementById('m-detail').textContent=type==='b'?`🎂 Birthday · ${fmtBday(c.dob)}`:type==='a'?`📋 Policy Anniversary · Year ${yrs}`:`⭐ 1-Year Review · since ${fmtD(c.inception)}`;
+  document.getElementById('m-title').textContent=type==='b'?'Birthday Message':type==='a'?'Anniversary Message':'Annual Review Message';
+  const isM=c.religion==='muslim';
+  document.getElementById('mtypes').innerHTML=isM
+    ?`<div class="mtype active" onclick="swLang('muslim','${type}','${cid}',this)">Bahasa Melayu</div><div class="mtype" onclick="swLang('def','${type}','${cid}',this)">English</div>`:'';
+  const fn=isM?T[type].muslim:T[type].def;
+  document.getElementById('draft').value=fn(c,c.fc,yrs);
+  document.getElementById('overlay').classList.add('open');
+}
+function swLang(lang,type,cid,btn){
+  document.querySelectorAll('.mtype').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  const c=lClients().find(x=>x.id===cid);if(!c)return;
+  const fn=lang==='muslim'?T[type].muslim:T[type].def;
+  document.getElementById('draft').value=fn(c,c.fc,yearsOld(c.inception));
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open');}
+function copyDraft(){
+  navigator.clipboard.writeText(document.getElementById('draft').value).then(()=>{
+    const b=document.querySelector('.btn-copy');b.textContent='✅ Copied!';
+    setTimeout(()=>{b.innerHTML='📋 Copy';},2000);
+  });
+}
+function openWA(){
+  const txt=encodeURIComponent(document.getElementById('draft').value);
+  const ph=mPhone.replace(/\D/g,'');
+  window.open(`https://wa.me/${ph}?text=${txt}`,'_blank');
+}
+
+// ── ADD CLIENT ──
+function rAddForm(){
+  const fcUsers=lPins().filter(u=>u.role==='fc');
+  const fcOpts=isAdm()
+    ?fcUsers.map(u=>`<option value="${u.id}">${u.name}</option>`).join('')
+    :`<option value="${CU.id}" selected>${CU.name}</option>`;
+  document.getElementById('page-add').innerHTML=`<div class="form-wrap">
+    <h2 class="form-title">Add New Client</h2>
+    <p class="form-sub">Data stored locally in your browser. All messages sent manually by the FC — no automation.</p>
+    <div class="fcard"><div class="fcard-head"><span>👤</span><span>Client Information</span></div><div class="fcard-body">
+      <div class="gr2">
+        <div class="fg"><label>Full Name *</label><input id="cn" type="text" placeholder="Ahmad bin Ismail"></div>
+        <div class="fg"><label>Nickname</label><input id="ck" type="text" placeholder="Ahmad"></div>
+      </div>
+      <div class="gr2">
+        <div class="fg"><label>WhatsApp Number *</label><input id="cp" type="tel" placeholder="+65 9123 4567"></div>
+        <div class="fg"><label>Religion</label><select id="cr"><option value="">— Optional —</option><option value="muslim">Muslim</option><option value="christian">Christian</option><option value="buddhist">Buddhist</option><option value="hindu">Hindu</option><option value="other">Other</option></select></div>
+      </div>
+      <div class="gr2">
+        <div class="fg"><label>Date of Birth *</label><input id="cd" type="date"></div>
+        <div class="fg"><label>Gender</label><select id="cg"><option value="male">Male</option><option value="female">Female</option></select></div>
+      </div>
+    </div></div>
+    <div class="fcard"><div class="fcard-head"><span>📋</span><span>Policy Details</span></div><div class="fcard-body">
+      <div class="gr2">
+        <div class="fg"><label>Policy Number</label><input id="cpo" type="text" placeholder="L0012345678"></div>
+        <div class="fg"><label>Product</label><input id="cpr" type="text" placeholder="PRUActive Life II"></div>
+      </div>
+      <div class="gr2">
+        <div class="fg"><label>Inception Date *</label><input id="ci" type="date"></div>
+        <div class="fg"><label>Servicing FC</label><select id="cf" ${!isAdm()?'disabled':''}>${fcOpts}</select></div>
+      </div>
+      <div class="fg"><label>Notes</label><textarea id="co" style="min-height:60px;resize:vertical" placeholder="Key concerns, family situation..."></textarea></div>
+    </div></div>
+    <div class="fcard"><div class="fcard-head"><span>⚖️</span><span>PDPA Consent</span></div><div class="fcard-body">
+      <div class="consent-box"><input type="checkbox" id="cc"><label for="cc">Client has given consent to receive service-related communications (birthday greetings, policy anniversary reminders, annual review requests) from their FC via WhatsApp or SMS.</label></div>
+    </div></div>
+    <button class="form-submit" onclick="addClient()">✅ Save Client</button>
+    <div class="form-ok" id="fok"><h3>✅ Client saved! Reminders will appear in the Reminders tab.</h3></div>
+  </div>`;
+}
+function addClient(){
+  const name=document.getElementById('cn').value.trim();
+  const phone=document.getElementById('cp').value.trim();
+  const dob=document.getElementById('cd').value;
+  const consent=document.getElementById('cc').checked;
+  if(!name){alert('Please enter the client name.');return;}
+  if(!phone){alert('Please enter the WhatsApp number.');return;}
+  if(!dob){alert('Please enter the date of birth.');return;}
+  if(!consent){alert('Please confirm client consent before saving.');return;}
+  const cl={
+    id:'c'+Date.now(),name,nick:document.getElementById('ck').value.trim()||name.split(' ')[0],
+    phone,religion:document.getElementById('cr').value,dob,gender:document.getElementById('cg').value,
+    policy:document.getElementById('cpo').value.trim(),product:document.getElementById('cpr').value.trim(),
+    inception:document.getElementById('ci').value,fc:document.getElementById('cf').value||CU.id,
+    notes:document.getElementById('co').value.trim(),consent:true,
+    createdAt:new Date().toISOString(),addedBy:CU.id,
+  };
+  const clients=lClients();clients.push(cl);sClients(clients);
+  document.getElementById('fok').style.display='block';
+  ['cn','ck','cp','cpo','cpr','ci','co'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('cc').checked=false;document.getElementById('cd').value='';
+  document.getElementById('fok').scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>document.getElementById('fok').style.display='none',3000);
+}
+
+// ── CLIENTS PAGE ──
+function rClients(search=''){
+  let clients=visClients();
+  if(search)clients=clients.filter(c=>c.name.toLowerCase().includes(search)||(c.policy||'').toLowerCase().includes(search)||c.fc.toLowerCase().includes(search));
+  const grid=isAdm()?'180px 75px 110px 1fr 100px 65px 80px':'200px 110px 1fr 105px 65px 80px';
+  const hdrs=isAdm()?['Name','FC','Birthday','Policy','Inception','✓','']:['Name','Birthday','Policy','Inception','✓',''];
+  const rows=clients.map(c=>{
+    const canDel=isAdm()||c.addedBy===CU.id;
+    return`<div class="ct-row" style="display:grid;grid-template-columns:${grid}">
+      <div class="ct-td" style="font-weight:600;color:var(--ink)">${c.name}</div>
+      ${isAdm()?`<div class="ct-td"><span style="background:var(--bbg);color:var(--blue);border-radius:10px;font-size:10px;font-weight:600;padding:2px 8px">${c.fc}</span></div>`:''}
+      <div class="ct-td">${fmtBday(c.dob)}</div>
+      <div class="ct-td" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">${c.policy||'—'}${c.product?' · '+c.product:''}</div>
+      <div class="ct-td">${fmtD(c.inception)}</div>
+      <div class="ct-td" style="color:var(--green)">${c.consent?'✓':''}</div>
+      <div class="ct-td">${canDel?`<button class="btn-ghost" style="font-size:11px;padding:4px 9px" onclick="delClient('${c.id}')">Remove</button>`:''}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('page-clients').innerHTML=`<div class="wrap">
+    <div class="page-head">
+      <div><h2>${isAdm()?'All Clients':'My Clients'}</h2><p>${clients.length} client${clients.length!==1?'s':''}</p></div>
+      <button class="btn-primary" onclick="showPage('add')">+ Add Client</button>
+    </div>
+    ${!isAdm()?`<div class="role-banner rb-fc">👤 You can only see and manage your own clients</div>`:''}
+    <div class="search-bar"><input class="sinput" type="text" placeholder="Search by name, policy or FC..." oninput="rClients(this.value.toLowerCase())"></div>
+    <div class="ctable">
+      <div class="ct-head" style="display:grid;grid-template-columns:${grid}">${hdrs.map(h=>`<div class="ct-th">${h}</div>`).join('')}</div>
+      ${rows||`<div style="padding:26px;text-align:center;color:var(--muted);font-size:13px">No clients found.</div>`}
+    </div>
+  </div>`;
+}
+function delClient(id){
+  const c=lClients().find(x=>x.id===id);if(!c)return;
+  if(!isAdm()&&c.fc!==CU.id){alert('You can only remove your own clients.');return;}
+  if(!confirm(`Remove ${c.name}?`))return;
+  sClients(lClients().filter(x=>x.id!==id));rClients();
+}
+
+// ── STATS (admin only) ──
+function rStats(){
+  const clients=lClients(),sent=lSent(),now=new Date();
+  const mth=Object.values(sent).filter(s=>{const d=new Date(s.at);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();});
+  const fcAll={},fcMth={},fcCl={};
+  Object.values(sent).forEach(s=>{fcAll[s.by]=(fcAll[s.by]||0)+1;});
+  mth.forEach(s=>{fcMth[s.by]=(fcMth[s.by]||0)+1;});
+  clients.forEach(c=>{fcCl[c.fc]=(fcCl[c.fc]||0)+1;});
+  const sorted=Object.entries(fcAll).sort((a,b)=>b[1]-a[1]);
+  const mx=sorted.length?sorted[0][1]:1;
+  const lb=sorted.length
+    ?sorted.map(([fc,n],i)=>`<div class="lb-row"><div class="lb-rank">${i+1}</div><div class="lb-name">${fc} <span style="font-size:11px;color:var(--muted)">(${fcCl[fc]||0} clients)</span></div><div class="lb-bar"><div class="lb-fill" style="width:${Math.round(n/mx*100)}%"></div></div><div class="lb-score">${n} sent · ${fcMth[fc]||0} this mth</div></div>`).join('')
+    :`<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No messages sent yet.</div>`;
+  document.getElementById('page-stats').innerHTML=`<div class="wrap">
+    <div class="page-head"><div><h2>Care Statistics</h2><p>How well the team maintains client relationships</p></div></div>
+    <div class="stats-grid">
+      <div class="scard"><div class="snum">${clients.length}</div><div class="slbl">Total Clients</div><div class="ssub">with consent</div></div>
+      <div class="scard"><div class="snum" style="color:var(--green)">${mth.length}</div><div class="slbl">Sent This Month</div><div class="ssub">all FCs combined</div></div>
+      <div class="scard"><div class="snum" style="color:var(--amber)">${Object.keys(sent).length}</div><div class="slbl">All-time Messages</div><div class="ssub">logged in system</div></div>
+      <div class="scard"><div class="snum" style="color:var(--blue)">${clients.filter(c=>c.religion==='muslim').length}</div><div class="slbl">Muslim Clients</div><div class="ssub">Malay templates used</div></div>
+    </div>
+    <div class="lb"><div class="lb-head"><h3>FC Care Leaderboard</h3></div>${lb}</div>
+  </div>`;
+}
+
+// ── ADMIN PAGE ──
+function rAdmin(){
+  const users=lPins();
+  const rows=users.map(u=>`<div class="pin-row">
+    <div class="pin-info">
+      <h4>${u.emoji} ${u.name} <span style="font-size:10px;color:var(--muted);background:var(--warm);padding:2px 7px;border-radius:10px;margin-left:4px;text-transform:uppercase;font-weight:600">${u.role}</span></h4>
+      <p>${u.role==='admin'?'Full access — all clients, stats, admin panel':'Own clients only — cannot see other FCs'}</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="pin-val" id="pv-${u.id}">••••</div>
+      <button class="btn-ghost" style="font-size:11px;padding:5px 10px" onclick="togglePin('${u.id}','${u.pin}')">Show</button>
+      <button class="pin-chg" onclick="chgPin('${u.id}')">Change PIN</button>
+    </div>
+  </div>`).join('');
+  document.getElementById('page-admin').innerHTML=`<div class="wrap">
+    <div class="page-head"><div><h2>Admin Panel</h2><p>PIN management · Access control · Data export</p></div></div>
+    <div style="background:var(--rbg);border:1px solid var(--rbd);border-radius:8px;padding:13px 17px;margin-bottom:18px;font-size:13px;color:var(--red);line-height:1.6">
+      🔒 <strong>Security note:</strong> PIN-based protection for internal team use. Change default PINs before sharing with your FCs. Do not store NRIC numbers, bank details, or sensitive financial data in this system.
+    </div>
+    <div style="max-width:560px">${rows}</div>
+    <div style="margin-top:18px;padding:14px 18px;background:#fff;border:1px solid var(--border);border-radius:8px;max-width:560px">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:9px">🗄️ Data Management</div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn-ghost" onclick="exportData()">📤 Export JSON Backup</button>
+        <button class="btn-ghost" style="color:var(--red);border-color:var(--rbd)" onclick="clearAll()">⚠️ Clear All Data</button>
+      </div>
+    </div>
+  </div>`;
+}
+function togglePin(id,pin){
+  const el=document.getElementById('pv-'+id);
+  el.textContent=el.textContent==='••••'?pin:'••••';
+}
+function chgPin(id){
+  const p=prompt('New 4-digit PIN:');if(!p)return;
+  if(!/^\d{4}$/.test(p)){alert('Must be exactly 4 digits.');return;}
+  const users=lPins();const u=users.find(x=>x.id===id);if(!u)return;
+  u.pin=p;sPins(users);alert(`PIN updated for ${u.name}.`);rAdmin();
+}
+function exportData(){
+  const blob=new Blob([JSON.stringify({clients:lClients(),sent:lSent(),exported:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`soul_care_${new Date().toISOString().slice(0,10)}.json`;a.click();
+}
+function clearAll(){
+  if(!confirm('⚠️ Delete ALL client data and message history? Cannot be undone.'))return;
+  if(!confirm('Last chance — permanently delete everything?'))return;
+  localStorage.removeItem(CL_KEY);localStorage.removeItem(SENT_KEY);
+  alert('All data cleared.');rAdmin();
+}
+
+// ── DEMO SEED ──
+function seedDemo(){
+  if(lClients().length>0)return;
+  const t=new Date();const yr=t.getFullYear();const mm=n=>String(n).padStart(2,'0');
+  const dF=n=>{const d=new Date(t);d.setDate(d.getDate()+n);return`${yr-30}-${mm(d.getMonth()+1)}-${mm(d.getDate())}`;};
+  const iF=n=>{const d=new Date(t);d.setDate(d.getDate()+n);return`${yr-1}-${mm(d.getMonth()+1)}-${mm(d.getDate())}`;};
+  sClients([
+    {id:'c1',name:'Ahmad Faris bin Ismail',nick:'Ahmad',phone:'+6591234567',religion:'muslim',dob:dF(2),gender:'male',policy:'L0012345678',product:'PRUActive Life II',inception:iF(5),fc:'NORA',notes:'Married, 2 kids.',consent:true,createdAt:new Date().toISOString(),addedBy:'NORA'},
+    {id:'c2',name:'Siti Hajar binte Malik',nick:'Hajar',phone:'+6598765432',religion:'muslim',dob:dF(0),gender:'female',policy:'L0098765432',product:'PRUSaver',inception:iF(3),fc:'DZUL',notes:'Single. Retirement planning.',consent:true,createdAt:new Date().toISOString(),addedBy:'DZUL'},
+    {id:'c3',name:'Tan Wei Ming',nick:'Wei Ming',phone:'+6587654321',religion:'buddhist',dob:dF(7),gender:'male',policy:'L0011223344',product:'PRUVantage Wealth II',inception:iF(10),fc:'NORA',notes:'Business owner.',consent:true,createdAt:new Date().toISOString(),addedBy:'NORA'},
+    {id:'c4',name:'Priya Nair',nick:'Priya',phone:'+6576543210',religion:'hindu',dob:dF(14),gender:'female',policy:'L0055667788',product:'PRULink',inception:iF(1),fc:'SUHAIMI',notes:'Teacher.',consent:true,createdAt:new Date().toISOString(),addedBy:'SUHAIMI'},
+    {id:'c5',name:'Muhammad Iqbal bin Yusof',nick:'Iqbal',phone:'+6565432109',religion:'muslim',dob:dF(21),gender:'male',policy:'L0099887766',product:'PRUShield Premier',inception:iF(20),fc:'IRSYAD',notes:'Newly married.',consent:true,createdAt:new Date().toISOString(),addedBy:'IRSYAD'},
+    {id:'c6',name:'Lim Beng Huat',nick:'Beng Huat',phone:'+6554321098',religion:'other',dob:dF(30),gender:'male',policy:'L0044332211',product:'PRUTreasures',inception:iF(28),fc:'IQBAL',notes:'Retiree.',consent:true,createdAt:new Date().toISOString(),addedBy:'IQBAL'},
+  ]);
+}
+
+// ── INIT ──
+buildLoginUsers();
+try{
+  const sess=JSON.parse(sessionStorage.getItem(SESS_KEY));
+  if(sess){CU=sess;document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').style.display='block';bootApp();}
+}catch{}
+</script>
+</body>
+</html>
