@@ -135,11 +135,11 @@
         "testiTitle": "my clients are the real MVP.",
         "testiSub": "their words, not mine.",
         "bookingLabel": "",
-        "bookingTitle": "not sure where to start?",
-        "bookingSub": "that's okay. let's figure it out together.",
+        "bookingTitle": "",
+        "bookingSub": "",
         "contactLabel": "",
         "contactTitle": "teh on me, let's chat!",
-        "contactSub": ""
+        "contactSub": "not sure where to start? that's okay. let's figure it out together."
       },
       "statBlocks": [
         {
