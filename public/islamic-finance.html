@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Islamic Finance Corner — SOUL Guild</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a2e;--gold:#c9a84c;--gold-lt:#f5edda;--gold-dk:#9a7530;
+  --cream:#faf8f3;--warm:#f2ede6;--border:#e2d9cc;--text:#2c2c3e;--muted:#7a7a8c;
+  --green:#2d6a4f;--gbg:#e8f5ee;--gbd:#a8d5be;
+  --blue:#1b6ca8;--bbg:#e8f4fd;--bbd:#90caf9;
+  --red:#c0392b;--rbg:#fdecea;--rbd:#f5b7b1;
+  --amber:#d68910;--abg:#fef9e7;--abd:#f0d080;
+  --teal:#0d7377;--tbg:#e0f4f4;--tbd:#7dd3d5;
+  --purple:#6c3483;--pbg:#f5eafb;--pbd:#d7a8e8;
+  --emerald:#1a6b4a;--embg:#e3f5ed;--embd:#8dd3b3;
+  --sidebar:260px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar);background:var(--ink);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column;}
+.sb-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08);}
+.sb-brand .logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--gold);}
+.sb-brand .tagline{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-top:3px;}
+.sb-book-title{padding:14px 20px 10px;font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.05);}
+.sb-nav{flex:1;padding:10px 0;}
+.sb-section{margin-bottom:4px;}
+.sb-section-label{padding:8px 20px 4px;font-size:9px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.15em;text-transform:uppercase;}
+.sb-link{display:flex;align-items:center;gap:9px;padding:8px 20px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;transition:all .18s;border-left:2px solid transparent;}
+.sb-link:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.04);}
+.sb-link.active{color:var(--gold);background:rgba(201,168,76,.08);border-left-color:var(--gold);}
+.sb-link .icon{font-size:13px;width:18px;text-align:center;flex-shrink:0;}
+.sb-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:10px;color:rgba(255,255,255,.25);}
+.sb-footer strong{color:rgba(255,255,255,.4);}
+.main{margin-left:var(--sidebar);flex:1;min-height:100vh;}
+.hero{background:linear-gradient(135deg,#0d1b2e 0%,#1a2e1a 100%);padding:56px 60px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'﷽';position:absolute;top:16px;right:40px;font-size:22px;color:rgba(201,168,76,.2);font-family:serif;}
+.hero::after{content:'';position:absolute;bottom:-60px;left:40px;width:300px;height:300px;border-radius:50%;border:50px solid rgba(201,168,76,.04);pointer-events:none;}
+.hero-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:14px;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero p{font-size:15px;color:rgba(255,255,255,.6);max-width:560px;line-height:1.7;}
+.hero-meta{display:flex;gap:28px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);}
+.hero-meta-item .label{font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;}
+.hero-meta-item .val{font-size:14px;font-weight:600;color:rgba(255,255,255,.8);margin-top:3px;}
+.content{padding:48px 60px;}
+.section{margin-bottom:72px;scroll-margin-top:24px;}
+.section-eyebrow{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.section h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.2;}
+.section-intro{font-size:15px;color:var(--muted);max-width:680px;line-height:1.75;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin:28px 0 12px;}
+h4{font-size:14px;font-weight:700;color:var(--ink);margin:18px 0 8px;}
+p{font-size:14px;line-height:1.8;color:var(--text);margin-bottom:12px;}
+p:last-child{margin-bottom:0;}
+strong{color:var(--ink);}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:14px;}
+.card-gold{border-left:4px solid var(--gold);}
+.card-green{border-left:4px solid var(--green);}
+.card-blue{border-left:4px solid var(--blue);}
+.card-red{border-left:4px solid var(--red);}
+.card-teal{border-left:4px solid var(--teal);}
+.card-purple{border-left:4px solid var(--purple);}
+.card-emerald{border-left:4px solid var(--emerald);}
+.card-amber{border-left:4px solid var(--amber);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.callout{border-radius:8px;padding:16px 20px;margin:20px 0;}
+.callout-gold{background:var(--gold-lt);border:1px solid var(--abd);}
+.callout-green{background:var(--gbg);border:1px solid var(--gbd);}
+.callout-blue{background:var(--bbg);border:1px solid var(--bbd);}
+.callout-red{background:var(--rbg);border:1px solid var(--rbd);}
+.callout-teal{background:var(--tbg);border:1px solid var(--tbd);}
+.callout-emerald{background:var(--embg);border:1px solid var(--embd);}
+.callout h4{margin-top:0;}
+.callout-gold h4{color:var(--gold-dk);}
+.callout-green h4{color:var(--green);}
+.callout-blue h4{color:var(--blue);}
+.callout-emerald h4{color:var(--emerald);}
+.steps{margin:20px 0;}
+.step{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start;}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--emerald);color:#fff;font-family:'DM Mono',monospace;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body h4{margin:0 0 5px;}
+.quote{border-left:3px solid var(--gold);padding:14px 20px;margin:20px 0;background:#fff;border-radius:0 8px 8px 0;}
+.quote p{font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:var(--ink);margin-bottom:6px;}
+.quote .arabic{font-size:18px;color:var(--gold-dk);margin-bottom:6px;font-style:normal;line-height:1.8;direction:rtl;text-align:right;}
+.quote cite{font-size:11px;color:var(--muted);font-style:normal;text-transform:uppercase;letter-spacing:.08em;}
+.tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.tbl th{background:var(--ink);color:var(--gold);padding:10px 14px;text-align:left;font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--border);}
+.tbl tr:nth-child(even) td{background:var(--warm);}
+.tbl tr:hover td{background:var(--gold-lt);}
+.tip{display:flex;gap:10px;background:var(--gold-lt);border:1px solid var(--abd);border-radius:7px;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.6;}
+.tip .icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.warn{display:flex;gap:10px;background:var(--rbg);border:1px solid var(--rbd);border-radius:7px;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.6;color:var(--red);}
+.quiz{background:var(--ink);border-radius:10px;padding:24px;margin:24px 0;}
+.quiz h4{color:var(--gold);margin:0 0 14px;font-family:'Playfair Display',serif;font-size:17px;}
+.quiz-q{color:rgba(255,255,255,.8);font-size:14px;margin-bottom:12px;line-height:1.6;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:10px 14px;color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;transition:all .18s;}
+.quiz-opt:hover{background:rgba(201,168,76,.12);border-color:var(--gold);color:var(--gold);}
+.quiz-opt.correct{background:rgba(45,106,79,.25);border-color:var(--gbd);color:#7ed6a0;}
+.quiz-opt.wrong{background:rgba(192,57,43,.2);border-color:var(--rbd);color:#f5b7b1;}
+.quiz-feedback{margin-top:12px;padding:12px;border-radius:6px;font-size:13px;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct{background:rgba(45,106,79,.2);color:#7ed6a0;}
+.quiz-feedback.wrong{background:rgba(192,57,43,.15);color:#f5b7b1;}
+
+/* Faraid table */
+.faraid-table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;}
+.faraid-table th{background:var(--emerald);color:#fff;padding:10px 14px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.faraid-table td{padding:10px 14px;border-bottom:1px solid var(--border);}
+.faraid-table tr:nth-child(even) td{background:var(--embg);}
+.faraid-table .share{font-family:'DM Mono',monospace;font-weight:600;color:var(--emerald);}
+
+/* Term definition */
+.term{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:10px;}
+.term-word{font-weight:700;color:var(--ink);font-size:14px;}
+.term-arabic{font-size:13px;color:var(--gold-dk);margin-left:8px;}
+.term-def{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.6;}
+
+/* Conversation script */
+.script{background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:18px 20px;margin:16px 0;}
+.script-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.script p{font-style:italic;font-size:14px;line-height:1.8;color:var(--ink);margin-bottom:0;}
+
+/* Halal vs haram */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:16px 0;}
+.compare-col{padding:18px 20px;}
+.compare-col.halal{background:var(--embg);}
+.compare-col.haram{background:var(--rbg);}
+.compare-col h4{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.compare-col.halal h4{color:var(--emerald);}
+.compare-col.haram h4{color:var(--red);}
+.compare-col ul{list-style:none;font-size:13px;line-height:2;}
+.compare-col.halal li::before{content:'✓ ';color:var(--emerald);font-weight:700;}
+.compare-col.haram li::before{content:'✗ ';color:var(--red);font-weight:700;}
+
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:2px;}
+/* ── AUTH GATE ── */
+#auth-gate{position:fixed;inset:0;background:#1a1a2e;z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+#auth-gate.hidden{display:none;}
+.auth-box{background:#fff;border-radius:8px;padding:2.5rem;max-width:380px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.4);}
+.auth-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#c9a84c;letter-spacing:0.08em;margin-bottom:0.25rem;}
+.auth-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#1a1a2e;margin-bottom:0.25rem;}
+.auth-sub{font-size:0.82rem;color:#7a7a8c;margin-bottom:1.75rem;}
+.auth-box input{width:100%;border:1px solid #e2d9cc;border-radius:5px;padding:0.75rem 1rem;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:0.75rem;}
+.auth-box input:focus{border-color:#c9a84c;}
+.auth-btn{width:100%;background:#1a1a2e;color:#c9a84c;border:none;padding:0.85rem;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.04em;}
+.auth-btn:hover{background:#0d1520;}
+.auth-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.auth-error{color:#c0392b;font-size:0.8rem;margin-top:0.5rem;display:none;}
+.auth-lock{font-size:2rem;margin-bottom:1rem;}
+body.locked .sidebar, body.locked .main{visibility:hidden;}
+</style>
+</head>
+<body class="locked">
+<!-- ── AUTH GATE ── -->
+<div id="auth-gate">
+  <div class="auth-box">
+    <div class="auth-lock">🔒</div>
+    <div class="auth-logo">SOUL Advisors</div>
+    <div class="auth-title">Agent Access Only</div>
+    <div class="auth-sub">This playbook is for SOUL Advisors agents only. Sign in with your profile password to continue.</div>
+    <input type="password" id="auth-pw" placeholder="Enter your password" autocomplete="current-password">
+    <button class="auth-btn" id="auth-btn" onclick="authLogin()">Sign In to Continue →</button>
+    <div class="auth-error" id="auth-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="logo">SOUL Guild</div>
+    <div class="tagline">Strategic Partners · Prudential SG</div>
+  </div>
+  <div class="sb-book-title">🕌 Islamic Finance Corner</div>
+  <nav class="sb-nav">
+    <div class="sb-section">
+      <div class="sb-section-label">Foundations</div>
+      <a class="sb-link active" onclick="nav('intro')"><span class="icon">🌙</span> Why Islamic Finance?</a>
+      <a class="sb-link" onclick="nav('principles')"><span class="icon">📖</span> Core Shariah Principles</a>
+      <a class="sb-link" onclick="nav('glossary')"><span class="icon">📚</span> Key Terms Glossary</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">Shariah-Compliant Investing</div>
+      <a class="sb-link" onclick="nav('screening')"><span class="icon">🔍</span> Shariah Screening</a>
+      <a class="sb-link" onclick="nav('funds')"><span class="icon">📊</span> Halal Funds in Singapore</a>
+      <a class="sb-link" onclick="nav('purification')"><span class="icon">✨</span> Purification of Returns</a>
+      <a class="sb-link" onclick="nav('takaful')"><span class="icon">🛡️</span> Takaful vs Conventional</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">Zakat</div>
+      <a class="sb-link" onclick="nav('zakat-intro')"><span class="icon">🌿</span> What is Zakat?</a>
+      <a class="sb-link" onclick="nav('zakat-invest')"><span class="icon">💰</span> Zakat on Investments</a>
+      <a class="sb-link" onclick="nav('zakat-insur')"><span class="icon">🏦</span> Zakat on Insurance</a>
+      <a class="sb-link" onclick="nav('zakat-calc')"><span class="icon">🧮</span> Calculation Guide</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">Islamic Estate Planning</div>
+      <a class="sb-link" onclick="nav('faraid')"><span class="icon">⚖️</span> Faraid — Islamic Inheritance</a>
+      <a class="sb-link" onclick="nav('hibah')"><span class="icon">🎁</span> Hibah</a>
+      <a class="sb-link" onclick="nav('wasiat')"><span class="icon">📜</span> Wasiat</a>
+      <a class="sb-link" onclick="nav('waqf')"><span class="icon">🕌</span> Waqf</a>
+      <a class="sb-link" onclick="nav('cpf-islam')"><span class="icon">🇸🇬</span> CPF & Islamic Law</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">Client Conversations</div>
+      <a class="sb-link" onclick="nav('conversation')"><span class="icon">💬</span> How to Have the Talk</a>
+      <a class="sb-link" onclick="nav('scenarios')"><span class="icon">🎭</span> Common Scenarios</a>
+    </div>
+  </nav>
+  <div class="sb-footer"><strong>SOUL Guild</strong> · BZ2-19695<br>For internal training use only<br><br><a href="/elearning" style="color:rgba(201,168,76,0.6);font-size:10px;text-decoration:none;">← Back to eLearning</a></div>
+</aside>
+
+<main class="main">
+
+<div class="hero">
+  <div class="hero-label">SOUL Guild eLearning · Module 3</div>
+  <h1>The <em>Islamic Finance</em><br>Corner</h1>
+  <p>A practical guide for SOUL Guild FCs to serve Muslim clients with knowledge, confidence, and genuine care — covering Shariah-compliant investing, Zakat, and Islamic estate planning.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="label">Sections</div><div class="val">14 Topics</div></div>
+    <div class="hero-meta-item"><div class="label">Covers</div><div class="val">Investing · Zakat · Estate</div></div>
+    <div class="hero-meta-item"><div class="label">Singapore</div><div class="val">MUIS Context</div></div>
+    <div class="hero-meta-item"><div class="label">Audience</div><div class="val">All FCs</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- INTRO -->
+<section class="section" id="intro">
+  <div class="section-eyebrow">Foundation</div>
+  <h2>Why Islamic Finance?</h2>
+  <p class="section-intro">Singapore's Muslim community represents over 15% of the population. Yet most financial advisors — including Muslim ones — lack the specific knowledge to address Islamic financial concerns with confidence. This gap is your opportunity.</p>
+
+  <p>Many Muslim clients hold back from financial planning not because they don't want to plan, but because they are uncertain whether the products being recommended are Shariah-compliant. They may have unresolved questions about interest (riba), unclear investment funds, or unaddressed estate planning concerns like Faraid. An FC who can speak to these concerns knowledgeably — without pretending to be an Islamic scholar — builds a level of trust that is very hard for other advisors to match.</p>
+
+  <div class="quote">
+    <div class="arabic">وَأَعِدُّوا لَهُم مَّا اسْتَطَعْتُم مِّن قُوَّةٍ</div>
+    <p>"Prepare for them whatever you are able of strength..." (Al-Anfal 8:60)</p>
+    <cite>On readiness and preparation — a reminder that being well-prepared is itself an act of service</cite>
+  </div>
+
+  <h3>What This Playbook Is (and Is Not)</h3>
+  <div class="grid2">
+    <div class="card card-green">
+      <h4>✅ What This Is</h4>
+      <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+        <li>A practical guide to key Islamic finance concepts relevant to your role</li>
+        <li>Client conversation frameworks that are respectful and informed</li>
+        <li>An overview of Faraid, Hibah, Wasiat, Waqf, Zakat, and Takaful</li>
+        <li>Singapore-specific context (MUIS rulings, CPF, civil law interaction)</li>
+      </ul>
+    </div>
+    <div class="card card-red">
+      <h4>❌ What This Is Not</h4>
+      <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+        <li>A substitute for advice from a qualified Islamic scholar (Ustaz/Ustazah)</li>
+        <li>A fatwa or religious ruling on any matter</li>
+        <li>A complete guide to Islamic jurisprudence (fiqh)</li>
+        <li>Advice on whether a specific product is Shariah-compliant without checking</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-gold">
+    <h4>💡 Your Role as an FC</h4>
+    <p>You are not the Islamic scholar. Your role is to be the informed financial advisor who understands the framework well enough to have a meaningful conversation, identify the issues, and connect the client with the right resources when deeper religious guidance is needed. "I'd recommend we also speak with an Ustaz about this before we finalise the estate structure" is a sign of professionalism — not weakness.</p>
+  </div>
+
+  <div class="quiz">
+    <h4>Quick Check</h4>
+    <div class="quiz-q">A Muslim client asks: "Is this ILP Shariah-compliant?" What is the best response?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">Tell them all Prudential products are Shariah-compliant.</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">Say you're not qualified to answer and change the subject.</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">Explain that specific ILPs with Shariah-compliant fund options are available, describe what makes a fund Shariah-compliant, confirm which funds are certified, and note that for religious certainty they may also wish to consult an Ustaz.</div>
+    </div>
+    <div class="quiz-feedback correct">✓ Correct. You are knowledgeable enough to guide the conversation, identify the right products, and be honest about the limits of your role. This builds confidence — not confusion.</div>
+    <div class="quiz-feedback wrong">✗ Overstating or avoiding the question both damage trust. The right approach is informed, honest guidance.</div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="section" id="principles">
+  <div class="section-eyebrow">Foundations</div>
+  <h2>Core Shariah Principles</h2>
+  <p class="section-intro">Shariah-compliant finance is built on a set of foundational principles derived from the Quran and Sunnah. Understanding these helps you explain why certain products are acceptable and others are not.</p>
+
+  <div class="grid2">
+    <div class="card card-red">
+      <div style="font-size:20px;margin-bottom:6px">🚫</div>
+      <h4>Riba — Interest / Usury</h4>
+      <p style="font-size:13px">Any predetermined fixed return on money is considered riba and is prohibited. This includes conventional bank interest, bond coupons, and any guaranteed return on a loan. Riba is one of the most serious prohibitions in Islamic finance.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>FC application:</strong> Conventional savings accounts, fixed deposits, and interest-bearing bonds are problematic. Islamic alternatives use profit-sharing (Mudarabah) or cost-plus (Murabaha) structures instead.</p>
+    </div>
+    <div class="card card-red">
+      <div style="font-size:20px;margin-bottom:6px">🎲</div>
+      <h4>Gharar — Excessive Uncertainty</h4>
+      <p style="font-size:13px">Contracts with excessive ambiguity or uncertainty in key terms are prohibited. This is why conventional insurance is considered problematic by some scholars — the premium is paid but it is uncertain whether any benefit will be received.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>FC application:</strong> Takaful resolves this through a mutual contribution model rather than a commercial exchange contract.</p>
+    </div>
+    <div class="card card-red">
+      <div style="font-size:20px;margin-bottom:6px">🎰</div>
+      <h4>Maisir — Gambling / Speculation</h4>
+      <p style="font-size:13px">Transactions that resemble gambling — where gain is entirely dependent on chance with no underlying economic activity — are prohibited. This affects certain derivatives and highly speculative instruments.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>FC application:</strong> Explains why pure speculation in leveraged instruments is not Shariah-compliant, even if the underlying asset is halal.</p>
+    </div>
+    <div class="card card-green">
+      <div style="font-size:20px;margin-bottom:6px">🤝</div>
+      <h4>What IS Permitted</h4>
+      <p style="font-size:13px">Trade, profit-sharing, equity ownership in halal businesses, and risk-sharing arrangements are all permitted. The key distinction: money must be earned through real economic activity, not simply by virtue of having money.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>FC application:</strong> Equity investment in screened companies, Sukuk (Islamic bonds), Mudarabah savings, and Takaful are the building blocks of a Shariah-compliant portfolio.</p>
+    </div>
+  </div>
+
+  <h3>Additional Prohibited Activities</h3>
+  <p>Beyond the core prohibitions, investments must avoid sectors that are fundamentally impermissible (haram):</p>
+  <div class="compare">
+    <div class="compare-col halal">
+      <h4>✅ Halal Sectors</h4>
+      <ul>
+        <li>Technology (screened)</li>
+        <li>Healthcare & pharmaceuticals</li>
+        <li>Consumer goods (halal)</li>
+        <li>Real estate (excluding REITs with haram tenants)</li>
+        <li>Utilities</li>
+        <li>Manufacturing (screened)</li>
+        <li>Infrastructure</li>
+        <li>Renewable energy</li>
+      </ul>
+    </div>
+    <div class="compare-col haram">
+      <h4>✗ Haram Sectors</h4>
+      <ul>
+        <li>Conventional banking & insurance</li>
+        <li>Alcohol production & distribution</li>
+        <li>Pork & non-halal food</li>
+        <li>Tobacco</li>
+        <li>Gambling & casinos</li>
+        <li>Weapons & defence (controversial)</li>
+        <li>Adult entertainment</li>
+        <li>Interest-based financial services</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="section" id="glossary">
+  <div class="section-eyebrow">Foundations</div>
+  <h2>Key Terms Glossary</h2>
+  <p class="section-intro">These are the terms you will encounter in Islamic finance conversations. Knowing them helps you speak with Muslim clients at a level that earns their respect and trust.</p>
+
+  <div class="term"><span class="term-word">Shariah</span><span class="term-arabic">(شريعة)</span><div class="term-def">Islamic law derived from the Quran and Hadith. In finance, Shariah principles govern what is permissible (halal) and prohibited (haram) in transactions and investments.</div></div>
+  <div class="term"><span class="term-word">Riba</span><span class="term-arabic">(ربا)</span><div class="term-def">Interest or usury. Any predetermined, fixed return on money lent is considered riba. This is one of the most serious prohibitions in Islamic law.</div></div>
+  <div class="term"><span class="term-word">Halal</span><span class="term-arabic">(حلال)</span><div class="term-def">Permissible. In finance: instruments and activities allowed under Shariah.</div></div>
+  <div class="term"><span class="term-word">Haram</span><span class="term-arabic">(حرام)</span><div class="term-def">Prohibited. Activities, sectors, or instruments that violate Shariah principles.</div></div>
+  <div class="term"><span class="term-word">Takaful</span><span class="term-arabic">(تكافل)</span><div class="term-def">Shariah-compliant insurance. Based on mutual contribution and shared risk among participants, rather than a commercial exchange contract. Structured to avoid riba, gharar, and maisir.</div></div>
+  <div class="term"><span class="term-word">Mudarabah</span><span class="term-arabic">(مضاربة)</span><div class="term-def">Profit-sharing arrangement. One party provides capital, the other provides expertise and management. Profits are shared according to a pre-agreed ratio; losses fall on the capital provider.</div></div>
+  <div class="term"><span class="term-word">Sukuk</span><span class="term-arabic">(صكوك)</span><div class="term-def">Islamic bonds. Unlike conventional bonds, Sukuk represent ownership in a tangible asset and pay returns from the asset's income — not from interest. Often called "Islamic bonds" but structurally different.</div></div>
+  <div class="term"><span class="term-word">Zakat</span><span class="term-arabic">(زكاة)</span><div class="term-def">Obligatory almsgiving — the third pillar of Islam. 2.5% of wealth held above the nisab (minimum threshold) for one lunar year. Purifies wealth and redistributes it to eligible recipients.</div></div>
+  <div class="term"><span class="term-word">Nisab</span><span class="term-arabic">(نصاب)</span><div class="term-def">The minimum threshold of wealth that must be held for one full lunar year before Zakat becomes obligatory. Pegged to the value of 85 grams of gold or 595 grams of silver.</div></div>
+  <div class="term"><span class="term-word">Faraid</span><span class="term-arabic">(فرائض)</span><div class="term-def">Islamic inheritance law. Prescribes fixed shares of an estate for specific heirs. In Singapore, applied to assets subject to Muslim inheritance law — but NOT CPF or life insurance proceeds.</div></div>
+  <div class="term"><span class="term-word">Hibah</span><span class="term-arabic">(هبة)</span><div class="term-def">Gift. A voluntary, immediate transfer of ownership during the donor's lifetime. Can be used as a wealth-transfer tool that bypasses Faraid, as it transfers ownership before death.</div></div>
+  <div class="term"><span class="term-word">Wasiat</span><span class="term-arabic">(وصية)</span><div class="term-def">Islamic will. Limited to a maximum of one-third of the estate and can only be given to non-heirs (since heirs already receive their Faraid shares). Cannot override Faraid.</div></div>
+  <div class="term"><span class="term-word">Waqf</span><span class="term-arabic">(وقف)</span><div class="term-def">Islamic endowment. An irrevocable charitable trust where assets are dedicated in perpetuity for the benefit of a charitable cause. One of the most powerful Islamic wealth-preservation and legacy tools.</div></div>
+  <div class="term"><span class="term-word">Purification (Tazkiyah)</span><span class="term-arabic">(تزكية)</span><div class="term-def">The process of removing impure returns (e.g., from a small percentage of haram income in a screened fund) by donating that proportion to charity — without expecting reward.</div></div>
+</section>
+
+<!-- SCREENING -->
+<section class="section" id="screening">
+  <div class="section-eyebrow">Shariah-Compliant Investing</div>
+  <h2>Shariah Screening</h2>
+  <p class="section-intro">Not all equity funds are Shariah-compliant — but Shariah-compliant funds are not simply "Muslim versions" of conventional funds. They are subject to ongoing screening by an independent Shariah Supervisory Board (SSB).</p>
+
+  <h3>How Shariah Screening Works</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Sector Screen (Qualitative)</h4>
+        <p>The fund excludes companies whose primary business is in haram sectors: alcohol, pork, tobacco, conventional banking, gambling, adult entertainment, and weapons (varies by standard). A company that derives even a significant minority of revenue from these sectors may be excluded.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Financial Ratios Screen (Quantitative)</h4>
+        <p>Even halal-sector companies must pass financial ratio tests to ensure they are not excessively leveraged with interest-bearing debt. Common thresholds: total interest-bearing debt must be less than 33% of total assets, and interest income must be less than 5% of total revenue.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Ongoing Monitoring</h4>
+        <p>Screening is not a one-time event. The Shariah Supervisory Board reviews holdings regularly. If a company fails the screen (e.g., after an acquisition or change in business), it is removed from the fund. Purification amounts are calculated and disclosed.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Annual Purification Calculation</h4>
+        <p>Even in a screened fund, some income may be derived from minor impermissible sources (e.g., a company earns 2% from interest). The fund calculates the purification amount per unit and advises investors to donate that amount to charity.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Major Shariah Screening Standards</h3>
+  <table class="tbl">
+    <thead><tr><th>Standard</th><th>Body</th><th>Key Characteristics</th></tr></thead>
+    <tbody>
+      <tr><td><strong>AAOIFI</strong></td><td>Accounting & Auditing Org for Islamic Financial Institutions</td><td>Most widely referenced globally. Stricter on debt ratios.</td></tr>
+      <tr><td><strong>S&P Shariah</strong></td><td>S&P Dow Jones Indices</td><td>Widely used for index funds. Covers S&P 500 Shariah, Dow Jones Islamic Market Index.</td></tr>
+      <tr><td><strong>FTSE Shariah</strong></td><td>FTSE Russell</td><td>Used by many international Shariah-compliant ETFs and unit trusts.</td></tr>
+      <tr><td><strong>Bursa Malaysia Shariah</strong></td><td>Securities Commission Malaysia</td><td>Relevant for Malaysian Shariah funds available in Singapore.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-emerald">
+    <h4>✅ FC Action: Know Your Fund's Shariah Certification</h4>
+    <p>Before recommending an ILP or unit trust to a Muslim client, check: (1) Is there a Shariah-compliant fund option? (2) Who is the Shariah Supervisory Board? (3) What is the annual purification rate? These answers show you have done your homework — and they matter to observant Muslim clients.</p>
+  </div>
+</section>
+
+<!-- FUNDS -->
+<section class="section" id="funds">
+  <div class="section-eyebrow">Shariah-Compliant Investing</div>
+  <h2>Halal Fund Options in Singapore</h2>
+  <p class="section-intro">Singapore has a growing ecosystem of Shariah-compliant investment products. As an FC, knowing what is available helps you serve Muslim clients without telling them to simply "avoid investing."</p>
+
+  <h3>ILPs with Shariah-Compliant Fund Options</h3>
+  <p>Several Prudential ILPs offer Shariah-compliant fund sub-funds. When recommending an ILP to a Muslim client, confirm which funds in the fund menu carry Shariah certification. The client can allocate 100% of their premium to Shariah-certified funds.</p>
+
+  <div class="card card-emerald">
+    <h4>What to Check Before Recommending</h4>
+    <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+      <li>Is the fund certified by a recognised SSB?</li>
+      <li>Is the certification current (not lapsed)?</li>
+      <li>What is the annual purification rate (usually disclosed in fund factsheet)?</li>
+      <li>What is the underlying index or strategy?</li>
+      <li>Is the fund global or regional? (Diversification matters)</li>
+    </ul>
+  </div>
+
+  <h3>Beyond ILPs — Other Shariah-Compliant Options</h3>
+  <table class="tbl">
+    <thead><tr><th>Vehicle</th><th>Examples in SG</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Shariah Unit Trusts</strong></td><td>Available via banks, FA platforms</td><td>Wide range of equity, sukuk, and mixed funds. Check CIMB Islamic, Maybank Islamic range.</td></tr>
+      <tr><td><strong>CPF Investment (CPFIS)</strong></td><td>Selected Shariah-certified unit trusts</td><td>Muslim clients can invest CPF OA in Shariah-certified unit trusts via CPFIS — check the approved list.</td></tr>
+      <tr><td><strong>SRS Investment</strong></td><td>Shariah ETFs via brokerages</td><td>SRS funds can be invested in Shariah ETFs (e.g., iShares MSCI World Islamic). Good for higher-income Muslim clients.</td></tr>
+      <tr><td><strong>Takaful (Savings/Investment)</strong></td><td>Etiqa Takaful, Great Eastern Takaful</td><td>Shariah-compliant alternative to conventional endowment/savings plans. Surplus shared with participants.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip"><span class="icon">💡</span><span><strong>FC Tip:</strong> Some Muslim clients assume they cannot invest at all due to riba concerns. Opening with "There are actually several Shariah-compliant investment options available — let me show you what they look like" changes the entire conversation. Many are surprised and relieved.</span></div>
+</section>
+
+<!-- PURIFICATION -->
+<section class="section" id="purification">
+  <div class="section-eyebrow">Shariah-Compliant Investing</div>
+  <h2>Purification of Returns</h2>
+  <p class="section-intro">Even in a Shariah-screened fund, a small portion of corporate revenue may come from impermissible sources. Purification is the process of donating that proportion to charity — removing the "taint" from your investment returns.</p>
+
+  <h3>How Purification Works in Practice</h3>
+  <div class="card card-amber">
+    <h4>Example</h4>
+    <p style="font-size:13px">Your client has $50,000 invested in a Shariah-compliant global equity fund. The fund's SSB calculates the annual purification rate as 0.4% of the invested amount (based on the proportion of impermissible income across all holdings).</p>
+    <p style="font-size:13px;margin-top:8px">Purification amount = $50,000 × 0.4% = <strong>$200</strong></p>
+    <p style="font-size:13px;margin-top:8px">The client should donate $200 to charity (not as zakat — purification has no reward, it is simply disposal of impure income). The donation can go to any legitimate charitable cause.</p>
+  </div>
+
+  <div class="callout callout-gold">
+    <h4>💡 Key Point: Purification ≠ Zakat</h4>
+    <p>Many clients confuse purification with Zakat. They are distinct obligations. Zakat is a reward-bearing act of worship — giving from your halal wealth to specific recipients. Purification is disposal of impure income — no spiritual reward is earned from it. However, the act of purifying wealth itself is meritorious in intention.</p>
+  </div>
+
+  <p>The purification amount is usually very small — often less than 1% of invested value per year. Most fund managers provide a purification calculator or state the rate in the annual report. Advising your client about purification shows depth of knowledge and earns significant trust.</p>
+</section>
+
+<!-- TAKAFUL -->
+<section class="section" id="takaful">
+  <div class="section-eyebrow">Shariah-Compliant Investing</div>
+  <h2>Takaful vs Conventional Insurance</h2>
+  <p class="section-intro">Conventional insurance is viewed by many Islamic scholars as containing elements of gharar (uncertainty), riba (if there are guaranteed interest components), and maisir (gambling-like structure). Takaful was developed as the Shariah-compliant alternative.</p>
+
+  <h3>The Structural Difference</h3>
+  <div class="grid2">
+    <div class="card card-red">
+      <h4>Conventional Insurance</h4>
+      <p style="font-size:13px"><strong>Structure:</strong> Policyholder pays premium to insurer in exchange for a promise of compensation. It is a commercial sale contract (exchange of premium for risk transfer).</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Shariah concern:</strong> The element of uncertainty (you pay but may never claim = gharar). If there is a guaranteed return component with interest = riba. Profit belongs entirely to the insurer.</p>
+    </div>
+    <div class="card card-emerald">
+      <h4>Takaful</h4>
+      <p style="font-size:13px"><strong>Structure:</strong> Participants contribute to a mutual fund (tabarru' — donation). Claims are paid from this fund. A Takaful operator manages the fund for a fee. <strong>Surplus belongs to participants, not the company.</strong></p>
+      <p style="font-size:13px;margin-top:8px"><strong>Shariah resolution:</strong> Based on mutual solidarity (ta'awun) and donation (tabarru'). No riba, gharar minimised by transparency, no speculative element.</p>
+    </div>
+  </div>
+
+  <h3>Takaful Providers in Singapore</h3>
+  <table class="tbl">
+    <thead><tr><th>Provider</th><th>Products</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Etiqa Takaful</strong></td><td>Term takaful, family takaful, investment-linked takaful</td><td>One of Singapore's primary Takaful operators. Full Shariah compliance.</td></tr>
+      <tr><td><strong>Great Eastern Takaful</strong></td><td>Takaful savings, protection, and investment plans</td><td>Listed on Bursa Malaysia; offers Takaful products in Singapore.</td></tr>
+      <tr><td><strong>Prudential BSN Takaful</strong></td><td>Available in Malaysia — relevant for clients with cross-border needs</td><td>Not directly available in SG market but relevant for Malaysian clients.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Addressing the "Is Prudential Insurance Halal?" Question</h3>
+  <div class="script">
+    <div class="script-label">Conversation Script</div>
+    <p>"That's an important question and I appreciate you asking. There are different scholarly views on conventional insurance. Some scholars permit it on the basis of necessity (darura) — particularly for compulsory coverage like MediShield Life. Others prefer Takaful as the clearly compliant alternative.<br><br>What I'd suggest is: for protection where Takaful is available, we consider a Takaful provider. For coverage areas where only conventional products are available, or where the cost difference is significant, we can discuss the scholarly basis for using it. And for your investment component, we use only Shariah-certified funds.<br><br>For specific rulings, I'd always recommend checking with an Ustaz as well — but I want to make sure we find a solution that you're comfortable with, both financially and spiritually."</p>
+  </div>
+</section>
+
+<!-- ZAKAT INTRO -->
+<section class="section" id="zakat-intro">
+  <div class="section-eyebrow">Zakat</div>
+  <h2>What is Zakat?</h2>
+  <p class="section-intro">Zakat is the third pillar of Islam — an obligatory annual contribution of 2.5% of qualifying wealth above the nisab threshold, held for a full lunar year. It is not charity in the conventional sense — it is a right of the poor over the wealth of the rich.</p>
+
+  <div class="quote">
+    <div class="arabic">خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا</div>
+    <p>"Take from their wealth a charity by which you purify them and cause them increase..." (At-Tawbah 9:103)</p>
+    <cite>Quran — on the nature and purpose of Zakat</cite>
+  </div>
+
+  <h3>The Key Conditions for Zakat Obligation</h3>
+  <div class="grid3">
+    <div class="card card-emerald">
+      <div style="font-size:18px;margin-bottom:6px">☪️</div>
+      <h4>Muslim</h4>
+      <p style="font-size:13px">Zakat is obligatory only for Muslims. Non-Muslim clients are not subject to Zakat.</p>
+    </div>
+    <div class="card card-emerald">
+      <div style="font-size:18px;margin-bottom:6px">💰</div>
+      <h4>Above Nisab</h4>
+      <p style="font-size:13px">Wealth must exceed the nisab (≈ value of 85g gold or 595g silver). Currently approximately SGD 7,000–8,000 (check MUIS annually).</p>
+    </div>
+    <div class="card card-emerald">
+      <div style="font-size:18px;margin-bottom:6px">📅</div>
+      <h4>Full Hawl (Lunar Year)</h4>
+      <p style="font-size:13px">The qualifying wealth must have been held above nisab for a complete Islamic lunar year (hawl) — not just on assessment date.</p>
+    </div>
+  </div>
+
+  <h3>The 8 Recipients of Zakat</h3>
+  <p>Zakat can only be given to eight categories of recipients, as specified in Surah At-Tawbah 9:60:</p>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;line-height:1.8">
+      <div>1. 🤲 The poor (Fuqara)</div>
+      <div>2. 🏚️ The needy (Masakin)</div>
+      <div>3. 💼 Zakat administrators (Amil)</div>
+      <div>4. ❤️ Those whose hearts are to be reconciled (Muallaf)</div>
+      <div>5. ⛓️ Those in bondage (Riqab)</div>
+      <div>6. 💳 The indebted (Gharimin)</div>
+      <div>7. ☪️ In the cause of Allah (Fi Sabilillah)</div>
+      <div>8. ✈️ Travellers in need (Ibn Sabil)</div>
+    </div>
+  </div>
+
+  <div class="tip"><span class="icon">💡</span><span>In Singapore, MUIS (Islamic Religious Council of Singapore) manages Zakat collection and distribution. Clients can pay Zakat through MUIS directly, or to approved Zakat collection agents. The MUIS Zakat calculator online is the simplest reference for Singapore-specific calculations.</span></div>
+</section>
+
+<!-- ZAKAT INVEST -->
+<section class="section" id="zakat-invest">
+  <div class="section-eyebrow">Zakat</div>
+  <h2>Zakat on Investments</h2>
+  <p class="section-intro">Many Muslim investors are uncertain whether their investments are subject to Zakat — and if so, how much. This uncertainty causes some to either avoid investing or avoid Zakat altogether. You can help resolve this.</p>
+
+  <h3>General Principle</h3>
+  <p>The <strong>market value</strong> of invested assets held for trade or growth purposes is subject to Zakat. The rate is <strong>2.5%</strong> of the total market value (not profit, not capital gain — the full value) if it has been held above nisab for a full lunar year.</p>
+
+  <div class="card card-emerald">
+    <h4>Example Calculation</h4>
+    <p style="font-size:13px">Client has $80,000 in a Shariah-compliant equity fund, $20,000 in a unit trust (non-Shariah), and $15,000 in a CPF Investment Account. All held for over a year. Nisab = $7,500.</p>
+    <p style="font-size:13px;margin-top:10px">Total zakatable investments = $80,000 + $20,000 + $15,000 = $115,000</p>
+    <p style="font-size:13px">Zakat due = $115,000 × 2.5% = <strong style="color:var(--emerald)">$2,875</strong></p>
+    <p style="font-size:13px;margin-top:8px"><em>Note: Scholarly opinions vary on whether non-Shariah investments are zakatable — some say yes (the underlying wealth is still the client's), some say Zakat is not owed on haram wealth. Advise client to consult an Ustaz for certainty.</em></p>
+  </div>
+
+  <h3>What About ILPs?</h3>
+  <p>For Investment-Linked Plans, Zakat is assessed on the <strong>surrender value</strong> or <strong>investment account value</strong> at the time of assessment — not the total premiums paid. The protection component (cost of insurance) is not zakatable.</p>
+
+  <div class="card card-gold">
+    <h4>ILP Zakat — Practical Approach</h4>
+    <p style="font-size:13px">1. Check the current investment account value (shown on annual policy statement)</p>
+    <p style="font-size:13px">2. Apply 2.5% if held above nisab for a full lunar year</p>
+    <p style="font-size:13px">3. For ILPs with a savings component, the surrender value is the zakatable amount</p>
+    <p style="font-size:13px">4. Include this in the client's overall Zakat calculation alongside other assets</p>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>Asset Type</th><th>Zakatable?</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td>Unit trusts / mutual funds</td><td><span style="color:var(--emerald);font-weight:600">Yes</span></td><td>Market value of units held</td></tr>
+      <tr><td>ILP investment account value</td><td><span style="color:var(--emerald);font-weight:600">Yes</span></td><td>Surrender/account value</td></tr>
+      <tr><td>Shares / equities</td><td><span style="color:var(--emerald);font-weight:600">Yes</span></td><td>Market value on assessment date</td></tr>
+      <tr><td>CPF OA (for investment)</td><td><span style="color:var(--amber);font-weight:600">Scholarly variance</span></td><td>MUIS: zakatable if above nisab and hawl met</td></tr>
+      <tr><td>CPF SA / RA (retirement locked)</td><td><span style="color:var(--amber);font-weight:600">Scholarly variance</span></td><td>Some exempt as it is not accessible — consult Ustaz</td></tr>
+      <tr><td>Life insurance (protection only)</td><td><span style="color:var(--red);font-weight:600">Generally No</span></td><td>No investment component — pure risk transfer</td></tr>
+      <tr><td>Endowment (surrender value)</td><td><span style="color:var(--emerald);font-weight:600">Yes (surrender value)</span></td><td>The cash value is accessible wealth</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ZAKAT INSURANCE -->
+<section class="section" id="zakat-insur">
+  <div class="section-eyebrow">Zakat</div>
+  <h2>Zakat on Insurance Proceeds</h2>
+  <p class="section-intro">A common question: if a Muslim client receives a life insurance payout or a critical illness claim — is Zakat due on those proceeds?</p>
+
+  <h3>The General Ruling</h3>
+  <p>Insurance claim proceeds (death benefit, CI payout, disability income) are generally <strong>not subject to immediate Zakat</strong> at the point of receipt, as they are received in compensation for a loss or need, not as accumulated wealth. However, once received and held above the nisab for a full hawl (lunar year), the remaining amount becomes part of the client's general zakatable wealth.</p>
+
+  <div class="card card-blue">
+    <h4>Practical Example</h4>
+    <p style="font-size:13px">A client receives a $200,000 life insurance payout after a bereavement. She immediately uses $150,000 to clear a mortgage. The remaining $50,000 is placed in a savings account. If that $50,000 remains above nisab after a full lunar year, <strong>Zakat is due on it as part of her regular annual Zakat calculation</strong>.</p>
+    <p style="font-size:13px;margin-top:8px">The $150,000 used to clear the mortgage is not zakatable — it has been expended on a liability.</p>
+  </div>
+
+  <div class="tip"><span class="icon">💡</span><span>Advising Muslim clients about this proactively — especially at policy inception — shows you understand their full picture. Many clients appreciate knowing that claiming on their policy does not trigger an unexpected Zakat obligation at the moment of their greatest need.</span></div>
+</section>
+
+<!-- ZAKAT CALC -->
+<section class="section" id="zakat-calc">
+  <div class="section-eyebrow">Zakat</div>
+  <h2>Zakat Calculation Guide</h2>
+  <p class="section-intro">Use this simplified framework to help Muslim clients estimate their annual Zakat obligation — or to help them understand what to assess when doing so with MUIS.</p>
+
+  <div class="card card-emerald">
+    <h4>Simplified Zakat on Savings & Investments (Annual)</h4>
+    <div style="background:var(--ink);border-radius:6px;padding:14px 18px;margin-top:10px;font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);line-height:2;">
+      Zakat-able Wealth = <br>
+      &nbsp;&nbsp;Cash & savings above living expenses<br>
+      + Market value of investment funds / unit trusts<br>
+      + ILP investment account value<br>
+      + Current value of endowments (surrender value)<br>
+      + Gold & silver (market value)<br>
+      + Business inventory (if applicable)<br>
+      – Outstanding debts (that are currently due)<br>
+      <br>
+      If total ≥ Nisab (~SGD 7,500 in 2025) AND held for ≥ 1 lunar year:<br>
+      <strong style="color:#7ed6a0">Zakat = Total × 2.5%</strong>
+    </div>
+  </div>
+
+  <h3>Not Included in Zakat Calculation</h3>
+  <div class="card">
+    <ul style="list-style:none;font-size:13px;line-height:2.2">
+      <li>🏠 Primary residence (the home you live in)</li>
+      <li>🚗 Personal vehicle for own use</li>
+      <li>👔 Personal clothing and household items</li>
+      <li>💼 Business equipment and tools of trade</li>
+      <li>📖 Professional tools (laptop, instruments used for earning income)</li>
+      <li>🏥 Pure protection insurance premiums paid (consumed — not wealth)</li>
+    </ul>
+  </div>
+
+  <div class="callout callout-emerald">
+    <h4>✅ Refer Clients to MUIS for Official Calculation</h4>
+    <p>The official MUIS Zakat calculator at muis.gov.sg covers specific categories in detail and reflects current nisab values pegged to Singapore gold prices. Your role is to make Muslim clients aware that their investments are likely zakatable and to help them gather the relevant figures — MUIS handles the definitive calculation.</p>
+  </div>
+
+  <div class="quiz">
+    <h4>Knowledge Check</h4>
+    <div class="quiz-q">A Muslim client has $30,000 in a Shariah ILP fund, $15,000 in CPF OA, $5,000 in cash savings, and $200,000 in a HDB flat (primary residence). Which assets are included in their Zakat calculation?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">All assets including the HDB flat — all wealth is zakatable.</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">The ILP fund value ($30,000), CPF OA ($15,000, per MUIS ruling), and cash savings ($5,000). The HDB primary residence is excluded.</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">Only the cash savings — ILP and CPF are not accessible so they're not zakatable.</div>
+    </div>
+    <div class="quiz-feedback correct">✓ Correct. The primary residence is excluded from Zakat as it is a personal asset not held for trade or investment. CPF OA is included per MUIS guidance (it is accessible for housing and investment). The ILP investment value is zakatable. Total zakatable = $50,000 → Zakat = $1,250.</div>
+    <div class="quiz-feedback wrong">✗ Review the Zakat categories. Primary residences are excluded. Accessibility is not the only criterion — CPF OA is included per MUIS. ILP investment values represent real wealth and are zakatable.</div>
+  </div>
+</section>
+
+<!-- FARAID -->
+<section class="section" id="faraid">
+  <div class="section-eyebrow">Islamic Estate Planning</div>
+  <h2>Faraid — Islamic Inheritance Law</h2>
+  <p class="section-intro">Faraid is the Quranic system of inheritance that prescribes specific shares for specific heirs. In Singapore, it applies to the estate of a Muslim (assets owned in their sole name) — but does NOT automatically apply to CPF monies, joint assets, or life insurance proceeds. This distinction is crucial and widely misunderstood.</p>
+
+  <div class="callout callout-red">
+    <h4>⚠️ The Most Common Misconception</h4>
+    <p>Many Muslim clients believe that as long as they have a will (Wasiat), their estate will be distributed according to their wishes. This is only partly true. Faraid governs the distribution of the Islamic estate — a Wasiat can only direct up to 1/3 of the estate, and only to non-heirs. The remaining 2/3 must be distributed according to Faraid shares. An Islamic will does not override Faraid.</p>
+  </div>
+
+  <h3>Faraid Shares — Key Heirs</h3>
+  <table class="faraid-table">
+    <thead>
+      <tr><th>Survivor Scenario</th><th>Spouse</th><th>Children</th><th>Parents</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Spouse + Children (sons & daughters)</td>
+        <td class="share">1/8 (wife) or 1/4 (husband)</td>
+        <td class="share">Remaining — sons get 2× daughter's share</td>
+        <td>—</td>
+        <td>Most common scenario for working age clients</td>
+      </tr>
+      <tr>
+        <td>Spouse + Children (daughters only)</td>
+        <td class="share">1/8 (wife) or 1/4 (husband)</td>
+        <td class="share">2/3 split equally among daughters</td>
+        <td>—</td>
+        <td>Remaining portion returns to agnatic heirs (asabah)</td>
+      </tr>
+      <tr>
+        <td>Spouse only (no children)</td>
+        <td class="share">1/4 (wife) or 1/2 (husband)</td>
+        <td>—</td>
+        <td>Parents inherit remainder</td>
+        <td>Childless couples need specific planning</td>
+      </tr>
+      <tr>
+        <td>Children only (no spouse)</td>
+        <td>—</td>
+        <td class="share">All — sons 2× daughters</td>
+        <td>Possibly</td>
+        <td>Depends on whether parents are alive</td>
+      </tr>
+      <tr>
+        <td>Spouse + Parents (no children)</td>
+        <td class="share">1/4 (wife) or 1/2 (husband)</td>
+        <td>—</td>
+        <td class="share">Father: 1/6 | Mother: 1/6</td>
+        <td>Remainder to father as agnatic heir</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip"><span class="icon">💡</span><span>Faraid calculations can become complex when multiple heirs of different categories exist. For anything beyond a straightforward nuclear family, refer your client to MUIS's Faraid advisory service or a qualified Islamic estate planning lawyer (e.g., from Amanah Saham Waqaf, or firms specialising in Islamic estate administration).</span></div>
+
+  <h3>What Faraid Applies To — and What It Doesn't</h3>
+  <table class="tbl">
+    <thead><tr><th>Asset</th><th>Faraid Applies?</th><th>Governed By</th></tr></thead>
+    <tbody>
+      <tr><td>Bank accounts (sole name)</td><td><span style="color:var(--emerald);font-weight:600">Yes</span></td><td>Muslim law (Administration of Muslim Law Act)</td></tr>
+      <tr><td>Investment accounts (sole name)</td><td><span style="color:var(--emerald);font-weight:600">Yes</span></td><td>Muslim law</td></tr>
+      <tr><td>Property (sole name)</td><td><span style="color:var(--emerald);font-weight:600">Yes</span></td><td>Muslim law</td></tr>
+      <tr><td>Property (joint tenancy)</td><td><span style="color:var(--red);font-weight:600">No — 2019 MUIS Fatwa</span></td><td>Civil law (right of survivorship) — see Estate Playbook</td></tr>
+      <tr><td>CPF (with valid nomination)</td><td><span style="color:var(--red);font-weight:600">No</span></td><td>Civil law (CPF Act) — nomination determines distribution</td></tr>
+      <tr><td>CPF (without nomination)</td><td><span style="color:var(--red);font-weight:600">No</span></td><td>Public Trustee distributes under CPF Act — not Faraid</td></tr>
+      <tr><td>Life insurance (trust nomination)</td><td><span style="color:var(--red);font-weight:600">No</span></td><td>Paid to nominated beneficiaries — not estate</td></tr>
+      <tr><td>Life insurance (no nomination)</td><td><span style="color:var(--red);font-weight:600">No</span></td><td>Paid to proper claimant under Insurance Act</td></tr>
+      <tr><td>Business (sole proprietorship)</td><td><span style="color:var(--emerald);font-weight:600">Yes</span></td><td>Muslim law</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-red">
+    <h4>🚨 The CPF + Insurance "Faraid Gap"</h4>
+    <p>Here is the critical insight for Muslim clients: because CPF and life insurance do NOT pass through the estate, they are not distributed according to Faraid. This means a Muslim client who wants to comply with Faraid for ALL their wealth must make deliberate nominations that mirror Faraid shares — or accept that CPF and insurance will be distributed differently. Many are unaware of this. Raising it demonstrates genuine expertise.</p>
+  </div>
+</section>
+
+<!-- HIBAH -->
+<section class="section" id="hibah">
+  <div class="section-eyebrow">Islamic Estate Planning</div>
+  <h2>Hibah</h2>
+  <p class="section-intro">Hibah (gift) is one of the most powerful and underutilised tools in Islamic estate planning. It allows a Muslim to transfer wealth during their lifetime to whoever they choose — bypassing Faraid entirely — because the transfer occurs before death.</p>
+
+  <h3>Key Features of Hibah</h3>
+  <div class="grid3">
+    <div class="card card-emerald">
+      <div style="font-size:20px;margin-bottom:6px">🎁</div>
+      <h4>Lifetime Transfer</h4>
+      <p style="font-size:13px">Hibah is completed during the donor's life. Ownership passes immediately upon acceptance — it is not a testamentary gift (it doesn't take effect at death).</p>
+    </div>
+    <div class="card card-emerald">
+      <div style="font-size:20px;margin-bottom:6px">🔓</div>
+      <h4>Bypasses Faraid</h4>
+      <p style="font-size:13px">Because the asset has transferred before death, it is no longer part of the estate — and therefore not subject to Faraid. A Muslim can give any asset to any person via Hibah.</p>
+    </div>
+    <div class="card card-emerald">
+      <div style="font-size:20px;margin-bottom:6px">⚠️</div>
+      <h4>Irrevocable (Generally)</h4>
+      <p style="font-size:13px">Once given and accepted, Hibah is generally irrevocable — particularly between non-family members. Parents can revoke Hibah to children in some madhabs. Get legal documentation.</p>
+    </div>
+  </div>
+
+  <h3>Hibah in Insurance Context</h3>
+  <p>The most common use of Hibah in financial planning is through <strong>Hibah Ruqba</strong> or simply structured insurance nominations that function as conditional gifts. A Muslim policy owner can nominate their policy proceeds as Hibah to a specific person — who will receive the full amount outside the estate, outside Faraid.</p>
+
+  <div class="card card-gold">
+    <h4>When Hibah is Useful</h4>
+    <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+      <li>Client wants to leave more to a specific child (e.g., disabled child needing care) beyond their Faraid share</li>
+      <li>Client wants to provide for a non-Muslim spouse who would not inherit under Faraid</li>
+      <li>Client wants to gift assets to a grandchild whose parent (the heir) has predeceased them — grandchildren do not inherit under Faraid if the parent is deceased</li>
+      <li>Client wants to transfer business ownership to a specific child immediately</li>
+    </ul>
+  </div>
+
+  <div class="warn"><span>⚠️</span><span>Hibah must be properly documented and the transfer must be genuine — an asset cannot be "gifted" on paper while the donor retains full control and use. Work with an Islamic estate lawyer to structure it correctly. Do not advise clients to use Hibah to circumvent legitimate Faraid claims from other heirs.</span></div>
+</section>
+
+<!-- WASIAT -->
+<section class="section" id="wasiat">
+  <div class="section-eyebrow">Islamic Estate Planning</div>
+  <h2>Wasiat — The Islamic Will</h2>
+  <p class="section-intro">A Wasiat is the Islamic will — a statement of how a Muslim wishes a portion of their estate to be distributed. It is an important tool, but it works within significant constraints that every FC should understand.</p>
+
+  <h3>The 1/3 Rule</h3>
+  <div class="card card-red">
+    <h4>⚠️ Critical Limitation</h4>
+    <p style="font-size:13px">A Wasiat can only cover up to <strong>1/3 of the net estate</strong> (after debts and funeral expenses). The remaining 2/3 must be distributed according to Faraid.</p>
+    <p style="font-size:13px;margin-top:8px">Additionally, a Wasiat <strong>cannot be made to an heir who already receives a Faraid share</strong> — unless all other heirs consent. This means a Muslim cannot use a Wasiat to give extra to a son, daughter, or spouse beyond their Faraid entitlement (without the other heirs agreeing).</p>
+  </div>
+
+  <h3>What Can a Wasiat Do?</h3>
+  <div class="grid2">
+    <div class="card card-emerald">
+      <h4>✅ Permitted Uses</h4>
+      <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+        <li>Give up to 1/3 to charity (waqf, mosque, etc.)</li>
+        <li>Give up to 1/3 to a non-Muslim spouse who wouldn't otherwise inherit</li>
+        <li>Give up to 1/3 to grandchildren whose parent has predeceased</li>
+        <li>Give up to 1/3 to a non-heir family member or friend</li>
+        <li>Direct funeral and burial arrangements</li>
+        <li>Appoint a guardian for minor children</li>
+      </ul>
+    </div>
+    <div class="card card-red">
+      <h4>❌ Not Permitted</h4>
+      <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+        <li>Give more than 1/3 of estate to non-heirs</li>
+        <li>Give any Wasiat share to a Faraid heir (without all heirs consenting)</li>
+        <li>Override or change Faraid distribution</li>
+        <li>Use Wasiat to disinherit a legitimate heir</li>
+        <li>Make Wasiat conditional on surviving the testator (that's Faraid, not Wasiat)</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>In Singapore, Wasiat is executed through MUIS or through a Muslim-law-qualified lawyer. MUIS provides Wasiat writing services. Encourage clients to formalise their Wasiat even if they also have a civil will — the two instruments govern different aspects of the estate.</p>
+</section>
+
+<!-- WAQF -->
+<section class="section" id="waqf">
+  <div class="section-eyebrow">Islamic Estate Planning</div>
+  <h2>Waqf — Islamic Endowment</h2>
+  <p class="section-intro">Waqf is the most powerful and least discussed tool in Islamic estate planning. An irrevocable charitable endowment, Waqf removes assets from the estate permanently, preserves them across generations, and generates ongoing reward (sadaqah jariyah) for the donor.</p>
+
+  <h3>How Waqf Works</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>Asset is Dedicated</h4><p>The donor irrevocably dedicates an asset — cash, property, business income — for a charitable purpose. The asset leaves their personal ownership permanently.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>Asset is Preserved</h4><p>The Waqf asset cannot be sold, gifted, or inherited. It is maintained in perpetuity (or for a specified period) for the declared purpose.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>Benefits are Distributed</h4><p>The income or benefit from the Waqf asset is distributed to the specified beneficiaries — which can include the donor's own family (private Waqf) or the community (public Waqf).</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><h4>Reward Continues</h4><p>The Prophet ﷺ described sadaqah jariyah (ongoing charity) as one of three actions whose reward continues after death. A Waqf that continues to benefit others generates ongoing reward for the donor.</p></div>
+    </div>
+  </div>
+
+  <div class="card card-gold">
+    <h4>Types of Waqf</h4>
+    <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+      <li><strong>Private Waqf (Ahli):</strong> Benefits the donor's own family first, with any surplus going to a charitable cause.</li>
+      <li><strong>Public Waqf (Khayri):</strong> Dedicated entirely to a public good — mosque, school, hospital, community service.</li>
+      <li><strong>Cash Waqf:</strong> A monetary contribution managed by a Waqf administrator who invests it and distributes returns.</li>
+    </ul>
+  </div>
+
+  <p>In Singapore, MUIS manages public Waqf. Private Waqf can be structured through specialised legal arrangements. Cash Waqf options are available through MUIS in small minimum amounts — accessible to middle-income clients, not just the wealthy.</p>
+</section>
+
+<!-- CPF ISLAM -->
+<section class="section" id="cpf-islam">
+  <div class="section-eyebrow">Islamic Estate Planning</div>
+  <h2>CPF & Islamic Law in Singapore</h2>
+  <p class="section-intro">The intersection of CPF and Islamic inheritance law is one of the most misunderstood areas in Singapore's Muslim financial landscape. Getting this right is one of the most valuable conversations you can have with a Muslim client.</p>
+
+  <h3>The Core Principle: CPF is Civil Law</h3>
+  <p>CPF monies are governed by the CPF Act — Singapore civil law. They do NOT form part of the deceased's estate and are therefore NOT subject to Faraid. This is true regardless of the nominee's religion.</p>
+
+  <div class="card card-red">
+    <h4>🚨 The "Forgotten Nomination" Problem</h4>
+    <p style="font-size:13px">Scenario: A Muslim man made a CPF nomination to his first wife 20 years ago. He has since divorced and remarried. He has never updated his CPF nomination. When he dies, his CPF goes to his first wife — not his current family. This is legally valid under CPF Act. His current wife and children have no claim to it.</p>
+    <p style="font-size:13px;margin-top:8px">This scenario is tragically common. <strong>Every Muslim client should be asked: "When did you last check your CPF nomination?"</strong></p>
+  </div>
+
+  <h3>CPF Nomination Options for Muslim Clients</h3>
+  <table class="tbl">
+    <thead><tr><th>Option</th><th>What Happens</th><th>Faraid Compliant?</th><th>Recommended For</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Nominate in Faraid proportions</strong></td>
+        <td>Nominee(s) receive shares matching their Faraid entitlement</td>
+        <td><span style="color:var(--emerald);font-weight:600">Yes</span></td>
+        <td>Clients who want full Shariah compliance across all assets</td>
+      </tr>
+      <tr>
+        <td><strong>Nominate spouse only</strong></td>
+        <td>Entire CPF goes to spouse — bypasses children's Faraid share</td>
+        <td><span style="color:var(--red);font-weight:600">No</span></td>
+        <td>Client's personal choice — but should be made knowingly</td>
+      </tr>
+      <tr>
+        <td><strong>No nomination</strong></td>
+        <td>CPF goes to Public Trustee, distributed under CPF Act (not Faraid)</td>
+        <td><span style="color:var(--red);font-weight:600">No</span></td>
+        <td>Should be avoided — lack of planning, not a choice</td>
+      </tr>
+      <tr>
+        <td><strong>Nominate to trust</strong></td>
+        <td>CPF paid to trustee who distributes per trust terms</td>
+        <td><span style="color:var(--amber);font-weight:600">Depends on trust</span></td>
+        <td>Clients with complex family needs or minor children</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-emerald">
+    <h4>✅ The Action: Prompt Every Muslim Client to Review CPF Nominations</h4>
+    <p>This is one of the simplest, highest-value actions you can take for a Muslim client. It costs nothing, takes 15 minutes on the CPF website, and protects their family. "When did you last review your CPF nomination?" should be a standard question in every annual review for Muslim clients.</p>
+  </div>
+
+  <p>For the full MUIS fatwa history on joint tenancy and its interaction with Faraid, including the landmark 2010 Shafeeg case and the 2019 fatwa revision, refer to the <strong>SOUL Guild Estate Planning Playbook</strong> — Section 6 (Fatwa Timeline).</p>
+</section>
+
+<!-- CONVERSATION -->
+<section class="section" id="conversation">
+  <div class="section-eyebrow">Client Conversations</div>
+  <h2>How to Have the Islamic Finance Conversation</h2>
+  <p class="section-intro">The biggest mistake most FCs make with Muslim clients is either avoiding Islamic finance topics entirely (for fear of getting it wrong) or overclaiming expertise they don't have. The right approach is somewhere in the middle: informed, humble, and genuinely helpful.</p>
+
+  <h3>Who Should You Raise This With?</h3>
+  <p>Not every Muslim client wants an Islamic finance conversation. Some are happy with conventional products. Others are deeply observant and this is their primary filter. Read the room:</p>
+
+  <div class="card card-blue">
+    <h4>Signals that Islamic Finance is Important to Them</h4>
+    <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+      <li>They ask directly: "Is this halal?"</li>
+      <li>They mention preference for Islamic banking / avoiding interest</li>
+      <li>They have opted for Takaful in the past</li>
+      <li>They reference Islamic obligations in financial decisions</li>
+      <li>They have waqf, hibah, or Faraid concerns about their estate</li>
+      <li>They express discomfort with investment products without knowing why</li>
+    </ul>
+  </div>
+
+  <h3>Opening the Conversation</h3>
+  <div class="script">
+    <div class="script-label">Gentle Opener (for clients who haven't raised it)</div>
+    <p>"One thing I always like to check with Muslim clients — are Shariah-compliant options something that's important to you when it comes to your investments? Some clients prefer to keep within halal-screened funds, others are comfortable with the full range. There's no right or wrong answer — I just want to make sure we're aligned."</p>
+  </div>
+
+  <div class="script" style="margin-top:12px">
+    <div class="script-label">For estate planning discussions</div>
+    <p>"Given that you're Muslim, there's an important layer to your estate planning that goes beyond a standard will — specifically around Faraid, your CPF nominations, and how your insurance proceeds are directed. Have you had a chance to look at any of this? I'd like to make sure your estate is set up in a way that reflects both your financial goals and your values."</p>
+  </div>
+
+  <h3>What to Say When You're Not Sure</h3>
+  <div class="card card-gold">
+    <h4>The Honest Expert Response</h4>
+    <p style="font-size:13px">"That's a great question — the honest answer is that scholarly opinions on this can vary, and I wouldn't want to give you a definitive ruling on what is or isn't halal. What I can do is help you understand the financial structure of this product and the options available to you, and I'd recommend you also consult with an Ustaz for the religious dimension. Together we can make sure you're comfortable from both angles."</p>
+  </div>
+
+  <div class="tip"><span class="icon">💡</span><span>Knowing when to refer is a sign of expertise, not weakness. Suggesting your client consult MUIS or an Islamic estate lawyer shows you understand the limits of your role — and it builds more trust than pretending to have all the answers.</span></div>
+</section>
+
+<!-- SCENARIOS -->
+<section class="section" id="scenarios">
+  <div class="section-eyebrow">Client Conversations</div>
+  <h2>Common Scenarios</h2>
+  <p class="section-intro">These are the conversations you are most likely to encounter with Muslim clients. Practise your responses to each until they feel natural.</p>
+
+  <div class="card card-blue" style="margin-bottom:14px">
+    <h4>Scenario 1: "I don't believe in insurance because of riba"</h4>
+    <p style="font-size:13px"><strong>Context:</strong> A 32-year-old Muslim client, married with young children, has zero insurance coverage because he believes all insurance involves riba.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>Response approach:</strong> Acknowledge his concern respectfully. Explain the distinction between conventional insurance and Takaful. Note that many scholars permit conventional insurance under darura (necessity) for coverage where Takaful is unavailable. Present Takaful options specifically. Do not dismiss his concern — it is theologically grounded — but help him see that a Shariah-compliant path exists.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>Key phrase:</strong> "I completely understand your concern — and actually, there's a Shariah-compliant alternative called Takaful that was developed specifically to address this. Let me show you how it works."</p>
+  </div>
+
+  <div class="card card-emerald" style="margin-bottom:14px">
+    <h4>Scenario 2: "I want my children to share equally — boys and girls the same"</h4>
+    <p style="font-size:13px"><strong>Context:</strong> A Muslim client wants to divide assets equally among sons and daughters, contrary to Faraid (which gives sons double the daughters' share).</p>
+    <p style="font-size:13px;margin-top:8px"><strong>Response approach:</strong> This is a deeply personal and religious matter. Do not pass judgment. Explain what Faraid requires for assets in the estate. Explain that CPF and insurance nominations are outside Faraid and can be directed equally. Hibah (during lifetime) can be used to give equal gifts. Suggest they discuss with an Ustaz who can explain the theological position and whether any concessions apply in their madhab.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>Key phrase:</strong> "For the assets in your estate, Faraid determines the shares. But for your CPF and insurance nominations — you have full flexibility to direct them however you choose. And if you want to equalise during your lifetime, Hibah is an option. Would you like me to walk through how these different tools work together?"</p>
+  </div>
+
+  <div class="card card-purple" style="margin-bottom:14px">
+    <h4>Scenario 3: "My non-Muslim wife can't inherit from me — what can I do?"</h4>
+    <p style="font-size:13px"><strong>Context:</strong> A Muslim man married to a non-Muslim woman is concerned she will be left with nothing if he dies, since non-Muslims cannot inherit under Faraid.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>Response approach:</strong> This is a genuine and important concern. Tools available: (1) Life insurance nomination to wife — directly bypasses estate/Faraid; (2) CPF nomination to wife — also bypasses estate; (3) Hibah — gift assets during lifetime; (4) Wasiat up to 1/3 of estate (some scholars permit this to a non-Muslim spouse; others don't — Ustaz consultation needed). The key insight: careful financial planning can ensure the wife is well provided for despite the Faraid constraint.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>Key phrase:</strong> "You're right that Faraid doesn't cover non-Muslim spouses. But here's the good news — your CPF nomination and life insurance nomination can go directly to your wife, completely outside the estate and Faraid. We can structure your financial plan so that she is well taken care of."</p>
+  </div>
+
+  <div class="quiz">
+    <h4>Final Knowledge Check</h4>
+    <div class="quiz-q">A Muslim client has a $500,000 life insurance policy with no nomination. He passes away, leaving a wife and two sons. Which of the following is true?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">The $500,000 is distributed according to Faraid — wife gets 1/8, sons share the rest.</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">The $500,000 forms part of the estate and is distributed via Muslim inheritance law.</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">Because there is no nomination, the $500,000 is paid to the "proper claimant" under the Insurance Act (up to $150,000 without Grant of Probate; above that requires legal process). The distribution is governed by civil law, not Faraid — though the court may apply Muslim law if the estate goes through probate.</div>
+    </div>
+    <div class="quiz-feedback correct">✓ Correct. Life insurance without a nomination is governed by civil law, not automatically by Faraid. Without a nomination, the process is more complex, slower, and uncertain. This is exactly why every client — Muslim or not — must have current, valid insurance nominations. For Muslim clients, this is doubly important because of the Faraid implications.</div>
+    <div class="quiz-feedback wrong">✗ This is the most common misconception. Life insurance does NOT automatically pass through the estate or Faraid — it requires a valid nomination to be paid directly to beneficiaries. Without one, the process is governed by the Insurance Act and civil law, not Muslim inheritance law.</div>
+  </div>
+
+  <!-- Completion -->
+  <div style="background:linear-gradient(135deg,#0d1b2e 0%,#1a2e1a 100%);border-radius:12px;padding:36px;margin-top:40px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:12px;right:24px;font-size:20px;opacity:.3;font-family:serif">﷽</div>
+    <div style="font-size:36px;margin-bottom:12px">🕌</div>
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold);margin-bottom:8px">Playbook Complete</div>
+    <p style="color:rgba(255,255,255,.65);font-size:14px;max-width:520px;margin:0 auto 10px">You've completed all three SOUL Guild eLearning playbooks. Financial Planning, Fact-Finding Mastery, and Islamic Finance Corner. Use these in every client conversation.</p>
+    <p style="color:rgba(255,255,255,.4);font-size:12px;margin-bottom:20px">بارك الله فيك — May Allah bless your efforts</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <div style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:12px 20px;color:var(--gold);font-size:13px;font-weight:600;">📘 Review: Financial Planning Playbook</div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 20px;color:rgba(255,255,255,.6);font-size:13px;font-weight:600;">📜 Review: Estate Planning Playbook</div>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<script>
+// ── AUTH GATE ──
+async function sha256el(str){
+  try{if(window.crypto&&window.crypto.subtle){const buf=await window.crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}}catch(e){}
+  function rr(v,a){return(v>>>a)|(v<<(32-a));}
+  const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  let h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  const bytes=[...new TextEncoder().encode(str)];bytes.push(0x80);
+  while((bytes.length%64)!==56)bytes.push(0);
+  const bl=str.length*8;for(let i=7;i>=0;i--)bytes.push((bl/Math.pow(2,i*8))&0xff);
+  for(let i=0;i<bytes.length;i+=64){const w=[];for(let j=0;j<16;j++)w[j]=(bytes[i+j*4]<<24)|(bytes[i+j*4+1]<<16)|(bytes[i+j*4+2]<<8)|bytes[i+j*4+3];for(let j=16;j<64;j++){const s0=rr(w[j-15],7)^rr(w[j-15],18)^(w[j-15]>>>3);const s1=rr(w[j-2],17)^rr(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)>>>0;}let[a,b,c,d,e,f,g,hh]=h;for(let j=0;j<64;j++){const S1=rr(e,6)^rr(e,11)^rr(e,25);const ch=(e&f)^(~e&g);const T1=(hh+S1+ch+K[j]+w[j])>>>0;const S0=rr(a,2)^rr(a,13)^rr(a,22);const maj=(a&b)^(a&c)^(b&c);const T2=(S0+maj)>>>0;hh=g;g=f;f=e;e=(d+T1)>>>0;d=c;c=b;b=a;a=(T1+T2)>>>0;}h=[h[0]+a,h[1]+b,h[2]+c,h[3]+d,h[4]+e,h[5]+f,h[6]+g,h[7]+hh].map(v=>v>>>0);}
+  return h.map(v=>v.toString(16).padStart(8,'0')).join('');
+}
+function unlockContent(){document.getElementById('auth-gate').classList.add('hidden');document.body.classList.remove('locked');}
+(function checkAuth(){
+  const stored=localStorage.getItem('soul_agent_auth');
+  if(stored){try{const d=JSON.parse(stored);if(d.ts&&Date.now()-d.ts<30*24*60*60*1000){unlockContent();return;}}catch(e){}}
+  try{const ss=sessionStorage.getItem('soul_session');if(ss){unlockContent();return;}}catch(e){}
+})();
+document.getElementById('auth-pw').addEventListener('keydown',e=>{if(e.key==='Enter')authLogin();});
+async function authLogin(){
+  const pw=document.getElementById('auth-pw').value;if(!pw)return;
+  const btn=document.getElementById('auth-btn'),errEl=document.getElementById('auth-error');
+  btn.textContent='Checking…';btn.disabled=true;errEl.style.display='none';
+  try{const hash=await sha256el(pw);const res=await fetch('/api/data',{cache:'no-store'});const data=await res.json();const match=data.members.find(m=>m.passwordHash===hash);
+    if(match){localStorage.setItem('soul_agent_auth',JSON.stringify({id:match.id,ts:Date.now()}));unlockContent();}
+    else{errEl.style.display='block';btn.textContent='Sign In to Continue →';btn.disabled=false;}
+  }catch(e){errEl.textContent='Network error — please try again.';errEl.style.display='block';btn.textContent='Sign In to Continue →';btn.disabled=false;}
+}
+
+function nav(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
+  event.target.closest('.sb-link').classList.add('active');
+}
+const sections=document.querySelectorAll('.section');
+const links=document.querySelectorAll('.sb-link');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-80)cur=s.id;});
+  links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+cur+"'"))l.classList.add('active');});
+},{passive:true});
+function answer(el,type){
+  el.parentElement.querySelectorAll('.quiz-opt').forEach(o=>o.style.pointerEvents='none');
+  el.classList.add(type);
+  const quiz=el.closest('.quiz');
+  quiz.querySelectorAll('.quiz-feedback').forEach(f=>{f.style.display='none';});
+  const fb=quiz.querySelector('.quiz-feedback.'+type);
+  fb.classList.add('show');fb.style.display='block';
+}
+</script>
+</body>
+</html>

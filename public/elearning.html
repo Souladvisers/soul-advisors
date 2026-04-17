@@ -3,208 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estate Planning Playbook — SOUL Advisors</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>eLearning Hub — SOUL Advisors</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#1a1a2e;--gold:#c9a84c;--gold-light:#e8d5a3;--teal:#1b6ca8;--teal-dark:#0d4f7c;--teal-light:#e8f4fd;--cream:#faf8f3;--warm:#f2ede6;--green:#2d6a4f;--green-light:#e8f5ee;--red:#c0392b;--red-light:#fdecea;--amber:#d68910;--amber-light:#fef9e7;--border:#e2d9cc;--text:#2c2c3e;--muted:#7a7a8c;}
+:root{--ink:#1a1a2e;--gold:#c9a84c;--gold-lt:#f5edda;--cream:#faf8f3;--border:#e2d9cc;--text:#2c2c3e;--muted:#7a7a8c;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:256px;background:var(--ink);overflow-y:auto;z-index:100;display:flex;flex-direction:column;}
-.sidebar-brand{padding:26px 22px 18px;border-bottom:1px solid rgba(201,168,76,.3);}
-.brand-text{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold);line-height:1.3;}
-.brand-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;}
-.nav-label{font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:12px 22px 4px;}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px 22px;cursor:pointer;transition:all .2s;border-left:3px solid transparent;color:rgba(255,255,255,.6);font-size:13px;}
-.nav-item:hover{background:rgba(255,255,255,.06);color:#fff;}
-.nav-item.active{background:rgba(201,168,76,.1);border-left-color:var(--gold);color:var(--gold);font-weight:500;}
-.nav-icon{font-size:14px;flex-shrink:0;}
-.sidebar-footer{margin-top:auto;padding:18px 22px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:rgba(255,255,255,.22);line-height:1.6;}
-.main{margin-left:256px;min-height:100vh;}
-.section{display:none;animation:fadeIn .3s ease;}
-.section.active{display:block;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* HERO */
-.hero{background:linear-gradient(135deg,var(--ink) 0%,#16213e 55%,#0d4f7c 100%);padding:60px 52px;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-70px;right:-70px;width:380px;height:380px;border:1px solid rgba(201,168,76,.12);border-radius:50%;}
-.hero::after{content:'';position:absolute;bottom:-90px;right:50px;width:220px;height:220px;border:1px solid rgba(201,168,76,.08);border-radius:50%;}
-.hero-badge{display:inline-block;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);color:var(--gold);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 13px;border-radius:2px;margin-bottom:18px;}
-.hero h1{font-family:'Playfair Display',serif;font-size:46px;font-weight:900;color:#fff;line-height:1.15;margin-bottom:14px;position:relative;}
-.hero h1 span{color:var(--gold);}
-.hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:500px;line-height:1.7;font-weight:300;position:relative;}
-.hero-stats{display:flex;gap:36px;margin-top:36px;position:relative;}
-.stat-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--gold);display:block;}
-.stat-label{font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
-
-/* PAGE HEADER */
-.ph{padding:32px 52px 22px;border-bottom:1px solid var(--border);background:#fff;}
-.ph h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink);}
-.ph p{color:var(--muted);font-size:13px;margin-top:5px;font-weight:300;}
-.pad{padding:32px 52px;}
-
-/* CARDS */
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px;}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px;}
-.card{background:#fff;border:1px solid var(--border);border-radius:6px;padding:22px;transition:all .2s;}
-.card:hover{box-shadow:0 6px 20px rgba(26,26,46,.08);transform:translateY(-2px);border-color:var(--gold);}
-.card-ico{font-size:26px;margin-bottom:10px;display:block;}
-.card h3{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:7px;}
-.card p{font-size:13px;color:var(--muted);line-height:1.6;}
-
-/* SECTION TITLE */
-.stitle{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:14px;padding-bottom:9px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:9px;}
-
-/* INFO BLOCK */
-.ib{background:#fff;border:1px solid var(--border);border-radius:6px;padding:22px;margin-bottom:18px;}
-.ib h3{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:11px;display:flex;align-items:center;gap:7px;}
-
-/* CALLOUTS */
-.co{border-left:4px solid var(--gold);background:var(--amber-light);padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:18px;}
-.co.green{border-color:var(--green);background:var(--green-light);}
-.co.red{border-color:var(--red);background:var(--red-light);}
-.co.blue{border-color:var(--teal);background:var(--teal-light);}
-.co strong{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:var(--ink);}
-.co p,.co ul{font-size:13px;color:#444;line-height:1.65;}
-.co ul{padding-left:15px;margin-top:5px;}
-.co li{margin-bottom:4px;}
-
-/* CHECK LIST */
-.cl{list-style:none;}
-.cl li{padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;align-items:flex-start;gap:9px;line-height:1.5;}
-.cl li:last-child{border-bottom:none;}
-.cl li::before{content:'✦';color:var(--gold);font-size:9px;flex-shrink:0;margin-top:4px;}
-
-/* TABLE */
-.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:6px;overflow:hidden;border:1px solid var(--border);font-size:12.5px;margin-bottom:22px;}
-.tbl th{background:var(--ink);color:#fff;padding:12px 14px;text-align:left;font-weight:500;font-size:11px;letter-spacing:.04em;}
-.tbl th:first-child{color:var(--gold);}
-.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
-.tbl tr:last-child td{border-bottom:none;}
-.tbl tr:nth-child(even) td{background:var(--cream);}
-.tbl td:first-child{font-weight:600;color:var(--teal-dark);}
-.badge{display:inline-block;padding:2px 9px;border-radius:30px;font-size:11px;font-weight:600;}
-.bg{background:var(--green-light);color:var(--green);}
-.br{background:var(--red-light);color:var(--red);}
-.bb{background:var(--teal-light);color:var(--teal-dark);}
-.ba{background:var(--amber-light);color:var(--amber);}
-.divider{height:1px;background:var(--border);margin:26px 0;}
-
-/* SCENARIO */
-.scenario{background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:18px;}
-.sc-head{background:var(--ink);padding:14px 22px;display:flex;align-items:center;gap:10px;}
-.sc-head h3{color:#fff;font-size:14px;font-weight:600;}
-.sc-tag{background:rgba(201,168,76,.2);border:1px solid rgba(201,168,76,.4);color:var(--gold);font-size:10px;padding:2px 7px;border-radius:2px;font-weight:500;}
-.sc-body{padding:18px 22px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;}
-.sc-col h4{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
-.sc-col p,.sc-col ul{font-size:13px;color:var(--text);line-height:1.6;}
-.sc-col ul{padding-left:15px;}
-.sc-col li{margin-bottom:4px;}
-
-/* INTERACTIVE CHECKLIST */
-.ic-wrap{background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:22px;}
-.ic-head{background:var(--ink);padding:14px 22px;display:flex;justify-content:space-between;align-items:center;}
-.ic-head h3{color:#fff;font-size:14px;font-weight:600;}
-.prog{background:rgba(201,168,76,.2);border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:600;padding:3px 11px;border-radius:30px;}
-.ci{display:flex;align-items:flex-start;gap:12px;padding:13px 22px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
-.ci:last-child{border-bottom:none;}
-.ci:hover{background:var(--warm);}
-.ci.checked{background:var(--green-light);}
-.cb{width:19px;height:19px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:2px;font-size:11px;}
-.ci.checked .cb{background:var(--green);border-color:var(--green);color:#fff;}
-.it strong{display:block;font-size:13px;font-weight:500;color:var(--ink);}
-.it span{font-size:12px;color:var(--muted);margin-top:1px;display:block;}
-
-/* DIST BAR */
-.dbar{display:flex;height:38px;border-radius:4px;overflow:hidden;margin:10px 0;font-size:11px;font-weight:600;}
-.ds{display:flex;align-items:center;justify-content:center;color:#fff;transition:all .3s;}
-.ds:hover{filter:brightness(1.1);}
-
-/* PROCESS STEPS */
-.steps{display:flex;flex-direction:column;gap:0;}
-.step{display:flex;gap:18px;position:relative;}
-.step:not(:last-child)::before{content:'';position:absolute;left:17px;top:40px;bottom:0;width:2px;background:var(--border);}
-.snum{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:500;flex-shrink:0;border:2px solid var(--gold);}
-.scont{padding:6px 0 24px;flex:1;}
-.scont h4{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;}
-.scont p{font-size:13px;color:var(--muted);line-height:1.6;}
-
-/* TRUST CARDS */
-.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
-.tc{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:#fff;}
-.tc-head{padding:13px 16px;display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;color:#fff;}
-.tc-body{padding:14px 16px;}
-.tc-body .row{display:flex;gap:7px;margin-bottom:7px;font-size:12px;line-height:1.5;}
-.tc-body .row strong{color:var(--muted);min-width:72px;flex-shrink:0;font-weight:600;font-size:10px;letter-spacing:.04em;text-transform:uppercase;}
-
-/* QUICK REF */
-.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
-.qc{border:1px solid var(--border);border-radius:6px;padding:18px;background:#fff;text-align:center;}
-.qc .ico{font-size:30px;margin-bottom:9px;}
-.qc h4{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:5px;}
-.qc p{font-size:12px;color:var(--muted);line-height:1.5;}
-
-/* FATWA TIMELINE */
-.timeline{position:relative;padding-left:40px;}
-.timeline::before{content:'';position:absolute;left:16px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),var(--teal),var(--green));}
-.tl-item{position:relative;margin-bottom:28px;}
-.tl-dot{position:absolute;left:-32px;width:18px;height:18px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;top:4px;}
-.tl-item:nth-child(1) .tl-dot{background:#6c3483;}
-.tl-item:nth-child(2) .tl-dot{background:var(--red);}
-.tl-item:nth-child(3) .tl-dot{background:var(--amber);}
-.tl-item:nth-child(4) .tl-dot{background:var(--teal);}
-.tl-item:nth-child(5) .tl-dot{background:var(--green);}
-.tl-item:nth-child(6) .tl-dot{background:var(--gold);}
-.tl-year{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px;}
-.tl-title{font-weight:700;font-size:15px;color:var(--ink);margin-bottom:6px;}
-.tl-body{background:#fff;border:1px solid var(--border);border-radius:6px;padding:14px 16px;font-size:13px;line-height:1.65;color:var(--text);}
-.tl-verdict{display:inline-block;margin-top:8px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:30px;}
-
-/* ORDER LIST */
-.olist{display:flex;flex-direction:column;gap:0;}
-.oi{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px dashed var(--border);}
-.oi:last-child{border-bottom:none;}
-.onum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
-.oi h4{font-size:13px;font-weight:600;color:var(--ink);}
-.oi p{font-size:12px;color:var(--muted);margin-top:2px;}
-
-/* ASSET TABLE */
-.atbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12.5px;margin-bottom:22px;}
-.atbl th{background:var(--ink);color:rgba(255,255,255,.85);padding:11px 13px;text-align:left;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;}
-.atbl td{padding:10px 13px;border-bottom:1px solid var(--border);vertical-align:top;}
-.atbl tr:last-child td{border-bottom:none;}
-.atbl tr:nth-child(even) td{background:var(--cream);}
-.sy{color:var(--green);font-weight:700;}
-.sn{color:var(--red);font-weight:700;}
-.sv{color:var(--amber);font-weight:700;}
-
-/* LPA CARDS */
-.lpa-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px;}
-.lc{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:#fff;}
-.lc-head{padding:11px 15px;font-size:13px;font-weight:600;color:#fff;}
-.lc-body{padding:13px 15px;}
-.lc-body ul{padding-left:14px;}
-.lc-body li{font-size:12px;color:var(--text);margin-bottom:5px;line-height:1.5;}
-
-/* SVG ILLUSTRATIONS */
-.illus-wrap{display:flex;justify-content:center;margin:20px 0;padding:24px;background:#fff;border:1px solid var(--border);border-radius:8px;}
-.illus-row{display:flex;gap:20px;margin-bottom:22px;}
-.illus-half{flex:1;background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;align-items:center;}
-.illus-half h4{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px;text-align:center;}
-.illus-half p{font-size:12px;color:var(--muted);text-align:center;margin-bottom:14px;}
-
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-track{background:var(--ink);}
-::-webkit-scrollbar-thumb{background:rgba(201,168,76,.4);border-radius:3px;}
-</style>
-</head>
-<style>
-/* AUTH GATE */
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--text);min-height:100vh;}
 #auth-gate{position:fixed;inset:0;background:#1a1a2e;z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
 #auth-gate.hidden{display:none;}
 .auth-box{background:#fff;border-radius:8px;padding:2.5rem;max-width:380px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.4);}
 .auth-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#c9a84c;letter-spacing:0.08em;margin-bottom:0.25rem;}
 .auth-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#1a1a2e;margin-bottom:0.25rem;}
-.auth-sub{font-size:0.82rem;color:#7a7a8c;margin-bottom:1.75rem;}
+.auth-sub{font-size:0.82rem;color:#7a7a8c;margin-bottom:1.75rem;line-height:1.55;}
 .auth-box input{width:100%;border:1px solid #e2d9cc;border-radius:5px;padding:0.75rem 1rem;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:0.75rem;}
 .auth-box input:focus{border-color:#c9a84c;}
 .auth-btn{width:100%;background:#1a1a2e;color:#c9a84c;border:none;padding:0.85rem;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.04em;}
@@ -212,1149 +22,142 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .auth-btn:disabled{opacity:0.6;cursor:not-allowed;}
 .auth-error{color:#c0392b;font-size:0.8rem;margin-top:0.5rem;display:none;}
 .auth-lock{font-size:2rem;margin-bottom:1rem;}
-/* Hide main content until auth passes */
-body.locked .sidebar, body.locked .main{visibility:hidden;}
+body.locked .hub{visibility:hidden;}
+.hub{min-height:100vh;display:flex;flex-direction:column;}
+.hub-header{background:linear-gradient(135deg,var(--ink) 0%,#16213e 55%,#0d4f7c 100%);padding:52px 52px 44px;position:relative;overflow:hidden;}
+.hub-header::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border:1px solid rgba(201,168,76,.1);border-radius:50%;}
+.hub-header::after{content:'';position:absolute;bottom:-80px;right:80px;width:180px;height:180px;border:1px solid rgba(201,168,76,.07);border-radius:50%;}
+.hub-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:44px;position:relative;}
+.hub-brand{display:flex;align-items:center;gap:12px;}
+.hub-brand .logo-mark{width:36px;height:36px;border-radius:6px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.hub-brand .logo-text{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--gold);line-height:1.2;}
+.hub-brand .logo-sub{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;margin-top:1px;}
+.back-link{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s;padding:6px 12px;border:1px solid rgba(255,255,255,.1);border-radius:4px;}
+.back-link:hover{color:var(--gold);border-color:rgba(201,168,76,.3);}
+.hub-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative;display:flex;align-items:center;gap:10px;}
+.hub-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--gold);}
+.hub-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,44px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:12px;position:relative;}
+.hub-title span{color:var(--gold);}
+.hub-desc{font-size:14px;color:rgba(255,255,255,.55);max-width:520px;line-height:1.75;font-weight:300;position:relative;}
+.hub-body{background:var(--cream);flex:1;padding:48px 52px;}
+.modules-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+.modules-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
+.module-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;transition:all .22s;}
+.module-card:hover{box-shadow:0 8px 32px rgba(26,26,46,.12);transform:translateY(-3px);border-color:var(--gold);}
+.mc-top{padding:22px 22px 16px;flex:1;}
+.mc-icon{width:46px;height:46px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+.mc-tag{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:inline-block;}
+.mc-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:8px;}
+.mc-desc{font-size:12.5px;color:var(--muted);line-height:1.65;}
+.mc-meta{padding:12px 22px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.mc-lessons{font-size:11px;color:var(--muted);}
+.mc-arrow{font-size:12px;color:var(--gold);font-weight:600;letter-spacing:.04em;}
+.hub-footer{background:var(--ink);padding:22px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);}
+.hf-brand{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--gold);}
+.hf-note{font-size:10px;color:rgba(255,255,255,.22);}
+@media(max-width:640px){.hub-header,.hub-body{padding:32px 20px;}.hub-nav{margin-bottom:28px;}.hub-footer{padding:18px 20px;flex-direction:column;gap:6px;text-align:center;}}
 </style>
+</head>
 <body class="locked">
 
-<!-- ── AUTH GATE ── -->
 <div id="auth-gate">
   <div class="auth-box">
-    <div class="auth-lock">🔒</div>
+    <div class="auth-lock">&#128274;</div>
     <div class="auth-logo">SOUL Advisors</div>
     <div class="auth-title">Agent Access Only</div>
-    <div class="auth-sub">This e-learning module is for SOUL Advisors agents only. Sign in with your profile password to continue.</div>
+    <div class="auth-sub">The eLearning hub is for SOUL Advisors agents only. Sign in with your profile password to continue.</div>
     <input type="password" id="auth-pw" placeholder="Enter your password" autocomplete="current-password">
-    <button class="auth-btn" id="auth-btn" onclick="authLogin()">Sign In to Continue →</button>
+    <button class="auth-btn" id="auth-btn" onclick="authLogin()">Sign In to Continue &#8594;</button>
     <div class="auth-error" id="auth-error">Incorrect password. Please try again.</div>
   </div>
 </div>
 
-<nav class="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-text">Estate Planning<br>Playbook</div>
-    <div class="brand-sub">Abdullah Arief · v2.0</div>
-  </div>
-  <div>
-    <div class="nav-label">Start Here</div>
-    <div class="nav-item active" onclick="show('overview')"><span class="nav-icon">🏠</span>Overview</div>
-    <div class="nav-item" onclick="show('checklist')"><span class="nav-icon">✅</span>Quick Checklist</div>
-    <div class="nav-label">Core Knowledge</div>
-    <div class="nav-item" onclick="show('legal')"><span class="nav-icon">⚖️</span>Legal Framework</div>
-    <div class="nav-item" onclick="show('faraid')"><span class="nav-icon">☪️</span>Islamic Inheritance</div>
-    <div class="nav-item" onclick="show('fatwa')"><span class="nav-icon">📜</span>Fatwa Timeline</div>
-    <div class="nav-item" onclick="show('intestate')"><span class="nav-icon">📋</span>Intestate Rules</div>
-    <div class="nav-item" onclick="show('wills')"><span class="nav-icon">🖊️</span>Will Planning</div>
-    <div class="nav-item" onclick="show('trusts')"><span class="nav-icon">🏛️</span>Trust Structures</div>
-    <div class="nav-item" onclick="show('incapacity')"><span class="nav-icon">🛡️</span>LPA · AMD · ACP</div>
-    <div class="nav-item" onclick="show('minors')"><span class="nav-icon">👶</span>Nominations & Minors</div>
-    <div class="nav-label">Planning Tools</div>
-    <div class="nav-item" onclick="show('assets')"><span class="nav-icon">💼</span>Asset Guide</div>
-    <div class="nav-item" onclick="show('scenarios')"><span class="nav-icon">👥</span>Client Scenarios</div>
-    <div class="nav-item" onclick="show('process')"><span class="nav-icon">🗺️</span>Planning Process</div>
-    <div class="nav-item" onclick="show('disputes')"><span class="nav-icon">⚠️</span>Disputes & Risks</div>
-  </div>
-  <div class="sidebar-footer">Singapore Estate Planning<br>Internal practitioner reference only<br><br><a href="/" onclick="localStorage.removeItem('soul_agent_auth')" style="color:rgba(201,168,76,0.6);font-size:10px;text-decoration:none;">← Back to profile</a></div>
-</nav>
-
-<div class="main">
-
-<!-- ====== OVERVIEW ====== -->
-<section id="overview" class="section active">
-  <div class="hero">
-    <div class="hero-badge">Singapore Estate Planning · 2025 Edition</div>
-    <h1>Your Complete<br>Practitioner <span>Playbook</span></h1>
-    <p class="hero-sub">A comprehensive visual guide to estate planning in Singapore's unique dual-law, multicultural environment — now with updated MUIS fatwas and illustrations.</p>
-    <div class="hero-stats">
-      <div><span class="stat-num">2</span><span class="stat-label">Legal Systems</span></div>
-      <div><span class="stat-num">4</span><span class="stat-label">MUIS Fatwa Milestones</span></div>
-      <div><span class="stat-num">40+</span><span class="stat-label">Pages of Guidance</span></div>
-      <div><span class="stat-num">2024</span><span class="stat-label">Workgroup Update</span></div>
-    </div>
-  </div>
-  <div class="pad">
-
-    <!-- SVG: The Two Pillars of SG Estate Planning -->
-    <p class="stitle">The Two Legal Pillars of Singapore Estate Planning</p>
-    <div class="illus-wrap">
-      <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;">
-        <!-- Background -->
-        <rect width="720" height="300" fill="#faf8f3" rx="8"/>
-        <!-- Centre column -->
-        <rect x="310" y="30" width="100" height="240" fill="#1a1a2e" rx="4" opacity=".06"/>
-        <text x="360" y="155" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="#1a1a2e" opacity=".5">SINGAPORE</text>
-        <text x="360" y="170" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="#1a1a2e" opacity=".5">ESTATE LAW</text>
-
-        <!-- Left pillar: Civil -->
-        <rect x="30" y="50" width="260" height="200" fill="#1b6ca8" rx="8" opacity=".08"/>
-        <text x="160" y="80" text-anchor="middle" font-family="Playfair Display,serif" font-size="16" font-weight="700" fill="#0d4f7c">Civil Law</text>
-        <text x="160" y="96" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#0d4f7c" opacity=".7">For Non-Muslims</text>
-        <line x1="50" y1="108" x2="270" y2="108" stroke="#1b6ca8" stroke-width="1" opacity=".3"/>
-        <!-- Items -->
-        <circle cx="55" cy="126" r="4" fill="#1b6ca8"/>
-        <text x="66" y="130" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Wills Act (Cap 352)</text>
-        <circle cx="55" cy="148" r="4" fill="#1b6ca8"/>
-        <text x="66" y="152" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Intestate Succession Act</text>
-        <circle cx="55" cy="170" r="4" fill="#1b6ca8"/>
-        <text x="66" y="174" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Mental Capacity Act</text>
-        <circle cx="55" cy="192" r="4" fill="#1b6ca8"/>
-        <text x="66" y="196" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Probate &amp; Admin Act</text>
-        <circle cx="55" cy="214" r="4" fill="#1b6ca8"/>
-        <text x="66" y="218" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">CPF Act (nominations)</text>
-        <circle cx="55" cy="236" r="4" fill="#1b6ca8"/>
-        <text x="66" y="240" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Trustees Act (Cap 337)</text>
-
-        <!-- Right pillar: Islamic -->
-        <rect x="430" y="50" width="260" height="200" fill="#c9a84c" rx="8" opacity=".1"/>
-        <text x="560" y="80" text-anchor="middle" font-family="Playfair Display,serif" font-size="16" font-weight="700" fill="#8b6914">Islamic (Syariah) Law</text>
-        <text x="560" y="96" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#8b6914" opacity=".8">For Muslims</text>
-        <line x1="450" y1="108" x2="670" y2="108" stroke="#c9a84c" stroke-width="1" opacity=".4"/>
-        <circle cx="455" cy="126" r="4" fill="#c9a84c"/>
-        <text x="466" y="130" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">AMLA (Faraid)</text>
-        <circle cx="455" cy="148" r="4" fill="#c9a84c"/>
-        <text x="466" y="152" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Syariah Court jurisdiction</text>
-        <circle cx="455" cy="170" r="4" fill="#c9a84c"/>
-        <text x="466" y="174" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">MUIS Fatwas &amp; Irsyad</text>
-        <circle cx="455" cy="192" r="4" fill="#c9a84c"/>
-        <text x="466" y="196" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Hibah / Wasiyyah / Wakaf</text>
-        <circle cx="455" cy="214" r="4" fill="#c9a84c"/>
-        <text x="466" y="218" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">Inheritance Certificate</text>
-        <circle cx="455" cy="236" r="4" fill="#c9a84c"/>
-        <text x="466" y="240" font-family="DM Sans,sans-serif" font-size="12" fill="#1a1a2e">BaitulMal (residual estate)</text>
-
-        <!-- Bridge labels -->
-        <text x="360" y="268" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#1a1a2e" opacity=".5">CPF &amp; Insurance nominations apply to both — governed by civil law</text>
-      </svg>
-    </div>
-
-    <div class="divider"></div>
-    <p class="stitle">6 Key Value Propositions for Clients</p>
-    <div class="grid-3">
-      <div class="card"><span class="card-ico">☮️</span><h3>Peace of Mind</h3><p>Confidence that family and assets are protected according to their wishes — not left to chance or legal default.</p></div>
-      <div class="card"><span class="card-ico">💰</span><h3>Tax Efficiency</h3><p>Singapore has no estate duty since 2008. Planning optimises distribution and avoids unnecessary delays and costs.</p></div>
-      <div class="card"><span class="card-ico">🏡</span><h3>Family Harmony</h3><p>Clear documented intentions reduce disputes. Ambiguity is the enemy of family peace.</p></div>
-      <div class="card"><span class="card-ico">🌱</span><h3>Legacy Preservation</h3><p>Strategies to maintain and transfer wealth across generations — including Islamic tools like hibah and wakaf.</p></div>
-      <div class="card"><span class="card-ico">🛡️</span><h3>Risk Management</h3><p>Protection against personal, family, and financial risks through LPA, AMD, and proper insurance nominations.</p></div>
-      <div class="card"><span class="card-ico">🔧</span><h3>Flexibility</h3><p>Structures that adapt to changing circumstances — trusts, tenancy restructuring, and regular plan reviews.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== CHECKLIST ====== -->
-<section id="checklist" class="section">
-  <div class="ph"><h2>✅ Estate Planning Checklist</h2><p>Click each item to track completion. Keep separate checklists for each client.</p></div>
-  <div class="pad">
-    <div class="ic-wrap">
-      <div class="ic-head"><h3>Core Documents — All Clients</h3><span class="prog" id="p1">0 / 7 Done</span></div>
-      <div class="ci" onclick="tc(this,'p1',7)"><div class="cb">✓</div><div class="it"><strong>📜 Will — properly executed</strong><span>Written, signed by testator, witnessed by 2 independent persons (not beneficiaries). Stored securely.</span></div></div>
-      <div class="ci" onclick="tc(this,'p1',7)"><div class="cb">✓</div><div class="it"><strong>🏦 CPF Nominations — all accounts</strong><span>Ordinary, Special, Medisave covered. Nominated persons confirmed current and correct.</span></div></div>
-      <div class="ci" onclick="tc(this,'p1',7)"><div class="cb">✓</div><div class="it"><strong>🛡️ LPA Form 1 — Property &amp; Financial Affairs</strong><span>Completed, witnessed by accredited certificate issuer, registered with OPG. Fee: $75.</span></div></div>
-      <div class="ci" onclick="tc(this,'p1',7)"><div class="cb">✓</div><div class="it"><strong>💊 LPA Form 2 — Personal Welfare</strong><span>Healthcare and personal care decisions covered. Consider same donee as Form 1 for consistency.</span></div></div>
-      <div class="ci" onclick="tc(this,'p1',7)"><div class="cb">✓</div><div class="it"><strong>🏥 AMD — if desired by client</strong><span>Terminal illness end-of-life directive only. Witnessed by doctor + one other. Free registration.</span></div></div>
-      <div class="ci" onclick="tc(this,'p1',7)"><div class="cb">✓</div><div class="it"><strong>💬 ACP — healthcare preference discussion</strong><span>Not a legal document. Ongoing conversation about values, wishes, preferred care setting.</span></div></div>
-      <div class="ci" onclick="tc(this,'p1',7)"><div class="cb">✓</div><div class="it"><strong>🔒 Insurance nominations updated</strong><span>All life policies reviewed. Beneficiaries current and aligned with overall plan.</span></div></div>
-    </div>
-    <div class="ic-wrap">
-      <div class="ic-head"><h3>Muslim Clients — Additional Items</h3><span class="prog" id="p2">0 / 5 Done</span></div>
-      <div class="ci" onclick="tc(this,'p2',5)"><div class="cb">✓</div><div class="it"><strong>☪️ Islamic will (wasiyyah up to 1/3)</strong><span>Faraid-compliant. Non-heirs or charity. Cannot exceed 1/3 of net estate post-debts.</span></div></div>
-      <div class="ci" onclick="tc(this,'p2',5)"><div class="cb">✓</div><div class="it"><strong>🏦 CPF nominations confirmed (MUIS: halal)</strong><span>Does not count against wasiyyah. Family can access before Inheritance Certificate issued.</span></div></div>
-      <div class="ci" onclick="tc(this,'p2',5)"><div class="cb">✓</div><div class="it"><strong>🏥 Insurance nominations confirmed (MUIS: halal)</strong><span>Contractual right — does not reduce Faraid estate. Takaful preferred; conventional permissible.</span></div></div>
-      <div class="ci" onclick="tc(this,'p2',5)"><div class="cb">✓</div><div class="it"><strong>🎁 Hibah arrangements (if applicable)</strong><span>Lifetime gifts documented with offer, acceptance, and physical/constructive possession completed.</span></div></div>
-      <div class="ci" onclick="tc(this,'p2',5)"><div class="cb">✓</div><div class="it"><strong>📿 Nuzuriah / religious obligations documented</strong><span>All vows, pledges, and unfulfilled obligations recorded with financial provisions in estate plan.</span></div></div>
-    </div>
-    <div class="co"><strong>⚡ Annual Review Triggers — Update the plan when these happen:</strong>
-      <ul><li>Marriage or divorce · Birth or adoption of children · Death of a named executor or beneficiary</li>
-      <li>Significant purchase or sale of major assets (property, business)</li>
-      <li>Health changes or new diagnosis · International move or new overseas assets · Law or fatwa changes</li></ul>
-    </div>
-  </div>
-</section>
-
-<!-- ====== LEGAL ====== -->
-<section id="legal" class="section">
-  <div class="ph"><h2>⚖️ Singapore's Legal Framework</h2><p>Key legislation, regulatory bodies, and what governs each type of client.</p></div>
-  <div class="pad">
-    <div class="grid-2">
-      <div class="ib"><h3>🇸🇬 Non-Muslim Clients</h3>
-        <ul class="cl">
-          <li><strong>Wills Act (Cap 352)</strong> — Governs will-making, validity, formal requirements</li>
-          <li><strong>Intestate Succession Act (Cap 146)</strong> — Fixed distribution when no valid will</li>
-          <li><strong>Probate &amp; Administration Act</strong> — Court procedures for estate administration</li>
-          <li><strong>Mental Capacity Act (Cap 177A)</strong> — LPA, deputyship, capacity standards</li>
-          <li><strong>Trustees Act (Cap 337)</strong> — Trustee powers, duties, liability protection</li>
-          <li><strong>Conveyancing &amp; Law of Property Act</strong> — Joint tenancy vs tenancy-in-common</li>
-          <li><strong>Companies Act (Cap 50)</strong> — Share transfers, business succession</li>
-        </ul>
-      </div>
-      <div class="ib"><h3>☪️ Muslim Clients</h3>
-        <ul class="cl">
-          <li><strong>Administration of Muslim Law Act (AMLA)</strong> — Faraid inheritance, Syariah Court jurisdiction</li>
-          <li><strong>MUIS Fatwas</strong> — Religious rulings: CPF, insurance, hibah, joint tenancy. Note: fatwas are not legally binding on courts (Shafeeg 2010)</li>
-          <li><strong>Inheritance Certificate (Syariah Court)</strong> — Mandatory before any Faraid distribution. Apply within 6 months of death.</li>
-          <li><strong>BaitulMal (MUIS)</strong> — Residual estate when no Faraid heirs exist</li>
-          <li><strong>Islamic Legacy Planning Workgroup (2024)</strong> — MUIS initiative reviewing modern planning needs</li>
-        </ul>
-      </div>
-    </div>
-
-    <p class="stitle">Key Differences: Non-Muslim Will vs Intestate vs Muslim Faraid</p>
-    <table class="tbl">
-      <thead><tr><th>Aspect</th><th>Non-Muslim Will</th><th>Non-Muslim Intestate</th><th>Muslim Faraid</th></tr></thead>
-      <tbody>
-        <tr><td>Flexibility</td><td><span class="badge bg">Full freedom</span></td><td><span class="badge br">Zero flexibility</span></td><td><span class="badge ba">1/3 flexible only</span></td></tr>
-        <tr><td>Spouse Share</td><td>Any amount desired</td><td>50% (if children exist)</td><td>1/8 wife or 1/4 husband (with children)</td></tr>
-        <tr><td>Children</td><td>Any amount</td><td>50% total, equal shares</td><td>Sons 2× daughters' share</td></tr>
-        <tr><td>Gender Equality</td><td>Equal if desired</td><td>Equal within same class</td><td>Islamic ratios apply</td></tr>
-        <tr><td>Parents' Share</td><td>As desired</td><td>Inherit if no spouse/children</td><td>Fixed 1/6 each (if children exist)</td></tr>
-        <tr><td>Court Oversight</td><td>Probate required</td><td>Letters of Administration</td><td>Syariah Court + Probate Court</td></tr>
-        <tr><td>Non-Muslim beneficiary?</td><td>Yes, freely</td><td>N/A</td><td>Only via 1/3 wasiyyah</td></tr>
-      </tbody>
-    </table>
-
-    <div class="co blue"><strong>💡 Critical Practitioner Note: Fatwas vs Court Authority</strong>
-      <p>In the landmark <em>Shafeeg bin Salim Talib v Fatimah bte Abud</em> [2010] Court of Appeal case, the court ruled that MUIS fatwas are <strong>not legally binding</strong> on Singapore courts — they are expert opinions only. Civil law (Land Titles Act, etc.) governs property for all Singaporeans, Muslim and non-Muslim. The 2019 MUIS fatwa on joint tenancy was issued to align with this civil law reality.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ====== FARAID ====== -->
-<section id="faraid" class="section">
-  <div class="ph"><h2>☪️ Islamic Inheritance — Faraid</h2><p>Distribution principles, MUIS rulings, and practical tools for Muslim clients.</p></div>
-  <div class="pad">
-
-    <!-- SVG: Faraid Estate Flow -->
-    <p class="stitle">Estate Distribution Flow — After Death</p>
-    <div class="illus-wrap">
-      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
-        <rect width="680" height="220" fill="#faf8f3" rx="8"/>
-        <!-- Gross Estate -->
-        <rect x="260" y="15" width="160" height="44" rx="6" fill="#1a1a2e"/>
-        <text x="340" y="33" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="white">Gross Estate</text>
-        <text x="340" y="49" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">All assets at death</text>
-
-        <!-- Arrow down -->
-        <line x1="340" y1="59" x2="340" y2="78" stroke="#e2d9cc" stroke-width="2"/>
-        <polygon points="334,74 340,84 346,74" fill="#e2d9cc"/>
-
-        <!-- Deductions row -->
-        <rect x="30" y="84" width="148" height="44" rx="6" fill="#1b6ca8" opacity=".15" stroke="#1b6ca8" stroke-width="1" opacity=".3"/>
-        <text x="104" y="102" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#0d4f7c">① Funeral Expenses</text>
-        <text x="104" y="116" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#0d4f7c" opacity=".7">Jenazah costs first</text>
-
-        <rect x="196" y="84" width="148" height="44" rx="6" fill="#d68910" opacity=".12" stroke="#d68910" stroke-width="1" opacity=".4"/>
-        <text x="270" y="102" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#8b5e0d">② Debts (Hutang)</text>
-        <text x="270" y="116" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b5e0d" opacity=".8">Loans, zakat, nuzuriah</text>
-
-        <rect x="362" y="84" width="148" height="44" rx="6" fill="#2d6a4f" opacity=".12" stroke="#2d6a4f" stroke-width="1" opacity=".4"/>
-        <text x="436" y="102" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#1a4a35">③ Wasiyyah (up to 1/3)</text>
-        <text x="436" y="116" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#1a4a35" opacity=".8">Non-heirs or charity</text>
-
-        <rect x="528" y="84" width="122" height="44" rx="6" fill="#6c3483" opacity=".1" stroke="#6c3483" stroke-width="1" opacity=".3"/>
-        <text x="589" y="102" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#6c3483">④ Faraid</text>
-        <text x="589" y="116" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#6c3483" opacity=".8">Min. 2/3 to heirs</text>
-
-        <!-- Connecting lines -->
-        <line x1="104" y1="84" x2="340" y2="59" stroke="#1b6ca8" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
-        <line x1="270" y1="84" x2="340" y2="59" stroke="#d68910" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
-        <line x1="436" y1="84" x2="340" y2="59" stroke="#2d6a4f" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
-        <line x1="589" y1="84" x2="340" y2="59" stroke="#6c3483" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
-
-        <!-- Arrow to Faraid heirs -->
-        <line x1="589" y1="128" x2="589" y2="148" stroke="#6c3483" stroke-width="2"/>
-        <polygon points="583,144 589,154 595,144" fill="#6c3483"/>
-        <rect x="490" y="154" width="200" height="48" rx="6" fill="#6c3483" opacity=".1" stroke="#6c3483" stroke-width="1.5"/>
-        <text x="590" y="173" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#6c3483">Lawful Heirs (ʿAsabah)</text>
-        <text x="590" y="188" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#6c3483" opacity=".8">Spouse · Children · Parents · Siblings</text>
-
-        <!-- Note -->
-        <text x="340" y="210" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#7a7a8c">CPF nominations &amp; insurance proceeds fall outside this flow — they bypass Faraid (MUIS rulings)</text>
-      </svg>
-    </div>
-
-    <p class="stitle">Common Heir Shares at a Glance</p>
-    <table class="tbl">
-      <thead><tr><th>Heir</th><th>With Children</th><th>Without Children</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td>Husband</td><td>1/4</td><td>1/2</td><td>Male surviving spouse always gets more than female</td></tr>
-        <tr><td>Wife (1 wife)</td><td>1/8</td><td>1/4</td><td>Multiple wives share this portion equally</td></tr>
-        <tr><td>Father</td><td>1/6 + residue</td><td>Residue (ʿAsabah)</td><td>Gets more when no sons exist</td></tr>
-        <tr><td>Mother</td><td>1/6</td><td>1/3</td><td>Reduced to 1/6 if deceased has 2+ siblings</td></tr>
-        <tr><td>Son (with daughter)</td><td>2× daughter's share</td><td>2× daughter's share</td><td>ʿAsabah (residuary heir)</td></tr>
-        <tr><td>Daughter only (1)</td><td>1/2 of estate</td><td>1/2 of estate</td><td>If no son; otherwise shares residue 2:1</td></tr>
-        <tr><td>Daughters only (2+)</td><td>2/3 shared equally</td><td>2/3 shared equally</td><td>Only if no son present</td></tr>
-        <tr><td>BaitulMal (MUIS)</td><td colspan="2">Receives residual estate when no heirs remain</td><td>Administered by MUIS</td></tr>
-      </tbody>
-    </table>
-
-    <p class="stitle">Worked Example — $300,000 Estate</p>
-    <div class="ib">
-      <h3>Muslim man dies leaving wife, 1 son, 1 daughter</h3>
-      <div class="dbar">
-        <div class="ds" style="width:12.5%;background:#1b6ca8;font-size:11px;">Wife 1/8</div>
-        <div class="ds" style="width:58.3%;background:#2d6a4f;">Son (2 parts)</div>
-        <div class="ds" style="width:29.2%;background:#c9a84c;color:#1a1a2e;font-size:11px;">Daughter (1 part)</div>
-      </div>
-      <div class="grid-3" style="margin-top:14px;">
-        <div style="text-align:center;padding:12px;background:var(--teal-light);border-radius:6px;">
-          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Wife (1/8)</div>
-          <div style="font-size:22px;font-weight:700;color:var(--teal-dark);font-family:'Playfair Display',serif;">$37,500</div>
-        </div>
-        <div style="text-align:center;padding:12px;background:var(--green-light);border-radius:6px;">
-          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Son (2 parts)</div>
-          <div style="font-size:22px;font-weight:700;color:var(--green);font-family:'Playfair Display',serif;">$175,000</div>
-        </div>
-        <div style="text-align:center;padding:12px;background:var(--amber-light);border-radius:6px;">
-          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Daughter (1 part)</div>
-          <div style="font-size:22px;font-weight:700;color:var(--amber);font-family:'Playfair Display',serif;">$87,500</div>
+<div class="hub">
+  <div class="hub-header">
+    <div class="hub-nav">
+      <div class="hub-brand">
+        <div class="logo-mark">&#128218;</div>
+        <div>
+          <div class="logo-text">SOUL Advisors</div>
+          <div class="logo-sub">Agent eLearning Hub</div>
         </div>
       </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:10px;">Remaining after wife's 1/8 = $262,500 → split 2:1 between son and daughter. Use Syariah Court's online inheritance calculator for complex family structures.</p>
+      <a href="/" class="back-link">&#8592; Back to Profile</a>
     </div>
-
-    <div class="grid-3">
-      <div class="co green"><strong>✅ CPF Nominations — Halal (MUIS)</strong>
-        <ul><li>Administrative arrangement, not inheritance</li><li>Does NOT count against 1/3 wasiyyah</li><li>Family access BEFORE Inheritance Certificate</li><li>MUIS actively encourages all Muslims to nominate</li></ul></div>
-      <div class="co green"><strong>✅ Insurance Nominations — Halal (MUIS)</strong>
-        <ul><li>Contractual right, not inherited asset</li><li>Does NOT reduce Faraid estate</li><li>Any beneficiary may be nominated</li><li>Takaful preferred; conventional is permissible</li></ul></div>
-      <div class="co green"><strong>✅ Hibah (Lifetime Gift) — Encouraged</strong>
-        <ul><li>Immediate and irrevocable when properly completed</li><li>Requires: offer (ijab), acceptance (qabul), possession (qabdh)</li><li>Cannot be used to circumvent Faraid unjustly</li><li>Deathbed gifts limited to 1/3 of estate</li></ul></div>
-    </div>
+    <div class="hub-eyebrow">Internal Training Resources</div>
+    <h1 class="hub-title">Your <span>Knowledge</span> Hub</h1>
+    <p class="hub-desc">Practitioner-grade playbooks for SOUL Guild agents. Master product knowledge, client conversations, and financial planning fundamentals.</p>
   </div>
-</section>
 
-<!-- ====== FATWA TIMELINE ====== -->
-<section id="fatwa" class="section">
-  <div class="ph"><h2>📜 MUIS Fatwa Evolution — Key Milestones</h2><p>How Islamic rulings on estate planning have evolved in Singapore from 1997 to 2024.</p></div>
-  <div class="pad">
+  <div class="hub-body">
+    <div class="modules-label">4 Modules Available</div>
+    <div class="modules-grid">
 
-    <div class="co blue"><strong>🔍 Understanding Fatwas in Singapore</strong>
-      <p>MUIS fatwas are religious opinions issued by the Fatwa Committee under the Office of the Mufti. They carry significant moral and religious weight in the Muslim community. However, per the Court of Appeal in <em>Shafeeg bin Salim Talib v Fatimah bte Abud</em> [2010] SGCA 11, fatwas are <strong>not legally binding on Singapore courts</strong> — they are expert opinions that can be overridden by statutory law (e.g. Land Titles Act).</p>
-    </div>
-
-    <p class="stitle">The Joint Tenancy Fatwa Story: 1997 → 2008 → 2010 → 2019</p>
-
-    <!-- SVG: Timeline horizontal -->
-    <div class="illus-wrap" style="padding:16px;">
-      <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;">
-        <rect width="700" height="120" fill="#faf8f3" rx="6"/>
-        <!-- Main line -->
-        <line x1="60" y1="55" x2="640" y2="55" stroke="#e2d9cc" stroke-width="2"/>
-        <!-- Points -->
-        <circle cx="80" cy="55" r="12" fill="#6c3483"/>
-        <text x="80" y="59" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" font-weight="600" fill="white">1997</text>
-        <circle cx="240" cy="55" r="12" fill="#c0392b"/>
-        <text x="240" y="59" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" font-weight="600" fill="white">2008</text>
-        <circle cx="400" cy="55" r="12" fill="#1b6ca8"/>
-        <text x="400" y="59" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" font-weight="600" fill="white">2010</text>
-        <circle cx="560" cy="55" r="12" fill="#2d6a4f"/>
-        <text x="560" y="59" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" font-weight="600" fill="white">2019</text>
-        <circle cx="640" cy="55" r="12" fill="#c9a84c"/>
-        <text x="640" y="59" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" font-weight="600" fill="#1a1a2e">2024</text>
-        <!-- Labels -->
-        <text x="80" y="22" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#6c3483">1st Fatwa</text>
-        <text x="80" y="33" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#7a7a8c">Sharikah 50/50</text>
-        <text x="240" y="22" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#c0392b">Revised Fatwa</text>
-        <text x="240" y="33" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#7a7a8c">Hibah Ruqba option</text>
-        <text x="400" y="22" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#1b6ca8">Court of Appeal</text>
-        <text x="400" y="33" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#7a7a8c">Civil law prevails</text>
-        <text x="560" y="22" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#2d6a4f">New Fatwa</text>
-        <text x="560" y="33" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#7a7a8c">JT = Valid contract</text>
-        <text x="640" y="22" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#c9a84c">ILP Workgroup</text>
-        <text x="640" y="33" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#7a7a8c">New review begins</text>
-        <!-- Bottom labels -->
-        <text x="80" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#6c3483">Strict compliance</text>
-        <text x="80" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#6c3483">with Faraid</text>
-        <text x="240" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#c0392b">Complex, hard</text>
-        <text x="240" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#c0392b">to implement</text>
-        <text x="400" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#1b6ca8">Shafeeg ruling:</text>
-        <text x="400" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#1b6ca8">fatwa non-binding</text>
-        <text x="560" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#2d6a4f">JT is permissible</text>
-        <text x="560" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#2d6a4f">in Islamic law</text>
-        <text x="640" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#c9a84c">Modern planning</text>
-        <text x="640" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#c9a84c">under review</text>
-      </svg>
-    </div>
-
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">1997 — First Fatwa on Joint Tenancy</div>
-        <div class="tl-title">Fatwa Committee: Joint tenancy = Sharikah (partnership)</div>
-        <div class="tl-body">
-          The Fatwa Committee ruled that joint tenancy is a form of partnership (sharikah) where each owner holds 50%. Upon death, the surviving joint tenant was deemed only a <em>trustee</em> — meaning the deceased's 50% share must be distributed according to Faraid to the lawful heirs.
-          <br><br>This created immediate problems for Muslim HDB flat owners who expected their property to pass simply to their surviving spouse.
-          <span class="tl-verdict" style="background:var(--red-light);color:var(--red);">Impact: Strict compliance with Faraid — survivors don't automatically keep property</span>
+      <a href="/financial-planning" class="module-card">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#e8f4fd;color:#1b6ca8;">&#128176;</div>
+          <div class="mc-tag" style="color:#1b6ca8;">Core Module</div>
+          <div class="mc-title">Financial Planning Playbook</div>
+          <div class="mc-desc">Complete guide to life-cycle financial planning — cash flow, protection needs, investment philosophy, and retirement strategies for Singapore clients.</div>
         </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2008 — Revised Fatwa: Hibah Ruqba Option Introduced</div>
-        <div class="tl-title">Fatwa Committee: Give Muslims a choice — Faraid or right of survivorship</div>
-        <div class="tl-body">
-          After community feedback, the Fatwa Committee revised its position. It maintained the 50/50 ownership concept but gave joint tenants an option: either (a) prepare a <em>nuzriah</em> or <em>hibah ruqba</em> document to transfer the property to the surviving joint tenant, or (b) let it be distributed under Faraid.
-          <br><br><strong>Problem in practice:</strong> Many couples never prepared the nuzriah documents in time. When the husband or wife died, the family faced disputes because the deceased's "intentions" were unclear. The civil courts (Land Titles Act) also made the 50/50 concept legally unworkable — under civil law, a joint tenant's interest is extinguished on death, not transferred as 50%.
-          <span class="tl-verdict" style="background:var(--amber-light);color:var(--amber);">Impact: Created confusion — nuzriah paperwork missed, and civil law often overrode the fatwa</span>
+        <div class="mc-meta">
+          <span class="mc-lessons">Foundations &middot; Risk &middot; Retirement &middot; Estate</span>
+          <span class="mc-arrow">Open &#8594;</span>
         </div>
-      </div>
+      </a>
 
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2010 — Shafeeg bin Salim Talib v Fatimah bte Abud [SGCA 11]</div>
-        <div class="tl-title">Court of Appeal: Civil law prevails over MUIS fatwas on joint tenancy</div>
-        <div class="tl-body">
-          In this landmark case, the deceased Muslim man's estate administrators argued the 2008 MUIS fatwa meant 50% of the HDB flat must be distributed as Faraid. The Court of Appeal (presided by Chan Sek Keong CJ) rejected this argument.
-          <br><br>The court ruled: <em>"MUIS fatwas are merely expert opinions and are not binding on this court."</em> The Land Titles Act applies equally to all Singaporeans. Under joint tenancy, the right of survivorship means the surviving joint tenant takes full ownership — this cannot be altered by a fatwa.
-          <br><br>The court also noted: <em>"We hope that MUIS will take note of our observation"</em> — directly inviting MUIS to revise the 2008 fatwa.
-          <span class="tl-verdict" style="background:var(--teal-light);color:var(--teal-dark);">Impact: Civil law definitively prevails. 2008 fatwa unenforceable for JT property. Path cleared for revision.</span>
+      <a href="/factfinding" class="module-card">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#e8f5ee;color:#2d6a4f;">&#128269;</div>
+          <div class="mc-tag" style="color:#2d6a4f;">Sales Process</div>
+          <div class="mc-title">Fact-Finding Playbook</div>
+          <div class="mc-desc">Master the discovery conversation. Full questionnaire frameworks, objection-handling scripts, and MAS-compliant needs analysis techniques.</div>
         </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2019 — New Fatwa: Joint Tenancy is a Valid Islamic Contract</div>
-        <div class="tl-title">Fatwa Committee: Recognises right of survivorship as Islamically valid</div>
-        <div class="tl-body">
-          After a review initiated in July 2018 (triggered by continued feedback from the Muslim Financial Planners Association and Muslim Law Practice Committee), the Fatwa Committee issued a new, landmark fatwa.
-          <br><br><strong>Key ruling:</strong> Joint tenancy is a <em>"new form of contract with its own benefits"</em> — it is not sharikah. When a Muslim enters a joint tenancy agreement, this itself constitutes clear intention for the right of survivorship to apply. The surviving joint tenant owns the full property. No nuzriah or hibah ruqba document is needed.
-          <br><br><strong>For those uncertain:</strong> They may convert to tenancy-in-common if they want Faraid to apply to their share.
-          <br><br>This fatwa harmonises Singapore Islamic law with civil law, and resolves most of the practical problems Muslim HDB flat owners faced for 22 years.
-          <span class="tl-verdict" style="background:var(--green-light);color:var(--green);">Impact: Major relief for Muslim families. Entering JT = choosing right of survivorship. No extra documents needed.</span>
+        <div class="mc-meta">
+          <span class="mc-lessons">Discovery &middot; Needs &middot; Objections &middot; MAS</span>
+          <span class="mc-arrow">Open &#8594;</span>
         </div>
-      </div>
+      </a>
 
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2024 — Islamic Legacy Planning Workgroup Established</div>
-        <div class="tl-title">MUIS convenes new workgroup to review modern estate planning needs</div>
-        <div class="tl-body">
-          In June 2024, MUIS announced the appointment of members for a new Islamic Legacy Planning Workgroup. This workgroup is expected to review emerging issues including digital assets (cryptocurrency, NFTs, online accounts), modern financial instruments (robo-advisors, digital insurance), cross-border Muslim families, and updated guidance on hibah and wakaf structures.
-          <br><br><strong>Watch this space:</strong> New fatwas or irsyad (religious guidance) on these topics may be issued. As a practitioner, monitor MUIS publications at muis.gov.sg for updates.
-          <span class="tl-verdict" style="background:var(--amber-light);color:var(--amber);">Status: Ongoing — expect updated guidance on digital assets and modern planning tools</span>
+      <a href="/islamic-finance" class="module-card">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#fef9e7;color:#d68910;">&#9765;&#65039;</div>
+          <div class="mc-tag" style="color:#d68910;">Specialist Module</div>
+          <div class="mc-title">Islamic Finance Playbook</div>
+          <div class="mc-desc">Shariah-compliant planning principles — Takaful, halal investing, Zakat, Faraid inheritance law, and serving Muslim clients with confidence.</div>
         </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-    <p class="stitle">Other Key MUIS Fatwa Rulings for Practitioners</p>
-    <table class="tbl">
-      <thead><tr><th>Topic</th><th>MUIS Ruling</th><th>Practical Impact</th><th>Year</th></tr></thead>
-      <tbody>
-        <tr><td>CPF Nominations</td><td><span class="badge bg">Halal — permissible</span></td><td>Nominations are administrative, not inheritance. Does not count against 1/3 wasiyyah. Family can access before Inheritance Certificate.</td><td>Confirmed</td></tr>
-        <tr><td>Life Insurance Nominations</td><td><span class="badge bg">Halal — permissible</span></td><td>Contractual right, not inherited asset. Does not reduce Faraid estate. Takaful preferred but conventional is permissible.</td><td>Confirmed</td></tr>
-        <tr><td>Hibah (Lifetime Gift)</td><td><span class="badge bg">Encouraged (Mustahabb)</span></td><td>Valid if offer, acceptance, and possession complete. Cannot be used fraudulently to bypass Faraid.</td><td>Ongoing</td></tr>
-        <tr><td>Nuzuriah (Vow to give to adopted child)</td><td><span class="badge bg">Permissible</span></td><td>Ruled permissible in 2007 for welfare purposes — e.g. giving share to adopted child who cannot inherit under Faraid.</td><td>2007</td></tr>
-        <tr><td>Joint Tenancy</td><td><span class="badge bg">Valid Islamic contract</span></td><td>Right of survivorship is Islamically permissible. Entering JT = clear intention. No nuzriah/hibah ruqba needed. TIC available for those wanting Faraid.</td><td>2019</td></tr>
-        <tr><td>Digital Assets / Crypto</td><td><span class="badge ba">Under review — 2024</span></td><td>No confirmed fatwa yet. Islamic Legacy Planning Workgroup reviewing. Treat as estate assets until guidance issued.</td><td>2024+</td></tr>
-      </tbody>
-    </table>
-
-    <div class="co"><strong>⚠️ Key Practitioner Warning on Joint Tenancy</strong>
-      <ul>
-        <li><strong>Joint Tenancy (JT)</strong> — Right of survivorship applies. Property passes automatically to surviving owner. Bypasses Faraid. After 2019 fatwa: this is Islamically valid. Recommended for spouses who want each other to have the full property.</li>
-        <li><strong>Tenancy-in-Common (TIC)</strong> — Each owner's share passes via their estate. Muslim's share distributed by Faraid. Recommended when the owner wants their share to be distributed to Faraid heirs.</li>
-        <li><strong>Practical advice for Muslim clients:</strong> Discuss which option aligns with their intentions. Document their choice and reasons in the client file. If they currently have JT and want Faraid to apply — they need to formally convert to TIC.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ====== INTESTATE ====== -->
-<section id="intestate" class="section">
-  <div class="ph"><h2>📋 Non-Muslim Intestate Rules</h2><p>Fixed distribution when there is no valid will. Always use as motivation to get a will done.</p></div>
-  <div class="pad">
-
-    <!-- SVG: Distribution Tree -->
-    <p class="stitle">Who Gets What — Visual Priority Tree</p>
-    <div class="illus-wrap">
-      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
-        <rect width="680" height="260" fill="#faf8f3" rx="8"/>
-        <!-- Header -->
-        <rect x="240" y="12" width="200" height="36" rx="6" fill="#1a1a2e"/>
-        <text x="340" y="26" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="white">Deceased — No Will</text>
-        <text x="340" y="40" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">(Non-Muslim Intestate)</text>
-        <line x1="340" y1="48" x2="340" y2="68" stroke="#e2d9cc" stroke-width="2"/>
-
-        <!-- Spouse + Children -->
-        <rect x="30" y="68" width="300" height="44" rx="6" fill="#1b6ca8" opacity=".12" stroke="#1b6ca8" stroke-width="1.5"/>
-        <text x="180" y="83" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#0d4f7c">Scenario 1: Spouse + Children</text>
-        <text x="180" y="99" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#0d4f7c">Spouse 50% · Children share 50% equally</text>
-        <line x1="180" y1="48" x2="180" y2="68" stroke="#1b6ca8" stroke-width="1.5"/>
-
-        <!-- No Children -->
-        <rect x="350" y="68" width="300" height="44" rx="6" fill="#2d6a4f" opacity=".12" stroke="#2d6a4f" stroke-width="1.5"/>
-        <text x="500" y="83" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#1a4a35">Scenario 2: Spouse, No Children</text>
-        <text x="500" y="99" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#1a4a35">Spouse 50% · Parents 50%</text>
-        <line x1="500" y1="48" x2="500" y2="68" stroke="#2d6a4f" stroke-width="1.5"/>
-
-        <!-- Level 3 -->
-        <line x1="180" y1="112" x2="180" y2="132" stroke="#e2d9cc" stroke-width="1.5"/>
-        <line x1="500" y1="112" x2="500" y2="132" stroke="#e2d9cc" stroke-width="1.5"/>
-
-        <rect x="30" y="132" width="300" height="36" rx="6" fill="#d68910" opacity=".1" stroke="#d68910" stroke-width="1.5"/>
-        <text x="180" y="147" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#8b5e0d">Scenario 3: Children Only (No Spouse)</text>
-        <text x="180" y="161" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b5e0d">Children share 100% equally</text>
-
-        <rect x="350" y="132" width="300" height="36" rx="6" fill="#c0392b" opacity=".08" stroke="#c0392b" stroke-width="1.5"/>
-        <text x="500" y="147" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#8b2319">Scenario 4: Parents Only</text>
-        <text x="500" y="161" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b2319">Parents 100% (equally if both alive)</text>
-
-        <!-- Level 4 -->
-        <line x1="340" y1="168" x2="340" y2="188" stroke="#e2d9cc" stroke-width="1.5"/>
-        <rect x="140" y="188" width="400" height="36" rx="6" fill="#6c3483" opacity=".08" stroke="#6c3483" stroke-width="1.5"/>
-        <text x="340" y="202" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#6c3483">Scenario 5: Siblings → Grandparents → Uncles/Aunts → Cousins</text>
-        <text x="340" y="218" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#6c3483">Distant relatives in order of priority</text>
-
-        <!-- Government -->
-        <line x1="340" y1="224" x2="340" y2="238" stroke="#e2d9cc" stroke-width="1.5"/>
-        <rect x="220" y="238" width="240" height="14" rx="4" fill="#7a7a8c" opacity=".2"/>
-        <text x="340" y="249" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#7a7a8c">No relatives → Singapore Government (bona vacantia)</text>
-      </svg>
-    </div>
-
-    <div class="co red"><strong>⚠️ Why this matters — use it as your opening line with clients</strong>
-      <p>"If you pass away without a will, the law decides who gets your assets — and it may not match what you actually want. There is no provision for friends, charities, or specific wishes. Your children will share equally even if one has special needs. A will takes one meeting to fix this."</p>
-    </div>
-
-    <div class="grid-2">
-      <div class="ib"><h3>✅ Benefits of Having a Will</h3>
-        <ul class="cl">
-          <li><strong>Control</strong> — Choose who gets what, in what proportions</li>
-          <li><strong>Guardianship</strong> — Appoint guardian for minor children (intestacy leaves this to court)</li>
-          <li><strong>Executor Choice</strong> — Trusted person manages estate; intestacy = court appointment</li>
-          <li><strong>Timing Control</strong> — E.g. children receive at age 25, not 21</li>
-          <li><strong>Special needs provision</strong> — Discretionary trust for disabled dependents</li>
-          <li><strong>Charity</strong> — Include donations or legacy gifts</li>
-          <li><strong>Digital assets</strong> — Specific instructions for crypto, online accounts</li>
-        </ul>
-      </div>
-      <div class="ib"><h3>❌ Intestacy Disadvantages</h3>
-        <ul class="cl">
-          <li>No guardian appointment — court decides for your minor children</li>
-          <li>Fixed formula may split estate in ways family doesn't want</li>
-          <li>Court-appointed administrator — may not be your preferred person</li>
-          <li>Longer and more expensive administration process</li>
-          <li>No provision for charity, friends, or non-family members</li>
-          <li>No tax or timing optimisation</li>
-          <li>Ambiguity leads to family disputes and lasting conflict</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== WILLS ====== -->
-<section id="wills" class="section">
-  <div class="ph"><h2>🖊️ Will Planning Essentials</h2><p>Requirements, essential clauses, CPF planning, and common mistakes.</p></div>
-  <div class="pad">
-    <div class="grid-2">
-      <div class="ib"><h3>✅ Valid Will Requirements</h3>
-        <ul class="cl">
-          <li>Testator must be <strong>21 years or older</strong></li>
-          <li>Must be of <strong>sound mind</strong> at time of signing</li>
-          <li>Must be acting <strong>voluntarily</strong> — no undue influence</li>
-          <li><strong>Written document</strong> (not verbal)</li>
-          <li><strong>Signed by testator</strong> at the bottom</li>
-          <li>Witnessed by <strong>2 independent persons</strong> — NOT beneficiaries</li>
-          <li>Both witnesses sign in the <strong>testator's presence</strong></li>
-          <li>Note: <strong>Marriage revokes a will</strong> automatically in Singapore</li>
-        </ul>
-      </div>
-      <div class="ib"><h3>📋 Essential Will Clauses</h3>
-        <ul class="cl">
-          <li><strong>Revocation Clause</strong> — Cancels all previous wills</li>
-          <li><strong>Executor Appointment</strong> — Primary + backup executors</li>
-          <li><strong>Guardianship</strong> — For minor children (critical)</li>
-          <li><strong>Specific Gifts</strong> — Named items to named people</li>
-          <li><strong>Residuary Clause</strong> — All remaining estate distribution</li>
-          <li><strong>Digital Assets Clause</strong> — Crypto, online accounts, domains</li>
-          <li><strong>Testamentary Trust</strong> — For minors or vulnerable beneficiaries</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="co red"><strong>🚨 Common Will Mistakes</strong>
-      <ul>
-        <li>Using beneficiaries as witnesses — invalidates their gift entirely</li>
-        <li>Ambiguous language ("my jewellery to my children equally" — which jewellery? which children?)</li>
-        <li>Not updating after marriage (revokes will) or divorce or new children</li>
-        <li>Poor executor selection — absent, conflicted, or incapable</li>
-        <li>No provision for digital assets — crypto inaccessible after death without proper instructions</li>
-      </ul>
-    </div>
-
-    <div class="divider"></div>
-    <p class="stitle">CPF — The Asset That Doesn't Follow Your Will</p>
-    <div class="illus-wrap">
-      <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
-        <rect width="680" height="160" fill="#faf8f3" rx="8"/>
-        <!-- CPF box -->
-        <rect x="20" y="30" width="140" height="100" rx="8" fill="#1b6ca8" opacity=".9"/>
-        <text x="90" y="65" text-anchor="middle" font-family="Playfair Display,serif" font-size="18" font-weight="900" fill="white">CPF</text>
-        <text x="90" y="83" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">OA · SA · MA</text>
-        <text x="90" y="116" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Does NOT follow</text>
-        <text x="90" y="128" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">your Will</text>
-
-        <!-- Arrow to nomination -->
-        <line x1="160" y1="80" x2="210" y2="80" stroke="#2d6a4f" stroke-width="2"/>
-        <polygon points="206,74 216,80 206,86" fill="#2d6a4f"/>
-        <rect x="216" y="50" width="160" height="60" rx="8" fill="#2d6a4f" opacity=".12" stroke="#2d6a4f" stroke-width="1.5"/>
-        <text x="296" y="73" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#1a4a35">With Nomination</text>
-        <text x="296" y="90" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#1a4a35">→ Goes to nominee</text>
-        <text x="296" y="104" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#1a4a35" opacity=".8">Fast. Controlled. ✓</text>
-
-        <!-- Arrow to no nomination -->
-        <line x1="160" y1="80" x2="210" y2="110" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,3"/>
-        <polygon points="207,106 215,114 208,118" fill="#c0392b"/>
-        <rect x="216" y="110" width="160" height="40" rx="8" fill="#c0392b" opacity=".1" stroke="#c0392b" stroke-width="1.5"/>
-        <text x="296" y="127" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="700" fill="#8b2319">No Nomination</text>
-        <text x="296" y="143" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b2319">→ Public Trustee → Intestacy</text>
-
-        <!-- Muslim note -->
-        <rect x="410" y="30" width="250" height="100" rx="8" fill="#c9a84c" opacity=".08" stroke="#c9a84c" stroke-width="1.5"/>
-        <text x="535" y="52" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#8b6914">Muslim Clients</text>
-        <text x="535" y="68" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#8b6914">MUIS: nominations are halal ✓</text>
-        <text x="535" y="84" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b6914" opacity=".85">Does NOT count against 1/3 wasiyyah</text>
-        <text x="535" y="100" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b6914" opacity=".85">Family gets funds BEFORE Inheritance Cert</text>
-        <text x="535" y="118" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b6914" opacity=".7">Submit directly to CPF Board (not via will)</text>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ====== TRUSTS ====== -->
-<section id="trusts" class="section">
-  <div class="ph"><h2>🏛️ Trust Structures</h2><p>Types of trusts, when to recommend them, and the three key parties explained.</p></div>
-  <div class="pad">
-    <div class="co blue"><strong>📖 What is a Trust?</strong><p>A legal arrangement where assets are transferred to a <strong>trustee</strong> to hold and manage for <strong>beneficiaries</strong>. The creator is the <strong>settlor</strong>. Trust assets are separate from the settlor's personal estate — they bypass probate and are not subject to intestacy rules.</p></div>
-    <p class="stitle">4 Main Trust Types</p>
-    <div class="tgrid">
-      <div class="tc"><div class="tc-head" style="background:#1a1a2e;">📋 Testamentary Trust</div><div class="tc-body">
-        <div class="row"><strong>Created</strong><span>Via will — effective on death</span></div>
-        <div class="row"><strong>Pros</strong><span>No lifetime costs; modifiable until death</span></div>
-        <div class="row"><strong>Cons</strong><span>Subject to probate; no lifetime protection</span></div>
-        <div class="row"><strong>Best For</strong><span>Young families with minors, $200K–$1M estates</span></div>
-      </div></div>
-      <div class="tc"><div class="tc-head" style="background:#1b6ca8;">🏠 Inter Vivos (Living) Trust</div><div class="tc-body">
-        <div class="row"><strong>Created</strong><span>During lifetime — immediate effect</span></div>
-        <div class="row"><strong>Pros</strong><span>Avoids probate; privacy; immediate protection</span></div>
-        <div class="row"><strong>Cons</strong><span>Ongoing costs; complexity; loss of direct control</span></div>
-        <div class="row"><strong>Best For</strong><span>Business owners, HNW $1M+, privacy needs</span></div>
-      </div></div>
-      <div class="tc"><div class="tc-head" style="background:#2d6a4f;">🔄 Discretionary Trust</div><div class="tc-body">
-        <div class="row"><strong>Control</strong><span>Trustees decide timing and amount of distributions</span></div>
-        <div class="row"><strong>Pros</strong><span>Maximum flexibility; asset protection; adapts to needs</span></div>
-        <div class="row"><strong>Cons</strong><span>Uncertainty for beneficiaries; needs trusted trustees</span></div>
-        <div class="row"><strong>Best For</strong><span>Wealthy families, beneficiaries with spending concerns</span></div>
-      </div></div>
-      <div class="tc"><div class="tc-head" style="background:#c9a84c;color:#1a1a2e;">📌 Fixed Trust</div><div class="tc-body">
-        <div class="row"><strong>Control</strong><span>Predetermined fixed interests for each beneficiary</span></div>
-        <div class="row"><strong>Pros</strong><span>Certainty and clarity; simpler to administer</span></div>
-        <div class="row"><strong>Cons</strong><span>No flexibility to adapt to changing circumstances</span></div>
-        <div class="row"><strong>Best For</strong><span>Simple distributions, conservative families</span></div>
-      </div></div>
-    </div>
-    <div class="grid-2">
-      <div class="ib"><h3>✅ When to Recommend a Trust</h3>
-        <ul class="cl"><li>Estate value $1M+ (rough guideline — not absolute)</li><li>Minor or vulnerable beneficiaries needing protection</li><li>Beneficiaries with special needs or spending issues</li><li>Business succession planning</li><li>Privacy — trust assets avoid public probate records</li><li>International asset protection across jurisdictions</li><li>Anticipated family conflict — neutral trustee helps</li></ul>
-      </div>
-      <div class="co red"><strong>⚠️ When NOT to Over-Complicate with a Trust</strong>
-        <ul><li>Simple estate with competent adult beneficiaries</li><li>Estate too small to justify setup + annual costs</li><li>No reliable trustee available</li><li>Client unwilling to transfer legal ownership during lifetime</li><li>Short planning horizon — a will is sufficient</li></ul>
-        <p style="margin-top:8px;font-size:12px;color:var(--muted);">Corporate trustee fees: typically 0.5–1.5% p.a. of trust assets.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== INCAPACITY ====== -->
-<section id="incapacity" class="section">
-  <div class="ph"><h2>🛡️ LPA, AMD &amp; ACP — Incapacity Planning</h2><p>Planning for loss of mental capacity, end-of-life decisions, and healthcare preferences.</p></div>
-  <div class="pad">
-    <div class="lpa-grid">
-      <div class="lc"><div class="lc-head" style="background:#1a1a2e;">🛡️ LPA — Lasting Power of Attorney</div><div class="lc-body"><ul>
-        <li><strong>Form 1:</strong> Financial &amp; property decisions</li>
-        <li><strong>Form 2:</strong> Personal welfare &amp; healthcare</li>
-        <li><strong>Age:</strong> 21+ with mental capacity</li>
-        <li><strong>Cost:</strong> $75 (OPG registration)</li>
-        <li><strong>Active:</strong> Only when capacity is lost</li>
-        <li><strong>Must be registered</strong> with OPG before use</li>
-        <li>Consider same donee for both forms</li>
-      </ul></div></div>
-      <div class="lc"><div class="lc-head" style="background:#1b6ca8;">💊 AMD — Advance Medical Directive</div><div class="lc-body"><ul>
-        <li>Refuses extraordinary life-sustaining treatment</li>
-        <li><strong>Applies only:</strong> terminally ill AND unconscious</li>
-        <li><strong>Age:</strong> 21+ with sound mind</li>
-        <li><strong>Cost:</strong> Free registration</li>
-        <li>Witnessed by doctor + another person</li>
-        <li>Does NOT cover day-to-day medical decisions</li>
-        <li>Revocable anytime while capacity exists</li>
-      </ul></div></div>
-      <div class="lc"><div class="lc-head" style="background:#2d6a4f;">💬 ACP — Advance Care Planning</div><div class="lc-body"><ul>
-        <li>Ongoing healthcare preference conversations</li>
-        <li><strong>NOT a legal document</strong></li>
-        <li>Covers broader scenarios than AMD</li>
-        <li>Informs AMD and LPA decisions</li>
-        <li>Process: Reflect → Discuss → Document → Review</li>
-        <li>Topics: quality of life, place of care, religious wishes</li>
-        <li>Should involve family members where appropriate</li>
-      </ul></div></div>
-    </div>
-    <div class="co red"><strong>🚨 Common LPA Mistakes</strong>
-      <ul><li>Completing the form but not registering with OPG — makes it invalid</li><li>Choosing a donee based on affection alone rather than capability</li><li>Not appointing a replacement donee — leaves client unprotected if primary donee cannot act</li><li>Assuming joint accounts or a will covers incapacity — they do not</li></ul>
-    </div>
-    <div class="grid-2">
-      <div class="co blue"><strong>✅ Good Donee Criteria</strong><ul><li>21+ with mental capacity</li><li>Trustworthy and deeply understands your values and wishes</li><li>Willing and available when needed (not working overseas)</li><li>Financially literate for Form 1 duties</li></ul></div>
-      <div class="co green"><strong>💡 Review Schedule</strong><ul><li><strong>LPA:</strong> Annually + after major life events</li><li><strong>AMD:</strong> After significant health changes</li><li><strong>ACP:</strong> Ongoing — not a one-time event</li><li>Update all documents after marriage, divorce, bereavement</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== ASSETS ====== -->
-<section id="assets" class="section">
-  <div class="ph"><h2>💼 Asset Guide — Estate Treatment</h2><p>How different asset types are treated in Singapore estate planning.</p></div>
-  <div class="pad">
-    <table class="atbl">
-      <thead><tr><th>Asset Type</th><th>Estate Treatment</th><th>Survivorship</th><th>Planning Note</th></tr></thead>
-      <tbody>
-        <tr><td>Single Name Bank Account</td><td>Part of estate</td><td class="sn">No</td><td>Follows will or intestacy</td></tr>
-        <tr><td>Joint Account — Right of Survivorship</td><td>Passes to surviving holder</td><td class="sy">Yes</td><td>Most Singapore banks default to this. Bypasses will.</td></tr>
-        <tr><td>Joint Account — Trustee Designation</td><td>Deceased's portion to estate</td><td class="sn">No</td><td>Must be specifically designated as trustee account at bank</td></tr>
-        <tr><td>CPF Accounts (all types)</td><td>NOT part of estate</td><td class="sv">Via nomination</td><td>Must nominate separately. Does not follow will. Muslim: MUIS says halal.</td></tr>
-        <tr><td>Life Insurance (with nominee)</td><td>To nominee — NOT estate</td><td class="sy">Yes</td><td>Immediate liquidity. Not subject to Faraid. Update nominations regularly.</td></tr>
-        <tr><td>Life Insurance (no nominee)</td><td>Part of estate</td><td class="sn">No</td><td>Subject to probate delays. Always nominate.</td></tr>
-        <tr><td>HDB / Property — Joint Tenancy</td><td>Passes to surviving owner</td><td class="sy">Yes</td><td>After 2019 MUIS fatwa: JT is valid for Muslims. Bypasses Faraid.</td></tr>
-        <tr><td>Property — Tenancy-in-Common</td><td>Deceased's share to estate</td><td class="sn">No</td><td>Muslim's TIC share subject to Faraid. More flexible for estate planning.</td></tr>
-        <tr><td>Private Company Shares</td><td>Part of estate</td><td class="sn">No</td><td>Subject to transfer restrictions in company constitution. Get shareholder agreement.</td></tr>
-        <tr><td>Cryptocurrency / Digital Assets</td><td>Part of estate</td><td class="sn">No</td><td>No fatwa yet (MUIS 2024 workgroup reviewing). Document access in estate plan. High risk of loss if undocumented.</td></tr>
-        <tr><td>Trust Assets</td><td>Per trust terms</td><td class="sv">Varies</td><td>Separate from personal estate. Key planning tool for HNW clients.</td></tr>
-      </tbody>
-    </table>
-
-    <div class="co blue"><strong>🚨 Don't Forget Digital Assets — A Growing Gap</strong>
-      <ul><li><strong>Cryptocurrency:</strong> Exchange accounts, private wallet keys — inaccessible without passwords. No fatwa yet from MUIS.</li>
-      <li><strong>Online businesses / e-commerce</strong> — may have significant value</li>
-      <li><strong>Digital intellectual property</strong> — websites, YouTube channels, content royalties</li>
-      <li><strong>Social media</strong> — Facebook Legacy Contact, Google Inactive Account Manager</li>
-      <li>Solution: Create a secure "digital asset inventory" with access instructions, stored separately from the will itself.</li></ul>
-    </div>
-
-    <div class="grid-2">
-      <div class="co green"><strong>✅ Singapore Tax Position (as at 2025)</strong><ul><li>Estate duty: Abolished since February 2008</li><li>No tax on receiving inheritance</li><li>Income from inherited assets: normal income tax applies</li><li>No capital gains tax in Singapore</li></ul></div>
-      <div class="co"><strong>⚠️ International Asset Warning</strong><ul><li>US assets: US estate tax may apply (threshold $60K for non-US persons)</li><li>UK assets: IHT (inheritance tax) may apply</li><li>Australia: No estate tax, but CGT on death in some cases</li><li>Always refer clients with overseas assets to a specialist international tax advisor</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== SCENARIOS ====== -->
-<section id="scenarios" class="section">
-  <div class="ph"><h2>👥 Common Client Scenarios</h2><p>Typical client profiles, core needs, and recommended solutions.</p></div>
-  <div class="pad">
-    <div class="scenario">
-      <div class="sc-head"><h3>Scenario 1 — Young Muslim Family</h3><span class="sc-tag">★ Most Common in SOUL Guild</span></div>
-      <div class="sc-body">
-        <div class="sc-col"><h4>Profile</h4><p>Muslim couple, 2–3 young children, $400K–$800K assets. HDB under joint tenancy, CPF balances, term life insurance.</p></div>
-        <div class="sc-col"><h4>Core Needs</h4><ul><li>Faraid-compliant planning</li><li>Guardian for young children</li><li>Immediate family liquidity on death</li><li>Incapacity planning</li><li>Clarity on HDB joint tenancy (post 2019 fatwa)</li></ul></div>
-        <div class="sc-col"><h4>Solutions</h4><ul><li>Islamic will (wasiyyah ≤ 1/3)</li><li>Confirm HDB JT intention (right of survivorship valid)</li><li>Takaful / life insurance nominations</li><li>CPF nominations (halal)</li><li>LPA for both spouses</li></ul></div>
-      </div>
-    </div>
-    <div class="scenario">
-      <div class="sc-head"><h3>Scenario 2 — Young Non-Muslim Family</h3><span class="sc-tag">Common</span></div>
-      <div class="sc-body">
-        <div class="sc-col"><h4>Profile</h4><p>Married couple, 2 young children, $500K assets. Joint HDB, term life, growing CPF.</p></div>
-        <div class="sc-col"><h4>Core Needs</h4><ul><li>Guardian appointment (critical)</li><li>Family financial protection</li><li>Education funding continuity</li><li>Incapacity planning</li></ul></div>
-        <div class="sc-col"><h4>Solutions</h4><ul><li>Basic wills with testamentary trust for children</li><li>Term life insurance review</li><li>LPA for both spouses</li><li>CPF nominations</li></ul></div>
-      </div>
-    </div>
-    <div class="scenario">
-      <div class="sc-head"><h3>Scenario 3 — High Net Worth Business Owner</h3><span class="sc-tag">Complex — Refer Specialist</span></div>
-      <div class="sc-body">
-        <div class="sc-col"><h4>Profile</h4><p>Business owner, $3M+ assets, adult children involved in business. Private company shares, investment properties, overseas assets.</p></div>
-        <div class="sc-col"><h4>Core Needs</h4><ul><li>Business continuity on death/incapacity</li><li>Fair distribution without destabilising business</li><li>International tax efficiency</li><li>Family harmony</li></ul></div>
-        <div class="sc-col"><h4>Solutions</h4><ul><li>Family trust structure</li><li>Business succession plan + shareholder agreement</li><li>Insurance review (key man, buy-sell)</li><li>Refer: specialist estate lawyer + tax advisor</li></ul></div>
-      </div>
-    </div>
-    <div class="scenario">
-      <div class="sc-head"><h3>Scenario 4 — Elderly Couple (Retirement Stage)</h3><span class="sc-tag">Healthcare Focus</span></div>
-      <div class="sc-body">
-        <div class="sc-col"><h4>Profile</h4><p>Retired couple, adult children, health concerns. Significant CPF savings (CPF Life), paid-up HDB, existing insurance.</p></div>
-        <div class="sc-col"><h4>Core Needs</h4><ul><li>Incapacity planning — URGENT priority</li><li>Healthcare decision clarity</li><li>Legacy to children and grandchildren</li><li>Healthcare funding protection</li></ul></div>
-        <div class="sc-col"><h4>Solutions</h4><ul><li>Comprehensive LPA (both forms) — do this first</li><li>AMD if desired + ACP with family</li><li>Will review and update (often outdated)</li><li>CareShield Life / MediShield Life review</li></ul></div>
-      </div>
-    </div>
-    <div class="co red"><strong>🚩 When to Always Refer to a Specialist</strong>
-      <ul><li>Complex international structures or overseas assets (US, UK, Australia especially)</li><li>Family disputes or probate challenge expected</li><li>Large business succession with multiple shareholders</li><li>Special needs beneficiary planning (coordinate with SG Enable / MSF)</li><li>Setting up a foundation or waqf (wakaf)</li><li>Mental capacity concerns — client may not be able to give valid instructions</li></ul>
-    </div>
-  </div>
-</section>
-
-<!-- ====== PROCESS ====== -->
-<section id="process" class="section">
-  <div class="ph"><h2>🗺️ The Estate Planning Process</h2><p>Step-by-step from first meeting through to ongoing review.</p></div>
-  <div class="pad">
-    <div class="grid-2">
-      <div>
-        <p class="stitle">Phase 1 — Client Assessment</p>
-        <div class="steps">
-          <div class="step"><div class="snum">1</div><div class="scont"><h4>Asset Inventory</h4><p>Property, investments, CPF balances, insurance policies, business interests, overseas assets, digital assets.</p></div></div>
-          <div class="step"><div class="snum">2</div><div class="scont"><h4>Liability Documentation</h4><p>Mortgages, business loans, personal guarantees, credit facilities, outstanding tax, nuzuriah obligations.</p></div></div>
-          <div class="step"><div class="snum">3</div><div class="scont"><h4>Family Map</h4><p>Spouse, children (biological, step, adopted), dependents, elderly parents, any conflicts or estrangements.</p></div></div>
-          <div class="step"><div class="snum">4</div><div class="scont"><h4>Objectives &amp; Concerns</h4><p>What they want to achieve AND what they want to avoid — both are equally important to the plan design.</p></div></div>
+        <div class="mc-meta">
+          <span class="mc-lessons">Takaful &middot; Faraid &middot; Zakat &middot; Waqf</span>
+          <span class="mc-arrow">Open &#8594;</span>
         </div>
-      </div>
-      <div>
-        <p class="stitle">Power Questions to Ask</p>
-        <div class="ib">
-          <ul class="cl">
-            <li>"What happens to your family if something happens to you tomorrow?"</li>
-            <li>"Who would you trust to make financial decisions if you lost capacity?"</li>
-            <li>"What are your biggest concerns about your children's future?"</li>
-            <li>"Do you have overseas assets, foreign property, or family abroad?"</li>
-            <li>"Are there any family tensions we should factor into the plan?"</li>
-            <li>"Have you thought about who would care for you if you couldn't care for yourself?"</li>
-            <li><em>(Muslims)</em> "Do you have any unfulfilled religious vows or pledges?"</li>
-            <li><em>(Muslims)</em> "Are you aware of the 2019 fatwa on joint tenancy for your HDB?"</li>
-          </ul>
+      </a>
+
+      <a href="/estate-planning" class="module-card">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#f5eafb;color:#6c3483;">&#127963;&#65039;</div>
+          <div class="mc-tag" style="color:#6c3483;">Advanced Module</div>
+          <div class="mc-title">Estate Planning Playbook</div>
+          <div class="mc-desc">Singapore estate laws, LPA, wills, CPF nominations, trust structures, Faraid rules, and practical scenarios for comprehensive legacy planning.</div>
         </div>
-      </div>
-    </div>
+        <div class="mc-meta">
+          <span class="mc-lessons">Wills &middot; LPA &middot; CPF &middot; Trusts &middot; Faraid</span>
+          <span class="mc-arrow">Open &#8594;</span>
+        </div>
+      </a>
 
-    <div class="divider"></div>
-    <p class="stitle">Phase 2 — Solution Design</p>
-    <div class="grid-2">
-      <div class="ib"><h3>📦 Basic Package (Most Clients)</h3>
-        <ul class="cl"><li>Will with appropriate provisions and testamentary trust if needed</li><li>CPF nominations for all accounts</li><li>LPA Form 1 (Property &amp; Affairs)</li><li>LPA Form 2 (Personal Welfare)</li><li>AMD if client desires end-of-life control</li><li>Insurance beneficiary review and update</li></ul>
-      </div>
-      <div class="ib"><h3>💎 Enhanced Package (HNW)</h3>
-        <ul class="cl"><li>All basic items above</li><li>Trust structure (testamentary or living)</li><li>Business succession plan + shareholder agreement</li><li>International tax planning with specialist</li><li>Advanced insurance strategies</li><li>Family governance documentation</li></ul>
-      </div>
-    </div>
-
-    <p class="stitle">Phase 3 — Implementation Checklist</p>
-    <div class="ib">
-      <ul class="cl">
-        <li>Execute all documents properly — witnessed, signed, dated</li>
-        <li>Register LPA with Office of Public Guardian (OPG)</li>
-        <li>Submit CPF nominations to CPF Board</li>
-        <li>Update all insurance beneficiary nominations</li>
-        <li>Secure document storage — physical original + digital copy with trusted person</li>
-        <li>Communicate document locations to key family members</li>
-        <li>Set reminder in calendar for next annual review</li>
-      </ul>
     </div>
   </div>
-</section>
 
-<!-- ====== DISPUTES ====== -->
-<section id="disputes" class="section">
-  <div class="ph"><h2>⚠️ Disputes, Risks &amp; Prevention</h2><p>Most disputes are preventable with proper planning and documentation.</p></div>
-  <div class="pad">
-    <div class="grid-2">
-      <div>
-        <p class="stitle">Validity Challenges</p>
-        <div class="ib"><h3>Common Causes</h3>
-          <ul class="cl">
-            <li><strong>Testamentary Capacity</strong> — Mental capacity doubted at time of signing</li>
-            <li><strong>Undue Influence</strong> — Testator was pressured or coerced</li>
-            <li><strong>Improper Execution</strong> — Witnessing requirements not met</li>
-            <li><strong>Fraud or Forgery</strong> — Document tampering alleged</li>
-          </ul>
-        </div>
-        <div class="co green"><strong>✅ Prevention</strong>
-          <ul><li>Medical capacity assessment for elderly or ill clients</li><li>Independent witnesses (not beneficiaries)</li><li>Detailed file notes of every client meeting</li><li>Consider video recording for complex estates</li></ul>
-        </div>
-      </div>
-      <div>
-        <p class="stitle">Family Provision Claims</p>
-        <div class="ib"><h3>Who Can Challenge</h3>
-          <ul class="cl">
-            <li>Surviving spouse claiming insufficient provision</li>
-            <li>Financially dependent adult children</li>
-            <li>Moral obligation arguments from excluded family members</li>
-          </ul>
-        </div>
-        <div class="co green"><strong>✅ Prevention</strong>
-          <ul><li>Discuss estate plans with family where appropriate</li><li>Write a Letter of Wishes explaining your reasoning</li><li>Ensure reasonable provision for all dependents</li><li>Get legal advice before unusual distributions</li></ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-3">
-      <div class="co red"><strong>❌ Planning Mistakes</strong><ul><li>Procrastinating on basic planning</li><li>Over-complicating simple estates</li><li>No regular review schedule</li><li>Missing digital assets entirely</li></ul></div>
-      <div class="co red"><strong>❌ Implementation Mistakes</strong><ul><li>Beneficiaries as witnesses</li><li>LPA not registered with OPG</li><li>Poor executor choice</li><li>Under-funded trust structures</li></ul></div>
-      <div class="co red"><strong>❌ Professional Mistakes</strong><ul><li>Advising beyond competence</li><li>Inadequate client file notes</li><li>Failing to refer to specialists</li><li>Undisclosed conflicts of interest</li></ul></div>
-    </div>
+  <div class="hub-footer">
+    <div class="hf-brand">SOUL Guild &middot; BZ2-19695</div>
+    <div class="hf-note">For internal agent use only &middot; Not for public distribution</div>
   </div>
-</section>
-
-
-<!-- ====== MINOR NOMINATIONS ====== -->
-<section id="minors" class="section">
-  <div class="ph">
-    <h2>👶 Nominations Involving Minors</h2>
-    <p>What happens when your CPF or insurance nominee is under 18 — a critical gap most clients don't think about.</p>
-  </div>
-  <div class="pad">
-
-    <div class="co red">
-      <strong>⚠️ The Gap Most Clients Miss</strong>
-      <p>Clients frequently nominate their young children as CPF or insurance beneficiaries thinking the money goes directly to them. It does not. A minor cannot legally receive or manage a large sum of money. The law has specific mechanisms — and they may not work the way your client expects. Always surface this in the fact-find.</p>
-    </div>
-
-    <!-- SVG: Side-by-side comparison -->
-    <p class="stitle">CPF vs Insurance — Minor Nominee Outcome Comparison</p>
-    <div class="illus-wrap">
-      <svg viewBox="0 0 720 290" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;">
-        <rect width="720" height="290" fill="#faf8f3" rx="8"/>
-
-        <!-- CPF column -->
-        <rect x="20" y="16" width="330" height="258" rx="8" fill="#1b6ca8" opacity=".06" stroke="#1b6ca8" stroke-width="1.5" opacity=".25"/>
-        <text x="185" y="40" text-anchor="middle" font-family="Playfair Display,serif" font-size="15" font-weight="700" fill="#0d4f7c">CPF Nomination</text>
-        <text x="185" y="56" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#0d4f7c" opacity=".7">Minor nominee below 18 at time of claim</text>
-        <line x1="40" y1="66" x2="330" y2="66" stroke="#1b6ca8" stroke-width="1" opacity=".3"/>
-
-        <!-- CPF flow -->
-        <rect x="110" y="78" width="150" height="32" rx="6" fill="#1b6ca8"/>
-        <text x="185" y="91" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="white">CPF Board pays out</text>
-        <text x="185" y="103" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">nominee's share</text>
-        <line x1="185" y1="110" x2="185" y2="130" stroke="#1b6ca8" stroke-width="2"/>
-        <polygon points="179,126 185,136 191,126" fill="#1b6ca8"/>
-
-        <rect x="80" y="136" width="210" height="40" rx="6" fill="#c9a84c" opacity=".15" stroke="#c9a84c" stroke-width="1.5"/>
-        <text x="185" y="152" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="700" fill="#8b6914">→ Public Trustee's Office</text>
-        <text x="185" y="167" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b6914" opacity=".85">Holds funds in trust</text>
-        <line x1="185" y1="176" x2="185" y2="194" stroke="#c9a84c" stroke-width="2"/>
-        <polygon points="179,190 185,200 191,190" fill="#c9a84c"/>
-
-        <rect x="90" y="200" width="190" height="32" rx="6" fill="#2d6a4f" opacity=".12" stroke="#2d6a4f" stroke-width="1.5"/>
-        <text x="185" y="214" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="700" fill="#1a4a35">Minor turns 18</text>
-        <text x="185" y="228" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#1a4a35" opacity=".8">→ Full payout to minor</text>
-
-        <!-- CPF notes -->
-        <text x="185" y="252" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#7a7a8c">Earns interest. PTO charges fees on interest earned.</text>
-        <text x="185" y="265" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#7a7a8c">Parent/guardian can apply for maintenance allowance.</text>
-
-        <!-- Insurance column -->
-        <rect x="370" y="16" width="330" height="258" rx="8" fill="#2d6a4f" opacity=".05" stroke="#2d6a4f" stroke-width="1.5" opacity=".25"/>
-        <text x="535" y="40" text-anchor="middle" font-family="Playfair Display,serif" font-size="15" font-weight="700" fill="#1a4a35">Insurance Nomination</text>
-        <text x="535" y="56" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#1a4a35" opacity=".7">Minor nominee below 18 at time of claim</text>
-        <line x1="390" y1="66" x2="680" y2="66" stroke="#2d6a4f" stroke-width="1" opacity=".3"/>
-
-        <!-- Insurance fork -->
-        <rect x="460" y="78" width="150" height="32" rx="6" fill="#2d6a4f"/>
-        <text x="535" y="91" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="white">Insurer pays out</text>
-        <text x="535" y="103" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">on valid nomination</text>
-
-        <!-- Branch lines -->
-        <line x1="535" y1="110" x2="535" y2="122" stroke="#2d6a4f" stroke-width="2"/>
-        <line x1="450" y1="122" x2="620" y2="122" stroke="#2d6a4f" stroke-width="1.5"/>
-        <line x1="450" y1="122" x2="450" y2="134" stroke="#2d6a4f" stroke-width="1.5"/>
-        <line x1="620" y1="122" x2="620" y2="134" stroke="#2d6a4f" stroke-width="1.5"/>
-
-        <!-- Trust nomination path -->
-        <rect x="385" y="134" width="135" height="40" rx="6" fill="#1b6ca8" opacity=".12" stroke="#1b6ca8" stroke-width="1.5"/>
-        <text x="453" y="149" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#0d4f7c">Trust Nomination</text>
-        <text x="453" y="163" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#0d4f7c" opacity=".8">→ Paid to Trustee</text>
-
-        <!-- Revocable nomination path -->
-        <rect x="535" y="134" width="140" height="40" rx="6" fill="#c0392b" opacity=".1" stroke="#c0392b" stroke-width="1.5"/>
-        <text x="605" y="149" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#8b2319">Revocable Nomination</text>
-        <text x="605" y="163" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b2319" opacity=".8">→ Parent/Guardian</text>
-
-        <!-- Trust outcome -->
-        <line x1="453" y1="174" x2="453" y2="192" stroke="#1b6ca8" stroke-width="1.5"/>
-        <rect x="385" y="192" width="135" height="40" rx="6" fill="#2d6a4f" opacity=".1" stroke="#2d6a4f" stroke-width="1.5"/>
-        <text x="453" y="207" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#1a4a35">Trustee manages</text>
-        <text x="453" y="221" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#1a4a35" opacity=".8">until child comes of age</text>
-
-        <!-- Revocable outcome -->
-        <line x1="605" y1="174" x2="605" y2="192" stroke="#c0392b" stroke-width="1.5"/>
-        <rect x="535" y="192" width="140" height="40" rx="6" fill="#c0392b" opacity=".08" stroke="#c0392b" stroke-width="1.5"/>
-        <text x="605" y="207" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#8b2319">Receives funds for</text>
-        <text x="605" y="221" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8b2319" opacity=".8">benefit of minor</text>
-
-        <text x="535" y="252" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#7a7a8c">No trustee named = insurer pays parent or legal guardian.</text>
-        <text x="535" y="265" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#7a7a8c">Trustee recommended for all minors — best protection.</text>
-      </svg>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- CPF MINOR DETAIL -->
-    <p class="stitle">CPF — Nomination to a Minor (Under 18)</p>
-
-    <div class="grid-2">
-      <div class="ib">
-        <h3>🏦 What Happens — Step by Step</h3>
-        <ul class="cl">
-          <li>CPF nomination to a minor is <strong>valid and permitted</strong></li>
-          <li>When the CPF member passes away, CPF Board transfers the minor's share to the <strong>Public Trustee's Office (PTO)</strong></li>
-          <li>PTO <strong>holds the funds in trust</strong> and invests them on behalf of the minor</li>
-          <li>The funds <strong>earn interest</strong> while held — PTO charges fees on interest earned (not on principal)</li>
-          <li>When the minor <strong>turns 18</strong>, the full principal + net interest is released to them</li>
-          <li>Parent/guardian can <strong>apply to PTO for a maintenance allowance</strong> from the trust fund if they face financial hardship supporting the child</li>
-        </ul>
-      </div>
-      <div class="ib">
-        <h3>💡 The Better Alternative — Nominate a Trustee</h3>
-        <ul class="cl">
-          <li>Instead of nominating the minor directly, <strong>nominate a trustee or trust company</strong> to receive the CPF funds on the minor's behalf</li>
-          <li>The trustee receives the funds and manages them per your pre-agreed instructions</li>
-          <li>Gives you <strong>more control</strong> over how money is used (e.g., education, living expenses) rather than sitting locked at PTO until age 18</li>
-          <li><strong>Caveat:</strong> CPF Board cannot enforce or ensure the trustee applies the funds for the child's benefit — choose your trustee carefully and put instructions in writing</li>
-          <li>For larger sums, consider a <strong>testamentary trust in your will</strong> funded by insurance proceeds alongside CPF nominations</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="ib">
-      <h3>📊 PTO Fees for Holding Minor's CPF Funds</h3>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">The PTO charges a one-time fee on the principal received, plus ongoing fees on interest earned. These <strong>cannot be waived</strong> and include GST.</p>
-      <table class="tbl" style="margin-bottom:0;">
-        <thead>
-          <tr><th>Type of Fee</th><th>When Charged</th><th>Nature</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>One-time fee on principal</td><td>When funds are transferred from CPF Board to PTO</td><td>Deducted from the minor's CPF share upfront</td></tr>
-          <tr><td>Annual fee on interest earned</td><td>Each year the funds are held</td><td>Charged on the net interest; remaining interest added to trust fund</td></tr>
-          <tr><td>No further fee after age 18</td><td>After minor reaches majority</td><td>Interest stops accruing. Minor must claim promptly.</td></tr>
-        </tbody>
-      </table>
-      <p style="font-size:12px;color:var(--muted);margin-top:10px;">Refer to <a href="https://pto.mlaw.gov.sg" target="_blank" style="color:var(--teal);">pto.mlaw.gov.sg</a> for the exact fee schedule — fees are set by statute and updated periodically.</p>
-    </div>
-
-    <div class="co">
-      <strong>⚠️ Important: Un-nominated CPF — Minor Beneficiary Under Intestacy</strong>
-      <p>If there is <strong>no CPF nomination</strong> and the beneficiary under intestacy rules turns out to be a minor, the PTO handles distribution but the age threshold is different: <strong>under 21</strong> (not 18). The PTO holds the un-nominated funds until the beneficiary turns 21. This is because for un-nominated CPF money distributed under intestacy, minors cannot give consent — so the age of majority under the Women's Charter applies.</p>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- INSURANCE MINOR DETAIL -->
-    <p class="stitle">Insurance — Nomination to a Minor (Under 18)</p>
-
-    <div class="grid-2">
-      <div class="ib">
-        <h3>🛡️ Trust Nomination (Recommended for Minors)</h3>
-        <ul class="cl">
-          <li>Under a <strong>Trust Nomination</strong>, the policyholder nominates spouse and/or children as beneficiaries, and the policy becomes held on statutory trust</li>
-          <li>A <strong>trustee must be appointed</strong> (minimum one trustee, aged 18+). The trustee can also be one of the nominees</li>
-          <li>On death, insurer pays the <strong>trustee</strong>, who manages funds for the minor beneficiaries</li>
-          <li>If no trustee is named, insurer pays the <strong>parent or legal guardian</strong> of the minor for the child's benefit</li>
-          <li>Trust nomination is <strong>generally irrevocable</strong> — changing it requires written consent from the trustee (or all nominees/guardians)</li>
-          <li>Provides creditor protection — proceeds generally shielded from the deceased's debts</li>
-        </ul>
-      </div>
-      <div class="ib">
-        <h3>🔄 Revocable Nomination (Flexible but less protection)</h3>
-        <ul class="cl">
-          <li>Under a <strong>Revocable Nomination</strong>, the policyholder can change nominees at any time without consent</li>
-          <li>If a minor is nominated and <strong>no trustee is appointed</strong>: proceeds paid to the <strong>parent or legal guardian</strong> of the minor to manage for the child</li>
-          <li>If a trustee is appointed under the revocable nomination, proceeds paid to the trustee for the minor's benefit</li>
-          <li>A valid will <strong>executed after</strong> a revocable nomination may override the nomination — be careful of this interaction</li>
-          <li>No statutory creditor protection — proceeds form part of estate if revocable</li>
-          <li>Easier to update as family circumstances change</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="ib">
-      <h3>📋 What Happens if There Is NO Insurance Nomination at All?</h3>
-      <ul class="cl">
-        <li>Insurer may pay up to <strong>$150,000 to a "Proper Claimant"</strong> — defined as widower, widow, parent, child, sibling, or nephew/niece of the deceased</li>
-        <li>Proper Claimant is <strong>accountable to the deceased's estate</strong> for the money — they receive it on behalf of the estate, not as their own</li>
-        <li>For amounts above $150,000 without a nomination, insurer requires a <strong>Grant of Probate or Letters of Administration</strong> before releasing funds — this takes months</li>
-        <li>If proper claimant cannot be identified (e.g. complex family structure), insurer will hold funds until court order obtained</li>
-        <li>Proceeds without nomination <strong>form part of the estate</strong> — subject to will or intestacy and creditor claims</li>
-      </ul>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- COMPARISON TABLE -->
-    <p class="stitle">Side-by-Side: CPF vs Insurance — Minor Nominee Summary</p>
-    <table class="tbl">
-      <thead>
-        <tr><th>Aspect</th><th>CPF — Minor Nominee</th><th>Insurance — Trust Nomination (Minor)</th><th>Insurance — Revocable Nomination (Minor)</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Who receives funds</td><td>Public Trustee's Office (PTO)</td><td>Appointed Trustee (or parent/guardian if no trustee)</td><td>Parent or Legal Guardian (or trustee if named)</td></tr>
-        <tr><td>Age for release</td><td>18 years old</td><td>Per trustee's management / trust terms</td><td>On reaching adulthood or per guardian management</td></tr>
-        <tr><td>Interest earned while held</td><td><span class="badge bg">Yes — by PTO</span></td><td>Per trustee's investment decisions</td><td>Per guardian's management</td></tr>
-        <tr><td>Fees charged</td><td><span class="badge ba">Yes — PTO fees (cannot be waived)</span></td><td>Per trustee arrangement</td><td>Minimal / none typically</td></tr>
-        <tr><td>Creditor protection</td><td><span class="badge bg">Yes — CPF protected</span></td><td><span class="badge bg">Yes — statutory trust</span></td><td><span class="badge br">No — forms part of estate</span></td></tr>
-        <tr><td>Can parent access funds early?</td><td><span class="badge ba">Limited — maintenance allowance only</span></td><td>Per trustee's discretion</td><td>Yes — guardian receives and manages</td></tr>
-        <tr><td>Better alternative</td><td>Nominate a trustee / trust company instead</td><td>Appoint a trusted individual trustee</td><td>Consider trust nomination for better protection</td></tr>
-      </tbody>
-    </table>
-
-    <div class="divider"></div>
-
-    <!-- PRACTITIONER GUIDANCE -->
-    <p class="stitle">Practitioner Guidance — What to Recommend</p>
-    <div class="grid-2">
-      <div class="co green">
-        <strong>✅ Best Practice for Young Families with Minor Children</strong>
-        <ul>
-          <li><strong>CPF:</strong> Nominate a trusted adult (spouse) rather than minor children directly — avoids PTO administration and fees. If nominating minor, also set up a trustee arrangement or testamentary trust in the will.</li>
-          <li><strong>Insurance:</strong> Make a <strong>Trust Nomination</strong> naming spouse and/or children, with a named trustee. This ensures immediate payout, creditor protection, and controlled management for the child.</li>
-          <li>Align CPF nominations, insurance nominations, and will trusts to work together as a coherent plan.</li>
-          <li>Review all nominations after every birth — a new child is not automatically included.</li>
-        </ul>
-      </div>
-      <div class="co">
-        <strong>💬 Questions to Ask Clients with Young Children</strong>
-        <ul>
-          <li>"Are your children named directly as CPF nominees? Do you know what happens when they're under 18?"</li>
-          <li>"Who is your insurance trustee? If you haven't named one, do you know who receives the payout?"</li>
-          <li>"If your spouse passes with you at the same time — who manages the money for your children?"</li>
-          <li>"Have you set up a testamentary trust in your will to coordinate with your nominations?"</li>
-          <li>"Have you updated nominations since your youngest child was born?"</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="co blue">
-      <strong>☪️ Note for Muslim Clients — Minor Beneficiaries</strong>
-      <ul>
-        <li>CPF nominations to minor children: the same PTO mechanism applies (held until age 18) — this is a civil law mechanism and is <strong>permissible (halal)</strong> per MUIS, as CPF operates under a secular framework</li>
-        <li>Insurance trust nominations: also permissible — proceeds are contractual rights, not Faraid assets. Trustee arrangement for minor children is recommended.</li>
-        <li>For <strong>wasiyyah</strong> (Islamic bequest up to 1/3): if you wish minor children or a non-heir to benefit, ensure the testamentary trust in your Islamic will aligns with the nomination structure</li>
-        <li>Adopted children: cannot inherit under Faraid, but can be benefited via CPF nomination, insurance nomination, wasiyyah, or hibah during lifetime — discuss this carefully with Muslim clients who have adopted children</li>
-      </ul>
-    </div>
-
-  </div>
-</section>
-
-</div><!-- /main -->
+</div>
 
 <script>
-function show(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  event.currentTarget.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// Checklist
-const counts = {p1:0, p2:0};
-function tc(el, pid, total){
-  el.classList.toggle('checked');
-  const par = el.closest('.ic-wrap');
-  counts[pid] = par.querySelectorAll('.ci.checked').length;
-  document.getElementById(pid).textContent = counts[pid]+' / '+total+' Done';
-}
-
-/* ── AUTH GATE ── */
-async function sha256el(str) {
-  try {
-    if (window.crypto && window.crypto.subtle) {
-      const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-    }
-  } catch(e){}
-  // Pure-JS fallback
+async function sha256el(str){
+  try{if(window.crypto&&window.crypto.subtle){const buf=await window.crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}}catch(e){}
   function rr(v,a){return(v>>>a)|(v<<(32-a));}
   const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
   let h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
@@ -1364,55 +167,21 @@ async function sha256el(str) {
   for(let i=0;i<bytes.length;i+=64){const w=[];for(let j=0;j<16;j++)w[j]=(bytes[i+j*4]<<24)|(bytes[i+j*4+1]<<16)|(bytes[i+j*4+2]<<8)|bytes[i+j*4+3];for(let j=16;j<64;j++){const s0=rr(w[j-15],7)^rr(w[j-15],18)^(w[j-15]>>>3);const s1=rr(w[j-2],17)^rr(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)>>>0;}let[a,b,c,d,e,f,g,hh]=h;for(let j=0;j<64;j++){const S1=rr(e,6)^rr(e,11)^rr(e,25);const ch=(e&f)^(~e&g);const T1=(hh+S1+ch+K[j]+w[j])>>>0;const S0=rr(a,2)^rr(a,13)^rr(a,22);const maj=(a&b)^(a&c)^(b&c);const T2=(S0+maj)>>>0;hh=g;g=f;f=e;e=(d+T1)>>>0;d=c;c=b;b=a;a=(T1+T2)>>>0;}h=[h[0]+a,h[1]+b,h[2]+c,h[3]+d,h[4]+e,h[5]+f,h[6]+g,h[7]+hh].map(v=>v>>>0);}
   return h.map(v=>v.toString(16).padStart(8,'0')).join('');
 }
-
-function unlockContent() {
-  document.getElementById('auth-gate').classList.add('hidden');
-  document.body.classList.remove('locked');
-}
-
-(function checkAuth() {
-  const stored = localStorage.getItem('soul_agent_auth');
-  if (stored) {
-    try {
-      const d = JSON.parse(stored);
-      // Valid for 30 days
-      if (d.ts && Date.now() - d.ts < 30 * 24 * 60 * 60 * 1000) {
-        unlockContent(); return;
-      }
-    } catch(e) {}
-  }
-  // Also accept if signed in via main site in same session
-  try {
-    const ss = sessionStorage.getItem('soul_session');
-    if (ss) { unlockContent(); return; }
-  } catch(e) {}
+function unlockContent(){document.getElementById('auth-gate').classList.add('hidden');document.body.classList.remove('locked');}
+(function checkAuth(){
+  const stored=localStorage.getItem('soul_agent_auth');
+  if(stored){try{const d=JSON.parse(stored);if(d.ts&&Date.now()-d.ts<30*24*60*60*1000){unlockContent();return;}}catch(e){}}
+  try{const ss=sessionStorage.getItem('soul_session');if(ss){unlockContent();return;}}catch(e){}
 })();
-
-document.getElementById('auth-pw').addEventListener('keydown', e => { if(e.key==='Enter') authLogin(); });
-
-async function authLogin() {
-  const pw = document.getElementById('auth-pw').value;
-  if (!pw) return;
-  const btn = document.getElementById('auth-btn');
-  const errEl = document.getElementById('auth-error');
-  btn.textContent = 'Checking…'; btn.disabled = true; errEl.style.display = 'none';
-  try {
-    const hash = await sha256el(pw);
-    const res = await fetch('/api/data', { cache: 'no-store' });
-    const data = await res.json();
-    const match = data.members.find(m => m.passwordHash === hash);
-    if (match) {
-      localStorage.setItem('soul_agent_auth', JSON.stringify({ id: match.id, ts: Date.now() }));
-      unlockContent();
-    } else {
-      errEl.style.display = 'block';
-      btn.textContent = 'Sign In to Continue →'; btn.disabled = false;
-    }
-  } catch(e) {
-    errEl.textContent = 'Network error — please try again.';
-    errEl.style.display = 'block';
-    btn.textContent = 'Sign In to Continue →'; btn.disabled = false;
-  }
+document.getElementById('auth-pw').addEventListener('keydown',e=>{if(e.key==='Enter')authLogin();});
+async function authLogin(){
+  const pw=document.getElementById('auth-pw').value;if(!pw)return;
+  const btn=document.getElementById('auth-btn'),errEl=document.getElementById('auth-error');
+  btn.textContent='Checking\u2026';btn.disabled=true;errEl.style.display='none';
+  try{const hash=await sha256el(pw);const res=await fetch('/api/data',{cache:'no-store'});const data=await res.json();const match=data.members.find(m=>m.passwordHash===hash);
+    if(match){localStorage.setItem('soul_agent_auth',JSON.stringify({id:match.id,ts:Date.now()}));unlockContent();}
+    else{errEl.style.display='block';btn.textContent='Sign In to Continue \u2192';btn.disabled=false;}
+  }catch(e){errEl.textContent='Network error \u2014 please try again.';errEl.style.display='block';btn.textContent='Sign In to Continue \u2192';btn.disabled=false;}
 }
 </script>
 </body>

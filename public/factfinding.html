@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fact-Finding Mastery — SOUL Guild</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a2e;--gold:#c9a84c;--gold-lt:#f5edda;--gold-dk:#9a7530;
+  --cream:#faf8f3;--warm:#f2ede6;--border:#e2d9cc;--text:#2c2c3e;--muted:#7a7a8c;
+  --green:#2d6a4f;--gbg:#e8f5ee;--gbd:#a8d5be;
+  --blue:#1b6ca8;--bbg:#e8f4fd;--bbd:#90caf9;
+  --red:#c0392b;--rbg:#fdecea;--rbd:#f5b7b1;
+  --amber:#d68910;--abg:#fef9e7;--abd:#f0d080;
+  --teal:#0d7377;--tbg:#e0f4f4;--tbd:#7dd3d5;
+  --purple:#6c3483;--pbg:#f5eafb;--pbd:#d7a8e8;
+  --sidebar:260px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar);background:var(--ink);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column;}
+.sb-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08);}
+.sb-brand .logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--gold);}
+.sb-brand .tagline{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-top:3px;}
+.sb-book-title{padding:14px 20px 10px;font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.05);}
+.sb-nav{flex:1;padding:10px 0;}
+.sb-section{margin-bottom:4px;}
+.sb-section-label{padding:8px 20px 4px;font-size:9px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.15em;text-transform:uppercase;}
+.sb-link{display:flex;align-items:center;gap:9px;padding:8px 20px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;transition:all .18s;border-left:2px solid transparent;}
+.sb-link:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.04);}
+.sb-link.active{color:var(--gold);background:rgba(201,168,76,.08);border-left-color:var(--gold);}
+.sb-link .icon{font-size:13px;width:18px;text-align:center;flex-shrink:0;}
+.sb-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:10px;color:rgba(255,255,255,.25);}
+.sb-footer strong{color:rgba(255,255,255,.4);}
+.main{margin-left:var(--sidebar);flex:1;min-height:100vh;}
+.hero{background:var(--ink);padding:56px 60px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:380px;height:380px;border-radius:50%;border:55px solid rgba(201,168,76,.06);pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-80px;right:100px;width:260px;height:260px;border-radius:50%;border:35px solid rgba(201,168,76,.04);pointer-events:none;}
+.hero-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:14px;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero p{font-size:15px;color:rgba(255,255,255,.6);max-width:560px;line-height:1.7;}
+.hero-meta{display:flex;gap:28px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);}
+.hero-meta-item .label{font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;}
+.hero-meta-item .val{font-size:14px;font-weight:600;color:rgba(255,255,255,.8);margin-top:3px;}
+.content{padding:48px 60px;}
+.section{margin-bottom:72px;scroll-margin-top:24px;}
+.section-eyebrow{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.section h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.2;}
+.section-intro{font-size:15px;color:var(--muted);max-width:680px;line-height:1.75;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin:28px 0 12px;}
+h4{font-size:14px;font-weight:700;color:var(--ink);margin:18px 0 8px;}
+p{font-size:14px;line-height:1.8;color:var(--text);margin-bottom:12px;}
+p:last-child{margin-bottom:0;}
+strong{color:var(--ink);}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:14px;}
+.card-gold{border-left:4px solid var(--gold);}
+.card-green{border-left:4px solid var(--green);}
+.card-blue{border-left:4px solid var(--blue);}
+.card-red{border-left:4px solid var(--red);}
+.card-teal{border-left:4px solid var(--teal);}
+.card-purple{border-left:4px solid var(--purple);}
+.card-amber{border-left:4px solid var(--amber);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.callout{border-radius:8px;padding:16px 20px;margin:20px 0;}
+.callout-gold{background:var(--gold-lt);border:1px solid var(--abd);}
+.callout-green{background:var(--gbg);border:1px solid var(--gbd);}
+.callout-blue{background:var(--bbg);border:1px solid var(--bbd);}
+.callout-red{background:var(--rbg);border:1px solid var(--rbd);}
+.callout-teal{background:var(--tbg);border:1px solid var(--tbd);}
+.callout-purple{background:var(--pbg);border:1px solid var(--pbd);}
+.callout h4{margin-top:0;}
+.callout-gold h4{color:var(--gold-dk);}
+.callout-green h4{color:var(--green);}
+.callout-blue h4{color:var(--blue);}
+.callout-red h4{color:var(--red);}
+.callout-teal h4{color:var(--teal);}
+.callout-purple h4{color:var(--purple);}
+.steps{margin:20px 0;}
+.step{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start;}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-family:'DM Mono',monospace;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body h4{margin:0 0 5px;}
+.quote{border-left:3px solid var(--gold);padding:14px 20px;margin:20px 0;background:#fff;border-radius:0 8px 8px 0;}
+.quote p{font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:var(--ink);margin-bottom:6px;}
+.quote cite{font-size:11px;color:var(--muted);font-style:normal;text-transform:uppercase;letter-spacing:.08em;}
+.tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.tbl th{background:var(--ink);color:var(--gold);padding:10px 14px;text-align:left;font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--border);}
+.tbl tr:nth-child(even) td{background:var(--warm);}
+.tbl tr:hover td{background:var(--gold-lt);}
+.tip{display:flex;gap:10px;background:var(--gold-lt);border:1px solid var(--abd);border-radius:7px;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.6;}
+.tip .icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.warn{display:flex;gap:10px;background:var(--rbg);border:1px solid var(--rbd);border-radius:7px;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.6;color:var(--red);}
+.quiz{background:var(--ink);border-radius:10px;padding:24px;margin:24px 0;}
+.quiz h4{color:var(--gold);margin:0 0 14px;font-family:'Playfair Display',serif;font-size:17px;}
+.quiz-q{color:rgba(255,255,255,.8);font-size:14px;margin-bottom:12px;line-height:1.6;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:10px 14px;color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;transition:all .18s;}
+.quiz-opt:hover{background:rgba(201,168,76,.12);border-color:var(--gold);color:var(--gold);}
+.quiz-opt.correct{background:rgba(45,106,79,.25);border-color:var(--gbd);color:#7ed6a0;}
+.quiz-opt.wrong{background:rgba(192,57,43,.2);border-color:var(--rbd);color:#f5b7b1;}
+.quiz-feedback{margin-top:12px;padding:12px;border-radius:6px;font-size:13px;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct{background:rgba(45,106,79,.2);color:#7ed6a0;}
+.quiz-feedback.wrong{background:rgba(192,57,43,.15);color:#f5b7b1;}
+
+/* Dialogue bubbles */
+.dialogue{margin:16px 0;}
+.bubble-fc{display:flex;gap:10px;margin-bottom:12px;}
+.bubble-client{display:flex;gap:10px;margin-bottom:12px;flex-direction:row-reverse;}
+.bubble-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;}
+.bubble-fc .bubble-label{color:var(--blue);}
+.bubble-client .bubble-label{color:var(--green);text-align:right;}
+.bubble-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:18px;}
+.bubble-fc .bubble-av{background:var(--bbg);border:1px solid var(--bbd);}
+.bubble-client .bubble-av{background:var(--gbg);border:1px solid var(--gbd);}
+.bubble-text{background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 16px;font-size:13.5px;line-height:1.65;max-width:82%;color:var(--text);}
+.bubble-fc .bubble-text{border-top-left-radius:3px;}
+.bubble-client .bubble-text{border-top-right-radius:3px;background:var(--gbg);}
+.bubble-fc .bubble-wrap{display:flex;flex-direction:column;}
+.bubble-client .bubble-wrap{display:flex;flex-direction:column;align-items:flex-end;}
+.bubble-annot{font-size:11px;color:var(--muted);margin-top:4px;font-style:italic;}
+
+/* Question card */
+.q-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+.q-type{min-width:70px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.06em;}
+.q-type.spin-s{background:var(--bbg);color:var(--blue);border:1px solid var(--bbd);}
+.q-type.spin-p{background:var(--pbg);color:var(--purple);border:1px solid var(--pbd);}
+.q-type.spin-i{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
+.q-type.spin-n{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.q-type.open{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.q-type.probe{background:var(--tbg);color:var(--teal);border:1px solid var(--tbd);}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--text);flex:1;}
+.q-note{font-size:11px;color:var(--muted);margin-top:5px;font-style:italic;}
+
+/* SPIN labels */
+.spin-label{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-right:6px;margin-bottom:6px;}
+
+/* Stage tracker */
+.stage-track{display:flex;gap:0;margin:20px 0;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.stage{flex:1;padding:14px 10px;text-align:center;background:#fff;border-right:1px solid var(--border);cursor:pointer;transition:all .18s;}
+.stage:last-child{border-right:none;}
+.stage:hover{background:var(--gold-lt);}
+.stage.active-stage{background:var(--ink);}
+.stage .s-icon{font-size:18px;margin-bottom:4px;}
+.stage .s-name{font-size:11px;font-weight:600;color:var(--muted);}
+.stage.active-stage .s-name{color:var(--gold);}
+.stage .s-time{font-size:10px;color:var(--muted);margin-top:2px;font-family:'DM Mono',monospace;}
+.stage-content{display:none;}
+.stage-content.active{display:block;}
+
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:2px;}
+/* ── AUTH GATE ── */
+#auth-gate{position:fixed;inset:0;background:#1a1a2e;z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+#auth-gate.hidden{display:none;}
+.auth-box{background:#fff;border-radius:8px;padding:2.5rem;max-width:380px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.4);}
+.auth-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#c9a84c;letter-spacing:0.08em;margin-bottom:0.25rem;}
+.auth-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#1a1a2e;margin-bottom:0.25rem;}
+.auth-sub{font-size:0.82rem;color:#7a7a8c;margin-bottom:1.75rem;}
+.auth-box input{width:100%;border:1px solid #e2d9cc;border-radius:5px;padding:0.75rem 1rem;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:0.75rem;}
+.auth-box input:focus{border-color:#c9a84c;}
+.auth-btn{width:100%;background:#1a1a2e;color:#c9a84c;border:none;padding:0.85rem;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.04em;}
+.auth-btn:hover{background:#0d1520;}
+.auth-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.auth-error{color:#c0392b;font-size:0.8rem;margin-top:0.5rem;display:none;}
+.auth-lock{font-size:2rem;margin-bottom:1rem;}
+body.locked .sidebar, body.locked .main{visibility:hidden;}
+</style>
+</head>
+<body class="locked">
+<!-- ── AUTH GATE ── -->
+<div id="auth-gate">
+  <div class="auth-box">
+    <div class="auth-lock">🔒</div>
+    <div class="auth-logo">SOUL Advisors</div>
+    <div class="auth-title">Agent Access Only</div>
+    <div class="auth-sub">This playbook is for SOUL Advisors agents only. Sign in with your profile password to continue.</div>
+    <input type="password" id="auth-pw" placeholder="Enter your password" autocomplete="current-password">
+    <button class="auth-btn" id="auth-btn" onclick="authLogin()">Sign In to Continue →</button>
+    <div class="auth-error" id="auth-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="logo">SOUL Guild</div>
+    <div class="tagline">Strategic Partners · Prudential SG</div>
+  </div>
+  <div class="sb-book-title">🔍 Fact-Finding Mastery</div>
+  <nav class="sb-nav">
+    <div class="sb-section">
+      <div class="sb-section-label">Foundation</div>
+      <a class="sb-link active" onclick="nav('why')"><span class="icon">🎯</span> Why Fact-Finding Matters</a>
+      <a class="sb-link" onclick="nav('mindset')"><span class="icon">🧠</span> The Right Mindset</a>
+      <a class="sb-link" onclick="nav('prepare')"><span class="icon">📋</span> Before the Meeting</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">The Meeting</div>
+      <a class="sb-link" onclick="nav('structure')"><span class="icon">🗺️</span> Meeting Structure</a>
+      <a class="sb-link" onclick="nav('open')"><span class="icon">🚪</span> Opening the Conversation</a>
+      <a class="sb-link" onclick="nav('spin')"><span class="icon">🔄</span> SPIN in the Fact-Find</a>
+      <a class="sb-link" onclick="nav('listening')"><span class="icon">👂</span> Active Listening</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">Sensitive Topics</div>
+      <a class="sb-link" onclick="nav('income')"><span class="icon">💰</span> Asking About Income</a>
+      <a class="sb-link" onclick="nav('debt')"><span class="icon">📉</span> Debt & Financial Stress</a>
+      <a class="sb-link" onclick="nav('health')"><span class="icon">🏥</span> Health & Medical History</a>
+      <a class="sb-link" onclick="nav('family')"><span class="icon">👨‍👩‍👧</span> Family Dynamics</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-section-label">Closing the Fact-Find</div>
+      <a class="sb-link" onclick="nav('transition')"><span class="icon">🌉</span> Fact-Find to Recommendation</a>
+      <a class="sb-link" onclick="nav('objections')"><span class="icon">🛡️</span> Early Objections</a>
+      <a class="sb-link" onclick="nav('documentation')"><span class="icon">📁</span> Documentation & FNA</a>
+      <a class="sb-link" onclick="nav('scenarios')"><span class="icon">🎭</span> Role-Play Scenarios</a>
+    </div>
+  </nav>
+  <div class="sb-footer"><strong>SOUL Guild</strong> · BZ2-19695<br>For internal training use only<br><br><a href="/elearning" style="color:rgba(201,168,76,0.6);font-size:10px;text-decoration:none;">← Back to eLearning</a></div>
+</aside>
+
+<main class="main">
+
+<div class="hero">
+  <div class="hero-label">SOUL Guild eLearning · Module 2</div>
+  <h1>Fact-Finding <em>Mastery</em></h1>
+  <p>The fact-find is not a form to fill in. It is the most important conversation you will have with a client — the one that either builds trust for life or loses them forever.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="label">Sections</div><div class="val">12 Topics</div></div>
+    <div class="hero-meta-item"><div class="label">Includes</div><div class="val">SPIN Integration</div></div>
+    <div class="hero-meta-item"><div class="label">Features</div><div class="val">Live Dialogues</div></div>
+    <div class="hero-meta-item"><div class="label">Ends With</div><div class="val">Role-Play Scenarios</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- WHY -->
+<section class="section" id="why">
+  <div class="section-eyebrow">Foundation</div>
+  <h2>Why Fact-Finding Matters</h2>
+  <p class="section-intro">Most FCs treat the fact-find as a compliance checkbox — something to tick before they can present a product. The best FCs know it is the opposite: it is where the relationship is built and where the sale is won or lost.</p>
+
+  <p>Think about the last time you visited a doctor who asked very few questions, barely examined you, then immediately prescribed something. How did that feel? Probably uncomfortable. You might have doubted the prescription entirely.</p>
+  <p>Now think about the doctor who spent 20 minutes asking careful questions, explained what they were looking for, and only then offered a diagnosis. You trusted that prescription. You probably followed through.</p>
+  <p>Your client feels exactly the same way. <strong>A thorough fact-find is the single most powerful sales tool you have</strong> — and it doesn't feel like selling at all.</p>
+
+  <div class="grid3">
+    <div class="card card-blue">
+      <div style="font-size:22px;margin-bottom:8px">🤝</div>
+      <h4>It Builds Trust</h4>
+      <p style="font-size:13px">Clients who feel heard are far more likely to proceed. The fact-find signals: "I care about your situation, not your commission."</p>
+    </div>
+    <div class="card card-green">
+      <div style="font-size:22px;margin-bottom:8px">🎯</div>
+      <h4>It Reveals Real Needs</h4>
+      <p style="font-size:13px">Clients often don't know what they need — they know what they're worried about. A good fact-find surfaces needs they couldn't articulate themselves.</p>
+    </div>
+    <div class="card card-gold">
+      <div style="font-size:22px;margin-bottom:8px">⚖️</div>
+      <h4>It Protects You</h4>
+      <p style="font-size:13px">A documented FNA is your legal shield. If a client ever claims they were mis-sold, your fact-find record is your evidence that the recommendation was appropriate.</p>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>"You cannot prescribe before you diagnose. And you cannot diagnose before you listen."</p>
+    <cite>SOUL Guild · Training Principle</cite>
+  </div>
+
+  <h3>The Two Types of Fact-Finding</h3>
+  <div class="grid2">
+    <div class="card card-red">
+      <h4>❌ Data Collection (Wrong Approach)</h4>
+      <p style="font-size:13px">The FC asks a series of closed questions, fills in the form mechanically, barely looks up, and moves on to the product presentation. The client feels like they're filling in a government form. The FC has data but no insight.</p>
+      <ul style="font-size:13px;margin-top:8px;padding-left:18px;line-height:2">
+        <li>Mostly closed questions</li>
+        <li>FC talks more than client</li>
+        <li>Moves through the form quickly</li>
+        <li>No exploration of emotions or priorities</li>
+      </ul>
+    </div>
+    <div class="card card-green">
+      <h4>✅ Discovery Conversation (Right Approach)</h4>
+      <p style="font-size:13px">The FC uses the form as a guide but is fully engaged in a two-way conversation. They ask follow-up questions. They listen for what's unsaid. The client feels understood. The FC has both data AND insight.</p>
+      <ul style="font-size:13px;margin-top:8px;padding-left:18px;line-height:2">
+        <li>Mix of open and probing questions</li>
+        <li>Client talks 70% of the time</li>
+        <li>FC explores emotions behind answers</li>
+        <li>Client often says "I've never thought about that"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h4>Quick Check</h4>
+    <div class="quiz-q">A client answers "Monthly income: $5,500" on the fact-find form. Which response shows good discovery technique?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">Write down $5,500 and move to the next field.</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">"Great, and does your spouse work too?"</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">"$5,500 — is that a fixed salary or does it include variable components like commission or bonuses? And is that consistent throughout the year, or does it fluctuate?"</div>
+    </div>
+    <div class="quiz-feedback correct">✓ Correct. A single income figure hides important details: is it stable? Is there variable income the client is counting on? A bonus that may not materialise? These nuances affect what you recommend and how you position it.</div>
+    <div class="quiz-feedback wrong">✗ Moving on accepts the surface answer. Discovery means going one level deeper — understanding the nature, stability, and composition of income, not just the headline number.</div>
+  </div>
+</section>
+
+<!-- MINDSET -->
+<section class="section" id="mindset">
+  <div class="section-eyebrow">Foundation</div>
+  <h2>The Right Mindset</h2>
+  <p class="section-intro">Before you can master the technique, you need to master the mindset. How you think about the fact-find determines how you conduct it — and whether the client feels it.</p>
+
+  <h3>You Are Not a Salesperson in This Meeting</h3>
+  <p>In the fact-find, your role is <strong>diagnostician</strong>, not seller. The moment you start mentally calculating your commission from their answers, the client can feel it — in your body language, your rushed questions, your selective listening. Leave the product in the car.</p>
+
+  <div class="callout callout-gold">
+    <h4>💡 The Mindset Shift</h4>
+    <p>Replace "What can I sell this person?" with "What does this person need that they may not even know they need?" That one internal shift changes everything about how you ask questions, how you listen, and how the client responds to you.</p>
+  </div>
+
+  <h3>Curiosity Is Your Superpower</h3>
+  <p>The best fact-finders are genuinely curious people. They want to understand. They find people interesting. They ask follow-up questions not because a script tells them to, but because they actually want to know more.</p>
+  <p>If you find yourself going through the motions — practice this: before each meeting, read your client's LinkedIn, think about their life stage, and write down three things you're genuinely curious to understand about their situation. Walk in curious, and the conversation will take care of itself.</p>
+
+  <h3>Silence Is Your Friend</h3>
+  <p>Many FCs are uncomfortable with silence and rush to fill it. Don't. When you ask a meaningful question and the client goes quiet — that silence is them thinking seriously about their answer. That is exactly what you want. Count to five before you speak. The answer that follows a pause is almost always more honest and more valuable than the first reflexive response.</p>
+
+  <div class="card card-purple">
+    <h4>🧘 The 70/30 Rule</h4>
+    <p style="font-size:13px">In a good fact-find, the client should speak approximately 70% of the time. You speak 30% — and most of that 30% is questions, not statements. If you notice yourself talking more than your client, that is a signal to stop and ask an open question.</p>
+    <p style="font-size:13px;margin-top:8px">A simple check: after every 2 minutes of speaking, ask yourself — "When did my client last say something meaningful?" If it was more than 2 minutes ago, you are talking too much.</p>
+  </div>
+</section>
+
+<!-- PREPARE -->
+<section class="section" id="prepare">
+  <div class="section-eyebrow">Foundation</div>
+  <h2>Before the Meeting</h2>
+  <p class="section-intro">The quality of your fact-find is determined long before you sit down with the client. Preparation signals professionalism and allows you to ask better questions from the start.</p>
+
+  <h3>Pre-Meeting Checklist</h3>
+  <div class="card card-green">
+    <ul style="list-style:none;font-size:14px;line-height:2.2;">
+      <li>✅ <strong>Review what you know</strong> — how you met, what they mentioned, any referral context</li>
+      <li>✅ <strong>LinkedIn / social check</strong> — employer, career stage, life events (wedding, new baby, promotion)</li>
+      <li>✅ <strong>Prepare your SOUL FACTFinder</strong> — pre-fill name, date, referrer. Nothing looks worse than scrambling for a clean form</li>
+      <li>✅ <strong>Set your intention</strong> — remind yourself: your job today is to listen and understand, not to present</li>
+      <li>✅ <strong>Confirm the appointment</strong> — 24 hours before. Reinforce the purpose: "I'll be coming with a few questions to understand your situation better before I make any recommendations."</li>
+      <li>✅ <strong>Bring two copies</strong> — one for you to annotate, one for the client to follow along if they want</li>
+      <li>✅ <strong>Charge your device</strong> — if using a digital FACTFinder</li>
+    </ul>
+  </div>
+
+  <h3>Setting the Frame at Confirmation</h3>
+  <p>What you say when confirming the appointment shapes the client's expectations and reduces "what are we actually doing?" anxiety:</p>
+
+  <div class="card card-blue">
+    <h4>Confirmation Message (WhatsApp)</h4>
+    <p style="font-size:13px;font-style:italic;background:var(--warm);padding:12px;border-radius:6px;margin-top:8px;line-height:1.8">"Looking forward to our chat tomorrow at 3pm! I'll be bringing a simple fact-finding form — it's basically just a structured conversation to help me understand your current financial situation, your goals, and any gaps you might have. No decisions needed tomorrow, and nothing to prepare — just come as you are. See you then! 😊"</p>
+  </div>
+
+  <div class="tip"><span class="icon">💡</span><span>"Nothing to prepare" removes the anxiety that kills appointments. "No decisions needed" removes the sales pressure before you've even arrived. The client arrives relaxed and open — which makes the conversation infinitely better.</span></div>
+</section>
+
+<!-- STRUCTURE -->
+<section class="section" id="structure">
+  <div class="section-eyebrow">The Meeting</div>
+  <h2>Meeting Structure</h2>
+  <p class="section-intro">A great fact-finding meeting follows a natural arc — from rapport, to discovery, to prioritisation. Each stage serves a purpose. Rushing any stage damages the whole.</p>
+
+  <div class="stage-track" id="stage-track">
+    <div class="stage active-stage" onclick="showStage(0,this)">
+      <div class="s-icon">☕</div>
+      <div class="s-name">Rapport</div>
+      <div class="s-time">5–10 min</div>
+    </div>
+    <div class="stage" onclick="showStage(1,this)">
+      <div class="s-icon">🗺️</div>
+      <div class="s-name">Frame</div>
+      <div class="s-time">3–5 min</div>
+    </div>
+    <div class="stage" onclick="showStage(2,this)">
+      <div class="s-icon">📊</div>
+      <div class="s-name">Quantitative</div>
+      <div class="s-time">15–20 min</div>
+    </div>
+    <div class="stage" onclick="showStage(3,this)">
+      <div class="s-icon">❤️</div>
+      <div class="s-name">Qualitative</div>
+      <div class="s-time">15–20 min</div>
+    </div>
+    <div class="stage" onclick="showStage(4,this)">
+      <div class="s-icon">🎯</div>
+      <div class="s-name">Prioritise</div>
+      <div class="s-time">5–10 min</div>
+    </div>
+    <div class="stage" onclick="showStage(5,this)">
+      <div class="s-icon">🌉</div>
+      <div class="s-name">Bridge</div>
+      <div class="s-time">5 min</div>
+    </div>
+  </div>
+
+  <div class="stage-content active" id="sc0">
+    <div class="card card-blue">
+      <h4>☕ Stage 1: Rapport (5–10 minutes)</h4>
+      <p style="font-size:13px">This is not small talk — it is intelligence gathering disguised as friendliness. While you chat about family, work, the weekend, you are learning about their world, their pressures, their personality type. A quiet, private person needs a different conversation style than an outgoing, talkative one. Adapt.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Good openers:</strong> "How's work been lately?" / "How did you and [referrer] meet?" / "You mentioned you just moved — how's the new place?" <br>Listen for: stress signals, recent life events, financial anxieties hiding in casual comments.</p>
+    </div>
+  </div>
+  <div class="stage-content" id="sc1">
+    <div class="card card-gold">
+      <h4>🗺️ Stage 2: Frame the Meeting (3–5 minutes)</h4>
+      <p style="font-size:13px">Before diving into questions, tell the client what you're doing and why. This removes anxiety and gets their buy-in.</p>
+      <p style="font-size:13px;margin-top:10px;font-style:italic;background:var(--warm);padding:12px;border-radius:6px;line-height:1.8">"Before I can make any recommendations, I want to make sure I truly understand your situation — your income, your current coverage, your goals, and what's most important to you. Today's session is just about that. I'll ask a mix of factual questions and some bigger-picture questions. There are no right or wrong answers, and there's absolutely no pressure today. The goal is just for me to get a complete picture. Sound good?"</p>
+    </div>
+  </div>
+  <div class="stage-content" id="sc2">
+    <div class="card card-green">
+      <h4>📊 Stage 3: Quantitative Discovery (15–20 minutes)</h4>
+      <p style="font-size:13px">Cover the factual, numerical data: income (both spouses if applicable), expenses, assets, liabilities, existing coverage, CPF, dependants. Use the SOUL FACTFinder as your guide.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Key principle:</strong> Never make the client feel judged for their numbers. If their savings rate is low, don't raise your eyebrows — just note it and keep going. Judgment kills openness.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Always go one level deeper:</strong> "Is that salary fixed or variable?" "Is that loan the only liability, or are there others?" "Does your existing insurance include CI or just life cover?"</p>
+    </div>
+  </div>
+  <div class="stage-content" id="sc3">
+    <div class="card card-purple">
+      <h4>❤️ Stage 4: Qualitative Discovery (15–20 minutes)</h4>
+      <p style="font-size:13px">This is where most FCs underinvest — and where most of the trust is built. Beyond the numbers, you need to understand the emotions, the fears, the dreams.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Questions to explore:</strong></p>
+      <ul style="font-size:13px;margin-top:6px;padding-left:18px;line-height:2">
+        <li>"What would you say is your biggest financial concern right now?"</li>
+        <li>"If money was no object, what would your life look like in 10 years?"</li>
+        <li>"How would your family cope financially if something happened to you tomorrow?"</li>
+        <li>"Have you had any experiences — personal or with people you know — that made you think about financial protection differently?"</li>
+        <li>"What's most important to you when it comes to your family's future?"</li>
+      </ul>
+    </div>
+  </div>
+  <div class="stage-content" id="sc4">
+    <div class="card card-amber">
+      <h4>🎯 Stage 5: Prioritise Together (5–10 minutes)</h4>
+      <p style="font-size:13px">Help the client rank their own priorities. Don't tell them — ask them.</p>
+      <p style="font-size:13px;margin-top:8px;font-style:italic">"Based on everything we've covered today, if you had to pick the two or three areas you'd most want to address first — what would they be?"</p>
+      <p style="font-size:13px;margin-top:8px">Let them answer. Write it down. Read it back to them. This becomes the foundation of your recommendation meeting — you're selling them what they told you they wanted.</p>
+    </div>
+  </div>
+  <div class="stage-content" id="sc5">
+    <div class="card card-teal">
+      <h4>🌉 Stage 6: Bridge to Next Meeting (5 minutes)</h4>
+      <p style="font-size:13px">Close the fact-find by setting up the recommendation meeting with clear expectations.</p>
+      <p style="font-size:13px;margin-top:8px;font-style:italic;background:var(--warm);padding:12px;border-radius:6px;line-height:1.8">"Thank you so much for sharing all of this with me — I know some of it's quite personal. I'll take everything you've shared and put together a personalised plan that addresses your priorities. When we meet next, I'll walk you through what I've found and some recommendations. You'll have all the time you need to review and ask questions — there's never any pressure. Does [specific day/time] work for our follow-up?"</p>
+    </div>
+  </div>
+</section>
+
+<!-- OPEN -->
+<section class="section" id="open">
+  <div class="section-eyebrow">The Meeting</div>
+  <h2>Opening the Conversation</h2>
+  <p class="section-intro">The first two minutes of a fact-find set the entire tone. A clumsy opener creates awkwardness that takes 30 minutes to overcome. A smooth opener creates flow that lasts the whole meeting.</p>
+
+  <h3>The Wrong Way to Open</h3>
+  <div class="dialogue">
+    <div class="bubble-fc">
+      <div class="bubble-av">🧑‍💼</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">FC</div>
+        <div class="bubble-text">OK so I have this form we need to fill in. It'll take about 30 minutes. Can I get your full name as per NRIC?</div>
+        <div class="bubble-annot">❌ Cold, transactional, immediately signals "this is paperwork"</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Right Way to Open</h3>
+  <div class="dialogue">
+    <div class="bubble-fc">
+      <div class="bubble-av">🧑‍💼</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">FC</div>
+        <div class="bubble-text">So Hafeez — before we get started, I just want to say thank you for making the time. I know Rashid mentioned you've been thinking about getting your financial situation sorted, and I really appreciate that you're being proactive about it. A lot of people put this off for years. Can I ask — what made you decide now was the right time?</div>
+        <div class="bubble-annot">✅ Personal, affirming, opens with an open question that gets the client talking first</div>
+      </div>
+    </div>
+    <div class="bubble-client">
+      <div class="bubble-av">👤</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">Client</div>
+        <div class="bubble-text">Yeah, honestly my colleague just had a heart attack at 41. Scared me a bit. Made me realise I have almost nothing in place.</div>
+        <div class="bubble-annot">💡 Emotional trigger revealed in the first 60 seconds — this is gold</div>
+      </div>
+    </div>
+    <div class="bubble-fc">
+      <div class="bubble-av">🧑‍💼</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">FC</div>
+        <div class="bubble-text">That must have been a shock. Is he OK? And I can understand why that would make you think — those moments have a way of cutting through the noise. So today, let's make sure we actually do something about it. I'll ask you a mix of factual and bigger-picture questions. There's no right or wrong answer — I just want to understand your situation properly before I suggest anything.</div>
+        <div class="bubble-annot">✅ Empathetic, reinforces trust, sets expectations for the fact-find</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-green">
+    <h4>✅ The Golden Opening Question</h4>
+    <p>"What made you decide now was the right time to look at this?" — or any variant of it — surfaces the emotional trigger before you've asked a single factual question. The emotional trigger is what will close the case later. Find it early.</p>
+  </div>
+</section>
+
+<!-- SPIN -->
+<section class="section" id="spin">
+  <div class="section-eyebrow">The Meeting</div>
+  <h2>SPIN in the Fact-Find</h2>
+  <p class="section-intro">SPIN Selling is not a closing technique — it is a discovery methodology. The fact-find is where SPIN lives. Understanding how to weave all four question types into your fact-finding conversation is what separates a good FC from a great one.</p>
+
+  <div class="grid2" style="margin-bottom:16px">
+    <div style="background:var(--bbg);border:1px solid var(--bbd);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:4px">S — Situation</div>
+      <p style="font-size:13px;margin:0">Gather factual background. Income, family, assets, existing coverage. The FACTFinder handles most of this.</p>
+    </div>
+    <div style="background:var(--pbg);border:1px solid var(--pbd);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);margin-bottom:4px">P — Problem</div>
+      <p style="font-size:13px;margin:0">Uncover difficulties, gaps, and dissatisfactions. Not creating problems — surfacing ones the client already has.</p>
+    </div>
+    <div style="background:var(--rbg);border:1px solid var(--rbd);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:4px">I — Implication</div>
+      <p style="font-size:13px;margin:0">Explore what happens if the problem goes unsolved. This is where urgency is created — naturally, not artificially.</p>
+    </div>
+    <div style="background:var(--gbg);border:1px solid var(--gbd);border-radius:8px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:4px">N — Need-Payoff</div>
+      <p style="font-size:13px;margin:0">Help the client articulate the value of solving the problem. They sell themselves on the solution.</p>
+    </div>
+  </div>
+
+  <h3>SPIN in Action — Protection Conversation</h3>
+  <div class="dialogue">
+    <div class="bubble-fc">
+      <div class="bubble-av">🧑‍💼</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">FC — Situation</div>
+        <div class="bubble-text">You mentioned your household income is around $8,000 a month. Is that mostly from your side, or is your wife working too?</div>
+      </div>
+    </div>
+    <div class="bubble-client">
+      <div class="bubble-av">👤</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">Client</div>
+        <div class="bubble-text">Mostly me. She works part-time, maybe $1,500 a month. We have a baby so she reduced her hours.</div>
+      </div>
+    </div>
+    <div class="bubble-fc">
+      <div class="bubble-av">🧑‍💼</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">FC — Problem</div>
+        <div class="bubble-text">Got it. And do you have any life or critical illness coverage currently? Even from your employer?</div>
+      </div>
+    </div>
+    <div class="bubble-client">
+      <div class="bubble-av">👤</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">Client</div>
+        <div class="bubble-text">My company has some group insurance, but I don't know the details. It's probably not much.</div>
+      </div>
+    </div>
+    <div class="bubble-fc">
+      <div class="bubble-av">🧑‍💼</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">FC — Implication</div>
+        <div class="bubble-text">If something were to happen to you — a serious illness or an accident — and you couldn't work for six months or more, what would that mean for your family? With your wife at $1,500 part-time and a young baby?</div>
+      </div>
+    </div>
+    <div class="bubble-client">
+      <div class="bubble-av">👤</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">Client</div>
+        <div class="bubble-text">Honestly... it would be very difficult. We have the mortgage, the baby expenses. She'd probably have to go back to full-time but even then it wouldn't be enough.</div>
+      </div>
+    </div>
+    <div class="bubble-fc">
+      <div class="bubble-av">🧑‍💼</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">FC — Need-Payoff</div>
+        <div class="bubble-text">So if you had something in place that guaranteed your family's expenses were covered — mortgage, baby costs — even if you couldn't work for a year or more, how much peace of mind would that give you?</div>
+      </div>
+    </div>
+    <div class="bubble-client">
+      <div class="bubble-av">👤</div>
+      <div class="bubble-wrap">
+        <div class="bubble-label">Client</div>
+        <div class="bubble-text">That would be huge. Honestly that's exactly what I'm worried about — I just never sat down to sort it out.</div>
+        <div class="bubble-annot">💡 The client has just sold themselves. The recommendation meeting writes itself.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Question Bank — Organised by SPIN Type</h3>
+  <h4><span class="spin-label" style="background:var(--bbg);color:var(--blue);border:1px solid var(--bbd)">S Situation</span> Factual discovery</h4>
+  <div class="q-card"><span class="q-type spin-s">Situation</span><div class="q-text">"Walk me through your household income — is it just your salary, or are there other sources?" <div class="q-note">Opens income discussion naturally without feeling like an interrogation</div></div></div>
+  <div class="q-card"><span class="q-type spin-s">Situation</span><div class="q-text">"What does your current financial protection look like — any life insurance, CI, hospitalisation?"<div class="q-note">Surfaces existing coverage holistically</div></div></div>
+  <div class="q-card"><span class="q-type spin-s">Situation</span><div class="q-text">"Do you have any significant financial commitments — mortgage, car loan, or other liabilities?"</div></div>
+
+  <h4 style="margin-top:20px"><span class="spin-label" style="background:var(--pbg);color:var(--purple);border:1px solid var(--pbd)">P Problem</span> Surfacing gaps</h4>
+  <div class="q-card"><span class="q-type spin-p">Problem</span><div class="q-text">"Have you ever calculated how much your family would need if you were gone for 6 months? Or permanently?"<div class="q-note">Most clients haven't — this question alone creates productive discomfort</div></div></div>
+  <div class="q-card"><span class="q-type spin-p">Problem</span><div class="q-text">"How comfortable are you with how much you're currently putting away for retirement?"</div></div>
+  <div class="q-card"><span class="q-type spin-p">Problem</span><div class="q-text">"If you had a medical emergency tomorrow — a major surgery or a serious diagnosis — how would you fund the treatment gap above what MediShield covers?"</div></div>
+
+  <h4 style="margin-top:20px"><span class="spin-label" style="background:var(--rbg);color:var(--red);border:1px solid var(--rbd)">I Implication</span> Building urgency — naturally</h4>
+  <div class="q-card"><span class="q-type spin-i">Implication</span><div class="q-text">"If your income stopped tomorrow due to illness, how long could your family maintain their current lifestyle on your savings?"<div class="q-note">Forces them to do the math themselves — more powerful than you stating it</div></div></div>
+  <div class="q-card"><span class="q-type spin-i">Implication</span><div class="q-text">"Your child will need university funding in about 14 years. If you don't start a dedicated plan now, what happens to that goal?"</div></div>
+  <div class="q-card"><span class="q-type spin-i">Implication</span><div class="q-text">"You mentioned you'd like to retire at 60. On your current trajectory, what does your retirement income look like?"</div></div>
+
+  <h4 style="margin-top:20px"><span class="spin-label" style="background:var(--gbg);color:var(--green);border:1px solid var(--gbd)">N Need-Payoff</span> Client sells themselves</h4>
+  <div class="q-card"><span class="q-type spin-n">Need-Payoff</span><div class="q-text">"If you had a plan in place that guaranteed your family's financial security no matter what happened to you — how would that change your day-to-day peace of mind?"</div></div>
+  <div class="q-card"><span class="q-type spin-n">Need-Payoff</span><div class="q-text">"If we could address your retirement gap with something manageable now — say $300–400/month — and you knew that was growing specifically for your retirement, would that feel worthwhile?"</div></div>
+  <div class="q-card"><span class="q-type spin-n">Need-Payoff</span><div class="q-text">"How important is it to you that this is sorted before your child is born / before the year ends / before you turn 40?"<div class="q-note">Creates natural time urgency tied to their own life milestone, not your sales calendar</div></div></div>
+</section>
+
+<!-- LISTENING -->
+<section class="section" id="listening">
+  <div class="section-eyebrow">The Meeting</div>
+  <h2>Active Listening</h2>
+  <p class="section-intro">You can ask all the right questions and still miss everything if you are not genuinely listening. Active listening is a skill — and like any skill, it requires deliberate practice.</p>
+
+  <h3>The 4 Levels of Listening</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>Downloading (Worst)</h4><p>You hear words but filter them through what you already think. You're waiting for your turn to speak. You miss nuance. Most people listen at this level most of the time.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>Factual Listening</h4><p>You listen for data — income, coverage amounts, dependants. You capture what's said but miss how it's said. Better than downloading, but still insufficient for discovery work.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>Empathic Listening</h4><p>You listen for emotions behind the words. When a client says "I think I'm doing OK" with a slightly nervous laugh — you hear the uncertainty in that laugh. This is where real discovery happens.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><h4>Generative Listening (Best)</h4><p>You listen for what's not being said — the concerns the client hasn't voiced, the fears they're hinting at. You respond to what they mean, not just what they say. This level of listening is what makes clients say "you really understand me."</p></div>
+    </div>
+  </div>
+
+  <h3>Active Listening Techniques</h3>
+  <div class="grid2">
+    <div class="card card-blue">
+      <h4>🔁 Reflect Back</h4>
+      <p style="font-size:13px">Paraphrase what the client said in your own words. "So what I'm hearing is — your biggest worry is not having enough if you're unable to work for an extended period. Is that right?"<br><br>This confirms understanding, shows you were listening, and often prompts the client to add more detail.</p>
+    </div>
+    <div class="card card-green">
+      <h4>🔍 Follow the Energy</h4>
+      <p style="font-size:13px">When a client's tone changes — slows down, becomes quieter, more hesitant — that topic matters to them. Don't rush past it. Gently lean in: "You seem like this is something you've thought about a lot. Tell me more."</p>
+    </div>
+    <div class="card card-gold">
+      <h4>📝 Take Visible Notes</h4>
+      <p style="font-size:13px">Write down what they say — not just the numbers, but the words they use. When a client says "I never want my parents to be a burden to me financially," write that phrase down. Quote it back in your recommendation. It shows you listened at a human level.</p>
+    </div>
+    <div class="card card-purple">
+      <h4>⏸️ Pause Before Responding</h4>
+      <p style="font-size:13px">After a client answers a meaningful question, pause for 2–3 seconds before responding. This signals that you're processing what they said, not just waiting to speak. It also often prompts the client to add something they initially left out.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INCOME -->
+<section class="section" id="income">
+  <div class="section-eyebrow">Sensitive Topics</div>
+  <h2>Asking About Income</h2>
+  <p class="section-intro">Income is a sensitive topic in most Asian cultures — it can feel intrusive or judgmental. How you frame the question changes everything.</p>
+
+  <h3>Never Ask It Bluntly</h3>
+  <div class="grid2">
+    <div class="card card-red">
+      <h4>❌ What Not to Say</h4>
+      <p style="font-size:13px;font-style:italic">"How much do you earn?" or "What's your monthly salary?"</p>
+      <p style="font-size:13px;margin-top:8px">Feels abrupt. Forces a number without context. Many clients will understate out of privacy concern.</p>
+    </div>
+    <div class="card card-green">
+      <h4>✅ Better Approaches</h4>
+      <p style="font-size:13px;font-style:italic">"To make sure my recommendations are realistic for your situation, could you give me a rough sense of your monthly household income — is it in the $4,000–6,000 range, or higher?"</p>
+      <p style="font-size:13px;margin-top:8px">Offering a range makes it feel like a category, not an audit. Less threatening, more accurate.</p>
+    </div>
+  </div>
+
+  <h3>Beyond the Base Salary</h3>
+  <p>The headline income figure is rarely the complete picture. Always probe further:</p>
+  <div class="q-card"><span class="q-type open">Open</span><div class="q-text">"Is your income consistent each month, or does it vary — for example, if you have commission, bonuses, or project fees?"</div></div>
+  <div class="q-card"><span class="q-type probe">Probe</span><div class="q-text">"Does your spouse or partner contribute to the household income? Roughly how much does that add?"</div></div>
+  <div class="q-card"><span class="q-type probe">Probe</span><div class="q-text">"Do you have any passive income — rental, investments, business income?"</div></div>
+  <div class="q-card"><span class="q-type probe">Probe</span><div class="q-text">"Is there any income you're expecting that might change significantly in the next 2–3 years — a promotion, a career change, or perhaps returning to full-time work?"</div></div>
+
+  <div class="tip"><span class="icon">💡</span><span><strong>FC Tip:</strong> Self-employed clients are notoriously difficult to pin down on income. Use this framing: "I understand self-employed income can be variable. Could you give me an average monthly figure for the last 12 months, and also the range — your best month and worst month?" The range tells you a lot about financial vulnerability.</span></div>
+</section>
+
+<!-- DEBT -->
+<section class="section" id="debt">
+  <div class="section-eyebrow">Sensitive Topics</div>
+  <h2>Debt & Financial Stress</h2>
+  <p class="section-intro">Financial stress is one of the most common — and most hidden — aspects of a client's life. Many people carry significant debt or anxiety that they have never told anyone. Creating a non-judgmental space for this information is one of the most valuable things you can do.</p>
+
+  <h3>Framing the Debt Question</h3>
+  <div class="card card-blue">
+    <h4>Non-Threatening Language</h4>
+    <p style="font-size:13px;font-style:italic">"Most people have some form of financial commitment — whether it's a home loan, car loan, or personal loan. Can we quickly go through what yours look like? It's important so I can make sure any recommendations I make are realistic for your cash flow."</p>
+    <p style="font-size:13px;margin-top:8px">The phrase "most people have some form of financial commitment" normalises it. You're not implying they're in trouble — you're acknowledging that liabilities are a normal part of financial life.</p>
+  </div>
+
+  <h3>Signs of Hidden Financial Stress</h3>
+  <p>Clients will not always volunteer that they are struggling. Watch for these signals:</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>🗣️ What They Say</h4>
+      <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+        <li>"I'm a bit stretched right now"</li>
+        <li>"Things have been tight lately"</li>
+        <li>"I can't commit to much per month"</li>
+        <li>"Maybe later in the year when things calm down"</li>
+        <li>"I had some unexpected expenses recently"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🧠 What They May Mean</h4>
+      <ul style="font-size:13px;padding-left:16px;line-height:2.2">
+        <li>Cash flow is currently negative</li>
+        <li>Significant debt or arrears</li>
+        <li>No emergency fund — one crisis from trouble</li>
+        <li>Embarrassed about their financial situation</li>
+        <li>May have already approached multiple FCs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-teal">
+    <h4>How to Respond to Financial Stress Signals</h4>
+    <p>Don't push past the signal. Acknowledge it: "It sounds like cash flow is something you're navigating carefully right now — that's really common, especially at your life stage. Can you tell me a bit more about what that looks like?" This opens a more honest conversation — and often reveals both the challenge AND the urgency that drives action.</p>
+  </div>
+
+  <div class="warn"><span>⚠️</span><span><strong>Never recommend a premium the client cannot afford.</strong> If their cash flow analysis shows negative savings after expenses, your first recommendation should be how to free up cash — not another liability. This is both ethical and legally required under MAS suitability guidelines.</span></div>
+</section>
+
+<!-- HEALTH -->
+<section class="section" id="health">
+  <div class="section-eyebrow">Sensitive Topics</div>
+  <h2>Health & Medical History</h2>
+  <p class="section-intro">Health questions are among the most personal you will ask. They require both sensitivity and thoroughness — incomplete health disclosure can create problems at claim time, which is the worst possible moment.</p>
+
+  <h3>Why Complete Disclosure Matters</h3>
+  <p>Non-disclosure of pre-existing conditions is the most common reason claims are contested. Your job is to help clients understand that honest disclosure protects them — not to catch them out. Frame it as protection, not interrogation.</p>
+
+  <div class="card card-gold">
+    <h4>The Framing Script</h4>
+    <p style="font-size:13px;font-style:italic">"The next few questions are about health — these are standard questions that all insurers ask. The reason full disclosure matters is that it protects you. If everything is declared upfront and accepted, your claim will never be contested on those grounds. If something is undisclosed and a claim is made later, the insurer has the right to dispute it. So in your interest, I want to make sure we cover this properly. Please be as open as you can."</p>
+  </div>
+
+  <h3>How to Ask About Pre-Existing Conditions</h3>
+  <div class="q-card"><span class="q-type open">Open</span><div class="q-text">"Have you had any significant health conditions, surgeries, or ongoing treatments in the past 5 years that we should know about?"<div class="q-note">Broad first, then narrow down</div></div></div>
+  <div class="q-card"><span class="q-type probe">Probe</span><div class="q-text">"Have you seen a doctor for anything that resulted in medication, regular follow-ups, or specialist referrals?"</div></div>
+  <div class="q-card"><span class="q-type probe">Probe</span><div class="q-text">"Any family history of heart disease, cancer, diabetes, or other hereditary conditions?"<div class="q-note">Critical for CI underwriting — many clients don't realise family history is relevant</div></div></div>
+
+  <div class="tip"><span class="icon">💡</span><span>If a client reveals a pre-existing condition, never react with visible concern or disappointment. Stay neutral: "OK, noted — thank you for sharing that. Let me note it down and I'll check what options are available, including whether we can get a loading, exclusion, or standard terms." Your calm reassurance makes them more likely to disclose fully.</span></div>
+</section>
+
+<!-- FAMILY -->
+<section class="section" id="family">
+  <div class="section-eyebrow">Sensitive Topics</div>
+  <h2>Family Dynamics</h2>
+  <p class="section-intro">Family situations are not always straightforward. Divorce, separation, blended families, aging parents, estranged relatives — these complexities affect financial planning profoundly and must be navigated with care.</p>
+
+  <h3>Situations Requiring Extra Care</h3>
+  <div class="card card-amber">
+    <h4>Divorce / Separation</h4>
+    <p style="font-size:13px">Nominations may need updating. Joint policies need review. Court orders may govern asset division. Ask gently: "Have there been any recent changes to your marital or family status that might affect your financial planning?" If they share a divorce, follow with: "Are there any existing policies or nominations we should review to make sure they still reflect your current wishes?"</p>
+  </div>
+  <div class="card card-blue">
+    <h4>Aging Parents as Dependants</h4>
+    <p style="font-size:13px">Common in Singapore — especially for sandwich generation clients who support both children and parents. "Do you have any financial responsibilities for your parents — whether regular transfers, potential future healthcare costs, or housing support?" This often surfaces a protection need they haven't connected to their insurance gap.</p>
+  </div>
+  <div class="card card-purple">
+    <h4>Blended Families</h4>
+    <p style="font-size:13px">Children from a previous relationship, step-children, or complex beneficiary arrangements need careful estate and nomination planning. Never assume the nuclear family structure. Ask: "Could you walk me through your dependants — who are the people who rely on your income, directly or indirectly?"</p>
+  </div>
+  <div class="card card-teal">
+    <h4>Muslim Family Considerations</h4>
+    <p style="font-size:13px">For Muslim clients, inheritance follows Faraid — which may not align with what the client intends. CPF nominations bypass Faraid. Insurance trust nominations also bypass Faraid. The Islamic Finance Playbook covers this in full depth — flag this for Muslim clients and refer them there for the estate planning conversation.</p>
+  </div>
+</section>
+
+<!-- TRANSITION -->
+<section class="section" id="transition">
+  <div class="section-eyebrow">Closing the Fact-Find</div>
+  <h2>Fact-Find to Recommendation</h2>
+  <p class="section-intro">The bridge between the fact-find and the recommendation meeting is one of the most critical moments in the client journey. Do it poorly and momentum is lost. Do it well and the client is already mentally committed before they've seen a single number.</p>
+
+  <h3>The Transition Formula</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>Summarise What You Heard</h4><p>"So based on our conversation today — your main income is $X, you have the mortgage, two young children, and your biggest concern is making sure the family is protected if something happens to you. Have I captured that correctly?"</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>Name the Gap (Without the Solution)</h4><p>"What I'm seeing is that there's quite a significant gap between your current coverage and what your family would actually need. I want to sit down with your numbers properly and come back to you with something specific."</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>Set the Next Meeting With Purpose</h4><p>"When we meet next, I'll show you exactly where the gaps are, what addressing them would look like, and a few options so you can decide what makes sense for you. I'm thinking we'd need about an hour. When works for you?"</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><h4>Leave Them With a Thought</h4><p>"In the meantime, if anything comes to mind that you forgot to mention — or if you find any of your existing policy documents — feel free to send them to me on WhatsApp. It'll help me put together a more complete picture."</p></div>
+    </div>
+  </div>
+
+  <div class="callout callout-green">
+    <h4>✅ The Follow-Up WhatsApp (Send Within 2 Hours)</h4>
+    <p style="font-style:italic">"Thank you for the great conversation today! I've got a lot of useful information to work with. I'll put together a comprehensive review and we'll go through it together on [date/time]. Looking forward to it! 😊 Please send over any existing policy documents when you get a chance."</p>
+    <p style="margin-top:8px">This keeps momentum, shows professionalism, and positions the next meeting as expected — not tentative.</p>
+  </div>
+</section>
+
+<!-- OBJECTIONS -->
+<section class="section" id="objections">
+  <div class="section-eyebrow">Closing the Fact-Find</div>
+  <h2>Early Objections in the Fact-Find</h2>
+  <p class="section-intro">Sometimes objections surface during the fact-find itself — before you've even made a recommendation. These are actually valuable signals, not obstacles. Handle them correctly and they become agreement momentum.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Objection</th><th>What It Really Means</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>"I'm not ready to buy anything today."</td>
+        <td>They're worried about being pressured</td>
+        <td>"Absolutely — today is purely to understand your situation. No decisions needed at all. I just want to make sure any recommendation I make later is actually right for you."</td>
+      </tr>
+      <tr>
+        <td>"I already have insurance through my company."</td>
+        <td>They don't understand group coverage limitations</td>
+        <td>"That's great — let's capture that. One thing worth knowing is that group coverage usually ends if you change jobs, and the amount is often much lower than individual needs. We can factor that in when we look at the full picture."</td>
+      </tr>
+      <tr>
+        <td>"I don't believe in insurance."</td>
+        <td>They've had a bad experience or don't understand it</td>
+        <td>"I appreciate your honesty — can I ask, what's been your experience with it so far?" Then listen. Often there's a specific story behind this. Don't defend insurance — understand the objection first.</td>
+      </tr>
+      <tr>
+        <td>"I don't have money for this."</td>
+        <td>They're assuming you'll recommend something expensive</td>
+        <td>"I hear you — let's not worry about cost at this stage. Let's first find out what you actually need, then we can figure out what's affordable and prioritise. There's always a starting point regardless of budget."</td>
+      </tr>
+      <tr>
+        <td>"My spouse decides these things."</td>
+        <td>They want their spouse involved before committing</td>
+        <td>"Totally makes sense — financial planning is a family decision. Could we schedule our next session when your spouse can join? I'd love to include them in the conversation."</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- DOCUMENTATION -->
+<section class="section" id="documentation">
+  <div class="section-eyebrow">Closing the Fact-Find</div>
+  <h2>Documentation & FNA</h2>
+  <p class="section-intro">The Financial Needs Analysis (FNA) is not just a compliance document — it is the written record of your professionalism, your thoroughness, and the basis for every recommendation you make.</p>
+
+  <h3>What Must Be in Your FNA</h3>
+  <div class="card card-green">
+    <ul style="list-style:none;font-size:14px;line-height:2.4">
+      <li>✅ <strong>Client's personal details</strong> — name, NRIC, DOB, nationality, marital status</li>
+      <li>✅ <strong>Financial situation</strong> — income, expenses, assets, liabilities</li>
+      <li>✅ <strong>Dependants</strong> — who relies on the client financially</li>
+      <li>✅ <strong>Existing coverage</strong> — all current policies, amounts, and insurers</li>
+      <li>✅ <strong>Risk appetite</strong> — documented, not assumed</li>
+      <li>✅ <strong>Financial objectives</strong> — what the client wants to achieve</li>
+      <li>✅ <strong>Basis for recommendation</strong> — why the product recommended is suitable</li>
+      <li>✅ <strong>Client acknowledgement</strong> — signature or documented consent</li>
+    </ul>
+  </div>
+
+  <div class="warn"><span>⚠️</span><span><strong>MAS Requirement:</strong> The FNA must be completed before any recommendation is made, not after. Back-dating or completing the FNA as a formality post-sale is a serious compliance breach and grounds for disciplinary action.</span></div>
+
+  <div class="callout callout-blue">
+    <h4>💡 The SOUL FACTFinder Makes This Easy</h4>
+    <p>The SOUL FACTFinder Excel tool is designed to function as both your discovery guide and your FNA record. Complete it during the meeting, ensure the client has reviewed it, and save a copy for your files. Each section maps directly to MAS FNA requirements.</p>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section class="section" id="scenarios">
+  <div class="section-eyebrow">Practice</div>
+  <h2>Role-Play Scenarios</h2>
+  <p class="section-intro">The best way to improve your fact-finding is to practice it. These scenarios are designed for pair practice — one FC plays the consultant, one plays the client. Debrief after each using the scoring guide at the end.</p>
+
+  <div class="card card-blue" style="margin-bottom:16px">
+    <h4>Scenario A: The Reluctant Young Professional</h4>
+    <p style="font-size:13px"><strong>Client brief (for the person playing client):</strong> You're 27, just started your first "real" job at $4,200/month. You came because your friend referred you, but you're not sure you need insurance yet. You think you're too young. You're also a little embarrassed that you have $0 in savings and $8,000 in credit card debt that you haven't mentioned yet. You'll share the debt if the FC seems non-judgmental.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>FC challenge:</strong> Build rapport, frame the meeting well, surface the debt through non-judgmental questioning, and identify 2–3 real planning needs by the end of the fact-find.</p>
+  </div>
+
+  <div class="card card-green" style="margin-bottom:16px">
+    <h4>Scenario B: The Busy Working Parent</h4>
+    <p style="font-size:13px"><strong>Client brief:</strong> You're 38, dual-income household ($12,000/month combined), two kids aged 4 and 7. You have some existing coverage from 8 years ago but haven't reviewed it since your second child was born. You're stretched for time and slightly impatient. You respond well to structure and efficiency — not rambling.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>FC challenge:</strong> Keep the meeting efficient and structured, identify that their existing coverage is likely severely insufficient for their current family size, and surface the education planning need without seeming pushy.</p>
+  </div>
+
+  <div class="card card-purple" style="margin-bottom:16px">
+    <h4>Scenario C: The Muslim Pre-Retiree</h4>
+    <p style="font-size:13px"><strong>Client brief:</strong> You're 55, Malay-Muslim, earning $7,500/month with 10 years to retirement. You have significant CPF but used most of your OA for a property. You have an ageing mother you support monthly ($800/month). You have not made a will, your CPF nomination is to your ex-wife from 15 years ago (you are now remarried), and your insurance nominations have never been updated. You are not aware of Faraid implications.</p>
+    <p style="font-size:13px;margin-top:8px"><strong>FC challenge:</strong> Surface the estate planning issues sensitively, flag the outdated CPF nomination urgently (without alarming), open the Faraid conversation, and identify the retirement gap.</p>
+  </div>
+
+  <div class="card card-amber">
+    <h4>Debrief Scoring Guide</h4>
+    <p style="font-size:13px;margin-bottom:8px">After each role-play, score the FC on these 5 dimensions (1–5 each):</p>
+    <table class="tbl" style="margin-top:0">
+      <thead><tr><th>Dimension</th><th>What Good Looks Like</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Rapport</strong></td><td>Client felt comfortable and opened up naturally</td></tr>
+        <tr><td><strong>Question quality</strong></td><td>Good mix of SPIN question types; probed beyond surface answers</td></tr>
+        <tr><td><strong>Listening</strong></td><td>Picked up on emotional signals; didn't rush past important moments</td></tr>
+        <tr><td><strong>Sensitive topics</strong></td><td>Handled debt/health/family sensitively; no visible judgment</td></tr>
+        <tr><td><strong>Transition</strong></td><td>Clear summary; named gaps without overselling; locked in next meeting</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quiz">
+    <h4>Final Check</h4>
+    <div class="quiz-q">During a fact-find, a client says "I think I have some insurance but I'm not sure of the details." What is the BEST next step?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">Note "existing coverage: unknown" and move on — you'll recommend based on needs anyway.</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">Ask them to retrieve the policy documents and send them to you before the recommendation meeting, and make a note to follow up. In the meantime, ask clarifying questions: "Is it from your employer or a personal policy? Do you know which company?"</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">Assume they are underinsured and present your recommendations without factoring in existing coverage.</div>
+    </div>
+    <div class="quiz-feedback correct">✓ Correct. Existing coverage significantly affects what you recommend. A client with a $500,000 death policy needs a very different conversation than one with zero coverage. Always get the full picture before recommending — and always follow up on missing documents.</div>
+    <div class="quiz-feedback wrong">✗ "Unknown" existing coverage is incomplete data. You cannot make a suitability assessment without knowing what coverage already exists. Always pursue the full picture.</div>
+  </div>
+
+  <!-- Completion -->
+  <div style="background:var(--ink);border-radius:12px;padding:32px 36px;margin-top:40px;text-align:center;">
+    <div style="font-size:36px;margin-bottom:12px">🎓</div>
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold);margin-bottom:8px">Playbook Complete</div>
+    <p style="color:rgba(255,255,255,.65);font-size:14px;max-width:480px;margin:0 auto 20px">You've completed Fact-Finding Mastery. Practice the role-play scenarios with a fellow FC before your next client meeting.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <div style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:12px 20px;color:var(--gold);font-size:13px;font-weight:600;">🕌 Next: Islamic Finance Corner →</div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 20px;color:rgba(255,255,255,.6);font-size:13px;font-weight:600;">📘 Review: Financial Planning Playbook</div>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<script>
+// ── AUTH GATE ──
+async function sha256el(str){
+  try{if(window.crypto&&window.crypto.subtle){const buf=await window.crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}}catch(e){}
+  function rr(v,a){return(v>>>a)|(v<<(32-a));}
+  const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  let h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  const bytes=[...new TextEncoder().encode(str)];bytes.push(0x80);
+  while((bytes.length%64)!==56)bytes.push(0);
+  const bl=str.length*8;for(let i=7;i>=0;i--)bytes.push((bl/Math.pow(2,i*8))&0xff);
+  for(let i=0;i<bytes.length;i+=64){const w=[];for(let j=0;j<16;j++)w[j]=(bytes[i+j*4]<<24)|(bytes[i+j*4+1]<<16)|(bytes[i+j*4+2]<<8)|bytes[i+j*4+3];for(let j=16;j<64;j++){const s0=rr(w[j-15],7)^rr(w[j-15],18)^(w[j-15]>>>3);const s1=rr(w[j-2],17)^rr(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)>>>0;}let[a,b,c,d,e,f,g,hh]=h;for(let j=0;j<64;j++){const S1=rr(e,6)^rr(e,11)^rr(e,25);const ch=(e&f)^(~e&g);const T1=(hh+S1+ch+K[j]+w[j])>>>0;const S0=rr(a,2)^rr(a,13)^rr(a,22);const maj=(a&b)^(a&c)^(b&c);const T2=(S0+maj)>>>0;hh=g;g=f;f=e;e=(d+T1)>>>0;d=c;c=b;b=a;a=(T1+T2)>>>0;}h=[h[0]+a,h[1]+b,h[2]+c,h[3]+d,h[4]+e,h[5]+f,h[6]+g,h[7]+hh].map(v=>v>>>0);}
+  return h.map(v=>v.toString(16).padStart(8,'0')).join('');
+}
+function unlockContent(){document.getElementById('auth-gate').classList.add('hidden');document.body.classList.remove('locked');}
+(function checkAuth(){
+  const stored=localStorage.getItem('soul_agent_auth');
+  if(stored){try{const d=JSON.parse(stored);if(d.ts&&Date.now()-d.ts<30*24*60*60*1000){unlockContent();return;}}catch(e){}}
+  try{const ss=sessionStorage.getItem('soul_session');if(ss){unlockContent();return;}}catch(e){}
+})();
+document.getElementById('auth-pw').addEventListener('keydown',e=>{if(e.key==='Enter')authLogin();});
+async function authLogin(){
+  const pw=document.getElementById('auth-pw').value;if(!pw)return;
+  const btn=document.getElementById('auth-btn'),errEl=document.getElementById('auth-error');
+  btn.textContent='Checking…';btn.disabled=true;errEl.style.display='none';
+  try{const hash=await sha256el(pw);const res=await fetch('/api/data',{cache:'no-store'});const data=await res.json();const match=data.members.find(m=>m.passwordHash===hash);
+    if(match){localStorage.setItem('soul_agent_auth',JSON.stringify({id:match.id,ts:Date.now()}));unlockContent();}
+    else{errEl.style.display='block';btn.textContent='Sign In to Continue →';btn.disabled=false;}
+  }catch(e){errEl.textContent='Network error — please try again.';errEl.style.display='block';btn.textContent='Sign In to Continue →';btn.disabled=false;}
+}
+
+function nav(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
+  event.target.closest('.sb-link').classList.add('active');
+}
+const sections=document.querySelectorAll('.section');
+const links=document.querySelectorAll('.sb-link');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-80)cur=s.id;});
+  links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+cur+"'"))l.classList.add('active');});
+},{passive:true});
+function answer(el,type){
+  el.parentElement.querySelectorAll('.quiz-opt').forEach(o=>o.style.pointerEvents='none');
+  el.classList.add(type);
+  const quiz=el.closest('.quiz');
+  quiz.querySelectorAll('.quiz-feedback').forEach(f=>{f.style.display='none';});
+  const fb=quiz.querySelector('.quiz-feedback.'+type);
+  fb.classList.add('show');fb.style.display='block';
+}
+function showStage(idx,el){
+  document.querySelectorAll('.stage').forEach(s=>s.classList.remove('active-stage'));
+  document.querySelectorAll('.stage-content').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active-stage');
+  document.getElementById('sc'+idx).classList.add('active');
+}
+</script>
+</body>
+</html>
