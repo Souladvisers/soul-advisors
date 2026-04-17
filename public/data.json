@@ -106,14 +106,17 @@
         "Young Families",
         "Education Funding",
         "Critical Illness",
-        "Sandwiched Generation"
+        "Sandwiched Generation",
+        "Retirement",
+        "Business Owners",
+        "Legacy Planning"
       ],
       "accent": "#5a7fb8",
       "yearsExperience": "5",
       "testimonials": [
         {
           "title": "She made insurance make sense",
-          "body": "Sarah explained everything clearly without jargon. For the first time I actually understood what I was covered for.",
+          "body": "Zie explained everything clearly without jargon. For the first time I actually understood what I was covered for.",
           "name": "Marcus T.",
           "role": "Software Engineer",
           "avatar": "",
@@ -125,7 +128,7 @@
       "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
       "pageText": {
         "aboutLabel": "",
-        "aboutTitle": "",
+        "aboutTitle": "Your next chapter starts here",
         "aboutQuote": "",
         "testiLabel": "",
         "testiTitle": "",
@@ -144,15 +147,7 @@
         },
         {
           "value": "",
-          "label": "Top achievement"
-        },
-        {
-          "value": "",
           "label": "SOUL Advisors Strategic Partners"
-        },
-        {
-          "value": "",
-          "label": "Agent Code"
         }
       ]
     },
