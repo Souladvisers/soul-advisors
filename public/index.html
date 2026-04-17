@@ -65,6 +65,18 @@ nav {
 .btn-danger { background: #e24b4a; color: white; border-color: #e24b4a; }
 .btn-danger:hover { background: #a32d2d; }
 
+/* ── SECTION TOGGLES ── */
+.sec-toggles { display: flex; flex-direction: column; gap: 0.6rem; }
+.sec-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.75rem; background: var(--cream); border: 1px solid var(--border); border-radius: 6px; }
+.sec-toggle-row .stl { font-size: 0.82rem; font-weight: 500; color: var(--dark); }
+.sec-toggle-row .stl small { display: block; font-size: 0.7rem; font-weight: 400; color: var(--muted); margin-top: 1px; }
+.tog { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+.tog input { opacity: 0; width: 0; height: 0; }
+.tog-track { position: absolute; inset: 0; background: #ccc; border-radius: 20px; cursor: pointer; transition: background .2s; }
+.tog input:checked + .tog-track { background: var(--accent); }
+.tog-track::after { content: ''; position: absolute; left: 3px; top: 3px; width: 14px; height: 14px; background: white; border-radius: 50%; transition: transform .2s; }
+.tog input:checked + .tog-track::after { transform: translateX(16px); }
+
 /* ── HERO ── */
 .hero {
   min-height: 100vh; display: flex; align-items: center;
@@ -435,6 +447,36 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
       <button class="add-btn" onclick="addTestimonialEditor()">+ Add Testimonial Manually</button>
     </div>
     <div class="editor-section">
+      <div class="editor-section-title">Page Sections</div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.85rem;">Toggle which sections appear on your profile. Changes save with the rest of your profile.</div>
+      <div class="sec-toggles">
+        <div class="sec-toggle-row">
+          <div class="stl">Credentials Bar<small>Achievements &amp; cert strip below hero</small></div>
+          <label class="tog"><input type="checkbox" id="sec-creds" checked><span class="tog-track"></span></label>
+        </div>
+        <div class="sec-toggle-row">
+          <div class="stl">About Section<small>Bio, stats &amp; specialisations</small></div>
+          <label class="tog"><input type="checkbox" id="sec-about" checked><span class="tog-track"></span></label>
+        </div>
+        <div class="sec-toggle-row">
+          <div class="stl">Testimonials Section<small>Wall of Trust / client reviews</small></div>
+          <label class="tog"><input type="checkbox" id="sec-testimonials" checked><span class="tog-track"></span></label>
+        </div>
+        <div class="sec-toggle-row">
+          <div class="stl">Booking Section<small>Free Consultation / calendar booking</small></div>
+          <label class="tog"><input type="checkbox" id="sec-booking" checked><span class="tog-track"></span></label>
+        </div>
+        <div class="sec-toggle-row">
+          <div class="stl">Contact Section<small>Call Me / WhatsApp dark section</small></div>
+          <label class="tog"><input type="checkbox" id="sec-contact" checked><span class="tog-track"></span></label>
+        </div>
+        <div class="sec-toggle-row">
+          <div class="stl">Referral Section<small>"Know someone who could benefit?"</small></div>
+          <label class="tog"><input type="checkbox" id="sec-referral" checked><span class="tog-track"></span></label>
+        </div>
+      </div>
+    </div>
+    <div class="editor-section">
       <div class="editor-section-title">Page Text &amp; Quotes</div>
       <div style="font-size:0.75rem;color:var(--muted);margin-bottom:1rem;">Customise every heading, label and quote on your profile.</div>
 
@@ -635,7 +677,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
   </section>
 
   <!-- REFERRAL SECTION -->
-  <section class="referral-section">
+  <section class="referral-section" id="referral">
     <div class="section-inner">
       <div class="referral-icon">🤝</div>
       <div class="referral-title">Know someone who could benefit?</div>
@@ -962,6 +1004,17 @@ function renderProfile(m) {
 
   renderTestimonials(m.testimonials || []);
 
+  // Section visibility
+  const hs = m.hiddenSections || [];
+  ['creds-bar','about','testimonials','booking','contact','referral'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = hs.includes(id) ? 'none' : '';
+  });
+  // Also hide nav book button if booking section is hidden
+  if (hs.includes('booking')) {
+    document.getElementById('nav-book-btn').style.display = 'none';
+  }
+
   document.getElementById('profile-view').classList.remove('hidden');
   window.addEventListener('scroll', () => {
     document.getElementById('backTop').classList.toggle('visible', window.scrollY > 400);
@@ -1192,6 +1245,12 @@ function openEditor() {
   document.getElementById('e-specs').value = (m.specialisations || []).join('\n');
   document.getElementById('e-accent').value = m.accent || '#B8975A';
   updateColorPreview();
+  // Section visibility toggles
+  const hs = m.hiddenSections || [];
+  ['creds-bar','about','testimonials','booking','contact','referral'].forEach(id => {
+    const cb = document.getElementById('sec-' + (id === 'creds-bar' ? 'creds' : id));
+    if (cb) cb.checked = !hs.includes(id);
+  });
   renderTestiEditors(m.testimonials || []);
   const baseUrl = window.location.origin;
   document.getElementById('testi-link').value = `${baseUrl}?sub=${encodeURIComponent(m.subdomain)}&view=testimonial`;
@@ -1355,6 +1414,10 @@ async function saveProfile() {
       contactTitle: document.getElementById('e-contact-title').value.trim(),
       contactSub:   document.getElementById('e-contact-sub').value.trim(),
     },
+    hiddenSections: ['creds-bar','about','testimonials','booking','contact','referral'].filter(id => {
+      const cb = document.getElementById('sec-' + (id === 'creds-bar' ? 'creds' : id));
+      return cb && !cb.checked;
+    }),
     statBlocks: Array.from(document.querySelectorAll('.block-editor-item')).map(el => ({
       value: el.querySelector('.block-value').value.trim(),
       label: el.querySelector('.block-label').value.trim(),
