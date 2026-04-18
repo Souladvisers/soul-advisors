@@ -115,30 +115,28 @@
       "yearsExperience": "5",
       "testimonials": [
         {
-          "title": "She made insurance make sense",
-          "body": "Zie explained everything clearly without jargon. For the first time I actually understood what I was covered for.",
-          "name": "Marcus T.",
-          "role": "Software Engineer",
-          "avatar": "",
-          "photo": ""
-        },
-        {
           "title": "Kind, patient and trustworthy.",
           "body": "Zie explained everything in a way that made sense for me. She is so patient and understanding. Truly appreciate her looking after me and my family - someone who truly cares. Thanks Zie!",
           "name": "Kinz",
-          "role": ""
+          "role": "",
+          "avatar": "",
+          "photo": ""
         },
         {
           "title": "The agent who listens",
           "body": "If you’re looking for an agent who actually listens, you found her. Zie skips the 'cookie-cutter' template for a 'custom-fit' approach, making sure every recommendation is exactly what you need — and nothing you don’t. It’s rare to find someone so dedicated to their client’s best interest and who treats your future with as much care as if it were her own.",
           "name": "Sheilla",
-          "role": "Communications specialist"
+          "role": "Communications specialist",
+          "avatar": "",
+          "photo": ""
         },
         {
           "title": "Trust and assurance",
           "body": "Zie has always been very thorough with all the policies. She was very prompt to respond to my queries and provide me assurance and clarity on the policies. Her personality is kind, easy going and very trust worthy. She doesn’t judge or force any policy sign up unlike some agents out there. She really look at what your needs are and suggests the best fit solutions. Trust Zie and get Assured! ;)",
           "name": "Nisa Ali",
-          "role": ""
+          "role": "",
+          "avatar": "",
+          "photo": ""
         }
       ],
       "calendlyUrl": "https://calendly.com/reachzie",
