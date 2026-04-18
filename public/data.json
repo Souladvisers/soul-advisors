@@ -134,11 +134,11 @@
         "testiTitle": "my clients are the real MVP.",
         "testiSub": "their words, not mine.",
         "bookingLabel": "",
-        "bookingTitle": "",
-        "bookingSub": "",
+        "bookingTitle": "not sure where to start?",
+        "bookingSub": "that's okay. let's figure it out together.",
         "contactLabel": "",
-        "contactTitle": "teh on me, let's chat!",
-        "contactSub": "not sure where to start? that's okay. let's figure it out together."
+        "contactTitle": "not ready to book yet?",
+        "contactSub": "slide into my whatsapp~"
       },
       "statBlocks": [
         {
@@ -149,7 +149,8 @@
           "value": "",
           "label": "SOUL Advisors Strategic Partners"
         }
-      ]
+      ],
+      "hiddenSections": []
     },
     {
       "id": "member3",
