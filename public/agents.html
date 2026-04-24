@@ -205,6 +205,30 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .f-sc-meta .ml { font-size: 0.59rem; color: rgba(255,255,255,0.28); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px; }
 .f-sc-meta .mv { font-size: 0.75rem; color: rgba(255,255,255,0.62); font-weight: 500; }
 
+/* live price badge */
+.f-live-badge {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.3rem 0.75rem; border-radius: 20px;
+  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25);
+  font-size: 0.7rem; color: #6ee7b7; font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+.f-live-badge .f-live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #34d399;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.7); }
+}
+.f-stale-badge {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.3rem 0.75rem; border-radius: 20px;
+  background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25);
+  font-size: 0.7rem; color: #fcd34d; margin-bottom: 1.25rem;
+}
+
 /* heat sub-tab bar */
 .f-heat-subtabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
 .f-hstab { padding: 0.4rem 0.85rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); background: none; color: rgba(255,255,255,0.45); cursor: pointer; font-family: inherit; transition: all 0.2s; }
@@ -285,6 +309,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   <div class="ag-panel active" id="p-funds">
     <div class="funds-wrap">
 
+      <!-- Live Price Badge -->
+      <div id="f-price-badge" style="display:none"></div>
+
       <!-- KPI Strip -->
       <div class="f-kpi-grid">
         <div class="f-kpi"><div class="f-kpi-lbl">Total Funds</div><div class="f-kpi-val" id="fk-total">—</div></div>
@@ -324,6 +351,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
               <th onclick="fSort('assetClass')" data-fc="assetClass">Asset Class</th>
               <th onclick="fSort('risk')"       data-fc="risk">Risk</th>
               <th>Div?</th>
+              <th onclick="fSort('bidPrice')"   data-fc="bidPrice" style="text-align:right">NAV (Bid)</th>
               <th onclick="fSort('aum')"        data-fc="aum" style="text-align:right">AUM (M)</th>
               <th onclick="fSort('1m')"         data-fc="1m"  style="text-align:right">1M</th>
               <th onclick="fSort('3m')"         data-fc="3m"  style="text-align:right">3M</th>
@@ -377,8 +405,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
         <div class="f-empty hidden" id="f-strat-empty">No funds match.</div>
       </div>
 
-      <div style="margin-top:2rem;font-size:0.7rem;color:rgba(255,255,255,0.2);text-align:center;">
-        Data sourced from Prudential Singapore factsheets · 31 Jan 2026 ·
+      <div id="f-footer-note" style="margin-top:2rem;font-size:0.7rem;color:rgba(255,255,255,0.2);text-align:center;">
+        Data sourced from Prudential Singapore ·
         <a href="/funds" style="color:var(--accent);text-decoration:none;" target="_blank">Full dashboard ↗</a> ·
         <a href="/api/funds" style="color:var(--accent);text-decoration:none;" target="_blank">JSON API ↗</a>
       </div>
@@ -610,7 +638,8 @@ function fHeat(v) {
 function fSortVal(f, col) {
   const pm = {'1m':'1m','3m':'3m','6m':'6m','1y':'1y','3y':'3y','5y':'5y'};
   if (pm[col]) return f.performance[pm[col]] ?? -999;
-  if (col === 'aum') return f.aum ?? 0;
+  if (col === 'aum')      return f.aum ?? 0;
+  if (col === 'bidPrice') return f.bidPrice ?? -999;
   return (f[col] || '').toLowerCase();
 }
 function cleanName(n) { return n.replace(/PRULink /i,'').replace(/PRUlink /i,''); }
@@ -663,16 +692,22 @@ function fRenderTable() {
   cnt.textContent = `${fFiltered.length} fund${fFiltered.length !== 1 ? 's' : ''}`;
   if (!fFiltered.length) { tbody.innerHTML = ''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  tbody.innerHTML = fFiltered.map(f => `<tr>
+  tbody.innerHTML = fFiltered.map(f => {
+    const navHtml = f.bidPrice != null
+      ? `<td style="text-align:right;font-variant-numeric:tabular-nums;font-weight:500;color:rgba(255,255,255,0.85)">${parseFloat(f.bidPrice).toFixed(4)}<br><small style="font-size:0.6rem;color:rgba(255,255,255,0.28);font-weight:400">${f.bidDate||''}</small></td>`
+      : `<td style="text-align:right;color:rgba(255,255,255,0.2);font-size:0.76rem">—</td>`;
+    return `<tr>
     <td><div class="fn">${cleanName(f.name)}<small>${f.region||f.assetClass||''}</small></div></td>
     <td><span class="f-ccy">${f.currency}</span></td>
     <td style="font-size:0.76rem;color:rgba(255,255,255,0.5)">${f.assetClass}</td>
     <td><span class="f-risk ${fRiskCls(f.risk)}">${fRiskLbl(f.risk)}</span></td>
     <td style="text-align:center;font-size:0.85rem">${f.isDistribution ? '<span style="color:#6ee7b7;font-weight:600">✓</span>' : '<span style="color:rgba(255,255,255,0.2)">—</span>'}</td>
+    ${navHtml}
     <td class="f-aum">${f.aum ? (f.aumCurrency==='USD'?'US$':'S$')+parseFloat(f.aum).toLocaleString(undefined,{maximumFractionDigits:1})+'M' : '—'}</td>
     <td>${fPct(f.performance['1m'])}</td><td>${fPct(f.performance['3m'])}</td>
     <td>${fPct(f.performance['1y'])}</td><td>${fPct(f.performance['3y'])}</td><td>${fPct(f.performance['5y'])}</td>
-  </tr>`).join('');
+  </tr>`;
+  }).join('');
 }
 
 // ─────────────────────────────────────────────
@@ -789,6 +824,26 @@ function fRenderKPIs(meta, funds) {
   if (el('fk-aum'))   el('fk-aum').textContent   = `S$${(meta.totalAumSGD_M/1000).toFixed(1)}B`;
   if (el('fk-avg'))   el('fk-avg').textContent   = `${(meta.avgReturn1Y*100).toFixed(1)}%`;
   if (el('fk-top') && top) el('fk-top').textContent = `${cleanName(top.name).substring(0,28)}… ${(top.performance['1y']*100).toFixed(1)}%`;
+
+  // Live price badge
+  const badge = el('f-price-badge');
+  if (badge) {
+    if (meta.pricesLive && meta.priceDate) {
+      badge.style.display = '';
+      badge.innerHTML = `<span class="f-live-badge"><span class="f-live-dot"></span>Live NAV prices · Updated ${meta.priceDate}</span>`;
+    } else {
+      badge.style.display = '';
+      badge.innerHTML = `<span class="f-stale-badge">⏳ NAV prices pending — auto-update runs weekdays at 9 AM SGT</span>`;
+    }
+  }
+
+  // Dynamic footer
+  const footer = el('f-footer-note');
+  if (footer) {
+    const dateStr = meta.priceDate || meta.dataAsOf || '';
+    const liveNote = meta.pricesLive ? `<span style="color:#6ee7b7">● Live prices as of ${dateStr}</span>` : `Factsheet data as of ${dateStr}`;
+    footer.innerHTML = `Data sourced from Prudential Singapore · ${liveNote} · <a href="/funds" style="color:var(--accent);text-decoration:none;" target="_blank">Full dashboard ↗</a> · <a href="/api/funds" style="color:var(--accent);text-decoration:none;" target="_blank">JSON API ↗</a>`;
+  }
 }
 
 // ─────────────────────────────────────────────
