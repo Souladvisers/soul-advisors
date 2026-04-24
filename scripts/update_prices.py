@@ -24,19 +24,26 @@ PDF_URL   = "https://pruaccess.prudential.com.sg/prulinkfund/viewFundPricing.pdf
 DATA_FILE = Path(__file__).parent.parent / "public" / "prulink-data.json"
 
 # ─── Manual name overrides ───────────────────────────────────────────────────
-# Maps a normalised PDF name fragment → exact key in data.json (normalised)
+# Maps a normalised PDF key → EXACT original fund name in data.json (as-is).
+# Needed for: (a) PDF bare names that are ambiguous across multi-variant funds,
+#             (b) PDF abbreviations that don't normalise to the data.json key,
+#             (c) hyphen vs space differences.
 OVERRIDES = {
-    "activeinvest portfolio - balanced":           "activeinvest portfolio - balanced (accumulation)",
-    "activeinvest portfolio - conservative":        "activeinvest portfolio - conservative (accumulation)",
-    "activeinvest portfolio - growth":              "activeinvest portfolio - growth (accumulation)",
-    "activeinvest portfolio - moderate":            "activeinvest portfolio - moderate (accumulation)",
-    "equity growth fund":                          "global equity growth (sgd) (accumulation)",
-    "india opp equity fund":                       "india opportunity equity fund (accumulation)",
-    "india opp equity fund (accumulation)":        "india opportunity equity fund (accumulation)",
-    "global equity growth fund":                   "global equity growth (sgd) (accumulation)",
-    "global equity growth fund (accumulation)":    "global equity growth (sgd) (accumulation)",
-    "india equity fund":                           "india equity fund (soft closed)",
-    "china india fund":                            "china india fund",
+    # Bare PDF name maps to the variant not covered by other suffixed PDF entries
+    "asian income and growth fund":         "PRULink Asian Income and Growth Fund (USD) (Accumulation)",
+    "asian multi-asset income fund":        "PRULink Asian Multi-Asset Income Fund (Decumulation)",
+    "global multi-asset income fund":       "PRULink Global Multi-Asset Income Fund (Decumulation)",
+    "singapore dynamic bond fund":          "PRULink Singapore Dynamic Bond Fund (Accumulation)",
+    "strategicinvest income fund":          "PRULink StrategicInvest Income Fund (Distribution)",
+    "us dividend wealth fund":              "PRULink US Dividend Wealth Fund (Distribution)",
+    # "(Acc)" leaks as prefix from wrapped previous line — "low vol" ≠ "low volatility"
+    "(acc) asian low vol equity fund":      "PRULink Asian Low Volatility Equity Fund (Accumulation)",
+    # PDF says "Growth Fund", data.json says "Growth (SGD) (Accumulation)"
+    "global equity growth fund":            "PRULink Global Equity Growth (SGD) (Accumulation)",
+    # Hyphen vs space
+    "china india fund":                     "PRULink China-India Fund",
+    # India Opp matched via prefix anyway; kept for safety
+    "india opp equity fund":                "PRULink India Opportunity Equity Fund (Accumulation)",
 }
 
 

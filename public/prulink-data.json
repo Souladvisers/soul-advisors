@@ -9,7 +9,9 @@
     "totalAumSGD_M": 14379.6,
     "totalAumUSD_M": 70.9,
     "avgReturn1Y": 0.1278,
-    "currency": "SGD"
+    "currency": "SGD",
+    "priceDate": "23-Apr-2026",
+    "pricesLive": true
   },
   "funds": [
     {
@@ -35,7 +37,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve balanced capital growth by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 65:35.",
       "managementFee": null,
@@ -62,7 +64,9 @@
         "10y": null,
         "si": 0.02
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.11021,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Conservative (Accumulation)",
@@ -87,7 +91,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to provide conservative and stable returns by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 15:85.",
       "managementFee": null,
@@ -114,7 +118,9 @@
         "10y": null,
         "si": -0.003
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.97959,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Growth (Accumulation)",
@@ -139,7 +145,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve high growth by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 85:15.",
       "managementFee": null,
@@ -166,7 +172,9 @@
         "10y": null,
         "si": 0.021
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.12731,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Moderate (Accumulation)",
@@ -191,7 +199,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve moderate returns by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 45:55.",
       "managementFee": null,
@@ -218,7 +226,9 @@
         "10y": null,
         "si": 0.014
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.07325,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Adapt 2035 Fund",
@@ -270,7 +280,9 @@
         "10y": 0.056,
         "si": 0.039
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 2.23915,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink America Fund",
@@ -322,7 +334,9 @@
         "10y": 0.066,
         "si": 0.054
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 2.99396,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink America Fund (USD) (Accumulation)",
@@ -374,7 +388,9 @@
         "10y": 0.066,
         "si": 0.054
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.24092,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian American Managed Fund",
@@ -426,7 +442,9 @@
         "10y": 0.032,
         "si": 0.042
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 2.67279,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Equity Fund",
@@ -453,7 +471,7 @@
       "manager": "Financial Year End",
       "underlyingFund": null,
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Equity Fund aims to maximise long-term total return by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity in the Asia Pacific ex-Japan Region. The Fund may also invest in depository receipts including American Depositary Receipts (\u201cADRs\u201d) and Global Depositary Receipts (\u201cGDRs\u201d), debt securities convertible into common shares, preference shares and warrants.",
+      "strategy": "The PRULink Asian Equity Fund aims to maximise long-term total return by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity in the Asia Pacific ex-Japan Region. The Fund may also invest in depository receipts including American Depositary Receipts (“ADRs”) and Global Depositary Receipts (“GDRs”), debt securities convertible into common shares, preference shares and warrants.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -478,7 +496,9 @@
         "10y": 0.058,
         "si": 0.039
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 3.40778,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Fixed-Income Fund (Accumulation)",
@@ -505,7 +525,7 @@
       "manager": "Financial Year End",
       "underlyingFund": "which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund\u2019s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
+      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund’s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
       "managementFee": "1.00% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -579,7 +599,9 @@
           "ratePct": 0.0092,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.85953,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Fixed-Income Fund (Distribution)",
@@ -606,7 +628,7 @@
       "manager": "Financial Year End",
       "underlyingFund": "which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund\u2019s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
+      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund’s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
       "managementFee": "1.00% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -680,7 +702,9 @@
           "ratePct": 0.0092,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.68988,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Income and Growth Fund (Accumulation)",
@@ -781,7 +805,9 @@
           "ratePct": 0.0218,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.75463,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Income and Growth Fund (Distribution)",
@@ -882,7 +908,9 @@
           "ratePct": 0.0218,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.16679,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Income and Growth Fund (USD) (Accumulation)",
@@ -983,7 +1011,9 @@
           "ratePct": 0.0218,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.32077,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Income Fund",
@@ -1010,7 +1040,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Charge Income Fund : USD 632.7 M",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Income Fund aims to maximize income by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity, in the Asia Pacific ex-Japan region. The Fund may also invest in depository receipts including American Depositary Receipt (\u201cADRs\u201d) and Global Depositary Receipt (\u201cGDRs\u201d), debt securities convertible into common shares, preference shares and warrants.",
+      "strategy": "The PRULink Asian Income Fund aims to maximize income by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity, in the Asia Pacific ex-Japan region. The Fund may also invest in depository receipts including American Depositary Receipt (“ADRs”) and Global Depositary Receipt (“GDRs”), debt securities convertible into common shares, preference shares and warrants.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -1084,7 +1114,9 @@
           "ratePct": 0.02,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.23836,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Low Volatility Equity Fund (Accumulation)",
@@ -1136,7 +1168,9 @@
         "10y": null,
         "si": null
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.95056,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Accumulation)",
@@ -1285,7 +1319,9 @@
           "ratePct": 0.0125,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.03284,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Decumulation)",
@@ -1434,7 +1470,9 @@
           "ratePct": 0.0125,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.73984,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Distribution)",
@@ -1583,7 +1621,9 @@
           "ratePct": 0.0125,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.78913,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink China-India Fund",
@@ -1610,7 +1650,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Charge Dragon Peacock Fund : SGD 1,065.8 M",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink China India Fund is to maximise long-term total return by investing primarily in equity and equity- related instruments of corporations, which are incorporated in, or listed in, or operating principally from, or carrying on significant business in, or derive substantial revenue from, or whose subsidiaries, related or associated corporations derive substantial revenue from, the People\u2019s Republic of China (PRC) and the Republic of India (India).",
+      "strategy": "The investment objective of the PRULink China India Fund is to maximise long-term total return by investing primarily in equity and equity- related instruments of corporations, which are incorporated in, or listed in, or operating principally from, or carrying on significant business in, or derive substantial revenue from, or whose subsidiaries, related or associated corporations derive substantial revenue from, the People’s Republic of China (PRC) and the Republic of India (India).",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -1635,7 +1675,9 @@
         "10y": 0.069,
         "si": 0.072
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 4.28918,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Emerging Markets Fund",
@@ -1687,7 +1729,9 @@
         "10y": 0.081,
         "si": 0.044
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 2.63884,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink FlexGrowth Fund (SGD)",
@@ -1739,7 +1783,9 @@
         "10y": null,
         "si": null
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.01053,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Bond Fund",
@@ -1791,7 +1837,9 @@
         "10y": -0.006,
         "si": 0.015
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.50213,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Climate Change Equity Fund (Accumulation)",
@@ -1818,7 +1866,7 @@
       "manager": "GMO Singapore Pte. Limited",
       "underlyingFund": "seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate",
       "factsheet": "View factsheet",
-      "strategy": "The Underlying Fund seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate change, to address the environment challenges presented by global climate change, or to improve the efficiency of resource consumption. The Fund\u2019s benchmark is the MSCI All Country World Index.",
+      "strategy": "The Underlying Fund seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate change, to address the environment challenges presented by global climate change, or to improve the efficiency of resource consumption. The Fund’s benchmark is the MSCI All Country World Index.",
       "managementFee": "1.50% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -1843,7 +1891,9 @@
         "10y": null,
         "si": -0.047
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.8661,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Diversified Income Fund (Distribution)",
@@ -1895,7 +1945,9 @@
         "10y": null,
         "si": -0.003
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.94661,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Dividend Wealth Fund (Distribution)",
@@ -1996,7 +2048,9 @@
           "ratePct": 0.0045,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.91399,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Episode Macro Fund (Accumulation)",
@@ -2048,7 +2102,9 @@
         "10y": null,
         "si": 0.011
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.00936,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Fund",
@@ -2149,7 +2205,9 @@
           "ratePct": 0.0067,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 2.51454,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Fund (Distribution)",
@@ -2250,7 +2308,9 @@
           "ratePct": 0.0067,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.50556,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Fund (USD) (Accumulation)",
@@ -2351,7 +2411,9 @@
           "ratePct": 0.0067,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.4344,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Growth (SGD) (Accumulation)",
@@ -2378,7 +2440,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Dynamic Growth Equity Fund : Charge",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Global Equity Growth Fund feeds into the Eastspring Investments \u2013 Global Dynamic Growth Equity Fund (the Underlying Fund), which aims to provide superior capital growth by investing primarily in shares of companies with strong growth potential.",
+      "strategy": "The PRULink Global Equity Growth Fund feeds into the Eastspring Investments – Global Dynamic Growth Equity Fund (the Underlying Fund), which aims to provide superior capital growth by investing primarily in shares of companies with strong growth potential.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -2403,7 +2465,9 @@
         "10y": null,
         "si": 0.154
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.27671,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Fixed-Income Fund (Accumulation)",
@@ -2455,7 +2519,9 @@
         "10y": null,
         "si": -0.016
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.91087,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Fixed-Income Fund (USD) (Accumulation)",
@@ -2507,7 +2573,9 @@
         "10y": null,
         "si": -0.016
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.17084,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Growth Fund (Accumulation)",
@@ -2559,7 +2627,9 @@
         "10y": null,
         "si": 0.105
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.31436,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Impact ESG Equity Fund (Accumulation)",
@@ -2584,9 +2654,9 @@
       "launchDate": "07 September 2021",
       "benchmark": "MSCI AC World Net (Hedged to SGD)",
       "manager": "Underlying Fund and Size",
-      "underlyingFund": "seeks to understand the world\u2019s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services.",
+      "underlyingFund": "seeks to understand the world’s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services.",
       "factsheet": "View factsheet",
-      "strategy": "The Underlying Fund seeks to understand the world\u2019s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services. Through the Fund\u2019s investments, we seek to improve access to, and the quality of, basic life essentials, reduce inequality and mitigate the effects of climate change. The Fund seeks to deliver long-term total returns in excess of the MSCI All Country World Index.",
+      "strategy": "The Underlying Fund seeks to understand the world’s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services. Through the Fund’s investments, we seek to improve access to, and the quality of, basic life essentials, reduce inequality and mitigate the effects of climate change. The Fund seeks to deliver long-term total returns in excess of the MSCI All Country World Index.",
       "managementFee": "1.50% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -2611,7 +2681,9 @@
         "10y": null,
         "si": -0.019
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.92348,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Income Fund (Accumulation)",
@@ -2663,7 +2735,9 @@
         "10y": null,
         "si": 0.067
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.188,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Innovation Equity Fund (Accumulation)",
@@ -2715,7 +2789,9 @@
         "10y": null,
         "si": -0.012
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.97419,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Managed Fund",
@@ -2816,7 +2892,9 @@
           "ratePct": 0.0125,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 2.67858,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Managed Fund (Distribution)",
@@ -2917,7 +2995,9 @@
           "ratePct": 0.0125,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.16131,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Multi-Asset Income Fund (Accumulation)",
@@ -3066,7 +3146,9 @@
           "ratePct": 0.0133,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.17693,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Multi-Asset Income Fund (Decumulation)",
@@ -3215,7 +3297,9 @@
           "ratePct": 0.0133,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.84603,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Multi-Asset Income Fund (Distribution)",
@@ -3364,7 +3448,9 @@
           "ratePct": 0.0133,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.93591,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Property Securities Fund",
@@ -3416,7 +3502,9 @@
         "10y": 0.022,
         "si": -0.004
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.9933,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Signature CIO Balance Fund (Accumulation)",
@@ -3468,7 +3556,9 @@
         "10y": null,
         "si": 0.066
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.14976,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Signature CIO Growth Fund (Accumulation)",
@@ -3520,7 +3610,9 @@
         "10y": null,
         "si": 0.116
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.27608,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Signature CIO Income Fund (Distribution)",
@@ -3621,7 +3713,9 @@
           "ratePct": null,
           "rateCents": 0.43
         }
-      ]
+      ],
+      "bidPrice": 0.97064,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Global Technology Fund",
@@ -3673,7 +3767,9 @@
         "10y": 0.174,
         "si": 0.064
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 4.99869,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Greater China Fund",
@@ -3700,7 +3796,7 @@
       "manager": "Eastspring Investments (Singapore) Limited",
       "underlyingFund": "Schroder Investment Management (Hong Kong) Ltd",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People\u2019s Republic of China, Hong Kong SAR and Taiwan companies.",
+      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People’s Republic of China, Hong Kong SAR and Taiwan companies.",
       "managementFee": "1.5% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -3725,7 +3821,9 @@
         "10y": 0.087,
         "si": 0.058
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 2.53299,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Greater China Fund (USD) (Accumulation)",
@@ -3752,7 +3850,7 @@
       "manager": "Eastspring Investments (Singapore) Limited",
       "underlyingFund": "Schroder Investment Management (Hong Kong) Ltd",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People\u2019s Republic of China, Hong Kong SAR and Taiwan companies.",
+      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People’s Republic of China, Hong Kong SAR and Taiwan companies.",
       "managementFee": "1.5% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -3777,7 +3875,9 @@
         "10y": 0.087,
         "si": 0.058
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.55402,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink India Equity Fund (soft closed)",
@@ -3829,7 +3929,9 @@
         "10y": null,
         "si": 0.04
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.39939,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink India Opportunity Equity Fund (Accumulation)",
@@ -3881,7 +3983,9 @@
         "10y": null,
         "si": null
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 0.90046,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Islamic Global Equity Index Fund (Accumulation)",
@@ -3933,7 +4037,9 @@
         "10y": null,
         "si": 0.155
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.51146,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Pan European Fund",
@@ -3985,7 +4091,9 @@
         "10y": 0.071,
         "si": 0.035
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 2.29754,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Singapore ASEAN Managed Fund",
@@ -4037,7 +4145,9 @@
         "10y": 0.036,
         "si": 0.026
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.43566,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Singapore Asian Managed Fund",
@@ -4089,7 +4199,9 @@
         "10y": 0.052,
         "si": 0.054
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 5.88967,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Singapore Cash Fund",
@@ -4141,7 +4253,9 @@
         "10y": null,
         "si": null
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 1.60651,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Singapore Dynamic Bond Fund (Accumulation)",
@@ -4322,7 +4436,9 @@
           "ratePct": 0.013,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 1.57206,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Singapore Dynamic Bond Fund (Distribution)",
@@ -4503,7 +4619,9 @@
           "ratePct": 0.013,
           "rateCents": null
         }
-      ]
+      ],
+      "bidPrice": 0.92259,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink Singapore Growth Fund",
@@ -4555,7 +4673,9 @@
         "10y": 0.09,
         "si": 0.058
       },
-      "dividends": []
+      "dividends": [],
+      "bidPrice": 2.45637,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink StrategicInvest Income Fund (Distribution)",
@@ -4580,7 +4700,7 @@
       "launchDate": "05 August 2025",
       "benchmark": null,
       "manager": "Prudential Assurance Company Singapore (Pte) Limited",
-      "underlyingFund": "\uf0b7 Victory Capital Management Inc. Risk Classification of Investment-",
+      "underlyingFund": " Victory Capital Management Inc. Risk Classification of Investment-",
       "factsheet": "View factsheet",
       "strategy": "The Investment Objective is to provide long term capital growth and income by investing in a diversified portfolio of Underlying Funds.",
       "managementFee": "1.50% p.a.",
@@ -4688,7 +4808,9 @@
           "ratePct": null,
           "rateCents": 0.55
         }
-      ]
+      ],
+      "bidPrice": 0.96683,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink StrategicInvest Income Fund (USD) (Distribution)",
@@ -4713,7 +4835,7 @@
       "launchDate": "05 August 2025",
       "benchmark": null,
       "manager": "Prudential Assurance Company Singapore (Pte) Limited",
-      "underlyingFund": "\uf0b7 Victory Capital Management Inc. Risk Classification of Investment-",
+      "underlyingFund": " Victory Capital Management Inc. Risk Classification of Investment-",
       "factsheet": "View factsheet",
       "strategy": "The Investment Objective is to provide long term capital growth and income by investing in a diversified portfolio of Underlying Funds.",
       "managementFee": "1.50% p.a.",
@@ -4821,7 +4943,9 @@
           "ratePct": null,
           "rateCents": 0.55
         }
-      ]
+      ],
+      "bidPrice": 1.03754,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink US Dividend Wealth Fund (Distribution)",
@@ -4970,7 +5094,9 @@
           "ratePct": null,
           "rateCents": 0.55
         }
-      ]
+      ],
+      "bidPrice": 1.01301,
+      "bidDate": "23-Apr-2026"
     },
     {
       "name": "PRULink US Dividend Wealth Fund (USD) (Distribution)",
@@ -5119,7 +5245,9 @@
           "ratePct": null,
           "rateCents": 0.55
         }
-      ]
+      ],
+      "bidPrice": 1.15941,
+      "bidDate": "23-Apr-2026"
     }
   ]
 }
