@@ -527,12 +527,9 @@
         {
           "value": "SOUL Advisors",
           "label": "Strategic Partners"
-        },
-        {
-          "value": "",
-          "label": "Agent Code"
         }
-      ]
+      ],
+      "hiddenSections": []
     }
   ]
 }
