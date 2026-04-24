@@ -19,6 +19,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/agents",         "destination": "/agents.html" },
     { "source": "/funds",          "destination": "/funds.html" },
     { "source": "/elearning",      "destination": "/elearning.html" },
     { "source": "/estate-planning","destination": "/estate-planning.html" },
