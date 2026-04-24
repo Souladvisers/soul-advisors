@@ -33,11 +33,20 @@ export default async function handler(req, res) {
   const admin = currentData.members.find(m => m.isAdmin && m.passwordHash === adminHash);
   if (!admin) return res.status(401).json({ error: 'Unauthorised' });
 
-  // Sanitize subdomains — replace spaces with hyphens, remove special chars
-  const sanitized = members.map(m => ({
-    ...m,
-    subdomain: (m.subdomain || '').toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-  }));
+  // Sanitize subdomains & preserve profile-owned fields (photo, testimonials, passwordHash)
+  // that the admin panel doesn't manage — never overwrite with empty values from the sync payload.
+  const sanitized = members.map(m => {
+    const subdomain = (m.subdomain || '').toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const existing  = currentData.members.find(e => e.subdomain === subdomain) || {};
+    return {
+      ...m,
+      subdomain,
+      // Preserve large profile-owned fields if the incoming payload has none
+      photo:        m.photo        || existing.photo        || '',
+      testimonials: (m.testimonials && m.testimonials.length) ? m.testimonials : (existing.testimonials || []),
+      passwordHash: m.passwordHash || existing.passwordHash || '',
+    };
+  });
 
   // Write all members back to GitHub, keeping agency info intact
   const updated = { ...currentData, members: sanitized };
