@@ -339,6 +339,90 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
 .sticky-book-bar .book-main-btn { flex: 1; justify-content: center; padding: 12px 16px; font-size: 0.85rem; }
 .sticky-book-bar .btn-outline { padding: 12px 16px; font-size: 0.85rem; }
 
+/* ── PRULINK FUNDS SECTION ── */
+.funds-section { background: var(--dark); color: white; padding: 80px 0 60px; }
+.funds-section .section-inner { max-width: 1140px; margin: 0 auto; padding: 0 2rem; }
+.funds-section .section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem; }
+.funds-section .section-label::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--accent); }
+.funds-section .section-title { font-family: 'Lora', serif; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; line-height: 1.25; margin-bottom: 0.5rem; }
+.funds-section .section-sub { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 2rem; max-width: 520px; }
+.f-kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 1px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
+.f-kpi { padding: 1rem 1.25rem; background: rgba(255,255,255,0.04); }
+.f-kpi-lbl { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.3rem; }
+.f-kpi-val { font-family: 'Lora', serif; font-size: 1.55rem; font-weight: 600; color: var(--accent); line-height: 1; }
+.f-tabs { display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.5rem; overflow-x: auto; }
+.f-tab { padding: 0.55rem 1.1rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; white-space: nowrap; }
+.f-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.f-tab:hover:not(.active) { color: rgba(255,255,255,0.75); }
+.f-panel { display: none; }
+.f-panel.active { display: block; }
+.f-controls { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+.f-search { flex: 1; min-width: 180px; padding: 0.45rem 0.75rem; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: white; font-family: inherit; font-size: 0.82rem; outline: none; transition: border-color 0.2s; }
+.f-search::placeholder { color: rgba(255,255,255,0.3); }
+.f-search:focus { border-color: var(--accent); }
+.f-sel { padding: 0.45rem 0.7rem; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: rgba(255,255,255,0.8); font-family: inherit; font-size: 0.78rem; cursor: pointer; outline: none; }
+.f-sel option { background: #1C1A17; color: white; }
+.f-toggle { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: rgba(255,255,255,0.6); white-space: nowrap; }
+.f-toggle input { accent-color: var(--accent); cursor: pointer; }
+.f-count { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-left: auto; white-space: nowrap; }
+.f-table-wrap { overflow-x: auto; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
+.f-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.f-table th { padding: 0.55rem 0.85rem; text-align: left; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; cursor: pointer; user-select: none; }
+.f-table th:hover { color: var(--accent); }
+.f-table th.fs-asc::after { content: ' ↑'; color: var(--accent); }
+.f-table th.fs-desc::after { content: ' ↓'; color: var(--accent); }
+.f-table td { padding: 0.5rem 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+.f-table tr:last-child td { border-bottom: none; }
+.f-table tr:hover td { background: rgba(255,255,255,0.03); }
+.f-fund-name { font-weight: 500; color: rgba(255,255,255,0.9); max-width: 260px; }
+.f-fund-sub { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 1px; }
+.f-ccy { font-size: 0.65rem; font-weight: 600; padding: 2px 6px; border-radius: 2px; background: rgba(184,151,90,0.2); color: var(--accent); }
+.f-risk { font-size: 0.63rem; font-weight: 600; padding: 2px 6px; border-radius: 2px; white-space: nowrap; }
+.fr-lower  { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+.fr-lowmed { background: rgba(59,130,246,0.15); color: #93c5fd; }
+.fr-medhigh{ background: rgba(245,158,11,0.2);  color: #fcd34d; }
+.fr-higher { background: rgba(239,68,68,0.15);  color: #fca5a5; }
+.f-ret { font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
+.f-ret.pos { color: #6ee7b7; }
+.f-ret.neg { color: #fca5a5; }
+.f-ret.na  { color: rgba(255,255,255,0.25); }
+.f-aum { text-align: right; color: rgba(255,255,255,0.5); font-size: 0.78rem; }
+.f-dist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 0.85rem; }
+.f-dist-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 1.1rem; position: relative; overflow: hidden; transition: border-color 0.2s; }
+.f-dist-card:hover { border-color: rgba(184,151,90,0.4); }
+.f-dist-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-light)); }
+.f-dc-name { font-weight: 600; font-size: 0.86rem; color: rgba(255,255,255,0.9); margin-bottom: 0.5rem; line-height: 1.35; }
+.f-dc-meta { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.f-freq { font-size: 0.63rem; font-weight: 600; padding: 2px 6px; border-radius: 2px; background: rgba(184,151,90,0.18); color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
+.f-dc-perf { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; background: rgba(255,255,255,0.04); border-radius: 4px; padding: 0.6rem; margin-bottom: 0.7rem; }
+.f-dc-perf-item .lbl { font-size: 0.6rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+.f-dc-perf-item .val { font-size: 0.92rem; font-weight: 600; }
+.f-div-rows { font-size: 0.73rem; }
+.f-div-rows table { width: 100%; border-collapse: collapse; }
+.f-div-rows th { font-size: 0.6rem; color: rgba(255,255,255,0.35); padding: 3px 5px; border-bottom: 1px solid rgba(255,255,255,0.07); text-transform: uppercase; letter-spacing: 0.05em; }
+.f-div-rows td { padding: 4px 5px; color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.f-div-rows tr:last-child td { border: none; }
+.f-div-rate { font-weight: 600; color: rgba(255,255,255,0.85); text-align: right; }
+.f-more-btn { margin-top: 0.5rem; font-size: 0.7rem; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
+.f-strat-list { display: flex; flex-direction: column; gap: 0.65rem; }
+.f-strat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 1.1rem 1.25rem; transition: border-color 0.2s; }
+.f-strat-card:hover { border-color: rgba(184,151,90,0.35); }
+.f-sc-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.45rem; gap: 0.75rem; flex-wrap: wrap; }
+.f-sc-name { font-weight: 600; font-size: 0.88rem; color: rgba(255,255,255,0.9); }
+.f-sc-badges { display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center; }
+.f-sc-obj { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 0.6rem; }
+.f-sc-footer { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.f-sc-meta .ml { font-size: 0.6rem; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px; }
+.f-sc-meta .mv { font-size: 0.76rem; color: rgba(255,255,255,0.65); font-weight: 500; }
+.f-heat-wrap { overflow-x: auto; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
+.f-heat-table { width: 100%; border-collapse: collapse; font-size: 0.77rem; min-width: 700px; }
+.f-heat-table th { padding: 0.5rem 0.75rem; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.08); text-align: right; white-space: nowrap; }
+.f-heat-table th:first-child, .f-heat-table th:nth-child(2) { text-align: left; }
+.f-heat-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+.f-heat-table tr:last-child td { border: none; }
+.f-heat-table td:first-child { text-align: left; color: rgba(255,255,255,0.8); font-size: 0.78rem; white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+.f-heat-table td:nth-child(2) { text-align: left; }
+.f-empty { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.3); font-size: 0.88rem; }
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .hero-inner,.about-grid{grid-template-columns:1fr;gap:2.5rem;}
@@ -585,6 +669,7 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
     <div class="nav-brand"><span id="nav-agency">SOUL</span> Advisors</div>
     <div class="nav-right" id="nav-right">
       <a href="#testimonials" class="btn btn-ghost btn-sm">Testimonials</a>
+      <a href="#prulink-funds" class="btn btn-ghost btn-sm">PRULink Funds</a>
       <a id="nav-whatsapp" href="#" class="btn btn-ghost btn-sm">WhatsApp</a>
       <button id="nav-book-btn" class="btn btn-solid btn-sm" onclick="openBooking()">Book a Meeting</button>
     </div>
@@ -687,6 +772,88 @@ footer a { color: rgba(255,255,255,0.38); text-decoration: none; }
         <button class="btn btn-outline" onclick="copyProfileLink()">Copy Profile Link</button>
       </div>
       <div id="profile-link-copied" style="display:none;font-size:0.78rem;color:var(--accent);margin-top:0.75rem;">✓ Link copied to clipboard</div>
+    </div>
+  </section>
+
+  <!-- PRULINK FUNDS SECTION -->
+  <section class="funds-section" id="prulink-funds">
+    <div class="section-inner">
+      <div class="section-label">Prudential Singapore · ILP Sub-Funds</div>
+      <h2 class="section-title">PRULink Funds Dashboard</h2>
+      <p class="section-sub">Live performance data, investment strategies and dividend history for all 63 PRULink sub-funds — data as of 31 Jan 2026.</p>
+      <div class="f-kpi-strip" id="f-kpi-strip">
+        <div class="f-kpi"><div class="f-kpi-lbl">Total Funds</div><div class="f-kpi-val" id="fk-total">—</div></div>
+        <div class="f-kpi"><div class="f-kpi-lbl">Distribution Funds</div><div class="f-kpi-val" id="fk-dist">—</div></div>
+        <div class="f-kpi"><div class="f-kpi-lbl">AUM (SGD)</div><div class="f-kpi-val" id="fk-aum">—</div></div>
+        <div class="f-kpi"><div class="f-kpi-lbl">Avg 1Y Return</div><div class="f-kpi-val" id="fk-avg">—</div></div>
+        <div class="f-kpi"><div class="f-kpi-lbl">Top Performer</div><div class="f-kpi-val" style="font-size:0.95rem;line-height:1.25" id="fk-top">—</div></div>
+      </div>
+      <div class="f-tabs">
+        <button class="f-tab active" onclick="fSwitchTab('all',this)">All Funds</button>
+        <button class="f-tab" onclick="fSwitchTab('dist',this)">Distributions &amp; Dividends</button>
+        <button class="f-tab" onclick="fSwitchTab('heat',this)">Performance Heatmap</button>
+        <button class="f-tab" onclick="fSwitchTab('strat',this)">Fund Strategy</button>
+      </div>
+      <div class="f-panel active" id="fp-all">
+        <div class="f-controls">
+          <input class="f-search" id="f-search" placeholder="Search funds…" oninput="fApplyFilters()">
+          <select class="f-sel" id="f-asset" onchange="fApplyFilters()"><option value="">All Asset Classes</option></select>
+          <select class="f-sel" id="f-risk"  onchange="fApplyFilters()"><option value="">All Risk Levels</option></select>
+          <select class="f-sel" id="f-ccy"   onchange="fApplyFilters()">
+            <option value="">All Currencies</option><option value="SGD">SGD</option><option value="USD">USD</option>
+          </select>
+          <label class="f-toggle"><input type="checkbox" id="f-distonly" onchange="fApplyFilters()"> Distribution only</label>
+          <span class="f-count" id="f-count"></span>
+        </div>
+        <div class="f-table-wrap">
+          <table class="f-table">
+            <thead><tr>
+              <th onclick="fSort('name')"      data-fc="name">Fund Name</th>
+              <th onclick="fSort('currency')"  data-fc="currency">Ccy</th>
+              <th onclick="fSort('assetClass')"data-fc="assetClass">Asset Class</th>
+              <th onclick="fSort('risk')"      data-fc="risk">Risk</th>
+              <th>Div?</th>
+              <th onclick="fSort('aum')"       data-fc="aum" style="text-align:right">AUM (M)</th>
+              <th onclick="fSort('1m')"        data-fc="1m"  style="text-align:right">1M</th>
+              <th onclick="fSort('3m')"        data-fc="3m"  style="text-align:right">3M</th>
+              <th onclick="fSort('1y')"        data-fc="1y"  style="text-align:right">1Y</th>
+              <th onclick="fSort('3y')"        data-fc="3y"  style="text-align:right">3Y p.a.</th>
+              <th onclick="fSort('5y')"        data-fc="5y"  style="text-align:right">5Y p.a.</th>
+            </tr></thead>
+            <tbody id="f-tbody"></tbody>
+          </table>
+        </div>
+        <div class="f-empty hidden" id="f-empty">No funds match your filters.</div>
+      </div>
+      <div class="f-panel" id="fp-dist"><div class="f-dist-grid" id="f-dist-grid"></div></div>
+      <div class="f-panel" id="fp-heat">
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+          <button class="f-tab active" style="border-radius:4px;border:1px solid rgba(255,255,255,0.12)" onclick="fHeatTab('returns',this)">Returns</button>
+          <button class="f-tab"        style="border-radius:4px;border:1px solid rgba(255,255,255,0.12)" onclick="fHeatTab('calendar',this)">Calendar Year</button>
+        </div>
+        <div id="fh-returns"><div class="f-heat-wrap"><table class="f-heat-table">
+          <thead><tr><th>Fund</th><th>Ccy</th><th>1M</th><th>3M</th><th>6M</th><th>1Y</th><th>3Y p.a.</th><th>5Y p.a.</th><th>10Y p.a.</th><th>SI p.a.</th></tr></thead>
+          <tbody id="fh-tbody"></tbody>
+        </table></div></div>
+        <div id="fh-calendar" style="display:none"><div class="f-heat-wrap"><table class="f-heat-table" id="fh-cal-table">
+          <thead><tr id="fh-cal-head"><th>Fund</th><th>Ccy</th></tr></thead>
+          <tbody id="fh-cal-tbody"></tbody>
+        </table></div></div>
+      </div>
+      <div class="f-panel" id="fp-strat">
+        <div class="f-controls" style="margin-bottom:1rem">
+          <input class="f-search" id="fs-search" placeholder="Search strategy or fund name…" oninput="fFilterStrat()">
+          <select class="f-sel" id="fs-asset" onchange="fFilterStrat()"><option value="">All Asset Classes</option></select>
+          <select class="f-sel" id="fs-risk"  onchange="fFilterStrat()"><option value="">All Risk Levels</option></select>
+        </div>
+        <div class="f-strat-list" id="f-strat-list"></div>
+        <div class="f-empty hidden" id="f-strat-empty">No funds match.</div>
+      </div>
+      <div style="margin-top:1.5rem;font-size:0.72rem;color:rgba(255,255,255,0.25);text-align:center;">
+        Data sourced from Prudential Singapore factsheets · 31 Jan 2026 ·
+        <a href="/funds" style="color:var(--accent);text-decoration:none;" target="_blank">Full dashboard ↗</a> ·
+        <a href="/api/funds" style="color:var(--accent);text-decoration:none;" target="_blank">JSON API ↗</a>
+      </div>
     </div>
   </section>
 
@@ -1726,6 +1893,177 @@ function renderNotFound(sub) {
     </div>
   </div>`;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   PRULINK FUNDS — embedded dashboard
+══════════════════════════════════════════════════════════════ */
+let fAllFunds=[],fFiltered=[],fSortCol='1y',fSortDir='desc',fLoaded=false;
+function fPct(v,plain){
+  if(v===null||v===undefined||v==='')return plain?'—':'<span class="f-ret na">—</span>';
+  const p=parseFloat(v)*100;if(isNaN(p))return plain?'—':'<span class="f-ret na">—</span>';
+  const sign=p>=0?'+':'';
+  if(plain)return`${sign}${p.toFixed(2)}%`;
+  return`<span class="f-ret ${p>=0?'pos':'neg'}">${sign}${p.toFixed(2)}%</span>`;
+}
+function fRiskCls(r){if(!r)return'';const s=r.toLowerCase();if(s.startsWith('lower risk'))return'fr-lower';if(s.startsWith('lower to med')||s.startsWith('low to med'))return'fr-lowmed';if(s.startsWith('medium to'))return'fr-medhigh';if(s.startsWith('higher')||s.startsWith('high risk'))return'fr-higher';return'';}
+function fRiskLbl(r){if(!r)return'—';if(r.startsWith('Lower Risk'))return'Lower';if(r.startsWith('Lower to Med')||r.startsWith('Low to Med'))return'Low–Med';if(r.startsWith('Medium to'))return'Med–High';if(r.startsWith('Higher Risk')||r.startsWith('High Risk'))return'Higher';return r.split(';')[0].trim();}
+function fHeat(v){if(v===null||v===undefined)return'';const p=parseFloat(v)*100;if(isNaN(p))return'';const i=Math.min(Math.abs(p)/25,1);return p>=0?`background:rgba(52,211,153,${i*0.35});color:${i>.4?'#6ee7b7':'rgba(255,255,255,0.6)'}`:`background:rgba(248,113,113,${i*0.3});color:#fca5a5`;}
+function fSortVal(f,col){const pm={'1m':'1m','3m':'3m','6m':'6m','1y':'1y','3y':'3y','5y':'5y'};if(pm[col])return f.performance[pm[col]]??-999;if(col==='aum')return f.aum??0;return(f[col]||'').toLowerCase();}
+function fApplyFilters(){
+  const q=(document.getElementById('f-search')?.value||'').toLowerCase();
+  const asset=document.getElementById('f-asset')?.value||'';
+  const risk=document.getElementById('f-risk')?.value||'';
+  const ccy=document.getElementById('f-ccy')?.value||'';
+  const dOnly=document.getElementById('f-distonly')?.checked;
+  fFiltered=fAllFunds.filter(f=>{
+    if(q&&!f.name.toLowerCase().includes(q)&&!(f.assetClass||'').toLowerCase().includes(q))return false;
+    if(asset&&f.assetClass!==asset)return false;
+    if(risk&&!(f.risk||'').startsWith(risk))return false;
+    if(ccy&&f.currency!==ccy)return false;
+    if(dOnly&&!f.isDistribution)return false;
+    return true;
+  });
+  fDoSort();fRenderTable();
+}
+function fSort(col){
+  if(fSortCol===col)fSortDir=fSortDir==='asc'?'desc':'asc';
+  else{fSortCol=col;fSortDir=['name','assetClass'].includes(col)?'asc':'desc';}
+  document.querySelectorAll('.f-table th[data-fc]').forEach(th=>{th.classList.remove('fs-asc','fs-desc');if(th.dataset.fc===col)th.classList.add('fs-'+fSortDir);});
+  fDoSort();fRenderTable();
+}
+function fDoSort(){fFiltered.sort((a,b)=>{const va=fSortVal(a,fSortCol),vb=fSortVal(b,fSortCol);if(va<vb)return fSortDir==='asc'?-1:1;if(va>vb)return fSortDir==='asc'?1:-1;return 0;});}
+function fRenderTable(){
+  const tbody=document.getElementById('f-tbody');const empty=document.getElementById('f-empty');const cnt=document.getElementById('f-count');
+  if(!tbody)return;
+  cnt.textContent=`${fFiltered.length} fund${fFiltered.length!==1?'s':''}`;
+  if(!fFiltered.length){tbody.innerHTML='';empty.classList.remove('hidden');return;}
+  empty.classList.add('hidden');
+  tbody.innerHTML=fFiltered.map(f=>`<tr>
+    <td><div class="f-fund-name">${f.name.replace(/PRULink /i,'').replace(/PRUlink /i,'')}</div><div class="f-fund-sub">${f.region||f.assetClass||''}</div></td>
+    <td><span class="f-ccy">${f.currency}</span></td>
+    <td style="font-size:0.76rem;color:rgba(255,255,255,0.55)">${f.assetClass}</td>
+    <td><span class="f-risk ${fRiskCls(f.risk)}">${fRiskLbl(f.risk)}</span></td>
+    <td style="text-align:center;font-size:0.85rem">${f.isDistribution?'<span style="color:#6ee7b7;font-weight:600">✓</span>':'<span style="color:rgba(255,255,255,0.2)">—</span>'}</td>
+    <td class="f-aum">${f.aum?(f.aumCurrency==='USD'?'US$':'S$')+parseFloat(f.aum).toLocaleString(undefined,{maximumFractionDigits:1})+'M':'—'}</td>
+    <td>${fPct(f.performance['1m'])}</td><td>${fPct(f.performance['3m'])}</td>
+    <td>${fPct(f.performance['1y'])}</td><td>${fPct(f.performance['3y'])}</td><td>${fPct(f.performance['5y'])}</td>
+  </tr>`).join('');
+}
+function fRenderDist(funds){
+  const grid=document.getElementById('f-dist-grid');if(!grid)return;
+  const dFunds=funds.filter(f=>f.isDistribution);
+  grid.innerHTML=dFunds.map(f=>{
+    const freq=f.dividends[0]?.frequency||'—';
+    const divs=f.dividends.slice(0,5);const moreDivs=f.dividends.slice(5);
+    const key=encodeURIComponent(f.name).replace(/%/g,'_');
+    const rows=divs.map(d=>`<tr><td>${d.payoutDate?d.payoutDate.substring(0,10):'—'}</td><td>${d.frequency||'—'}</td><td class="f-div-rate">${d.ratePct!==null?(d.ratePct*100).toFixed(4)+'%':(d.rateRaw||'—')}</td></tr>`).join('');
+    const moreHtml=moreDivs.length?`<button class="f-more-btn" onclick="fToggleMore(this,'${key}')">+ ${moreDivs.length} more payments</button><div class="hidden fmore_${key}"><table style="width:100%;border-collapse:collapse;font-size:0.7rem">${moreDivs.map(d=>`<tr><td style="padding:3px 5px;color:rgba(255,255,255,0.5)">${d.payoutDate?d.payoutDate.substring(0,10):'—'}</td><td style="padding:3px 5px;color:rgba(255,255,255,0.5)">${d.frequency||'—'}</td><td style="text-align:right;font-weight:600;color:rgba(255,255,255,0.8);padding:3px 5px">${d.ratePct!==null?(d.ratePct*100).toFixed(4)+'%':(d.rateRaw||'—')}</td></tr>`).join('')}</table></div>`:'';
+    const p=f.performance;
+    return`<div class="f-dist-card">
+      <div class="f-dc-name">${f.name.replace(/PRULink /i,'').replace(/PRUlink /i,'')}</div>
+      <div class="f-dc-meta"><span class="f-ccy">${f.currency}</span><span class="f-risk ${fRiskCls(f.risk)}">${fRiskLbl(f.risk)}</span><span class="f-freq">${freq}</span></div>
+      <div class="f-dc-perf">
+        <div class="f-dc-perf-item"><div class="lbl">1M</div><div class="val" style="color:${(p['1m']||0)>=0?'#6ee7b7':'#fca5a5'}">${fPct(p['1m'],true)}</div></div>
+        <div class="f-dc-perf-item"><div class="lbl">1Y</div><div class="val" style="color:${(p['1y']||0)>=0?'#6ee7b7':'#fca5a5'}">${fPct(p['1y'],true)}</div></div>
+        <div class="f-dc-perf-item"><div class="lbl">AUM</div><div class="val" style="font-size:0.8rem;color:rgba(255,255,255,0.55)">${f.aum?('S$'+parseFloat(f.aum).toLocaleString(undefined,{maximumFractionDigits:0})+'M'):'—'}</div></div>
+      </div>
+      ${divs.length?`<div class="f-div-rows"><table><thead><tr><th>Date</th><th>Freq</th><th style="text-align:right">Rate</th></tr></thead><tbody>${rows}</tbody></table></div>${moreHtml}`:'<div style="font-size:0.72rem;color:rgba(255,255,255,0.3)">No dividend records</div>'}
+    </div>`;
+  }).join('');
+}
+function fToggleMore(btn,key){const el=document.querySelector('.fmore_'+key);if(!el)return;const h=el.classList.toggle('hidden');btn.textContent=h?`+ ${el.querySelectorAll('tr').length} more payments`:'▲ Show less';}
+function fRenderHeat(funds){
+  const sorted=[...funds].sort((a,b)=>(b.performance['1y']??-999)-(a.performance['1y']??-999));
+  const tbody=document.getElementById('fh-tbody');if(!tbody)return;
+  tbody.innerHTML=sorted.map(f=>{const p=f.performance;return`<tr>
+    <td>${f.name.replace(/PRULink /i,'').replace(/PRUlink /i,'')}</td>
+    <td><span class="f-ccy">${f.currency}</span></td>
+    <td style="${fHeat(p['1m'])}">${fPct(p['1m'],true)}</td><td style="${fHeat(p['3m'])}">${fPct(p['3m'],true)}</td>
+    <td style="${fHeat(p['6m'])}">${fPct(p['6m'],true)}</td><td style="${fHeat(p['1y'])}">${fPct(p['1y'],true)}</td>
+    <td style="${fHeat(p['3y'])}">${fPct(p['3y'],true)}</td><td style="${fHeat(p['5y'])}">${fPct(p['5y'],true)}</td>
+    <td style="${fHeat(p['10y'])}">${fPct(p['10y'],true)}</td><td style="${fHeat(p['si'])}">${fPct(p['si'],true)}</td>
+  </tr>`;}).join('');
+  const calHead=document.getElementById('fh-cal-head');const calBody=document.getElementById('fh-cal-tbody');
+  if(!calHead||!calBody)return;
+  const years=Object.keys(funds.find(f=>Object.keys(f.calendarReturns).length)?.calendarReturns||{}).sort();
+  if(!calHead.dataset.built){years.forEach(yr=>{const th=document.createElement('th');th.textContent=yr;calHead.appendChild(th);});calHead.dataset.built='1';}
+  calBody.innerHTML=sorted.map(f=>`<tr><td>${f.name.replace(/PRULink /i,'').replace(/PRUlink /i,'')}</td><td><span class="f-ccy">${f.currency}</span></td>${years.map(yr=>`<td style="${fHeat(f.calendarReturns[yr])}">${fPct(f.calendarReturns[yr],true)}</td>`).join('')}</tr>`).join('');
+}
+function fHeatTab(tab,btn){document.querySelectorAll('#fp-heat .f-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('fh-returns').style.display=tab==='returns'?'':'none';document.getElementById('fh-calendar').style.display=tab==='calendar'?'':'none';}
+function fRenderStrat(funds){
+  const list=document.getElementById('f-strat-list');const sa=document.getElementById('fs-asset');const sr=document.getElementById('fs-risk');if(!list)return;
+  if(!sa.dataset.built){
+    const assets=[...new Set(funds.map(f=>f.assetClass).filter(Boolean))].sort();
+    assets.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;sa.appendChild(o);});
+    const risks=[...new Set(funds.map(f=>(f.risk||'').split(';')[0].trim()).filter(Boolean))].sort();
+    risks.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=fRiskLbl(r+';');sr.appendChild(o);});
+    sa.dataset.built=sr.dataset.built='1';
+  }
+  list.innerHTML=funds.map(f=>`<div class="f-strat-card" data-fn="${encodeURIComponent(f.name)}" data-fa="${f.assetClass}" data-fr="${f.risk||''}">
+    <div class="f-sc-head"><div class="f-sc-name">${f.name.replace(/PRULink /i,'').replace(/PRUlink /i,'')}</div>
+    <div class="f-sc-badges"><span class="f-ccy">${f.currency}</span><span class="f-risk ${fRiskCls(f.risk)}">${fRiskLbl(f.risk)}</span>${f.isDistribution?'<span class="f-freq">Distribution</span>':''}</div></div>
+    <div class="f-sc-obj">${f.strategy||'<em style="color:rgba(255,255,255,0.25)">No strategy data</em>'}</div>
+    <div class="f-sc-footer">
+      <div class="f-sc-meta"><div class="ml">Manager</div><div class="mv">${f.manager||'—'}</div></div>
+      <div class="f-sc-meta"><div class="ml">Asset Class</div><div class="mv">${f.assetClass||'—'}</div></div>
+      <div class="f-sc-meta"><div class="ml">Region</div><div class="mv">${f.region||'—'}</div></div>
+      <div class="f-sc-meta"><div class="ml">Launch</div><div class="mv">${f.launchDate?f.launchDate.substring(0,10):'—'}</div></div>
+      <div class="f-sc-meta"><div class="ml">Mgmt Fee</div><div class="mv">${f.managementFee||'—'}</div></div>
+    </div>
+  </div>`).join('');
+}
+function fFilterStrat(){
+  const q=(document.getElementById('fs-search')?.value||'').toLowerCase();
+  const asset=document.getElementById('fs-asset')?.value||'';
+  const risk=document.getElementById('fs-risk')?.value||'';
+  let shown=0;
+  document.querySelectorAll('.f-strat-card').forEach(c=>{
+    const name=decodeURIComponent(c.dataset.fn).toLowerCase();
+    const obj=c.querySelector('.f-sc-obj')?.textContent.toLowerCase()||'';
+    const show=(!q||(name.includes(q)||obj.includes(q)||c.dataset.fa.toLowerCase().includes(q)))&&(!asset||c.dataset.fa===asset)&&(!risk||(c.dataset.fr||'').startsWith(risk));
+    c.style.display=show?'':'none';if(show)shown++;
+  });
+  document.getElementById('f-strat-empty').classList.toggle('hidden',shown>0);
+}
+function fSwitchTab(tab,btn){document.querySelectorAll('.f-tabs .f-tab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.f-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('fp-'+tab).classList.add('active');}
+function fPopulateFilters(funds){
+  const fa=document.getElementById('f-asset');const fr=document.getElementById('f-risk');if(!fa||fa.dataset.built)return;
+  const assets=[...new Set(funds.map(f=>f.assetClass).filter(Boolean))].sort();
+  assets.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;fa.appendChild(o);});
+  const risks=[...new Set(funds.map(f=>(f.risk||'').split(';')[0].trim()).filter(Boolean))].sort();
+  risks.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=fRiskLbl(r+';');fr.appendChild(o);});
+  fa.dataset.built=fr.dataset.built='1';
+}
+function fRenderKPIs(meta,funds){
+  const top=[...funds].filter(f=>f.performance['1y']!=null).sort((a,b)=>b.performance['1y']-a.performance['1y'])[0];
+  const el=id=>document.getElementById(id);
+  if(el('fk-total'))el('fk-total').textContent=meta.totalFunds;
+  if(el('fk-dist'))el('fk-dist').textContent=meta.distributionFunds;
+  if(el('fk-aum'))el('fk-aum').textContent=`S$${(meta.totalAumSGD_M/1000).toFixed(1)}B`;
+  if(el('fk-avg'))el('fk-avg').textContent=`${(meta.avgReturn1Y*100).toFixed(1)}%`;
+  if(el('fk-top')&&top)el('fk-top').textContent=`${top.name.replace(/PRULink /i,'').replace(/PRUlink /i,'').substring(0,28)}… ${(top.performance['1y']*100).toFixed(1)}%`;
+}
+async function fLoadData(){
+  if(fLoaded)return;fLoaded=true;
+  try{
+    const res=await fetch('/prulink-data.json');
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    fAllFunds=data.funds;
+    fFiltered=[...fAllFunds].sort((a,b)=>(b.performance['1y']??-999)-(a.performance['1y']??-999));
+    fPopulateFilters(fAllFunds);fRenderKPIs(data.meta,fAllFunds);fRenderTable();
+    fRenderDist(fAllFunds);fRenderHeat(fAllFunds);fRenderStrat(fAllFunds);
+    document.getElementById('f-count').textContent=`${fAllFunds.length} funds`;
+    const th1y=document.querySelector('.f-table th[data-fc="1y"]');if(th1y)th1y.classList.add('fs-desc');
+  }catch(e){
+    const s=document.getElementById('f-kpi-strip');
+    if(s)s.innerHTML=`<div style="padding:1rem;color:rgba(255,255,255,0.4);font-size:0.82rem">⚠ Could not load fund data — ${e.message}</div>`;
+  }
+}
+(function(){
+  const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){obs.disconnect();fLoadData();}},{rootMargin:'200px'});
+  document.addEventListener('DOMContentLoaded',()=>{const el=document.getElementById('prulink-funds');if(el)obs.observe(el);else fLoadData();});
+})();
 
 /* ── DEMO NAV (localhost preview) ── */
 function addDemoNav() {

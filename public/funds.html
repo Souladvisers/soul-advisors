@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRULink Funds Dashboard — SOUL Advisors</title>
+<meta name="description" content="Live PRULink fund performance dashboard — 63 sub-funds, strategy, risk, performance and dividend data from Prudential Singapore.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
+<!-- Agent-readable structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "PRULink Funds Dashboard",
+  "description": "Complete PRULink sub-fund performance, strategy, risk and dividend data from Prudential Singapore",
+  "provider": { "@type": "Organization", "name": "Prudential Singapore" },
+  "dateModified": "2026-01-31",
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "application/json",
+    "contentUrl": "/api/funds"
+  }
+}
+</script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent:       #B8975A;
+  --accent-light: #E8D5A3;
+  --accent-dark:  #8A6E3A;
+  --cream:        #FAF8F3;
+  --dark:         #1C1A17;
+  --mid:          #4A4540;
+  --muted:        #8A8278;
+  --border:       rgba(184,151,90,0.2);
+  --white:        #ffffff;
+  --radius:       4px;
+
+  --risk-lower-bg:   #D1FAE5; --risk-lower-tx:   #065F46;
+  --risk-lowmed-bg:  #DBEAFE; --risk-lowmed-tx:  #1E40AF;
+  --risk-medhigh-bg: #FEF3C7; --risk-medhigh-tx: #92400E;
+  --risk-higher-bg:  #FEE2E2; --risk-higher-tx:  #991B1B;
+  --risk-high-bg:    #FEE2E2; --risk-high-tx:    #991B1B;
+
+  --pos: #166534; --neg: #991B1B;
+  --pos-bg: #DCFCE7; --neg-bg: #FEE2E2;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); line-height: 1.6; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,248,243,0.96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 64px;
+}
+.nav-brand { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--dark); text-decoration: none; }
+.nav-brand span { color: var(--accent); }
+.nav-right { display: flex; gap: 0.75rem; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: var(--radius); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.2s; border: 1px solid var(--accent); }
+.btn-outline { background: transparent; color: var(--accent-dark); }
+.btn-outline:hover { background: var(--accent); color: white; }
+.btn-solid { background: var(--accent); color: white; }
+.btn-solid:hover { background: var(--accent-dark); }
+.btn-ghost { background: transparent; color: var(--muted); border-color: rgba(0,0,0,0.15); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── LOADING ── */
+#loading {
+  position: fixed; inset: 0; background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1rem; z-index: 9999;
+}
+.loader { width: 36px; height: 36px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+#loading p { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; }
+
+/* ── HERO BAND ── */
+.page-hero {
+  padding: 100px 2rem 48px;
+  background: linear-gradient(135deg, var(--dark) 0%, #2C2318 100%);
+  color: white; position: relative; overflow: hidden;
+}
+.page-hero::after {
+  content: ''; position: absolute; right: -80px; top: -80px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,151,90,0.15) 0%, transparent 70%);
+}
+.hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.eyebrow {
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--accent); }
+.page-hero h1 { font-family: 'Lora', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; margin-bottom: 0.5rem; }
+.page-hero p { color: rgba(255,255,255,0.6); font-size: 0.92rem; max-width: 560px; margin-bottom: 2rem; }
+
+/* ── KPI CARDS ── */
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1px; background: rgba(255,255,255,0.08); border-radius: var(--radius);
+  overflow: hidden; border: 1px solid rgba(255,255,255,0.1); margin-top: 2.5rem;
+}
+.kpi-card { background: rgba(255,255,255,0.04); padding: 1.25rem 1.5rem; backdrop-filter: blur(4px); }
+.kpi-card:hover { background: rgba(255,255,255,0.07); }
+.kpi-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 0.35rem; }
+.kpi-value { font-family: 'Lora', serif; font-size: 1.75rem; font-weight: 600; color: white; line-height: 1; }
+.kpi-value.accent { color: var(--accent); }
+.kpi-sub { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem; }
+
+/* ── MAIN LAYOUT ── */
+.page-body { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+/* ── SECTION HEADERS ── */
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+.section-title { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600; color: var(--dark); }
+.section-count { font-size: 0.78rem; color: var(--muted); }
+
+/* ── CONTROLS ── */
+.controls {
+  display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;
+  padding: 1rem 1.25rem; background: white; border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 1.5rem;
+}
+.search-wrap { position: relative; flex: 1; min-width: 200px; }
+.search-wrap input {
+  width: 100%; padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: inherit; font-size: 0.85rem; background: var(--cream); color: var(--dark);
+  outline: none; transition: border-color 0.2s;
+}
+.search-wrap input:focus { border-color: var(--accent); }
+.search-icon { position: absolute; left: 0.6rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; pointer-events: none; }
+select.filter-sel {
+  padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: inherit; font-size: 0.82rem; background: var(--cream); color: var(--dark);
+  cursor: pointer; outline: none; transition: border-color 0.2s;
+}
+select.filter-sel:focus { border-color: var(--accent); }
+.toggle-wrap { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--mid); white-space: nowrap; }
+.toggle-wrap input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+.control-sep { width: 1px; height: 20px; background: var(--border); }
+.result-count { font-size: 0.78rem; color: var(--muted); white-space: nowrap; margin-left: auto; }
+
+/* ── TAB BAR ── */
+.tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; overflow-x: auto; }
+.tab-btn {
+  padding: 0.6rem 1.25rem; font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
+  border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.2s; white-space: nowrap; margin-bottom: -1px;
+}
+.tab-btn.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--dark); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── FUND TABLE ── */
+.fund-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: white; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+th {
+  padding: 0.65rem 0.9rem; text-align: left; font-size: 0.68rem;
+  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); background: var(--cream); border-bottom: 1px solid var(--border);
+  white-space: nowrap; cursor: pointer; user-select: none;
+}
+th:hover { color: var(--accent-dark); }
+th.sorted-asc::after { content: ' ↑'; color: var(--accent); }
+th.sorted-desc::after { content: ' ↓'; color: var(--accent); }
+td { padding: 0.55rem 0.9rem; border-bottom: 1px solid rgba(184,151,90,0.08); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(184,151,90,0.04); }
+.fund-name { font-weight: 500; color: var(--dark); max-width: 280px; }
+.fund-name small { display: block; font-size: 0.72rem; color: var(--muted); font-weight: 400; margin-top: 1px; }
+.ccy-badge { font-size: 0.65rem; font-weight: 600; padding: 2px 6px; border-radius: 2px; background: rgba(184,151,90,0.12); color: var(--accent-dark); }
+.risk-badge {
+  font-size: 0.65rem; font-weight: 600; padding: 3px 7px; border-radius: 2px;
+  white-space: nowrap; display: inline-block;
+}
+.risk-lower    { background: var(--risk-lower-bg);   color: var(--risk-lower-tx); }
+.risk-lowmed   { background: var(--risk-lowmed-bg);  color: var(--risk-lowmed-tx); }
+.risk-medhigh  { background: var(--risk-medhigh-bg); color: var(--risk-medhigh-tx); }
+.risk-higher   { background: var(--risk-higher-bg);  color: var(--risk-higher-tx); }
+.div-check { color: #16a34a; font-weight: 600; }
+.div-dash  { color: var(--muted); }
+.ret { font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
+.ret.pos { color: var(--pos); }
+.ret.neg { color: var(--neg); }
+.ret.na  { color: var(--muted); }
+.aum-val { text-align: right; font-variant-numeric: tabular-nums; color: var(--mid); }
+
+/* ── DISTRIBUTION SECTION ── */
+.dist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+.dist-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.25rem; position: relative; overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.dist-card:hover { border-color: var(--accent); box-shadow: 0 4px 20px rgba(184,151,90,0.12); }
+.dist-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+}
+.dist-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; gap: 0.5rem; }
+.dist-fund-name { font-weight: 600; font-size: 0.88rem; color: var(--dark); line-height: 1.4; flex: 1; }
+.dist-meta { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.freq-badge { font-size: 0.65rem; font-weight: 600; padding: 3px 7px; border-radius: 2px; background: rgba(184,151,90,0.12); color: var(--accent-dark); text-transform: uppercase; letter-spacing: 0.06em; }
+.dist-perf { display: flex; gap: 1rem; margin-bottom: 1rem; padding: 0.75rem; background: var(--cream); border-radius: var(--radius); }
+.dist-perf-item { flex: 1; text-align: center; }
+.dist-perf-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+.dist-perf-val { font-size: 1rem; font-weight: 600; }
+.divs-table { width: 100%; font-size: 0.76rem; }
+.divs-table th { font-size: 0.62rem; padding: 4px 6px; color: var(--muted); border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.06em; background: none; cursor: default; }
+.divs-table td { padding: 5px 6px; border-bottom: 1px solid rgba(184,151,90,0.06); color: var(--mid); }
+.divs-table tr:last-child td { border-bottom: none; }
+.div-rate { font-weight: 600; color: var(--dark); text-align: right; }
+.show-more-btn { margin-top: 0.6rem; font-size: 0.72rem; color: var(--accent-dark); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── PERFORMANCE HEAT MAP ── */
+.perf-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: white; }
+.perf-table { min-width: 900px; }
+.perf-table td.heat {
+  text-align: right; font-size: 0.78rem; font-variant-numeric: tabular-nums;
+  padding: 0.5rem 0.8rem; font-weight: 500;
+}
+
+/* ── STRATEGY CARDS ── */
+.strat-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.strat-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.25rem 1.5rem; transition: border-color 0.2s;
+}
+.strat-card:hover { border-color: var(--accent); }
+.strat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; gap: 1rem; flex-wrap: wrap; }
+.strat-fund-name { font-weight: 600; font-size: 0.92rem; color: var(--dark); }
+.strat-badges { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+.strat-body { font-size: 0.83rem; color: var(--mid); line-height: 1.7; margin-bottom: 0.75rem; }
+.strat-footer { display: flex; gap: 2rem; flex-wrap: wrap; }
+.strat-meta-item { font-size: 0.75rem; }
+.strat-meta-label { color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.67rem; margin-bottom: 1px; }
+.strat-meta-val { color: var(--dark); font-weight: 500; }
+
+/* ── AGENT API PANEL ── */
+.api-panel {
+  background: var(--dark); color: rgba(255,255,255,0.85); border-radius: var(--radius);
+  padding: 2rem; margin-top: 3rem;
+}
+.api-panel h2 { font-family: 'Lora', serif; font-size: 1.1rem; color: white; margin-bottom: 0.4rem; }
+.api-panel p { font-size: 0.84rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+.api-endpoints { display: flex; flex-direction: column; gap: 0.75rem; }
+.api-endpoint { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 1rem 1.25rem; }
+.api-method { display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 2px; background: #16A34A; color: white; margin-right: 0.5rem; letter-spacing: 0.05em; }
+.api-url { font-family: 'Courier New', monospace; font-size: 0.84rem; color: var(--accent-light); }
+.api-desc { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 0.4rem; }
+.api-params { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.api-param { font-size: 0.68rem; padding: 2px 8px; border-radius: 2px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); font-family: 'Courier New', monospace; }
+.api-example { margin-top: 1rem; }
+.api-example pre {
+  background: rgba(0,0,0,0.4); padding: 1rem; border-radius: var(--radius);
+  font-size: 0.76rem; overflow-x: auto; color: rgba(255,255,255,0.7);
+  line-height: 1.6; border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+.empty-state .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.empty-state p { font-size: 0.88rem; }
+
+/* ── STICKY SUBHEADER ── */
+.sticky-bar {
+  position: sticky; top: 64px; z-index: 50;
+  background: rgba(250,248,243,0.96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border); padding: 0.5rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem; overflow-x: auto;
+}
+.sticky-link { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.2s; }
+.sticky-link:hover { color: var(--accent-dark); }
+.sticky-sep { color: var(--border); }
+
+/* ── UTILS ── */
+.hidden { display: none !important; }
+.mt-2 { margin-top: 2rem; }
+.chip { display: inline-block; font-size: 0.68rem; padding: 2px 8px; border-radius: 2px; font-weight: 500; }
+.chip-green { background: #DCFCE7; color: #166534; }
+.chip-red   { background: #FEE2E2; color: #991B1B; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 1rem; }
+  .page-hero { padding: 90px 1rem 40px; }
+  .page-body { padding: 1.5rem 1rem 4rem; }
+  .controls { padding: 0.75rem; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .sticky-bar { padding: 0.5rem 1rem; }
+  .dist-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="loader"></div>
+  <p>Loading fund data…</p>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-brand" href="/"><span>SOUL</span> Advisors</a>
+  <div class="nav-right">
+    <a class="btn btn-ghost" href="/api/funds" target="_blank">API JSON</a>
+    <a class="btn btn-solid" href="/">← Main Site</a>
+  </div>
+</nav>
+
+<!-- Sticky anchor bar -->
+<div class="sticky-bar">
+  <a class="sticky-link" href="#all-funds">All Funds</a>
+  <span class="sticky-sep">·</span>
+  <a class="sticky-link" href="#distributions">Distributions</a>
+  <span class="sticky-sep">·</span>
+  <a class="sticky-link" href="#performance">Performance</a>
+  <span class="sticky-sep">·</span>
+  <a class="sticky-link" href="#strategy">Strategy</a>
+  <span class="sticky-sep">·</span>
+  <a class="sticky-link" href="#agent-api">Agent API</a>
+</div>
+
+<!-- Hero -->
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Prudential Singapore · PRULink ILP Sub-Funds</div>
+    <h1>PRULink Funds Dashboard</h1>
+    <p>Live performance data, investment strategies, risk profiles and dividend history for all 63 PRULink sub-funds — structured for advisors and AI agents.</p>
+    <div class="kpi-grid" id="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Total Funds</div><div class="kpi-value accent" id="kpi-total">—</div><div class="kpi-sub">Sub-funds</div></div>
+      <div class="kpi-card"><div class="kpi-label">Distribution Funds</div><div class="kpi-value accent" id="kpi-dist">—</div><div class="kpi-sub">Dividend-paying</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total AUM (SGD)</div><div class="kpi-value" id="kpi-aum-sgd">—</div><div class="kpi-sub">SGD classes</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total AUM (USD)</div><div class="kpi-value" id="kpi-aum-usd">—</div><div class="kpi-sub">USD classes</div></div>
+      <div class="kpi-card"><div class="kpi-label">Avg 1Y Return</div><div class="kpi-value accent" id="kpi-avg1y">—</div><div class="kpi-sub">All SGD funds</div></div>
+      <div class="kpi-card"><div class="kpi-label">Top 1Y Performer</div><div class="kpi-value" style="font-size:1.1rem;line-height:1.2" id="kpi-top">—</div><div class="kpi-sub" id="kpi-top-ret">—</div></div>
+    </div>
+    <p style="margin-top:1rem;font-size:0.72rem;color:rgba(255,255,255,0.3);">Data as of 31 January 2026 · Source: Prudential Singapore Factsheets</p>
+  </div>
+</div>
+
+<!-- Page Body -->
+<div class="page-body">
+
+  <!-- ── ALL FUNDS ── -->
+  <section id="all-funds" class="mt-2">
+    <div class="section-head">
+      <div class="section-title">All Funds</div>
+      <span class="section-count" id="dir-count"></span>
+    </div>
+
+    <div class="controls">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search-input" placeholder="Search funds…" oninput="applyFilters()">
+      </div>
+      <div class="control-sep"></div>
+      <select class="filter-sel" id="asset-filter" onchange="applyFilters()">
+        <option value="">All Asset Classes</option>
+      </select>
+      <select class="filter-sel" id="risk-filter" onchange="applyFilters()">
+        <option value="">All Risk Levels</option>
+      </select>
+      <select class="filter-sel" id="ccy-filter" onchange="applyFilters()">
+        <option value="">All Currencies</option>
+        <option value="SGD">SGD</option>
+        <option value="USD">USD</option>
+      </select>
+      <div class="toggle-wrap">
+        <input type="checkbox" id="dist-only" onchange="applyFilters()">
+        <label for="dist-only">Distribution only</label>
+      </div>
+      <div class="control-sep"></div>
+      <span class="result-count" id="result-count"></span>
+    </div>
+
+    <div class="fund-table-wrap">
+      <table id="fund-table">
+        <thead>
+          <tr>
+            <th onclick="sortTable('name')"       data-col="name">Fund Name</th>
+            <th onclick="sortTable('currency')"   data-col="currency">Ccy</th>
+            <th onclick="sortTable('assetClass')" data-col="assetClass">Asset Class</th>
+            <th onclick="sortTable('risk')"       data-col="risk">Risk</th>
+            <th>Div?</th>
+            <th onclick="sortTable('aum')"        data-col="aum" style="text-align:right">AUM (M)</th>
+            <th onclick="sortTable('1m')"         data-col="1m"  style="text-align:right">1M</th>
+            <th onclick="sortTable('3m')"         data-col="3m"  style="text-align:right">3M</th>
+            <th onclick="sortTable('1y')"         data-col="1y"  style="text-align:right">1Y</th>
+            <th onclick="sortTable('3y')"         data-col="3y"  style="text-align:right">3Y p.a.</th>
+            <th onclick="sortTable('5y')"         data-col="5y"  style="text-align:right">5Y p.a.</th>
+          </tr>
+        </thead>
+        <tbody id="fund-tbody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state hidden" id="no-results">
+      <div class="icon">🔍</div>
+      <p>No funds match your filters. Try clearing some criteria.</p>
+    </div>
+  </section>
+
+  <!-- ── DISTRIBUTIONS ── -->
+  <section id="distributions" class="mt-2">
+    <div class="section-head">
+      <div class="section-title">Distribution Funds &amp; Dividends</div>
+      <span class="section-count" id="dist-section-count"></span>
+    </div>
+    <div class="dist-grid" id="dist-grid"></div>
+  </section>
+
+  <!-- ── PERFORMANCE ── -->
+  <section id="performance" class="mt-2">
+    <div class="section-head">
+      <div class="section-title">Performance Heatmap</div>
+      <span class="section-count">Bid-to-bid returns · colour intensity = magnitude</span>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchPerfTab('returns',this)">Returns</button>
+      <button class="tab-btn" onclick="switchPerfTab('calendar',this)">Calendar Year</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-returns">
+      <div class="perf-table-wrap">
+        <table class="perf-table">
+          <thead>
+            <tr>
+              <th>Fund</th><th>Ccy</th>
+              <th style="text-align:right">1M</th>
+              <th style="text-align:right">3M</th>
+              <th style="text-align:right">6M</th>
+              <th style="text-align:right">1Y</th>
+              <th style="text-align:right">3Y p.a.</th>
+              <th style="text-align:right">5Y p.a.</th>
+              <th style="text-align:right">10Y p.a.</th>
+              <th style="text-align:right">SI p.a.</th>
+            </tr>
+          </thead>
+          <tbody id="perf-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-calendar">
+      <div class="perf-table-wrap">
+        <table class="perf-table" id="cal-table">
+          <thead><tr id="cal-header"><th>Fund</th><th>Ccy</th></tr></thead>
+          <tbody id="cal-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STRATEGY ── -->
+  <section id="strategy" class="mt-2">
+    <div class="section-head">
+      <div class="section-title">Fund Strategy &amp; Objectives</div>
+      <span class="section-count" id="strat-count"></span>
+    </div>
+
+    <div class="controls" style="margin-bottom:1rem">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="strat-search" placeholder="Search strategy…" oninput="filterStrategy()">
+      </div>
+      <select class="filter-sel" id="strat-asset-filter" onchange="filterStrategy()">
+        <option value="">All Asset Classes</option>
+      </select>
+      <select class="filter-sel" id="strat-risk-filter" onchange="filterStrategy()">
+        <option value="">All Risk Levels</option>
+      </select>
+    </div>
+
+    <div class="strat-list" id="strat-list"></div>
+    <div class="empty-state hidden" id="no-strat">
+      <div class="icon">🔍</div>
+      <p>No funds match. Try clearing the search.</p>
+    </div>
+  </section>
+
+  <!-- ── AGENT API ── -->
+  <div class="api-panel" id="agent-api">
+    <h2>Agent API — Machine-Readable Data</h2>
+    <p>All fund data is available as structured JSON for AI agents, bots, and automated workflows. No authentication required.</p>
+
+    <div class="api-endpoints">
+      <div class="api-endpoint">
+        <span class="api-method">GET</span>
+        <span class="api-url">/api/funds</span>
+        <div class="api-desc">Returns all 63 PRULink sub-funds with performance, strategy, risk, dividends and AUM.</div>
+        <div class="api-params">
+          <span class="api-param">?asset=Equity</span>
+          <span class="api-param">?risk=Higher+Risk</span>
+          <span class="api-param">?distribution=true</span>
+          <span class="api-param">?currency=SGD</span>
+          <span class="api-param">?search=global</span>
+          <span class="api-param">?sort=1y&order=desc</span>
+        </div>
+      </div>
+
+      <div class="api-endpoint">
+        <span class="api-method">GET</span>
+        <span class="api-url">/api/funds?distribution=true</span>
+        <div class="api-desc">Returns only distribution (dividend-paying) funds with full dividend history.</div>
+      </div>
+
+      <div class="api-endpoint">
+        <span class="api-method">GET</span>
+        <span class="api-url">/api/funds?sort=1y&order=desc&currency=SGD</span>
+        <div class="api-desc">Returns all SGD funds sorted by 1-year return descending — useful for ranking top performers.</div>
+      </div>
+    </div>
+
+    <div class="api-example">
+      <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.08em;">Example Response</div>
+      <pre id="api-sample">Loading…</pre>
+    </div>
+  </div>
+
+</div><!-- /page-body -->
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA & STATE
+// ─────────────────────────────────────────────────────────────────────────────
+let allFunds = [];
+let filteredFunds = [];
+let sortCol = '1y';
+let sortDir = 'desc';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+function fmtPct(v, showPlus = true) {
+  if (v === null || v === undefined) return '<span class="ret na">—</span>';
+  const p = parseFloat(v) * 100;
+  const cls = p >= 0 ? 'pos' : 'neg';
+  const sign = p >= 0 && showPlus ? '+' : '';
+  return `<span class="ret ${cls}">${sign}${p.toFixed(2)}%</span>`;
+}
+
+function fmtPctPlain(v) {
+  if (v === null || v === undefined) return '—';
+  const p = parseFloat(v) * 100;
+  const sign = p >= 0 ? '+' : '';
+  return `${sign}${p.toFixed(2)}%`;
+}
+
+function fmtAUM(v, ccy) {
+  if (v === null || v === undefined) return '<span class="aum-val" style="color:var(--muted)">—</span>';
+  const sym = ccy === 'USD' ? 'US$' : 'S$';
+  return `<span class="aum-val">${sym}${parseFloat(v).toLocaleString(undefined,{maximumFractionDigits:1})}M</span>`;
+}
+
+function riskClass(raw) {
+  if (!raw) return '';
+  const s = raw.toLowerCase();
+  if (s.startsWith('lower risk'))          return 'risk-lower';
+  if (s.startsWith('lower to medium') || s.startsWith('low to medium')) return 'risk-lowmed';
+  if (s.startsWith('medium to high'))      return 'risk-medhigh';
+  if (s.startsWith('higher risk') || s.startsWith('high risk')) return 'risk-higher';
+  return '';
+}
+
+function riskLabel(raw) {
+  if (!raw) return '—';
+  const s = raw;
+  if (s.startsWith('Lower Risk'))          return 'Lower Risk';
+  if (s.startsWith('Lower to Medium') || s.startsWith('Low to Medium')) return 'Low–Med';
+  if (s.startsWith('Medium to High'))      return 'Med–High';
+  if (s.startsWith('Higher Risk') || s.startsWith('High Risk')) return 'Higher Risk';
+  return raw.split(';')[0].trim();
+}
+
+function heatColor(v) {
+  if (v === null || v === undefined) return '';
+  const p = parseFloat(v) * 100;
+  if (isNaN(p)) return '';
+  const intensity = Math.min(Math.abs(p) / 30, 1);
+  if (p >= 0) {
+    const g = Math.round(220 - intensity * 80);
+    const r = Math.round(220 - intensity * 80);
+    return `background:rgba(22,163,74,${intensity * 0.35});color:${p > 5 ? '#14532d' : '#166534'};font-weight:600`;
+  } else {
+    return `background:rgba(220,38,38,${intensity * 0.3});color:#991B1B;font-weight:600`;
+  }
+}
+
+function sortVal(fund, col) {
+  switch (col) {
+    case 'name':      return fund.name || '';
+    case 'currency':  return fund.currency || '';
+    case 'assetClass':return fund.assetClass || '';
+    case 'risk':      return fund.risk || '';
+    case 'aum':       return fund.aum || 0;
+    case '1m':        return fund.performance['1m'] ?? -99;
+    case '3m':        return fund.performance['3m'] ?? -99;
+    case '1y':        return fund.performance['1y'] ?? -99;
+    case '3y':        return fund.performance['3y'] ?? -99;
+    case '5y':        return fund.performance['5y'] ?? -99;
+    default:          return '';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FILTERS & SORT
+// ─────────────────────────────────────────────────────────────────────────────
+function applyFilters() {
+  const q       = document.getElementById('search-input').value.toLowerCase();
+  const asset   = document.getElementById('asset-filter').value;
+  const risk    = document.getElementById('risk-filter').value;
+  const ccy     = document.getElementById('ccy-filter').value;
+  const distOnly= document.getElementById('dist-only').checked;
+
+  filteredFunds = allFunds.filter(f => {
+    if (q && !f.name.toLowerCase().includes(q) &&
+             !f.assetClass.toLowerCase().includes(q) &&
+             !(f.manager||'').toLowerCase().includes(q)) return false;
+    if (asset && f.assetClass !== asset) return false;
+    if (risk  && !f.risk?.startsWith(risk)) return false;
+    if (ccy   && f.currency !== ccy) return false;
+    if (distOnly && !f.isDistribution) return false;
+    return true;
+  });
+
+  applySort();
+  renderFundTable();
+}
+
+function sortTable(col) {
+  if (sortCol === col) { sortDir = sortDir === 'asc' ? 'desc' : 'asc'; }
+  else { sortCol = col; sortDir = col === 'name' || col === 'assetClass' ? 'asc' : 'desc'; }
+  document.querySelectorAll('th[data-col]').forEach(th => {
+    th.classList.remove('sorted-asc','sorted-desc');
+    if (th.dataset.col === col) th.classList.add('sorted-' + sortDir);
+  });
+  applySort();
+  renderFundTable();
+}
+
+function applySort() {
+  filteredFunds.sort((a, b) => {
+    const va = sortVal(a, sortCol);
+    const vb = sortVal(b, sortCol);
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER FUND TABLE
+// ─────────────────────────────────────────────────────────────────────────────
+function renderFundTable() {
+  const tbody = document.getElementById('fund-tbody');
+  const noRes = document.getElementById('no-results');
+  const count = document.getElementById('result-count');
+  const dirCount = document.getElementById('dir-count');
+
+  if (filteredFunds.length === 0) {
+    tbody.innerHTML = '';
+    noRes.classList.remove('hidden');
+    count.textContent = '0 funds';
+    return;
+  }
+  noRes.classList.add('hidden');
+  count.textContent = `${filteredFunds.length} fund${filteredFunds.length!==1?'s':''}`;
+  dirCount.textContent = `${filteredFunds.length} of ${allFunds.length} funds`;
+
+  tbody.innerHTML = filteredFunds.map(f => `
+    <tr data-fund="${encodeURIComponent(f.name)}" data-asset="${f.assetClass}" data-risk="${f.risk||''}" data-dist="${f.isDistribution}">
+      <td class="fund-name">
+        ${f.name.replace('PRULink ','').replace('PRUlink ','')}
+        <small>${f.assetClass} · ${f.region||'—'}</small>
+      </td>
+      <td><span class="ccy-badge">${f.currency}</span></td>
+      <td style="font-size:0.8rem;color:var(--mid)">${f.assetClass}</td>
+      <td><span class="risk-badge ${riskClass(f.risk)}">${riskLabel(f.risk)}</span></td>
+      <td style="text-align:center">${f.isDistribution ? '<span class="div-check">✓</span>' : '<span class="div-dash">—</span>'}</td>
+      <td>${fmtAUM(f.aum, f.aumCurrency)}</td>
+      <td>${fmtPct(f.performance['1m'])}</td>
+      <td>${fmtPct(f.performance['3m'])}</td>
+      <td>${fmtPct(f.performance['1y'])}</td>
+      <td>${fmtPct(f.performance['3y'])}</td>
+      <td>${fmtPct(f.performance['5y'])}</td>
+    </tr>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER DISTRIBUTION CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+function renderDistributions(funds) {
+  const grid = document.getElementById('dist-grid');
+  const distFunds = funds.filter(f => f.isDistribution);
+  document.getElementById('dist-section-count').textContent = `${distFunds.length} dividend-paying funds`;
+
+  grid.innerHTML = distFunds.map(f => {
+    const freq = f.dividends[0]?.frequency || '—';
+    const recentDivs = f.dividends.slice(0, 5);
+    const moreDivs = f.dividends.slice(5);
+    const divRows = recentDivs.map(d => `
+      <tr>
+        <td>${d.payoutDate ? d.payoutDate.substring(0,10) : '—'}</td>
+        <td>${d.frequency||'—'}</td>
+        <td class="div-rate">${d.ratePct !== null ? (d.ratePct*100).toFixed(4)+'%' : (d.rateRaw||'—')}</td>
+      </tr>`).join('');
+
+    const moreHtml = moreDivs.length ? `
+      <button class="show-more-btn" onclick="toggleMore(this, '${encodeURIComponent(f.name)}')">
+        + ${moreDivs.length} more payments
+      </button>
+      <div class="hidden more-rows-${encodeURIComponent(f.name).replace(/%/g,'_')}">
+        <table class="divs-table" style="margin-top:0.5rem">
+          ${moreDivs.map(d => `<tr>
+            <td>${d.payoutDate ? d.payoutDate.substring(0,10) : '—'}</td>
+            <td>${d.frequency||'—'}</td>
+            <td class="div-rate">${d.ratePct !== null ? (d.ratePct*100).toFixed(4)+'%' : (d.rateRaw||'—')}</td>
+          </tr>`).join('')}
+        </table>
+      </div>` : '';
+
+    return `
+    <div class="dist-card" data-fund="${encodeURIComponent(f.name)}">
+      <div class="dist-card-header">
+        <div class="dist-fund-name">${f.name.replace('PRULink ','').replace('PRUlink ','')}</div>
+        <span class="ccy-badge">${f.currency}</span>
+      </div>
+      <div class="dist-meta">
+        <span class="risk-badge ${riskClass(f.risk)}">${riskLabel(f.risk)}</span>
+        <span class="freq-badge">${freq}</span>
+        <span class="chip ${f.assetClass.toLowerCase().includes('equity')?'chip-red':'chip-green'}">${f.assetClass}</span>
+      </div>
+      <div class="dist-perf">
+        <div class="dist-perf-item">
+          <div class="dist-perf-label">1M</div>
+          <div class="dist-perf-val" style="color:${f.performance['1m']>=0?'var(--pos)':'var(--neg)'}">${fmtPctPlain(f.performance['1m'])}</div>
+        </div>
+        <div class="dist-perf-item">
+          <div class="dist-perf-label">1Y</div>
+          <div class="dist-perf-val" style="color:${f.performance['1y']>=0?'var(--pos)':'var(--neg)'}">${fmtPctPlain(f.performance['1y'])}</div>
+        </div>
+        <div class="dist-perf-item">
+          <div class="dist-perf-label">AUM</div>
+          <div class="dist-perf-val" style="font-size:0.85rem;color:var(--mid)">${f.aum ? (f.aumCurrency==='USD'?'US$':'S$')+parseFloat(f.aum).toLocaleString(undefined,{maximumFractionDigits:0})+'M' : '—'}</div>
+        </div>
+        <div class="dist-perf-item">
+          <div class="dist-perf-label">Payments</div>
+          <div class="dist-perf-val" style="font-size:0.95rem;color:var(--mid)">${f.dividends.length}</div>
+        </div>
+      </div>
+      ${recentDivs.length ? `
+      <table class="divs-table">
+        <thead><tr><th>Date</th><th>Frequency</th><th style="text-align:right">Rate</th></tr></thead>
+        <tbody>${divRows}</tbody>
+      </table>
+      ${moreHtml}` : '<div style="font-size:0.78rem;color:var(--muted)">No dividend records available</div>'}
+    </div>`;
+  }).join('');
+}
+
+function toggleMore(btn, encoded) {
+  const key = encoded.replace(/%/g,'_');
+  const el = btn.nextElementSibling;
+  if (el.classList.contains('hidden')) {
+    el.classList.remove('hidden');
+    btn.textContent = '▲ Show less';
+  } else {
+    el.classList.add('hidden');
+    const total = parseInt(btn.textContent.match(/\d+/)[0]);
+    btn.textContent = `+ ${total} more payments`;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER PERFORMANCE HEATMAP
+// ─────────────────────────────────────────────────────────────────────────────
+function renderPerformance(funds) {
+  const tbody = document.getElementById('perf-tbody');
+  const sorted = [...funds].sort((a,b) => {
+    const av = a.performance['1y'] ?? -99;
+    const bv = b.performance['1y'] ?? -99;
+    return bv - av;
+  });
+
+  tbody.innerHTML = sorted.map(f => {
+    const p = f.performance;
+    return `<tr>
+      <td style="font-size:0.8rem;font-weight:500;white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis">${f.name.replace('PRULink ','')}</td>
+      <td><span class="ccy-badge">${f.currency}</span></td>
+      <td class="heat" style="${heatColor(p['1m'])}">${fmtPctPlain(p['1m'])}</td>
+      <td class="heat" style="${heatColor(p['3m'])}">${fmtPctPlain(p['3m'])}</td>
+      <td class="heat" style="${heatColor(p['6m'])}">${fmtPctPlain(p['6m'])}</td>
+      <td class="heat" style="${heatColor(p['1y'])}">${fmtPctPlain(p['1y'])}</td>
+      <td class="heat" style="${heatColor(p['3y'])}">${fmtPctPlain(p['3y'])}</td>
+      <td class="heat" style="${heatColor(p['5y'])}">${fmtPctPlain(p['5y'])}</td>
+      <td class="heat" style="${heatColor(p['10y'])}">${fmtPctPlain(p['10y'])}</td>
+      <td class="heat" style="${heatColor(p['si'])}">${fmtPctPlain(p['si'])}</td>
+    </tr>`;
+  }).join('');
+
+  // Calendar table
+  const calHeader = document.getElementById('cal-header');
+  const calTbody = document.getElementById('cal-tbody');
+  // Get all calendar years from first fund with data
+  const years = Object.keys(funds.find(f => Object.keys(f.calendarReturns).length > 0)?.calendarReturns || {}).sort();
+  years.forEach(yr => {
+    const th = document.createElement('th');
+    th.textContent = yr; th.style.textAlign = 'right'; calHeader.appendChild(th);
+  });
+
+  calTbody.innerHTML = sorted.map(f => {
+    const cells = years.map(yr => {
+      const v = f.calendarReturns[yr];
+      return `<td class="heat" style="${heatColor(v)}">${fmtPctPlain(v)}</td>`;
+    }).join('');
+    return `<tr>
+      <td style="font-size:0.8rem;font-weight:500;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis">${f.name.replace('PRULink ','')}</td>
+      <td><span class="ccy-badge">${f.currency}</span></td>
+      ${cells}
+    </tr>`;
+  }).join('');
+}
+
+function switchPerfTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER STRATEGY
+// ─────────────────────────────────────────────────────────────────────────────
+function renderStrategy(funds) {
+  const list = document.getElementById('strat-list');
+  const count = document.getElementById('strat-count');
+  count.textContent = `${funds.length} funds`;
+
+  list.innerHTML = funds.map(f => `
+    <div class="strat-card" data-fund="${encodeURIComponent(f.name)}" data-asset="${f.assetClass}" data-risk="${f.risk||''}">
+      <div class="strat-header">
+        <div class="strat-fund-name">${f.name.replace('PRULink ','').replace('PRUlink ','')}</div>
+        <div class="strat-badges">
+          <span class="ccy-badge">${f.currency}</span>
+          <span class="risk-badge ${riskClass(f.risk)}">${riskLabel(f.risk)}</span>
+          ${f.isDistribution ? '<span class="chip chip-green">Distribution</span>' : ''}
+        </div>
+      </div>
+      <div class="strat-body">${f.strategy || '<em style="color:var(--muted)">No strategy data available</em>'}</div>
+      <div class="strat-footer">
+        <div class="strat-meta-item">
+          <div class="strat-meta-label">Manager</div>
+          <div class="strat-meta-val">${f.manager || '—'}</div>
+        </div>
+        <div class="strat-meta-item">
+          <div class="strat-meta-label">Asset Class</div>
+          <div class="strat-meta-val">${f.assetClass || '—'}</div>
+        </div>
+        <div class="strat-meta-item">
+          <div class="strat-meta-label">Region</div>
+          <div class="strat-meta-val">${f.region || '—'}</div>
+        </div>
+        <div class="strat-meta-item">
+          <div class="strat-meta-label">Launch Date</div>
+          <div class="strat-meta-val">${f.launchDate ? f.launchDate.substring(0,10) : '—'}</div>
+        </div>
+        <div class="strat-meta-item">
+          <div class="strat-meta-label">Mgmt Fee</div>
+          <div class="strat-meta-val">${f.managementFee || '—'}</div>
+        </div>
+        <div class="strat-meta-item">
+          <div class="strat-meta-label">Initial Charge</div>
+          <div class="strat-meta-val">${f.initialCharge || '—'}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterStrategy() {
+  const q     = document.getElementById('strat-search').value.toLowerCase();
+  const asset = document.getElementById('strat-asset-filter').value;
+  const risk  = document.getElementById('strat-risk-filter').value;
+
+  const cards = document.querySelectorAll('.strat-card');
+  let shown = 0;
+  cards.forEach(card => {
+    const name = decodeURIComponent(card.dataset.fund).toLowerCase();
+    const a = card.dataset.asset;
+    const r = card.dataset.risk;
+    const obj = card.querySelector('.strat-body')?.textContent.toLowerCase() || '';
+    const matchQ = !q || name.includes(q) || obj.includes(q) || a.toLowerCase().includes(q);
+    const matchA = !asset || a === asset;
+    const matchR = !risk || r.startsWith(risk);
+    const show = matchQ && matchA && matchR;
+    card.style.display = show ? '' : 'none';
+    if (show) shown++;
+  });
+  document.getElementById('strat-count').textContent = `${shown} funds`;
+  document.getElementById('no-strat').classList.toggle('hidden', shown > 0);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POPULATE FILTERS
+// ─────────────────────────────────────────────────────────────────────────────
+function populateFilters(funds) {
+  const assets = [...new Set(funds.map(f => f.assetClass).filter(Boolean))].sort();
+  const risks  = [...new Set(funds.map(f => f.risk?.split(';')[0]?.trim()).filter(Boolean))].sort();
+
+  ['asset-filter','strat-asset-filter'].forEach(id => {
+    const sel = document.getElementById(id);
+    assets.forEach(a => { const o = document.createElement('option'); o.value=a; o.textContent=a; sel.appendChild(o); });
+  });
+  ['risk-filter','strat-risk-filter'].forEach(id => {
+    const sel = document.getElementById(id);
+    risks.forEach(r => { const o = document.createElement('option'); o.value=r; o.textContent=riskLabel(r+';'); sel.appendChild(o); });
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// KPI
+// ─────────────────────────────────────────────────────────────────────────────
+function renderKPIs(meta, funds) {
+  document.getElementById('kpi-total').textContent   = meta.totalFunds;
+  document.getElementById('kpi-dist').textContent    = meta.distributionFunds;
+  document.getElementById('kpi-aum-sgd').textContent = `S$${(meta.totalAumSGD_M/1000).toFixed(1)}B`;
+  document.getElementById('kpi-aum-usd').textContent = `US$${meta.totalAumUSD_M.toFixed(0)}M`;
+  document.getElementById('kpi-avg1y').textContent   = `${(meta.avgReturn1Y*100).toFixed(1)}%`;
+
+  const top = [...funds].filter(f => f.performance['1y'] !== null)
+                        .sort((a,b) => b.performance['1y'] - a.performance['1y'])[0];
+  if (top) {
+    document.getElementById('kpi-top').textContent    = top.name.replace('PRULink ','').replace('PRUlink ','');
+    document.getElementById('kpi-top-ret').textContent = `${(top.performance['1y']*100).toFixed(2)}% (1Y)`;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// API SAMPLE
+// ─────────────────────────────────────────────────────────────────────────────
+function renderAPISample(data) {
+  const sample = {
+    meta: data.meta,
+    funds: data.funds.slice(0,2).map(f => ({
+      name: f.name, currency: f.currency, assetClass: f.assetClass,
+      risk: f.risk, isDistribution: f.isDistribution,
+      aum: f.aum, aumCurrency: f.aumCurrency,
+      performance: f.performance,
+      strategy: f.strategy ? f.strategy.substring(0,120)+'…' : null,
+      dividends: f.dividends.slice(0,2)
+    }))
+  };
+  document.getElementById('api-sample').textContent = JSON.stringify(sample, null, 2);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const res = await fetch('/prulink-data.json');
+    if (!res.ok) throw new Error('Failed to load fund data');
+    const data = await res.json();
+
+    allFunds = data.funds;
+    filteredFunds = [...allFunds];
+
+    populateFilters(allFunds);
+    renderKPIs(data.meta, allFunds);
+
+    // Default sort: 1Y desc
+    document.querySelector('th[data-col="1y"]').classList.add('sorted-desc');
+    applySort();
+    renderFundTable();
+
+    renderDistributions(allFunds);
+    renderPerformance(allFunds);
+    renderStrategy(allFunds);
+    renderAPISample(data);
+
+    document.getElementById('result-count').textContent  = `${allFunds.length} funds`;
+    document.getElementById('dir-count').textContent     = `${allFunds.length} funds`;
+
+  } catch (e) {
+    console.error(e);
+    document.getElementById('loading').innerHTML = `
+      <div style="text-align:center;color:#991B1B;padding:2rem">
+        <div style="font-size:2rem;margin-bottom:1rem">⚠️</div>
+        <p>Failed to load fund data. Please refresh.</p>
+        <p style="font-size:0.78rem;margin-top:0.5rem;color:#888">${e.message}</p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('loading').style.opacity = '0';
+  document.getElementById('loading').style.transition = 'opacity 0.3s';
+  setTimeout(() => document.getElementById('loading').style.display = 'none', 300);
+}
+
+init();
+</script>
+</body>
+</html>

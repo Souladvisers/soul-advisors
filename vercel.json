@@ -19,13 +19,14 @@
     }
   ],
   "rewrites": [
-    { "source": "/elearning", "destination": "/elearning.html" },
-    { "source": "/estate-planning", "destination": "/estate-planning.html" },
-    { "source": "/financial-planning", "destination": "/financial-planning.html" },
-    { "source": "/factfinding", "destination": "/factfinding.html" },
-    { "source": "/islamic-finance", "destination": "/islamic-finance.html" },
-    { "source": "/sales-builder", "destination": "/sales-builder.html" },
-    { "source": "/client-care", "destination": "/client-care.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/funds",          "destination": "/funds.html" },
+    { "source": "/elearning",      "destination": "/elearning.html" },
+    { "source": "/estate-planning","destination": "/estate-planning.html" },
+    { "source": "/financial-planning","destination": "/financial-planning.html" },
+    { "source": "/factfinding",    "destination": "/factfinding.html" },
+    { "source": "/islamic-finance","destination": "/islamic-finance.html" },
+    { "source": "/sales-builder",  "destination": "/sales-builder.html" },
+    { "source": "/client-care",    "destination": "/client-care.html" },
+    { "source": "/(.*)",           "destination": "/index.html" }
   ]
 }
