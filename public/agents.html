@@ -351,6 +351,109 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .ai-risks-hd { font-size:0.62rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:0.5rem; }
 .ai-risk-row { font-size:0.74rem; color:rgba(255,255,255,0.42); padding:0.2rem 0; display:flex; gap:0.4rem; align-items:flex-start; line-height:1.5; }
 .ai-risk-row::before { content:'⚠'; font-size:0.68rem; color:#fcd34d; flex-shrink:0; margin-top:1px; }
+
+/* ══════════════════════════════════════════════
+   REBALANCER
+══════════════════════════════════════════════ */
+.rb-wrap { max-width:1200px; margin:0 auto; padding:2.5rem 2rem 5rem; }
+.rb-grid  { display:grid; grid-template-columns:340px 1fr; gap:2rem; align-items:start; }
+.rb-form  { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:1.75rem; position:sticky; top:76px; }
+.rb-section-title { font-size:0.63rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.9rem; padding-bottom:0.45rem; border-bottom:1px solid rgba(184,151,90,0.15); }
+.rb-section { margin-bottom:1.4rem; }
+
+/* type toggle */
+.rb-type-row { display:flex; gap:0.4rem; margin-bottom:0.75rem; }
+.rb-type-btn { flex:1; padding:0.45rem; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); background:none; color:rgba(255,255,255,0.4); font-family:inherit; font-size:0.73rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+.rb-type-btn.active { background:var(--accent); color:white; border-color:var(--accent); }
+.rb-dca-fields { display:none; }
+.rb-dca-fields.show { display:block; }
+.rb-single-fields { display:none; }
+.rb-single-fields.show { display:block; }
+.rb-dca-inline { display:flex; gap:0.5rem; }
+.rb-dca-inline .al-input { flex:1; }
+.rb-invested-preview { font-size:0.73rem; color:rgba(255,255,255,0.35); margin-top:0.5rem; padding:0.45rem 0.65rem; background:rgba(255,255,255,0.03); border-radius:var(--radius); border:1px solid rgba(255,255,255,0.06); }
+.rb-invested-preview strong { color:var(--accent); }
+
+/* holdings table */
+.rb-holdings-table { width:100%; border-collapse:collapse; margin-bottom:0.6rem; }
+.rb-holdings-table th { font-size:0.61rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.28); padding:0.3rem 0.4rem; text-align:left; }
+.rb-holdings-table td { padding:0.3rem 0.3rem; vertical-align:middle; }
+.rb-fund-select { width:100%; padding:0.4rem 0.5rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); color:white; font-family:inherit; font-size:0.75rem; outline:none; }
+.rb-fund-select option { background:#1C1A17; }
+.rb-val-input { width:100%; padding:0.4rem 0.5rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); color:white; font-family:inherit; font-size:0.75rem; outline:none; text-align:right; }
+.rb-val-input:focus,.rb-fund-select:focus { border-color:var(--accent); }
+.rb-del-btn { background:none; border:none; color:rgba(255,255,255,0.2); font-size:1rem; cursor:pointer; padding:0.2rem 0.4rem; transition:color 0.2s; }
+.rb-del-btn:hover { color:#fca5a5; }
+.rb-add-btn { font-size:0.72rem; color:var(--accent); background:none; border:1px solid rgba(184,151,90,0.25); border-radius:var(--radius); padding:0.35rem 0.75rem; cursor:pointer; font-family:inherit; transition:all 0.2s; }
+.rb-add-btn:hover { background:rgba(184,151,90,0.08); }
+.rb-total-row { display:flex; justify-content:space-between; align-items:center; font-size:0.73rem; padding:0.4rem 0.4rem 0; border-top:1px solid rgba(255,255,255,0.07); margin-top:0.3rem; }
+.rb-total-lbl { color:rgba(255,255,255,0.35); }
+.rb-total-val { font-weight:700; color:var(--accent); font-size:0.88rem; }
+.btn-rebalance { width:100%; padding:0.72rem; background:var(--accent); color:white; border:none; border-radius:var(--radius); font-family:inherit; font-size:0.86rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; margin-top:0.25rem; transition:background 0.2s; }
+.btn-rebalance:hover { background:var(--accent-dark); }
+
+/* Results */
+.rb-empty { text-align:center; padding:5rem 2rem; }
+.rb-kpis  { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:1px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); overflow:hidden; margin-bottom:1.5rem; }
+.rb-kpi   { padding:1rem 1.2rem; background:rgba(255,255,255,0.03); }
+.rb-kpi-l { font-size:0.6rem; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:0.3rem; }
+.rb-kpi-v { font-family:'Lora',serif; font-size:1.5rem; font-weight:600; color:var(--accent); line-height:1; }
+.rb-kpi-v.pos { color:#6ee7b7; }
+.rb-kpi-v.neg { color:#fca5a5; }
+.rb-kpi-sub { font-size:0.63rem; color:rgba(255,255,255,0.28); margin-top:0.2rem; }
+
+/* Timeline */
+.rb-timeline { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); overflow:hidden; margin-bottom:1.5rem; }
+.rb-timeline-hd { padding:0.65rem 1rem; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.63rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.3); display:flex; justify-content:space-between; }
+.rb-tl-table { width:100%; border-collapse:collapse; font-size:0.76rem; }
+.rb-tl-table th { font-size:0.6rem; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; color:rgba(255,255,255,0.28); padding:0.4rem 1rem; text-align:right; background:rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.05); }
+.rb-tl-table th:first-child { text-align:left; }
+.rb-tl-table td { padding:0.45rem 1rem; border-bottom:1px solid rgba(255,255,255,0.04); text-align:right; font-variant-numeric:tabular-nums; }
+.rb-tl-table td:first-child { text-align:left; color:rgba(255,255,255,0.55); }
+.rb-tl-table tr:last-child td { border-bottom:none; font-weight:600; }
+.rb-tl-table tr:last-child td:first-child { color:var(--accent); }
+.rb-tl-gain { font-size:0.68rem; padding:2px 6px; border-radius:2px; }
+.rb-tl-gain.pos { background:rgba(52,211,153,0.1); color:#6ee7b7; }
+.rb-tl-gain.neg { background:rgba(248,113,113,0.1); color:#fca5a5; }
+
+/* SVG sparkline */
+.rb-spark-wrap { padding:0.75rem 1rem 0.5rem; }
+
+/* Comparison bars */
+.rb-compare { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); overflow:hidden; margin-bottom:1.5rem; }
+.rb-compare-hd { padding:0.65rem 1rem; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.63rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.3); }
+.rb-compare-row { padding:0.5rem 1rem; border-bottom:1px solid rgba(255,255,255,0.04); }
+.rb-compare-row:last-child { border:none; }
+.rb-compare-name { font-size:0.75rem; color:rgba(255,255,255,0.7); margin-bottom:0.35rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.rb-bar-duo { display:flex; flex-direction:column; gap:3px; }
+.rb-bar-line { display:flex; align-items:center; gap:0.5rem; }
+.rb-bar-tag { font-size:0.58rem; font-weight:600; width:50px; flex-shrink:0; text-transform:uppercase; letter-spacing:0.04em; }
+.rb-bar-tag.cur { color:rgba(255,255,255,0.3); }
+.rb-bar-tag.tgt { color:var(--accent); }
+.rb-bar-bg { flex:1; height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; }
+.rb-bar-cur { height:100%; background:rgba(255,255,255,0.25); border-radius:3px; }
+.rb-bar-tgt { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); border-radius:3px; }
+.rb-bar-pct { font-size:0.68rem; font-weight:600; min-width:36px; text-align:right; }
+.rb-bar-pct.cur { color:rgba(255,255,255,0.35); }
+.rb-bar-pct.tgt { color:var(--accent); }
+
+/* Rebalancing actions */
+.rb-actions { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); overflow:hidden; margin-bottom:1.5rem; }
+.rb-actions-hd { padding:0.65rem 1rem; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.63rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.3); }
+.rb-action-row { display:flex; align-items:center; gap:0.75rem; padding:0.6rem 1rem; border-bottom:1px solid rgba(255,255,255,0.04); }
+.rb-action-row:last-child { border:none; }
+.rb-action-badge { font-size:0.63rem; font-weight:700; padding:3px 8px; border-radius:3px; min-width:44px; text-align:center; letter-spacing:0.05em; flex-shrink:0; }
+.rb-action-badge.sell { background:rgba(248,113,113,0.12); color:#fca5a5; border:1px solid rgba(248,113,113,0.2); }
+.rb-action-badge.buy  { background:rgba(52,211,153,0.1); color:#6ee7b7; border:1px solid rgba(52,211,153,0.2); }
+.rb-action-badge.hold { background:rgba(251,191,36,0.08); color:#fcd34d; border:1px solid rgba(251,191,36,0.15); }
+.rb-action-name { font-size:0.78rem; color:rgba(255,255,255,0.7); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rb-action-pcts { font-size:0.67rem; color:rgba(255,255,255,0.28); white-space:nowrap; flex-shrink:0; }
+.rb-action-amt  { font-size:0.84rem; font-weight:700; min-width:80px; text-align:right; white-space:nowrap; flex-shrink:0; }
+.rb-action-amt.sell { color:#fca5a5; }
+.rb-action-amt.buy  { color:#6ee7b7; }
+.rb-action-amt.hold { color:rgba(255,255,255,0.35); }
+
+@media(max-width:900px) { .rb-grid { grid-template-columns:1fr; } .rb-form { position:static; } }
 @media print {
   .ag-nav,.ag-tabs,.alloc-form,.btn-print,.al-warn,.f-live-badge,.f-stale-badge { display:none!important; }
   #p-allocator { display:block!important; }
@@ -412,6 +515,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   <div class="ag-tabs">
     <button class="ag-tab active" onclick="switchAgentTab('funds',this)">🏦 PRULink Funds</button>
     <button class="ag-tab" onclick="switchAgentTab('allocator',this)">🎯 Portfolio Builder</button>
+    <button class="ag-tab" onclick="switchAgentTab('rebalancer',this)">⚖️ Rebalancer</button>
     <button class="ag-tab" onclick="switchAgentTab('elearning',this)">📚 eLearning</button>
     <button class="ag-tab" onclick="switchAgentTab('care',this)">💛 Client Care</button>
   </div>
@@ -610,6 +714,120 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
     </div>
   </div><!-- /p-allocator -->
 
+  <!-- ── REBALANCER PANEL ── -->
+  <div class="ag-panel" id="p-rebalancer">
+    <div class="rb-wrap">
+      <div class="rb-grid">
+
+        <!-- LEFT: Form -->
+        <div class="rb-form">
+
+          <!-- 1. Client Profile -->
+          <div class="rb-section">
+            <div class="rb-section-title">Client Profile</div>
+            <div class="al-field"><label class="al-label">Age</label><input class="al-input" type="number" id="rb-age" min="18" max="90" placeholder="e.g. 42"></div>
+            <div class="al-field"><label class="al-label">Investment Goal</label>
+              <select class="al-input" id="rb-goal">
+                <option value="">— Select goal —</option>
+                <option value="retirement">Retirement Planning</option>
+                <option value="growth">Wealth Accumulation</option>
+                <option value="education">Education Fund</option>
+                <option value="income">Regular Income</option>
+                <option value="preservation">Capital Preservation</option>
+              </select>
+            </div>
+            <div class="al-field"><label class="al-label">Remaining Horizon — <span id="rb-horizon-lbl" style="color:var(--accent)">10 years</span></label>
+              <input class="al-slider" type="range" id="rb-horizon" min="1" max="35" value="10"
+                oninput="document.getElementById('rb-horizon-lbl').textContent=this.value+' year'+(this.value==1?'':'s')">
+            </div>
+            <div class="al-field"><label class="al-label">Target Return (p.a.)</label>
+              <select class="al-input" id="rb-ret">
+                <option value="">— Select target —</option>
+                <option value="2-4">2–4%  (Capital Preservation)</option>
+                <option value="4-6">4–6%  (Conservative Growth)</option>
+                <option value="6-8">6–8%  (Moderate Growth)</option>
+                <option value="8-10">8–10%  (Aggressive Growth)</option>
+                <option value="10+">10%+  (High Growth)</option>
+              </select>
+            </div>
+            <div class="al-field"><label class="al-label">Risk Tolerance</label>
+              <div class="al-btn-group" id="rb-risk-grp">
+                <button class="al-btn" data-val="low" onclick="rbRisk(this)">Low</button>
+                <button class="al-btn active" data-val="medium" onclick="rbRisk(this)">Medium</button>
+                <button class="al-btn" data-val="high" onclick="rbRisk(this)">High</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Investment History -->
+          <div class="rb-section">
+            <div class="rb-section-title">Investment History</div>
+            <div class="al-field"><label class="al-label">Start Date</label>
+              <input class="al-input" type="date" id="rb-startdate" onchange="rbUpdatePreview()">
+            </div>
+            <div class="al-field"><label class="al-label">Investment Type</label>
+              <div class="rb-type-row">
+                <button class="rb-type-btn active" data-val="single"  onclick="rbType(this)">Single Premium</button>
+                <button class="rb-type-btn"        data-val="dca"     onclick="rbType(this)">Dollar Cost Avg</button>
+              </div>
+            </div>
+            <!-- Single Premium fields -->
+            <div class="rb-single-fields show" id="rb-single-f">
+              <div class="al-field"><label class="al-label">Total Amount Invested (SGD)</label>
+                <input class="al-input" type="number" id="rb-single-amt" min="0" placeholder="e.g. 50000" oninput="rbUpdatePreview()">
+              </div>
+            </div>
+            <!-- DCA fields -->
+            <div class="rb-dca-fields" id="rb-dca-f">
+              <div class="al-field"><label class="al-label">Contribution Amount (SGD)</label>
+                <div class="rb-dca-inline">
+                  <input class="al-input" type="number" id="rb-dca-amt" min="0" placeholder="e.g. 500" oninput="rbUpdatePreview()">
+                  <select class="al-input" id="rb-dca-freq" onchange="rbUpdatePreview()" style="max-width:140px">
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="semi-annual">Semi-Annually</option>
+                    <option value="annual">Annually</option>
+                  </select>
+                </div>
+              </div>
+              <div class="al-field"><label class="al-label">Initial Lump Sum (SGD, optional)</label>
+                <input class="al-input" type="number" id="rb-dca-lump" min="0" placeholder="e.g. 10000" oninput="rbUpdatePreview()">
+              </div>
+            </div>
+            <div class="rb-invested-preview" id="rb-preview">Fill in the fields above to see the summary.</div>
+          </div>
+
+          <!-- 3. Current Holdings -->
+          <div class="rb-section">
+            <div class="rb-section-title">Current Holdings</div>
+            <table class="rb-holdings-table">
+              <thead><tr><th style="width:55%">Fund</th><th style="width:35%">Value (SGD)</th><th></th></tr></thead>
+              <tbody id="rb-holdings-body"></tbody>
+            </table>
+            <button class="rb-add-btn" onclick="rbAddRow()">+ Add Fund</button>
+            <div class="rb-total-row">
+              <span class="rb-total-lbl">Total Portfolio Value</span>
+              <span class="rb-total-val" id="rb-total-disp">—</span>
+            </div>
+          </div>
+
+          <button class="btn-rebalance" onclick="runRebalancer()">Analyse &amp; Rebalance →</button>
+          <div class="al-warn hidden" id="rb-warn">Please complete all fields and add at least one holding.</div>
+        </div><!-- /form -->
+
+        <!-- RIGHT: Results -->
+        <div id="rb-results">
+          <div class="rb-empty" id="rb-empty">
+            <div class="al-empty-icon">⚖️</div>
+            <div class="al-empty-text">Enter the client profile, investment history<br>and current holdings, then click <strong style="color:rgba(255,255,255,0.4)">Analyse &amp; Rebalance</strong>.</div>
+          </div>
+          <div id="rb-output" style="display:none"></div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /p-rebalancer -->
+
   <!-- ── eLEARNING PANEL ── -->
   <div class="ag-panel" id="p-elearning">
     <div class="tools-wrap">
@@ -778,6 +996,10 @@ function switchAgentTab(tab, btn) {
   document.querySelectorAll('.ag-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('p-' + tab).classList.add('active');
+  // Seed one empty row on first open of rebalancer
+  if (tab === 'rebalancer' && !document.getElementById('rb-holdings-body').children.length && fAllFunds.length) {
+    rbAddRow(); rbAddRow();
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -1325,6 +1547,387 @@ function renderAllocation(portfolio, score, profile, expRet) {
       <button class="btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
     </div>
   `;
+}
+
+// ─────────────────────────────────────────────
+// REBALANCER ENGINE
+// ─────────────────────────────────────────────
+function rbRisk(btn) {
+  document.querySelectorAll('#rb-risk-grp .al-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function rbType(btn) {
+  document.querySelectorAll('.rb-type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const type = btn.dataset.val;
+  document.getElementById('rb-single-f').classList.toggle('show', type === 'single');
+  document.getElementById('rb-dca-f').classList.toggle('show', type === 'dca');
+  rbUpdatePreview();
+}
+
+// ── Fund dropdown builder ───────────────────
+function rbBuildSelect(selectEl, selectedName) {
+  const sorted = [...fAllFunds].sort((a,b) => a.name.localeCompare(b.name));
+  selectEl.innerHTML = '<option value="">— Select fund —</option>' +
+    sorted.map(f => `<option value="${f.name}" ${f.name === selectedName ? 'selected' : ''}>${AI_SHORT(f.name)} (${f.currency})</option>`).join('');
+}
+function rbAddRow(fundName, value) {
+  const tbody = document.getElementById('rb-holdings-body');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><select class="rb-fund-select" onchange="rbUpdateTotal()"></select></td>
+    <td><input class="rb-val-input" type="number" min="0" placeholder="0" value="${value||''}" oninput="rbUpdateTotal()"></td>
+    <td><button class="rb-del-btn" onclick="this.closest('tr').remove();rbUpdateTotal()">×</button></td>`;
+  tbody.appendChild(tr);
+  rbBuildSelect(tr.querySelector('select'), fundName);
+  rbUpdateTotal();
+}
+function rbGetHoldings() {
+  const rows = document.querySelectorAll('#rb-holdings-body tr');
+  const holdings = [];
+  rows.forEach(tr => {
+    const name = tr.querySelector('select')?.value;
+    const val  = parseFloat(tr.querySelector('input')?.value) || 0;
+    if (name && val > 0) {
+      const fund = fAllFunds.find(f => f.name === name);
+      holdings.push({ fund, name, value: val });
+    }
+  });
+  return holdings;
+}
+function rbUpdateTotal() {
+  const holdings = rbGetHoldings();
+  const total = holdings.reduce((s, h) => s + h.value, 0);
+  document.getElementById('rb-total-disp').textContent = total > 0
+    ? 'S$' + total.toLocaleString(undefined, { maximumFractionDigits: 0 })
+    : '—';
+  rbUpdatePreview();
+}
+
+// ── Investment history helpers ──────────────
+const RB_FREQ_MONTHS = { monthly: 1, quarterly: 3, 'semi-annual': 6, annual: 12 };
+function rbCountContribs(startDate, freq) {
+  const start = new Date(startDate);
+  const today = new Date();
+  if (isNaN(start)) return 0;
+  const months = (today.getFullYear() - start.getFullYear()) * 12 + (today.getMonth() - start.getMonth());
+  return Math.max(1, Math.floor(months / RB_FREQ_MONTHS[freq]) + 1);
+}
+function rbCalcInvested() {
+  const type    = document.querySelector('.rb-type-btn.active')?.dataset.val || 'single';
+  const startDate = document.getElementById('rb-startdate').value;
+  if (type === 'single') {
+    return parseFloat(document.getElementById('rb-single-amt').value) || 0;
+  }
+  const amt  = parseFloat(document.getElementById('rb-dca-amt').value) || 0;
+  const freq = document.getElementById('rb-dca-freq').value;
+  const lump = parseFloat(document.getElementById('rb-dca-lump').value) || 0;
+  const n    = startDate ? rbCountContribs(startDate, freq) : 0;
+  return lump + n * amt;
+}
+function rbUpdatePreview() {
+  const type    = document.querySelector('.rb-type-btn.active')?.dataset.val || 'single';
+  const startDate = document.getElementById('rb-startdate').value;
+  const prev    = document.getElementById('rb-preview');
+  const total   = rbCalcInvested();
+  if (!startDate || total <= 0) { prev.innerHTML = 'Fill in the fields above to see the summary.'; return; }
+  const start   = new Date(startDate);
+  const years   = ((new Date() - start) / (1000*60*60*24*365.25)).toFixed(1);
+  if (type === 'single') {
+    prev.innerHTML = `Single premium of <strong>S$${total.toLocaleString()}</strong> invested ${years} years ago.`;
+  } else {
+    const freq = document.getElementById('rb-dca-freq').value;
+    const amt  = parseFloat(document.getElementById('rb-dca-amt').value) || 0;
+    const lump = parseFloat(document.getElementById('rb-dca-lump').value) || 0;
+    const n    = rbCountContribs(startDate, freq);
+    const lumpTxt = lump > 0 ? `S$${lump.toLocaleString()} initial + ` : '';
+    prev.innerHTML = `${lumpTxt}<strong>${n} ${freq} contributions</strong> × S$${amt.toLocaleString()} = <strong>S$${total.toLocaleString()}</strong> total invested over ${years} years.`;
+  }
+}
+
+// ── Return estimation from fund performance ─
+function rbGetAnnualRate(fund, yearsAgo) {
+  if (!fund) return 0;
+  const p = fund.performance || {};
+  if (yearsAgo <= 0.1) return (p['1m'] ?? 0) * 12;
+  if (yearsAgo <= 1.5) return p['1y'] ?? p['3y'] ?? 0;
+  if (yearsAgo <= 4)   return p['3y'] ?? p['5y'] ?? p['1y'] ?? 0;
+  return p['5y'] ?? p['3y'] ?? p['1y'] ?? 0;
+}
+function rbBlendedRate(holdings, totalValue, yearsAgo) {
+  if (!totalValue) return 0;
+  return holdings.reduce((s, h) => {
+    const w = h.value / totalValue;
+    return s + w * rbGetAnnualRate(h.fund, yearsAgo);
+  }, 0);
+}
+
+// ── Timeline milestone generator ────────────
+function rbGenerateMilestones(type, startDate, freq, dcaAmt, lump, singleAmt, holdings, totalCurrentValue) {
+  const start   = new Date(startDate);
+  const today   = new Date();
+  const totalYears = (today - start) / (1000*60*60*24*365.25);
+  const milestones = [];
+
+  if (type === 'single') {
+    const invested = singleAmt;
+    // Generate points: start, then every year, then today
+    const steps = Math.max(1, Math.min(8, Math.floor(totalYears)));
+    for (let i = 0; i <= steps; i++) {
+      const dt = new Date(start);
+      dt.setFullYear(start.getFullYear() + i);
+      if (dt > today) break;
+      const yrs = (dt - start) / (1000*60*60*24*365.25);
+      const rate = rbBlendedRate(holdings, invested, yrs);
+      const estVal = invested * Math.pow(1 + rate, yrs);
+      milestones.push({ date: dt, invested, estVal, label: i === 0 ? 'Start' : `Year ${i}` });
+    }
+    // Today
+    milestones.push({ date: today, invested, estVal: totalCurrentValue, label: 'Today (actual)', actual: true });
+  } else {
+    const freqMonths = RB_FREQ_MONTHS[freq] || 1;
+    let cumInvested = lump;
+    let dt = new Date(start);
+    const addedMonths = new Set();
+    // First, collect all contribution dates
+    const contribs = [];
+    if (lump > 0) contribs.push({ date: new Date(start), cumInvested: lump });
+    let cur = new Date(start);
+    while (cur <= today) {
+      cumInvested += dcaAmt;
+      contribs.push({ date: new Date(cur), cumInvested });
+      cur.setMonth(cur.getMonth() + freqMonths);
+    }
+    // Sample milestones: first, yearly marks, last few, today
+    const yearly = [];
+    for (let y = 1; y <= Math.ceil(totalYears); y++) {
+      const mark = new Date(start); mark.setFullYear(start.getFullYear() + y);
+      if (mark <= today) yearly.push(mark);
+    }
+    const keyDates = [contribs[0]?.date, ...yearly, today].filter(Boolean);
+    keyDates.forEach((d, idx) => {
+      const nearestContrib = contribs.reduce((best, c) => Math.abs(c.date - d) < Math.abs(best.date - d) ? c : best, contribs[0]);
+      const yrs = (d - start) / (1000*60*60*24*365.25);
+      const estVal = idx === keyDates.length - 1
+        ? totalCurrentValue
+        : nearestContrib.cumInvested * Math.pow(1 + rbBlendedRate(holdings, totalCurrentValue, yrs), yrs);
+      const isToday = idx === keyDates.length - 1;
+      milestones.push({
+        date: d,
+        invested: nearestContrib.cumInvested,
+        estVal,
+        label: isToday ? 'Today (actual)' : idx === 0 ? 'Start' : `Year ${Math.round(yrs)}`,
+        actual: isToday,
+      });
+    });
+  }
+  return milestones;
+}
+
+// ── SVG sparkline ───────────────────────────
+function rbSparkline(milestones) {
+  const W = 600, H = 80, PL = 8, PR = 8, PT = 12, PB = 20;
+  const allVals = milestones.flatMap(m => [m.invested, m.estVal]);
+  const maxV = Math.max(...allVals) * 1.05;
+  const minV = 0;
+  const range = maxV - minV || 1;
+  const n = milestones.length;
+  const toX = i => PL + (i / Math.max(n-1,1)) * (W-PL-PR);
+  const toY = v => PT + (1 - (v-minV)/range) * (H-PT-PB);
+
+  const invPts = milestones.map((m,i) => `${toX(i)},${toY(m.invested)}`).join(' ');
+  const valPts = milestones.map((m,i) => `${toX(i)},${toY(m.estVal)}`).join(' ');
+  const areaClose = `${toX(n-1)},${toY(0)} ${toX(0)},${toY(0)}`;
+
+  const lastX = toX(n-1), lastY = toY(milestones[n-1]?.estVal||0);
+  const labels = milestones.filter((_,i) => i===0||i===n-1||n<=5||i===Math.floor(n/2))
+    .map((m,_,arr) => {
+      const i = milestones.indexOf(m);
+      return `<text x="${toX(i)}" y="${H-4}" text-anchor="${i===0?'start':i===n-1?'end':'middle'}" fill="rgba(255,255,255,0.25)" font-size="8">${m.label}</text>`;
+    }).join('');
+
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:80px;display:block">
+    <polygon points="${valPts} ${areaClose}" fill="rgba(184,151,90,0.08)"/>
+    <polyline points="${invPts}" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polyline points="${valPts}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <circle cx="${lastX}" cy="${lastY}" r="4" fill="var(--accent)"/>
+    ${labels}
+  </svg>`;
+}
+
+// ── MAIN REBALANCER ─────────────────────────
+function runRebalancer() {
+  const age      = parseInt(document.getElementById('rb-age').value);
+  const goal     = document.getElementById('rb-goal').value;
+  const horizon  = parseInt(document.getElementById('rb-horizon').value);
+  const targetRet= document.getElementById('rb-ret').value;
+  const riskTol  = document.querySelector('#rb-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const startDate= document.getElementById('rb-startdate').value;
+  const type     = document.querySelector('.rb-type-btn.active')?.dataset.val || 'single';
+  const freq     = document.getElementById('rb-dca-freq').value;
+  const dcaAmt   = parseFloat(document.getElementById('rb-dca-amt').value) || 0;
+  const lump     = parseFloat(document.getElementById('rb-dca-lump').value) || 0;
+  const singleAmt= parseFloat(document.getElementById('rb-single-amt').value) || 0;
+  const holdings = rbGetHoldings();
+  const warn     = document.getElementById('rb-warn');
+
+  if (!age || !goal || !targetRet || !startDate || !holdings.length) {
+    warn.textContent = 'Please complete all fields and add at least one holding.';
+    warn.classList.remove('hidden'); return;
+  }
+  if (!fAllFunds.length) { warn.textContent = 'Fund data not loaded yet.'; warn.classList.remove('hidden'); return; }
+  warn.classList.add('hidden');
+
+  const totalCurrentValue = holdings.reduce((s,h) => s + h.value, 0);
+  const totalInvested     = rbCalcInvested();
+
+  // ── Performance calculations ────────────
+  const start    = new Date(startDate);
+  const today    = new Date();
+  const years    = (today - start) / (1000*60*60*24*365.25);
+  const absGain  = totalCurrentValue - totalInvested;
+  const pctGain  = totalInvested > 0 ? absGain / totalInvested : 0;
+  const cagr     = totalInvested > 0 && years > 0
+    ? Math.pow(totalCurrentValue / totalInvested, 1/years) - 1 : null;
+
+  // ── Get recommended allocation (Portfolio Builder engine) ──
+  const profile  = { age, goal, horizon, targetRet, riskTol };
+  const score    = alRiskScore(profile);
+  const mix      = alMix(score, goal);
+  const buckets  = [
+    {key:'fixed',  pct:mix.fixed,  n:mix.fixed  >=40?2:1},
+    {key:'multi',  pct:mix.multi,  n:mix.multi  >=28?2:1},
+    {key:'eq_dev', pct:mix.eq_dev, n:mix.eq_dev >=28?2:1},
+    {key:'eq_em',  pct:mix.eq_em,  n:mix.eq_em  >=20?2:1},
+    {key:'eq_spec',pct:mix.eq_spec,n:1},
+  ];
+  const recPortfolio = [];
+  for (const {key, pct, n} of buckets) {
+    if (pct <= 0) continue;
+    const pool = fAllFunds.filter(f => fundBucket(f) === key)
+      .sort((a,b) => alFundScore(b,goal,goal==='income',null) - alFundScore(a,goal,goal==='income',null));
+    pool.slice(0, n).forEach(f => recPortfolio.push({ f, alloc: pct / Math.min(n, pool.length) }));
+  }
+  const recTotal = recPortfolio.reduce((s,x) => s + x.alloc, 0);
+  recPortfolio.forEach(x => { x.alloc = Math.round(x.alloc / recTotal * 100); });
+  const diff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
+  if (diff && recPortfolio.length) recPortfolio.sort((a,b)=>b.alloc-a.alloc)[0].alloc += diff;
+
+  // ── Build rebalancing trades ─────────────
+  const trades = [];
+  for (const rec of recPortfolio) {
+    const targetVal  = totalCurrentValue * rec.alloc / 100;
+    const curHolding = holdings.find(h => h.fund?.name === rec.f?.name);
+    const curVal     = curHolding?.value || 0;
+    const tradeDiff  = targetVal - curVal;
+    trades.push({
+      fund: rec.f, curVal, curPct: (curVal/totalCurrentValue)*100,
+      targetVal, targetPct: rec.alloc,
+      action: Math.abs(tradeDiff) < totalCurrentValue * 0.005 ? 'hold' : tradeDiff > 0 ? 'buy' : 'sell',
+      amount: Math.abs(tradeDiff),
+    });
+  }
+  // Funds in current portfolio NOT in recommendation → sell
+  for (const h of holdings) {
+    const inRec = recPortfolio.find(r => r.f?.name === h.fund?.name);
+    if (!inRec) trades.push({
+      fund: h.fund, curVal: h.value, curPct: (h.value/totalCurrentValue)*100,
+      targetVal: 0, targetPct: 0, action: 'sell', amount: h.value,
+    });
+  }
+  trades.sort((a,b) => ({sell:0,hold:1,buy:2}[a.action] - {sell:0,hold:1,buy:2}[b.action]));
+
+  // ── Comparison data ──────────────────────
+  // All funds appearing in either current or recommended
+  const allFundNames = new Set([
+    ...holdings.map(h=>h.fund?.name).filter(Boolean),
+    ...recPortfolio.map(r=>r.f?.name).filter(Boolean),
+  ]);
+  const compRows = [...allFundNames].map(name => {
+    const curH = holdings.find(h=>h.fund?.name===name);
+    const recH = recPortfolio.find(r=>r.f?.name===name);
+    return {
+      name, fundObj: curH?.fund || recH?.f,
+      curPct: curH ? (curH.value/totalCurrentValue)*100 : 0,
+      tgtPct: recH?.alloc || 0,
+    };
+  }).sort((a,b) => b.tgtPct - a.tgtPct);
+
+  // ── Timeline ─────────────────────────────
+  const milestones = rbGenerateMilestones(type, startDate, freq, dcaAmt, lump, singleAmt, holdings, totalCurrentValue);
+
+  renderRebalancerResults({
+    totalInvested, totalCurrentValue, absGain, pctGain, cagr, years,
+    score, trades, compRows, milestones, startDate,
+  });
+}
+
+function renderRebalancerResults({ totalInvested, totalCurrentValue, absGain, pctGain, cagr, years, score, trades, compRows, milestones, startDate }) {
+  const SL = ['','Very Conservative','Conservative','Moderate','Aggressive','Very Aggressive'];
+  const fmtSGD = v => 'S$' + Math.abs(v).toLocaleString(undefined, {minimumFractionDigits:0,maximumFractionDigits:0});
+  const fmtPct = v => (v>=0?'+':'') + (v*100).toFixed(1) + '%';
+
+  document.getElementById('rb-empty').style.display = 'none';
+  const out = document.getElementById('rb-output');
+  out.style.display = '';
+
+  // KPIs
+  const kpiHtml = `<div class="rb-kpis">
+    <div class="rb-kpi"><div class="rb-kpi-l">Total Invested</div><div class="rb-kpi-v">${fmtSGD(totalInvested)}</div><div class="rb-kpi-sub">${years.toFixed(1)} years</div></div>
+    <div class="rb-kpi"><div class="rb-kpi-l">Current Value</div><div class="rb-kpi-v">${fmtSGD(totalCurrentValue)}</div><div class="rb-kpi-sub">as of today</div></div>
+    <div class="rb-kpi"><div class="rb-kpi-l">Gain / Loss</div><div class="rb-kpi-v ${absGain>=0?'pos':'neg'}">${absGain>=0?'+':'-'}${fmtSGD(absGain)}</div><div class="rb-kpi-sub">${fmtPct(pctGain)} total</div></div>
+    <div class="rb-kpi"><div class="rb-kpi-l">CAGR</div><div class="rb-kpi-v ${(cagr||0)>=0?'pos':'neg'}">${cagr!=null?fmtPct(cagr):'—'}</div><div class="rb-kpi-sub">annualised</div></div>
+    <div class="rb-kpi"><div class="rb-kpi-l">Risk Profile</div><div class="rb-kpi-v" style="font-size:0.88rem;line-height:1.3">${SL[score]||'Moderate'}</div><div class="rb-kpi-sub">recommended</div></div>
+  </div>`;
+
+  // Timeline
+  const tlRows = milestones.map(m => {
+    const g = m.estVal - m.invested;
+    const gPct = m.invested > 0 ? g/m.invested : 0;
+    const cls = g >= 0 ? 'pos' : 'neg';
+    return `<tr>
+      <td>${m.label} <small style="color:rgba(255,255,255,0.25)">(${m.date.toLocaleDateString('en-SG',{month:'short',year:'numeric'})})</small></td>
+      <td>S$${m.invested.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
+      <td>S$${m.estVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
+      <td><span class="rb-tl-gain ${cls}">${fmtPct(gPct)}</span></td>
+    </tr>`;
+  }).join('');
+
+  const tlHtml = `<div class="rb-timeline">
+    <div class="rb-timeline-hd"><span>Investment Timeline</span><span style="color:rgba(255,255,255,0.2);font-weight:400">— = Actual on today's date</span></div>
+    <div class="rb-spark-wrap">${rbSparkline(milestones)}<div style="display:flex;gap:1.5rem;font-size:0.62rem;color:rgba(255,255,255,0.28);margin-top:4px"><span style="display:flex;align-items:center;gap:4px"><svg width="16" height="3"><line x1="0" y1="1.5" x2="16" y2="1.5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/></svg>Invested</span><span style="display:flex;align-items:center;gap:4px"><svg width="16" height="3"><line x1="0" y1="1.5" x2="16" y2="1.5" stroke="#B8975A" stroke-width="2"/></svg>Est. Value</span></div></div>
+    <table class="rb-tl-table">
+      <thead><tr><th>Milestone</th><th style="text-align:right">Cumulative Invested</th><th style="text-align:right">Est. Portfolio Value</th><th style="text-align:right">Return</th></tr></thead>
+      <tbody>${tlRows}</tbody>
+    </table>
+  </div>`;
+
+  // Comparison bars
+  const compHtml = `<div class="rb-compare">
+    <div class="rb-compare-hd">Current vs Recommended Allocation</div>
+    ${compRows.map(r => `<div class="rb-compare-row">
+      <div class="rb-compare-name">${AI_SHORT(r.name)}</div>
+      <div class="rb-bar-duo">
+        <div class="rb-bar-line"><span class="rb-bar-tag cur">Current</span><div class="rb-bar-bg"><div class="rb-bar-cur" style="width:${r.curPct}%"></div></div><span class="rb-bar-pct cur">${r.curPct.toFixed(1)}%</span></div>
+        <div class="rb-bar-line"><span class="rb-bar-tag tgt">Target</span><div class="rb-bar-bg"><div class="rb-bar-tgt" style="width:${r.tgtPct}%"></div></div><span class="rb-bar-pct tgt">${r.tgtPct.toFixed(1)}%</span></div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+
+  // Actions
+  const actHtml = `<div class="rb-actions">
+    <div class="rb-actions-hd">Rebalancing Actions</div>
+    ${trades.map(t => `<div class="rb-action-row">
+      <span class="rb-action-badge ${t.action}">${t.action.toUpperCase()}</span>
+      <span class="rb-action-name">${AI_SHORT(t.fund?.name||'')}</span>
+      <span class="rb-action-pcts">${t.curPct.toFixed(1)}% → ${t.targetPct.toFixed(1)}%</span>
+      <span class="rb-action-amt ${t.action}">${t.action==='hold'?'No change':(t.action==='sell'?'−':'+')+fmtSGD(t.amount)}</span>
+    </div>`).join('')}
+  </div>`;
+
+  out.innerHTML = kpiHtml + tlHtml + compHtml + actHtml +
+    `<div class="al-disclaimer"><strong>⚠ For Advisor Reference Only</strong> Rebalancing suggestions are based on the rule-based Portfolio Builder model and estimated returns from historical fund performance data. They do not constitute financial advice or a formal suitability assessment. All actions must be reviewed against Prudential Singapore's requirements and the client's completed Fact Find. CAGR figures are approximate — for DCA portfolios, actual IRR may differ. Past performance is not indicative of future results.</div>
+    <div style="text-align:right;margin-top:0.75rem"><button class="btn-print" onclick="window.print()">🖨 Print / Save PDF</button></div>`;
 }
 
 // ─────────────────────────────────────────────
