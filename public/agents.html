@@ -254,8 +254,81 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .tool-desc { font-size: 0.8rem; color: rgba(255,255,255,0.42); line-height: 1.6; }
 .tool-arrow { margin-top: 1rem; font-size: 0.72rem; color: var(--accent); letter-spacing: 0.05em; }
 
+/* ══════════════════════════════════════════════
+   PORTFOLIO ALLOCATOR
+══════════════════════════════════════════════ */
+.alloc-wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+.alloc-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+.alloc-form { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 1.75rem; position: sticky; top: 76px; }
+.alloc-form-title { font-family:'Lora',serif; font-size:1.1rem; font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:0.35rem; }
+.alloc-form-sub { font-size:0.77rem; color:rgba(255,255,255,0.32); margin-bottom:1.5rem; line-height:1.55; }
+.al-field { margin-bottom: 1.1rem; }
+.al-label { display:block; font-size:0.66rem; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.38); margin-bottom:0.4rem; }
+.al-input { width:100%; padding:0.52rem 0.75rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:white; font-family:inherit; font-size:0.86rem; outline:none; transition:border-color 0.2s; }
+.al-input:focus { border-color:var(--accent); }
+.al-input option { background:#1C1A17; }
+.al-slider-wrap { display:flex; align-items:center; gap:0.75rem; }
+.al-slider { flex:1; accent-color:var(--accent); cursor:pointer; height:4px; }
+.al-slider-val { font-size:0.9rem; font-weight:700; color:var(--accent); min-width:54px; text-align:right; }
+.al-btn-group { display:flex; gap:0.4rem; }
+.al-btn { flex:1; padding:0.48rem; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); background:none; color:rgba(255,255,255,0.4); font-family:inherit; font-size:0.73rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+.al-btn.active { background:var(--accent); color:white; border-color:var(--accent); }
+.btn-generate { width:100%; padding:0.72rem; background:var(--accent); color:white; border:none; border-radius:var(--radius); font-family:inherit; font-size:0.86rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; margin-top:0.25rem; transition:background 0.2s; }
+.btn-generate:hover { background:var(--accent-dark); }
+.al-warn { font-size:0.73rem; color:#fca5a5; margin-top:0.5rem; }
+/* Results panel */
+.al-empty { text-align:center; padding:5rem 2rem; }
+.al-empty-icon { font-size:2.5rem; margin-bottom:1rem; opacity:0.25; }
+.al-empty-text { font-size:0.85rem; color:rgba(255,255,255,0.22); }
+.al-result-header { margin-bottom:1.5rem; }
+.al-profile-row { display:flex; align-items:center; gap:0.65rem; margin-bottom:0.6rem; flex-wrap:wrap; }
+.al-risk-pill { padding:0.28rem 0.8rem; border-radius:20px; font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; }
+.al-info-txt { font-size:0.77rem; color:rgba(255,255,255,0.35); }
+.al-summary-stats { display:flex; gap:2rem; flex-wrap:wrap; }
+.al-stat-l { font-size:0.61rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:2px; }
+.al-stat-v { font-size:0.88rem; font-weight:600; color:rgba(255,255,255,0.85); }
+/* Bar chart */
+.al-chart { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); padding:1rem 1.25rem; margin-bottom:1.25rem; }
+.al-bar-row { display:flex; align-items:center; gap:0.7rem; margin-bottom:0.5rem; }
+.al-bar-row:last-child { margin-bottom:0; }
+.al-bar-lbl { font-size:0.69rem; color:rgba(255,255,255,0.5); width:165px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.al-bar-track { flex:1; height:5px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; }
+.al-bar-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); border-radius:3px; }
+.al-bar-pct { font-size:0.72rem; font-weight:700; color:var(--accent); min-width:34px; text-align:right; }
+/* Cards */
+.al-cards { display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1.5rem; }
+.al-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); padding:0.9rem 1.1rem; border-left:3px solid var(--accent); }
+.al-card-top { display:flex; gap:0.9rem; align-items:flex-start; margin-bottom:0.4rem; }
+.al-card-alloc { font-family:'Lora',serif; font-size:1.55rem; font-weight:600; color:var(--accent); line-height:1.1; min-width:52px; }
+.al-card-name { font-size:0.83rem; font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:0.3rem; line-height:1.35; }
+.al-card-tags { display:flex; gap:0.3rem; flex-wrap:wrap; align-items:center; }
+.al-bucket-tag { font-size:0.59rem; font-weight:600; padding:2px 5px; border-radius:2px; background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.38); text-transform:uppercase; letter-spacing:0.04em; }
+.al-card-reason { font-size:0.74rem; color:rgba(255,255,255,0.38); line-height:1.55; margin-bottom:0.45rem; font-style:italic; }
+.al-card-perf { display:flex; gap:1.1rem; flex-wrap:wrap; }
+.al-pl { font-size:0.59rem; color:rgba(255,255,255,0.28); text-transform:uppercase; letter-spacing:0.04em; margin-right:0.25rem; }
+.al-pv { font-size:0.76rem; font-weight:600; }
+.al-pv.pos { color:#6ee7b7; }
+.al-pv.neg { color:#fca5a5; }
+.al-pv.neu { color:rgba(255,255,255,0.45); }
+.al-disclaimer { font-size:0.67rem; color:rgba(255,255,255,0.22); line-height:1.65; padding:0.75rem 0.9rem; background:rgba(255,255,255,0.02); border-radius:var(--radius); border:1px solid rgba(255,255,255,0.05); margin-bottom:1rem; }
+.al-disclaimer strong { color:rgba(255,255,255,0.38); display:block; margin-bottom:0.2rem; }
+.btn-print { padding:0.5rem 1.2rem; border:1px solid rgba(255,255,255,0.14); background:none; color:rgba(255,255,255,0.4); border-radius:var(--radius); font-family:inherit; font-size:0.76rem; cursor:pointer; transition:all 0.2s; }
+.btn-print:hover { border-color:rgba(255,255,255,0.3); color:rgba(255,255,255,0.65); }
+@media print {
+  .ag-nav,.ag-tabs,.alloc-form,.btn-print,.al-warn,.f-live-badge,.f-stale-badge { display:none!important; }
+  #p-allocator { display:block!important; }
+  body { background:#fff; color:#111; }
+  .al-card { border:1px solid #ddd; page-break-inside:avoid; background:#fff; }
+  .al-card-name,.al-card-alloc,.al-stat-v,.al-info-txt { color:#111; }
+  .al-card-reason,.al-card-tags *,.al-label,.al-stat-l,.al-bar-lbl { color:#555; }
+  .al-disclaimer { border:1px solid #ccc; color:#555; background:#f9f9f9; }
+  .al-bar-fill { background:#c9a96e; }
+}
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px) {
+  .alloc-grid { grid-template-columns: 1fr; }
+  .alloc-form { position:static; }
   .ag-nav { padding: 0 1rem; }
   .ag-tabs { padding: 0 1rem; }
   .funds-wrap { padding: 1.5rem 1rem 4rem; }
@@ -301,6 +374,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   <!-- Portal Tabs -->
   <div class="ag-tabs">
     <button class="ag-tab active" onclick="switchAgentTab('funds',this)">🏦 PRULink Funds</button>
+    <button class="ag-tab" onclick="switchAgentTab('allocator',this)">🎯 Portfolio Builder</button>
     <button class="ag-tab" onclick="switchAgentTab('elearning',this)">📚 eLearning</button>
     <button class="ag-tab" onclick="switchAgentTab('care',this)">💛 Client Care</button>
   </div>
@@ -412,6 +486,88 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
       </div>
     </div>
   </div><!-- /p-funds -->
+
+  <!-- ── PORTFOLIO ALLOCATOR PANEL ── -->
+  <div class="ag-panel" id="p-allocator">
+    <div class="alloc-wrap">
+      <div class="alloc-grid">
+
+        <!-- LEFT: Input Form -->
+        <div class="alloc-form">
+          <div class="alloc-form-title">Portfolio Builder</div>
+          <div class="alloc-form-sub">Enter the client's profile to generate a suggested fund allocation as a starting point for your conversation.</div>
+
+          <div class="al-field">
+            <label class="al-label">Client Age</label>
+            <input class="al-input" type="number" id="al-age" min="18" max="80" placeholder="e.g. 35">
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Investment Goal</label>
+            <select class="al-input" id="al-goal">
+              <option value="">— Select goal —</option>
+              <option value="retirement">Retirement Planning</option>
+              <option value="growth">Wealth Accumulation</option>
+              <option value="education">Education Fund</option>
+              <option value="income">Regular Income</option>
+              <option value="preservation">Capital Preservation</option>
+            </select>
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Time Horizon — <span id="al-horizon-lbl" style="color:var(--accent)">10 years</span></label>
+            <div class="al-slider-wrap">
+              <input class="al-slider" type="range" id="al-horizon" min="1" max="35" value="10"
+                oninput="document.getElementById('al-horizon-lbl').textContent=this.value+' year'+(this.value==1?'':'s')">
+            </div>
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Target Return (p.a.)</label>
+            <select class="al-input" id="al-ret">
+              <option value="">— Select target —</option>
+              <option value="2-4">2–4%  (Capital Preservation)</option>
+              <option value="4-6">4–6%  (Conservative Growth)</option>
+              <option value="6-8">6–8%  (Moderate Growth)</option>
+              <option value="8-10">8–10%  (Aggressive Growth)</option>
+              <option value="10+">10%+  (High Growth)</option>
+            </select>
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Risk Tolerance</label>
+            <div class="al-btn-group" id="al-risk-grp">
+              <button class="al-btn" data-val="low"    onclick="alRisk(this)">Low</button>
+              <button class="al-btn active" data-val="medium" onclick="alRisk(this)">Medium</button>
+              <button class="al-btn" data-val="high"   onclick="alRisk(this)">High</button>
+            </div>
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Currency Preference</label>
+            <select class="al-input" id="al-ccy">
+              <option value="any">No Preference</option>
+              <option value="SGD">SGD</option>
+              <option value="USD">USD</option>
+            </select>
+          </div>
+
+          <button class="btn-generate" onclick="runAllocator()">Generate Allocation →</button>
+          <div class="al-warn hidden" id="alloc-warn">Please fill in all fields.</div>
+        </div><!-- /form -->
+
+        <!-- RIGHT: Results -->
+        <div id="alloc-results">
+          <div class="al-empty" id="alloc-empty">
+            <div class="al-empty-icon">🎯</div>
+            <div class="al-empty-text">Fill in the client profile and click<br><strong style="color:rgba(255,255,255,0.4)">Generate Allocation</strong> to see a suggested portfolio.</div>
+          </div>
+          <div id="alloc-output" style="display:none"></div>
+        </div>
+
+      </div><!-- /alloc-grid -->
+    </div>
+  </div><!-- /p-allocator -->
 
   <!-- ── eLEARNING PANEL ── -->
   <div class="ag-panel" id="p-elearning">
@@ -883,6 +1039,251 @@ async function loadFunds() {
   } catch(e) {
     console.error('Fund data load error:', e);
   }
+}
+
+// ─────────────────────────────────────────────
+// PORTFOLIO ALLOCATOR ENGINE
+// ─────────────────────────────────────────────
+const _bc = {};
+function fundBucket(f) {
+  if (_bc[f.name]) return _bc[f.name];
+  const ac = (f.assetClass||'').toLowerCase();
+  const nm = f.name.toLowerCase();
+  let b;
+  if (nm.includes('cash')) b = 'cash';
+  else if (nm.includes('property')) b = 'property';
+  else if (ac === 'fixed income' || nm.includes('bond') || nm.includes('fixed-income') || nm.includes('dynamic bond')) b = 'fixed';
+  else if (ac === 'multi-asset' || nm.includes('activeinvest') || nm.includes('strategicinvest') || nm.includes('multi-asset') || nm.includes('managed fund') || nm.includes('income and growth') || nm.includes('dividend wealth') || nm.includes('flexgrowth') || nm.includes('adapt ') || nm.includes('signature cio') || nm.includes('episode macro') || nm.includes('diversified income') || nm.includes('asian income fund') || nm.includes('global income fund')) b = 'multi';
+  else if (ac === 'equity' || ac.includes('equity')) {
+    if (nm.includes('technology') || nm.includes('innovation') || nm.includes('climate') || nm.includes('esg') || nm.includes('impact') || nm.includes('islamic')) b = 'eq_spec';
+    else if (nm.includes('asia') || nm.includes('china') || nm.includes('india') || nm.includes('greater china') || nm.includes('singapore') || nm.includes('emerging') || nm.includes('pan european')) b = 'eq_em';
+    else b = 'eq_dev';
+  } else b = 'multi';
+  _bc[f.name] = b;
+  return b;
+}
+
+function alRiskScore({age, goal, horizon, targetRet, riskTol}) {
+  let s = 3;
+  if      (age < 30) s += 1.5;
+  else if (age < 40) s += 1.0;
+  else if (age < 50) s += 0.5;
+  else if (age > 65) s -= 1.5;
+  else if (age > 60) s -= 1.0;
+  else if (age > 55) s -= 0.5;
+  if      (horizon >= 20) s += 1.5;
+  else if (horizon >= 15) s += 1.0;
+  else if (horizon >= 10) s += 0.5;
+  else if (horizon <  3)  s -= 2.0;
+  else if (horizon <  5)  s -= 1.0;
+  else if (horizon <  7)  s -= 0.5;
+  const retAdj = {'2-4':-1.5,'4-6':-0.75,'6-8':0,'8-10':0.75,'10+':1.5};
+  s += retAdj[targetRet] || 0;
+  if (riskTol === 'high') s += 1.0;
+  if (riskTol === 'low')  s -= 1.0;
+  if (goal === 'preservation') s -= 1.5;
+  if (goal === 'income')       s -= 0.5;
+  if (goal === 'growth')       s += 0.5;
+  return Math.max(1, Math.min(5, Math.round(s)));
+}
+
+function alMix(score, goal) {
+  const T = [null,
+    {fixed:65, multi:30, eq_dev: 5, eq_em: 0, eq_spec: 0},
+    {fixed:45, multi:35, eq_dev:15, eq_em: 5, eq_spec: 0},
+    {fixed:20, multi:30, eq_dev:32, eq_em:15, eq_spec: 3},
+    {fixed: 5, multi:18, eq_dev:42, eq_em:25, eq_spec:10},
+    {fixed: 0, multi:10, eq_dev:48, eq_em:30, eq_spec:12},
+  ];
+  const m = {...T[score]};
+  if (goal === 'income') {
+    const shift = Math.min(12, m.eq_dev); m.multi += shift; m.eq_dev -= shift;
+    const shift2 = Math.min(5, m.eq_em);  m.fixed += shift2; m.eq_em  -= shift2;
+  }
+  if (goal === 'preservation') { m.fixed += m.eq_dev + m.eq_em + m.eq_spec; m.eq_dev=0; m.eq_em=0; m.eq_spec=0; }
+  return m;
+}
+
+function alFundScore(f, goal, preferDist, preferCcy) {
+  const p = f.performance;
+  let perf = p['3y'] ?? p['5y'] ?? p['1y'] ?? 0;
+  if (p['3y'] != null && p['5y'] != null) perf = (p['3y'] + p['5y']) / 2;
+  let s = perf * 100;
+  if (preferDist && f.isDistribution) s += 20;
+  if (!preferDist && !f.isDistribution) s += 5;
+  if (preferCcy && f.currency === preferCcy) s += 8;
+  if ((f.name||'').toLowerCase().includes('soft closed')) s -= 100;
+  if ((f.aum||0) > 200) s += 5;
+  if ((f.aum||0) > 100) s += 3;
+  return s;
+}
+
+const BUCKET_LBL = {fixed:'Fixed Income', multi:'Multi-Asset', eq_dev:'Global Equity', eq_em:'Regional Equity', eq_spec:'Specialty Equity', cash:'Cash', property:'Property'};
+const BUCKET_REASON = {
+  fixed: {
+    default: 'Bond allocation provides portfolio stability and cushions against equity volatility.',
+    income:  'Investment-grade bonds contribute steady coupon income aligned with your distribution objective.',
+    preservation: 'Capital-preservation anchor — investment-grade bonds with lower drawdown risk.',
+    retirement: 'Fixed-income ballast reduces sequence-of-returns risk as retirement approaches.',
+  },
+  multi: {
+    default: 'Diversified across equities and bonds, offering smoother returns than pure equity.',
+    income:  'Managed allocation blends growth assets with income-generating securities.',
+    growth:  'Dynamic asset allocation captures upside while managing downside.',
+    retirement: 'Balanced exposure grows assets while gradually de-risking over time.',
+  },
+  eq_dev: {
+    default: 'Core developed-market equity exposure for long-term capital growth.',
+    growth:  'Global equities are the primary engine for above-inflation wealth accumulation.',
+    retirement: 'Broad developed-market allocation compounds wealth across the investment horizon.',
+  },
+  eq_em: {
+    default: 'Regional and emerging-market allocation adds geographic diversification and growth potential.',
+    growth:  'Asia and emerging markets historically offer higher long-run growth relative to developed markets.',
+    education: 'Regional equity kicker can meaningfully boost total returns over a multi-year horizon.',
+  },
+  eq_spec: {
+    default: 'Thematic position captures structural long-term trends (technology, sustainability, ESG).',
+    growth:  'High-conviction sector exposure for potential outperformance over the full investment cycle.',
+  },
+};
+
+function alReason(bucket, goal) {
+  const m = BUCKET_REASON[bucket] || {};
+  return m[goal] || m.default || 'Allocation aligned to your investment profile and time horizon.';
+}
+
+function alRisk(btn) {
+  document.querySelectorAll('#al-risk-grp .al-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function runAllocator() {
+  const age      = parseInt(document.getElementById('al-age').value);
+  const goal     = document.getElementById('al-goal').value;
+  const horizon  = parseInt(document.getElementById('al-horizon').value);
+  const targetRet= document.getElementById('al-ret').value;
+  const riskTol  = document.querySelector('#al-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const preferCcy= document.getElementById('al-ccy').value === 'any' ? null : document.getElementById('al-ccy').value;
+  const warn     = document.getElementById('alloc-warn');
+
+  if (!age || age < 18 || age > 90 || !goal || !targetRet) {
+    warn.classList.remove('hidden'); return;
+  }
+  warn.classList.add('hidden');
+  if (!fAllFunds.length) { warn.textContent='Fund data not loaded yet. Please wait a moment.'; warn.classList.remove('hidden'); return; }
+
+  const profile  = { age, goal, horizon, targetRet, riskTol };
+  const score    = alRiskScore(profile);
+  const mix      = alMix(score, goal);
+  const preferDist = goal === 'income';
+
+  const portfolio = [];
+  const buckets = [
+    {key:'fixed',   pct: mix.fixed,   n: mix.fixed   >= 40 ? 2 : 1},
+    {key:'multi',   pct: mix.multi,   n: mix.multi   >= 28 ? 2 : 1},
+    {key:'eq_dev',  pct: mix.eq_dev,  n: mix.eq_dev  >= 28 ? 2 : 1},
+    {key:'eq_em',   pct: mix.eq_em,   n: mix.eq_em   >= 20 ? 2 : 1},
+    {key:'eq_spec', pct: mix.eq_spec, n: 1},
+  ];
+
+  for (const {key, pct, n} of buckets) {
+    if (pct <= 0) continue;
+    const pool = fAllFunds.filter(f => fundBucket(f) === key)
+      .sort((a,b) => alFundScore(b, goal, preferDist, preferCcy) - alFundScore(a, goal, preferDist, preferCcy));
+    const picks = pool.slice(0, n);
+    if (!picks.length) continue;
+    picks.forEach(f => portfolio.push({ f, pct: pct / picks.length, bucket: key }));
+  }
+
+  // Normalise to 100%
+  const tot = portfolio.reduce((s,x) => s + x.pct, 0);
+  portfolio.forEach(x => { x.alloc = Math.round(x.pct / tot * 100); });
+  const diff = 100 - portfolio.reduce((s,x) => s + x.alloc, 0);
+  if (diff && portfolio.length) portfolio.sort((a,b) => b.alloc - a.alloc)[0].alloc += diff;
+
+  // Weighted expected return (3Y)
+  const withRet = portfolio.filter(x => x.f.performance['3y'] != null);
+  const expRet  = withRet.length
+    ? withRet.reduce((s,x) => s + (x.f.performance['3y'] ?? 0) * x.alloc, 0) / 100
+    : null;
+
+  renderAllocation(portfolio, score, profile, expRet);
+}
+
+function renderAllocation(portfolio, score, profile, expRet) {
+  const SL = ['','Very Conservative','Conservative','Moderate','Aggressive','Very Aggressive'];
+  const SC = ['','#93c5fd','#6ee7b7','#fcd34d','#fb923c','#f87171'];
+  const GL = {retirement:'Retirement Planning', growth:'Wealth Accumulation', education:'Education Fund', income:'Regular Income', preservation:'Capital Preservation'};
+
+  document.getElementById('alloc-empty').style.display = 'none';
+  const out = document.getElementById('alloc-output');
+  out.style.display = '';
+
+  const retStr = expRet != null ? `${expRet >= 0 ? '+' : ''}${(expRet*100).toFixed(1)}% p.a. (3Y hist.)` : '—';
+  const shortName = n => cleanName(n).replace(/ \((?:SGD|USD)\) \((?:Acc(?:umulation)?|Dis(?:tribution)?)\)$/i,'').replace(/ \((?:Acc(?:umulation)?|Dis(?:tribution)?)\)$/i,'').replace(/ \((?:SGD|USD)\)$/i,'');
+
+  out.innerHTML = `
+    <div class="al-result-header">
+      <div class="al-profile-row">
+        <span class="al-risk-pill" style="background:${SC[score]}22;color:${SC[score]};border:1px solid ${SC[score]}44">${SL[score]}</span>
+        <span class="al-info-txt">${GL[profile.goal]||profile.goal} &nbsp;·&nbsp; ${profile.horizon}-year horizon &nbsp;·&nbsp; Age ${profile.age}</span>
+      </div>
+      <div class="al-summary-stats">
+        <div><div class="al-stat-l">Est. Portfolio Return</div><div class="al-stat-v">${retStr}</div></div>
+        <div><div class="al-stat-l">Funds Selected</div><div class="al-stat-v">${portfolio.length}</div></div>
+        <div><div class="al-stat-l">Target p.a.</div><div class="al-stat-v">${profile.targetRet}%</div></div>
+      </div>
+    </div>
+
+    <div class="al-chart">
+      ${portfolio.map(x => `<div class="al-bar-row">
+        <div class="al-bar-lbl">${shortName(x.f.name)}</div>
+        <div class="al-bar-track"><div class="al-bar-fill" style="width:${x.alloc}%"></div></div>
+        <div class="al-bar-pct">${x.alloc}%</div>
+      </div>`).join('')}
+    </div>
+
+    <div class="al-cards">
+      ${portfolio.map(x => {
+        const p  = x.f.performance;
+        const r1 = p['1y']  != null ? `${(p['1y'] *100).toFixed(1)}%` : '—';
+        const r3 = p['3y']  != null ? `${(p['3y'] *100).toFixed(1)}%` : '—';
+        const r5 = p['5y']  != null ? `${(p['5y'] *100).toFixed(1)}%` : '—';
+        const cls = v => v !== '—' ? (parseFloat(v) >= 0 ? 'pos' : 'neg') : 'neu';
+        const nav = x.f.bidPrice ? `<div><span class="al-pl">NAV</span><span class="al-pv neu">${parseFloat(x.f.bidPrice).toFixed(4)} ${x.f.currency}</span></div>` : '';
+        return `<div class="al-card">
+          <div class="al-card-top">
+            <div class="al-card-alloc">${x.alloc}%</div>
+            <div>
+              <div class="al-card-name">${shortName(x.f.name)}</div>
+              <div class="al-card-tags">
+                <span class="f-ccy">${x.f.currency}</span>
+                <span class="f-risk ${fRiskCls(x.f.risk)}" style="font-size:0.59rem">${fRiskLbl(x.f.risk)}</span>
+                <span class="al-bucket-tag">${BUCKET_LBL[x.bucket]||x.bucket}</span>
+                ${x.f.isDistribution ? '<span class="f-freq" style="font-size:0.59rem">Distribution</span>' : ''}
+              </div>
+            </div>
+          </div>
+          <div class="al-card-reason">${alReason(x.bucket, profile.goal)}</div>
+          <div class="al-card-perf">
+            <div><span class="al-pl">1Y</span><span class="al-pv ${cls(r1)}">${r1}</span></div>
+            <div><span class="al-pl">3Y p.a.</span><span class="al-pv ${cls(r3)}">${r3}</span></div>
+            <div><span class="al-pl">5Y p.a.</span><span class="al-pv ${cls(r5)}">${r5}</span></div>
+            ${nav}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="al-disclaimer">
+      <strong>⚠ For Advisor Reference Only — Not Client-Facing Financial Advice</strong>
+      This allocation is generated by a rule-based model using historical performance data and the profile inputs above. It does not constitute a formal financial recommendation or suitability assessment. All suggestions must be reviewed against Prudential Singapore's current suitability requirements, the client's completed Fact Find, and applicable product prospectuses. Past performance is not indicative of future results. The advisor remains solely responsible for any recommendation made to the client.
+    </div>
+    <div style="text-align:right">
+      <button class="btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+  `;
 }
 
 // ─────────────────────────────────────────────
