@@ -391,6 +391,41 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .rb-total-val { font-weight:700; color:var(--accent); font-size:0.88rem; }
 .btn-rebalance { width:100%; padding:0.72rem; background:var(--accent); color:white; border:none; border-radius:var(--radius); font-family:inherit; font-size:0.86rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; margin-top:0.25rem; transition:background 0.2s; }
 .btn-rebalance:hover { background:var(--accent-dark); }
+.btn-ai-reb { width:100%; padding:0.62rem; background:transparent; color:var(--accent); border:1px solid rgba(184,151,90,0.35); border-radius:var(--radius); font-family:inherit; font-size:0.82rem; font-weight:600; letter-spacing:0.04em; cursor:pointer; margin-top:0.5rem; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:0.4rem; }
+.btn-ai-reb:hover { background:rgba(184,151,90,0.08); border-color:var(--accent); }
+.btn-ai-reb:disabled { opacity:0.5; cursor:not-allowed; }
+/* AI Rebalancer result blocks */
+.rb-ai-block { background:rgba(184,151,90,0.04); border:1px solid rgba(184,151,90,0.15); border-radius:6px; margin-bottom:1.5rem; overflow:hidden; }
+.rb-ai-hd { padding:0.65rem 1rem; background:rgba(184,151,90,0.06); border-bottom:1px solid rgba(184,151,90,0.12); display:flex; align-items:center; gap:0.6rem; }
+.rb-ai-hd-title { font-size:0.63rem; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--accent); }
+.rb-ai-body { padding:1rem; }
+.rb-ai-text { font-size:0.82rem; color:rgba(255,255,255,0.65); line-height:1.6; }
+/* Urgency banner */
+.rb-urgency { display:flex; align-items:center; gap:0.75rem; padding:0.75rem 1rem; border-radius:var(--radius); margin-bottom:1.25rem; }
+.rb-urgency.immediate { background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); }
+.rb-urgency.gradual   { background:rgba(251,191,36,0.07); border:1px solid rgba(251,191,36,0.18); }
+.rb-urgency.wait      { background:rgba(52,211,153,0.06); border:1px solid rgba(52,211,153,0.15); }
+.rb-urgency-icon { font-size:1.3rem; flex-shrink:0; }
+.rb-urgency-badge { font-size:0.63rem; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; padding:2px 8px; border-radius:2px; flex-shrink:0; }
+.rb-urgency.immediate .rb-urgency-badge { background:rgba(248,113,113,0.15); color:#fca5a5; }
+.rb-urgency.gradual   .rb-urgency-badge { background:rgba(251,191,36,0.12); color:#fcd34d; }
+.rb-urgency.wait      .rb-urgency-badge { background:rgba(52,211,153,0.1); color:#6ee7b7; }
+.rb-urgency-reason { font-size:0.78rem; color:rgba(255,255,255,0.55); flex:1; }
+/* Priority badges */
+.rb-priority { font-size:0.59rem; font-weight:700; padding:2px 7px; border-radius:2px; letter-spacing:0.05em; text-transform:uppercase; flex-shrink:0; }
+.rb-priority.high   { background:rgba(248,113,113,0.12); color:#fca5a5; border:1px solid rgba(248,113,113,0.2); }
+.rb-priority.medium { background:rgba(251,191,36,0.1); color:#fcd34d; border:1px solid rgba(251,191,36,0.18); }
+.rb-priority.low    { background:rgba(52,211,153,0.08); color:#6ee7b7; border:1px solid rgba(52,211,153,0.15); }
+/* Trade rationale */
+.rb-ai-trade-rationale { font-size:0.73rem; color:rgba(255,255,255,0.4); padding:0.3rem 1rem 0.55rem; line-height:1.5; }
+/* New opportunities */
+.rb-opp-row { display:flex; align-items:center; gap:0.75rem; padding:0.55rem 1rem; border-bottom:1px solid rgba(255,255,255,0.04); }
+.rb-opp-row:last-child { border:none; }
+.rb-opp-pct { font-family:'Lora',serif; font-size:1.1rem; font-weight:600; color:var(--accent); min-width:36px; text-align:right; flex-shrink:0; }
+.rb-opp-name { font-size:0.78rem; color:rgba(255,255,255,0.75); flex:1; font-weight:500; min-width:0; }
+.rb-opp-reason { font-size:0.71rem; color:rgba(255,255,255,0.38); flex:2; line-height:1.4; min-width:0; }
+/* Phasing advice */
+.rb-phasing { font-size:0.82rem; color:rgba(255,255,255,0.6); line-height:1.65; }
 
 /* Results */
 .rb-empty { text-align:center; padding:5rem 2rem; }
@@ -812,6 +847,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           </div>
 
           <button class="btn-rebalance" onclick="runRebalancer()">Analyse &amp; Rebalance →</button>
+          <button class="btn-ai-reb" id="btn-rb-ai" onclick="runRBAIAnalysis()">✦ AI Rebalancing Analysis</button>
           <div class="al-warn hidden" id="rb-warn">Please complete all fields and add at least one holding.</div>
         </div><!-- /form -->
 
@@ -2128,6 +2164,257 @@ function renderAIResult(ai, profile, container) {
       <button class="btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
     </div>
   `;
+}
+
+// ─────────────────────────────────────────────
+// AI REBALANCER ANALYSIS
+// ─────────────────────────────────────────────
+async function runRBAIAnalysis() {
+  const out = document.getElementById('rb-output');
+  if (out.style.display === 'none') {
+    alert('Please run "Analyse & Rebalance" first, then click AI Rebalancing Analysis.');
+    return;
+  }
+
+  const age      = parseInt(document.getElementById('rb-age').value);
+  const goal     = document.getElementById('rb-goal').value;
+  const horizon  = parseInt(document.getElementById('rb-horizon').value);
+  const targetRet= document.getElementById('rb-ret').value;
+  const riskTol  = document.querySelector('#rb-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const startDate= document.getElementById('rb-startdate').value;
+  const holdings = rbGetHoldings();
+
+  if (!holdings.length || !fAllFunds.length || !age || !goal || !startDate) {
+    alert('Please complete all fields and run the rebalancer first.');
+    return;
+  }
+
+  const totalCurrentValue = holdings.reduce((s,h) => s + h.value, 0);
+  const totalInvested     = rbCalcInvested();
+  const start    = new Date(startDate);
+  const today    = new Date();
+  const years    = (today - start) / (1000*60*60*24*365.25);
+  const absGain  = totalCurrentValue - totalInvested;
+  const pctGain  = totalInvested > 0 ? absGain / totalInvested : 0;
+  const cagr     = totalInvested > 0 && years > 0
+    ? Math.pow(totalCurrentValue / totalInvested, 1/years) - 1 : null;
+
+  // Rebuild recommended portfolio & trades (same logic as runRebalancer)
+  const profile  = { age, goal, horizon, targetRet, riskTol };
+  const score    = alRiskScore(profile);
+  const mix      = alMix(score, goal);
+  const buckets  = [
+    {key:'fixed',  pct:mix.fixed,  n:mix.fixed  >=40?2:1},
+    {key:'multi',  pct:mix.multi,  n:mix.multi  >=28?2:1},
+    {key:'eq_dev', pct:mix.eq_dev, n:mix.eq_dev >=28?2:1},
+    {key:'eq_em',  pct:mix.eq_em,  n:mix.eq_em  >=20?2:1},
+    {key:'eq_spec',pct:mix.eq_spec,n:1},
+  ];
+  const recPortfolio = [];
+  for (const {key, pct, n} of buckets) {
+    if (pct <= 0) continue;
+    const pool = fAllFunds.filter(f => fundBucket(f) === key)
+      .sort((a,b) => alFundScore(b,goal,goal==='income',null) - alFundScore(a,goal,goal==='income',null));
+    pool.slice(0, n).forEach(f => recPortfolio.push({ f, alloc: pct / Math.min(n, pool.length) }));
+  }
+  const recTotal = recPortfolio.reduce((s,x) => s + x.alloc, 0);
+  recPortfolio.forEach(x => { x.alloc = Math.round(x.alloc / recTotal * 100); });
+  const rdiff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
+  if (rdiff && recPortfolio.length) recPortfolio.sort((a,b)=>b.alloc-a.alloc)[0].alloc += rdiff;
+
+  const trades = [];
+  for (const rec of recPortfolio) {
+    const targetVal  = totalCurrentValue * rec.alloc / 100;
+    const curHolding = holdings.find(h => h.fund?.name === rec.f?.name);
+    const curVal     = curHolding?.value || 0;
+    const tradeDiff  = targetVal - curVal;
+    trades.push({
+      fund: rec.f, curVal, curPct: (curVal/totalCurrentValue)*100,
+      targetVal, targetPct: rec.alloc,
+      action: Math.abs(tradeDiff) < totalCurrentValue * 0.005 ? 'hold' : tradeDiff > 0 ? 'buy' : 'sell',
+      amount: Math.abs(tradeDiff),
+    });
+  }
+  for (const h of holdings) {
+    if (!recPortfolio.find(r => r.f?.name === h.fund?.name)) {
+      trades.push({
+        fund: h.fund, curVal: h.value, curPct: (h.value/totalCurrentValue)*100,
+        targetVal: 0, targetPct: 0, action: 'sell', amount: h.value,
+      });
+    }
+  }
+
+  const currentHoldings = holdings.map(h => ({
+    name: h.fund?.name || '',
+    value: h.value,
+    pct: (h.value / totalCurrentValue) * 100,
+    fund: h.fund,
+  }));
+
+  // Button loading state
+  const btn = document.getElementById('btn-rb-ai');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader" style="width:14px;height:14px;border-width:1.5px;display:inline-block;border-radius:50%;border-color:rgba(184,151,90,0.25);border-top-color:var(--accent);animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px"></span> Analysing market…';
+
+  // Remove any prior AI result and insert loading placeholder
+  document.getElementById('rb-ai-result')?.remove();
+  const loader = document.createElement('div');
+  loader.id = 'rb-ai-loader';
+  loader.innerHTML = `<div class="al-loading" style="padding:1.25rem 1rem;border:1px solid rgba(184,151,90,0.15);border-radius:6px;background:rgba(184,151,90,0.04);margin-bottom:1.25rem">
+    <div class="al-loading-dots"><div class="al-loading-dot"></div><div class="al-loading-dot"></div><div class="al-loading-dot"></div></div>
+    <div class="al-loading-msg">✦ Reading market momentum for this portfolio…</div>
+    <div class="al-loading-sub">Assessing current holdings · Reviewing trade timing · Identifying opportunities</div>
+  </div>`;
+  out.prepend(loader);
+
+  try {
+    const meta = await fetch('/prulink-data.json').then(r=>r.json()).then(d=>d.meta).catch(()=>({}));
+    const resp = await fetch('/api/rebalance-ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        profile: { age, goal, horizon, targetRet, riskTol },
+        currentHoldings,
+        trades,
+        performance: { totalInvested, totalCurrentValue, absGain, pctGain, cagr, years },
+        funds: fAllFunds,
+        priceDate: meta.priceDate || '',
+      }),
+    });
+
+    document.getElementById('rb-ai-loader')?.remove();
+    btn.disabled = false;
+    btn.innerHTML = '✦ AI Rebalancing Analysis';
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(()=>({}));
+      const errEl = document.createElement('div');
+      errEl.className = 'al-disclaimer';
+      errEl.style.cssText = 'border-color:rgba(248,113,113,0.2);color:#fca5a5;margin-bottom:1.25rem';
+      errEl.innerHTML = `<strong>⚠ AI Analysis Unavailable</strong> ${err.error || 'Server error '+resp.status} — showing rule-based analysis above.`;
+      out.prepend(errEl);
+      setTimeout(() => errEl.remove(), 12000);
+      return;
+    }
+
+    const ai = await resp.json();
+    renderRBAIResult(ai, out);
+
+  } catch(e) {
+    document.getElementById('rb-ai-loader')?.remove();
+    btn.disabled = false;
+    btn.innerHTML = '✦ AI Rebalancing Analysis';
+    const errEl = document.createElement('div');
+    errEl.className = 'al-disclaimer';
+    errEl.style.cssText = 'border-color:rgba(248,113,113,0.2);color:#fca5a5;margin-bottom:1.25rem';
+    errEl.innerHTML = `<strong>⚠ AI Analysis Unavailable</strong> Could not reach AI service. Check your connection and try again.`;
+    out.prepend(errEl);
+    setTimeout(() => errEl.remove(), 12000);
+  }
+}
+
+function renderRBAIResult(ai, container) {
+  const urgency = (ai.rebalancingUrgency || 'gradual').toLowerCase();
+  const urgencyIcon  = urgency === 'immediate' ? '🔴' : urgency === 'wait' ? '🟢' : '🟡';
+  const urgencyLabel = urgency === 'immediate' ? 'ACT NOW' : urgency === 'wait' ? 'WAIT' : 'GRADUAL';
+
+  const fmtSGD = v => 'S$' + Math.abs(v||0).toLocaleString(undefined,{maximumFractionDigits:0});
+
+  // Market signals
+  const sigHtml = (ai.signals || []).map(s => {
+    const dir = (s.direction||'neutral').toLowerCase();
+    const icon = dir === 'bullish' ? '↑' : dir === 'bearish' ? '↓' : '→';
+    return `<span class="ai-sig ${dir}" title="${s.detail||''}">${icon} ${s.label}</span>`;
+  }).join('');
+
+  // AI-reviewed trades with priority
+  const tradesHtml = (ai.adjustedTrades || []).map(t => {
+    const act = (t.action||'hold').toLowerCase();
+    const pri = (t.priority||'medium').toLowerCase();
+    const amtLabel = act === 'hold' ? 'No change'
+      : (act === 'sell' ? '−' : '+') + fmtSGD(t.amount);
+    return `<div>
+      <div class="rb-action-row" style="border-bottom:none;padding-bottom:0">
+        <span class="rb-action-badge ${act}">${act.toUpperCase()}</span>
+        <span class="rb-priority ${pri}">${pri.toUpperCase()}</span>
+        <span class="rb-action-name">${AI_SHORT(t.fund||'')}</span>
+        <span class="rb-action-pcts">${(t.currentPct||0).toFixed(1)}% → ${(t.targetPct||0).toFixed(1)}%</span>
+        <span class="rb-action-amt ${act}">${amtLabel}</span>
+      </div>
+      ${t.rationale ? `<div class="rb-ai-trade-rationale">${t.rationale}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  // New opportunities
+  const oppsHtml = (ai.newOpportunities||[]).length
+    ? `<div class="rb-ai-block">
+        <div class="rb-ai-hd">
+          <span class="rb-ai-hd-title">💡 New Opportunities</span>
+          <span class="ai-badge" style="font-size:0.59rem;margin-left:auto">AI Suggested</span>
+        </div>
+        ${(ai.newOpportunities||[]).map(o => `<div class="rb-opp-row">
+          <div class="rb-opp-pct">${o.suggestedPct||'—'}%</div>
+          <div class="rb-opp-name">${AI_SHORT(o.fund||'')}</div>
+          <div class="rb-opp-reason">${o.reason||''}</div>
+        </div>`).join('')}
+      </div>` : '';
+
+  const risksHtml = (ai.risks||[]).map(r => `<div class="ai-risk-row">${r}</div>`).join('');
+  const dateStr   = new Date().toLocaleDateString('en-SG',{day:'numeric',month:'short',year:'numeric'});
+
+  const el = document.createElement('div');
+  el.id = 'rb-ai-result';
+  el.innerHTML = `
+    <div class="rb-urgency ${urgency}">
+      <span class="rb-urgency-icon">${urgencyIcon}</span>
+      <span class="rb-urgency-badge">${urgencyLabel}</span>
+      <span class="rb-urgency-reason">${ai.urgencyReason||''}</span>
+    </div>
+
+    <div class="rb-ai-block">
+      <div class="rb-ai-hd">
+        <span class="rb-ai-hd-title">✦ AI Market Analysis</span>
+        <span class="ai-market-date" style="margin-left:auto;font-size:0.62rem;color:rgba(255,255,255,0.28)">Live fund data · ${dateStr}</span>
+      </div>
+      <div class="rb-ai-body">
+        <div class="rb-ai-text">${ai.marketContext||''}</div>
+        ${sigHtml ? `<div class="ai-signals" style="margin-top:0.75rem">${sigHtml}</div>` : ''}
+      </div>
+    </div>
+
+    <div class="rb-ai-block">
+      <div class="rb-ai-hd"><span class="rb-ai-hd-title">📊 Portfolio Assessment</span></div>
+      <div class="rb-ai-body"><div class="rb-ai-text">${ai.portfolioAssessment||''}</div></div>
+    </div>
+
+    <div class="rb-actions" style="margin-bottom:1.5rem">
+      <div class="rb-actions-hd" style="display:flex;align-items:center;gap:0.6rem">
+        AI-Reviewed Rebalancing Actions
+        <span class="ai-badge" style="font-size:0.59rem;margin-left:auto">✦ Priority-Ranked</span>
+      </div>
+      ${tradesHtml || '<div style="padding:1rem;font-size:0.78rem;color:rgba(255,255,255,0.35)">No trade adjustments suggested.</div>'}
+    </div>
+
+    ${oppsHtml}
+
+    ${ai.phasingAdvice ? `<div class="rb-ai-block">
+      <div class="rb-ai-hd"><span class="rb-ai-hd-title">📅 Phasing Recommendation</span></div>
+      <div class="rb-ai-body"><div class="rb-phasing">${ai.phasingAdvice}</div></div>
+    </div>` : ''}
+
+    ${risksHtml ? `<div class="ai-risks" style="margin-bottom:1.5rem"><div class="ai-risks-hd">Key Risks</div>${risksHtml}</div>` : ''}
+
+    ${ai.advisorNote ? `<div class="ai-note" style="margin-bottom:1.5rem">
+      <div class="ai-note-lbl">💬 Conversation Starter</div>
+      <div class="ai-note-txt">"${ai.advisorNote}"</div>
+    </div>` : ''}
+
+    <div class="al-disclaimer">
+      <strong>⚠ For Advisor Reference Only — Not Client-Facing Financial Advice</strong>
+      AI rebalancing analysis uses live PRULink fund momentum data to contextualise rule-based recommendations. It does not constitute a formal suitability assessment. All actions must be reviewed against Prudential Singapore's requirements, the client's completed Fact Find, and applicable prospectuses. The advisor remains solely responsible for any client recommendation.
+    </div>`;
+
+  container.prepend(el);
 }
 
 // ─────────────────────────────────────────────

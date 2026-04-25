@@ -19,7 +19,8 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/portfolio-ai","destination": "/api/portfolio-ai.js" },
+    { "source": "/api/portfolio-ai",   "destination": "/api/portfolio-ai.js" },
+    { "source": "/api/rebalance-ai",   "destination": "/api/rebalance-ai.js" },
     { "source": "/agents",         "destination": "/agents.html" },
     { "source": "/funds",          "destination": "/funds.html" },
     { "source": "/elearning",      "destination": "/elearning.html" },
