@@ -314,6 +314,43 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .al-disclaimer strong { color:rgba(255,255,255,0.38); display:block; margin-bottom:0.2rem; }
 .btn-print { padding:0.5rem 1.2rem; border:1px solid rgba(255,255,255,0.14); background:none; color:rgba(255,255,255,0.4); border-radius:var(--radius); font-family:inherit; font-size:0.76rem; cursor:pointer; transition:all 0.2s; }
 .btn-print:hover { border-color:rgba(255,255,255,0.3); color:rgba(255,255,255,0.65); }
+
+/* AI Analysis button */
+.btn-ai { width:100%; padding:0.7rem; background:linear-gradient(135deg,rgba(184,151,90,0.18),rgba(184,151,90,0.08)); color:var(--accent); border:1px solid rgba(184,151,90,0.35); border-radius:var(--radius); font-family:inherit; font-size:0.84rem; font-weight:600; letter-spacing:0.03em; cursor:pointer; margin-top:0.6rem; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:0.4rem; }
+.btn-ai:hover { background:linear-gradient(135deg,rgba(184,151,90,0.28),rgba(184,151,90,0.14)); border-color:rgba(184,151,90,0.55); }
+.btn-ai:disabled { opacity:0.45; cursor:not-allowed; }
+.btn-ai-divider { text-align:center; font-size:0.62rem; color:rgba(255,255,255,0.2); margin:0.55rem 0 0; letter-spacing:0.06em; text-transform:uppercase; }
+
+/* Loading animation */
+.al-loading { text-align:center; padding:2.5rem 1rem; }
+.al-loading-dots { display:flex; justify-content:center; gap:6px; margin-bottom:0.85rem; }
+.al-loading-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); animation:aldp 1.2s ease-in-out infinite; }
+.al-loading-dot:nth-child(2) { animation-delay:0.2s; }
+.al-loading-dot:nth-child(3) { animation-delay:0.4s; }
+@keyframes aldp { 0%,80%,100%{transform:scale(0.55);opacity:0.35} 40%{transform:scale(1);opacity:1} }
+.al-loading-msg { font-size:0.82rem; color:rgba(255,255,255,0.5); }
+.al-loading-sub { font-size:0.69rem; color:rgba(255,255,255,0.22); margin-top:0.3rem; }
+
+/* AI Market Analysis section */
+.ai-market { background:linear-gradient(135deg,rgba(184,151,90,0.07),rgba(184,151,90,0.02)); border:1px solid rgba(184,151,90,0.2); border-radius:6px; padding:1.25rem 1.4rem; margin-bottom:1.25rem; }
+.ai-market-hd { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.7rem; flex-wrap:wrap; }
+.ai-badge { display:inline-flex; align-items:center; gap:0.3rem; font-size:0.64rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.22rem 0.65rem; background:rgba(184,151,90,0.15); color:var(--accent); border-radius:3px; border:1px solid rgba(184,151,90,0.3); }
+.ai-market-date { font-size:0.65rem; color:rgba(255,255,255,0.25); margin-left:auto; }
+.ai-market-body { font-size:0.81rem; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:0.85rem; }
+.ai-signals { display:flex; gap:0.45rem; flex-wrap:wrap; }
+.ai-sig { padding:0.22rem 0.6rem; border-radius:4px; font-size:0.67rem; font-weight:600; display:flex; align-items:center; gap:0.25rem; }
+.ai-sig.bullish { background:rgba(52,211,153,0.1); color:#6ee7b7; border:1px solid rgba(52,211,153,0.2); }
+.ai-sig.bearish { background:rgba(248,113,113,0.1); color:#fca5a5; border:1px solid rgba(248,113,113,0.2); }
+.ai-sig.neutral { background:rgba(251,191,36,0.1); color:#fcd34d; border:1px solid rgba(251,191,36,0.2); }
+.ai-note { margin-top:0.85rem; padding:0.65rem 0.9rem; background:rgba(184,151,90,0.07); border-left:2px solid var(--accent); border-radius:0 3px 3px 0; }
+.ai-note-lbl { font-size:0.6rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:0.25rem; }
+.ai-note-txt { font-size:0.79rem; color:rgba(255,255,255,0.72); line-height:1.55; font-style:italic; }
+
+/* Risks section */
+.ai-risks { padding:0.85rem 1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius); margin-top:1.1rem; margin-bottom:1.25rem; }
+.ai-risks-hd { font-size:0.62rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:0.5rem; }
+.ai-risk-row { font-size:0.74rem; color:rgba(255,255,255,0.42); padding:0.2rem 0; display:flex; gap:0.4rem; align-items:flex-start; line-height:1.5; }
+.ai-risk-row::before { content:'⚠'; font-size:0.68rem; color:#fcd34d; flex-shrink:0; margin-top:1px; }
 @media print {
   .ag-nav,.ag-tabs,.alloc-form,.btn-print,.al-warn,.f-live-badge,.f-stale-badge { display:none!important; }
   #p-allocator { display:block!important; }
@@ -553,6 +590,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           </div>
 
           <button class="btn-generate" onclick="runAllocator()">Generate Allocation →</button>
+          <div class="btn-ai-divider">or</div>
+          <button class="btn-ai" id="btn-ai-analysis" onclick="runAIAnalysis()">
+            <span>✦</span> AI Market Analysis
+          </button>
           <div class="al-warn hidden" id="alloc-warn">Please fill in all fields.</div>
         </div><!-- /form -->
 
@@ -1281,6 +1322,206 @@ function renderAllocation(portfolio, score, profile, expRet) {
       This allocation is generated by a rule-based model using historical performance data and the profile inputs above. It does not constitute a formal financial recommendation or suitability assessment. All suggestions must be reviewed against Prudential Singapore's current suitability requirements, the client's completed Fact Find, and applicable product prospectuses. Past performance is not indicative of future results. The advisor remains solely responsible for any recommendation made to the client.
     </div>
     <div style="text-align:right">
+      <button class="btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────
+// AI PORTFOLIO ANALYSIS
+// ─────────────────────────────────────────────
+const AI_SHORT = n => cleanName(n)
+  .replace(/ \((?:SGD|USD)\) \((?:Acc(?:umulation)?|Dis(?:tribution)?|Decumulation)\)$/i,'')
+  .replace(/ \((?:Acc(?:umulation)?|Dis(?:tribution)?|Decumulation)\)$/i,'')
+  .replace(/ \((?:SGD|USD)\)$/i,'')
+  .trim();
+
+async function runAIAnalysis() {
+  const age      = parseInt(document.getElementById('al-age').value);
+  const goal     = document.getElementById('al-goal').value;
+  const horizon  = parseInt(document.getElementById('al-horizon').value);
+  const targetRet= document.getElementById('al-ret').value;
+  const riskTol  = document.querySelector('#al-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const ccy      = document.getElementById('al-ccy').value;
+  const warn     = document.getElementById('alloc-warn');
+
+  if (!age || age < 18 || !goal || !targetRet) {
+    warn.textContent = 'Please fill in all fields before running AI analysis.';
+    warn.classList.remove('hidden'); return;
+  }
+  warn.classList.add('hidden');
+  if (!fAllFunds.length) {
+    warn.textContent = 'Fund data not loaded yet. Please wait a moment.';
+    warn.classList.remove('hidden'); return;
+  }
+
+  // Show instant rule-based result first, then enhance with AI
+  runAllocator();
+
+  const btn = document.getElementById('btn-ai-analysis');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader" style="width:14px;height:14px;border-width:1.5px;display:inline-block;border-radius:50%;border-color:rgba(184,151,90,0.25);border-top-color:var(--accent);animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px"></span> Analysing…';
+
+  // Insert loading indicator above rule-based result
+  const out   = document.getElementById('alloc-output');
+  const loader = document.createElement('div');
+  loader.id = 'ai-loader';
+  loader.innerHTML = `<div class="al-loading" style="padding:1.25rem 1rem;border:1px solid rgba(184,151,90,0.15);border-radius:6px;background:rgba(184,151,90,0.04);margin-bottom:1.25rem">
+    <div class="al-loading-dots"><div class="al-loading-dot"></div><div class="al-loading-dot"></div><div class="al-loading-dot"></div></div>
+    <div class="al-loading-msg">✦ Reading current market conditions…</div>
+    <div class="al-loading-sub">Comparing fund momentum · Building market-aware allocation</div>
+  </div>`;
+  out.prepend(loader);
+
+  try {
+    const meta = await fetch('/prulink-data.json').then(r=>r.json()).then(d=>d.meta).catch(()=>({}));
+    const resp = await fetch('/api/portfolio-ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        profile: { age, goal, horizon, targetRet, riskTol, ccy: ccy === 'any' ? null : ccy },
+        funds:   fAllFunds,
+        priceDate: meta.priceDate || '',
+      }),
+    });
+
+    document.getElementById('ai-loader')?.remove();
+    btn.disabled = false;
+    btn.innerHTML = '<span>✦</span> AI Market Analysis';
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(()=>({}));
+      showAIError(err.error || `Server error ${resp.status}`, out);
+      return;
+    }
+
+    const ai = await resp.json();
+    renderAIResult(ai, { age, goal, horizon, targetRet, riskTol }, out);
+
+  } catch (e) {
+    document.getElementById('ai-loader')?.remove();
+    btn.disabled = false;
+    btn.innerHTML = '<span>✦</span> AI Market Analysis';
+    showAIError('Could not reach AI service. Check your connection and try again.', out);
+  }
+}
+
+function showAIError(msg, container) {
+  const el = document.createElement('div');
+  el.className = 'al-disclaimer';
+  el.style.cssText = 'border-color:rgba(248,113,113,0.2);color:#fca5a5;margin-bottom:1.25rem';
+  el.innerHTML = `<strong>⚠ AI Analysis Unavailable</strong> ${msg} — showing rule-based allocation above.`;
+  container.prepend(el);
+  setTimeout(() => el.remove(), 12000);
+}
+
+function renderAIResult(ai, profile, container) {
+  const SC = { 1:'#93c5fd',2:'#6ee7b7',3:'#fcd34d',4:'#fb923c',5:'#f87171' };
+  const GL = { retirement:'Retirement Planning',growth:'Wealth Accumulation',education:'Education Fund',income:'Regular Income',preservation:'Capital Preservation' };
+  const BL = { fixed:'Fixed Income',multi:'Multi-Asset',eq_dev:'Global Equity',eq_em:'Regional Equity',eq_spec:'Specialty Equity' };
+
+  const sc = Math.max(1, Math.min(5, ai.riskScore || 3));
+  const col = SC[sc] || '#fcd34d';
+
+  // Match AI fund names → actual fund objects for extra detail
+  const enrich = (ai.allocation || []).map(a => {
+    const aName = (a.name || '').toLowerCase();
+    const match = fAllFunds.find(f => {
+      const fn = AI_SHORT(f.name).toLowerCase();
+      return fn === aName
+        || fn.replace(/[^a-z0-9]/g,'').includes(aName.replace(/[^a-z0-9]/g,'').substring(0,12))
+        || aName.replace(/[^a-z0-9]/g,'').includes(fn.replace(/[^a-z0-9]/g,'').substring(0,12));
+    });
+    return { ...a, fd: match };
+  });
+
+  const sigHtml = (ai.signals || []).map(s => {
+    const dir = (s.direction||'neutral').toLowerCase();
+    const icon = dir === 'bullish' ? '↑' : dir === 'bearish' ? '↓' : '→';
+    return `<span class="ai-sig ${dir}" title="${s.detail||''}">${icon} ${s.label}</span>`;
+  }).join('');
+
+  const cardHtml = enrich.map(x => {
+    const f = x.fd;
+    const p = f?.performance || {};
+    const fmtRet = (v, key) => {
+      const val = p[key];
+      if (val == null) return `<div><span class="al-pl">${v}</span><span class="al-pv neu">—</span></div>`;
+      const pct = (val * 100).toFixed(1) + '%';
+      return `<div><span class="al-pl">${v}</span><span class="al-pv ${val>=0?'pos':'neg'}">${pct}</span></div>`;
+    };
+    const navHtml = f?.bidPrice
+      ? `<div><span class="al-pl">NAV</span><span class="al-pv neu">${parseFloat(f.bidPrice).toFixed(4)} ${f.currency}</span></div>`
+      : '';
+    return `<div class="al-card">
+      <div class="al-card-top">
+        <div class="al-card-alloc">${x.pct}%</div>
+        <div style="flex:1;min-width:0">
+          <div class="al-card-name">${AI_SHORT(x.name||'')}</div>
+          <div class="al-card-tags">
+            ${f ? `<span class="f-ccy">${f.currency}</span><span class="f-risk ${fRiskCls(f.risk)}" style="font-size:0.59rem">${fRiskLbl(f.risk)}</span>` : ''}
+            <span class="al-bucket-tag">${BL[x.bucket]||x.bucket||''}</span>
+            ${f?.isDistribution ? '<span class="f-freq" style="font-size:0.59rem">Distribution</span>' : ''}
+          </div>
+        </div>
+      </div>
+      <div class="al-card-reason">${x.reason||''}</div>
+      <div class="al-card-perf">
+        ${fmtRet('1Y','1y')}${fmtRet('3Y p.a.','3y')}${fmtRet('5Y p.a.','5y')}${navHtml}
+      </div>
+    </div>`;
+  }).join('');
+
+  const risksHtml = (ai.risks || [])
+    .map(r => `<div class="ai-risk-row">${r}</div>`).join('');
+
+  const totalAlloc = enrich.reduce((s,x) => s + (x.pct||0), 0);
+  const barHtml = enrich.map(x =>
+    `<div class="al-bar-row">
+      <div class="al-bar-lbl">${AI_SHORT(x.name||'')}</div>
+      <div class="al-bar-track"><div class="al-bar-fill" style="width:${x.pct}%"></div></div>
+      <div class="al-bar-pct">${x.pct}%</div>
+    </div>`).join('');
+
+  container.innerHTML = `
+    <!-- Market Analysis Block -->
+    <div class="ai-market">
+      <div class="ai-market-hd">
+        <span class="ai-badge">✦ AI Market Analysis</span>
+        <span class="ai-market-date">Live fund data · ${new Date().toLocaleDateString('en-SG',{day:'numeric',month:'short',year:'numeric'})}</span>
+      </div>
+      <div class="ai-market-body">${ai.marketSummary||''}</div>
+      ${sigHtml ? `<div class="ai-signals">${sigHtml}</div>` : ''}
+      ${ai.advisorNote ? `<div class="ai-note">
+        <div class="ai-note-lbl">💬 Conversation Starter</div>
+        <div class="ai-note-txt">"${ai.advisorNote}"</div>
+      </div>` : ''}
+    </div>
+
+    <!-- Profile + summary row -->
+    <div class="al-result-header">
+      <div class="al-profile-row">
+        <span class="al-risk-pill" style="background:${col}22;color:${col};border:1px solid ${col}44">${ai.riskLabel||'Moderate'}</span>
+        <span class="al-info-txt">${GL[profile.goal]||profile.goal} · ${profile.horizon}-year horizon · Age ${profile.age}</span>
+        <span class="ai-badge" style="margin-left:auto;font-size:0.59rem">✦ AI-Enhanced</span>
+      </div>
+    </div>
+
+    <!-- Allocation bar chart -->
+    <div class="al-chart">${barHtml}</div>
+
+    <!-- Fund cards -->
+    <div class="al-cards">${cardHtml}</div>
+
+    <!-- Risks -->
+    ${risksHtml ? `<div class="ai-risks"><div class="ai-risks-hd">Key Risks to Monitor</div>${risksHtml}</div>` : ''}
+
+    <!-- Disclaimer -->
+    <div class="al-disclaimer" style="margin-top:1.25rem">
+      <strong>⚠ For Advisor Reference Only — Not Client-Facing Financial Advice</strong>
+      This AI-generated allocation combines live PRULink fund performance data with Claude's market analysis. It does not constitute a formal suitability assessment. All suggestions must be reviewed against Prudential Singapore's suitability requirements, the client's completed Fact Find, and applicable prospectuses. Past performance is not indicative of future results. The advisor remains solely responsible for any client recommendation.
+    </div>
+    <div style="text-align:right;margin-top:0.75rem">
       <button class="btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
     </div>
   `;
