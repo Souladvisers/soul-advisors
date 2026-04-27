@@ -19,6 +19,8 @@ module.exports = async function handler(req, res) {
   }
 
   const { profile, currentHoldings, trades, performance, funds, priceDate } = req.body || {};
+  // Module 1 extended fields
+  const { monthly, tenure, income, dependants, shariah, tier, tierLabel } = profile || {};
   if (!profile || !currentHoldings?.length || !funds?.length) {
     return res.status(400).json({ error: 'Missing required data.' });
   }
@@ -69,13 +71,29 @@ module.exports = async function handler(req, res) {
     education: 'Education Fund', income: 'Regular Income', preservation: 'Capital Preservation',
   }[profile.goal] || profile.goal;
 
+  const tierMap = {
+    1: 'Tier 1 — Conservative (60% low-risk / 30% medium / 10% high)',
+    2: 'Tier 2 — Balanced (30% low-risk / 40% medium / 30% high)',
+    3: 'Tier 3 — Aggressive (10% low-risk / 20% medium / 70% high)',
+    4: 'Tier 4 — Shariah-Compliant (Islamic screening required)',
+  };
+  const clientTierStr = tierMap[tier] || tierMap[2];
+  const extProfile = [
+    monthly    ? `Monthly premium: S$${monthly}` : null,
+    tenure     ? `Policy tenure remaining: ${tenure} years` : null,
+    income     ? `Monthly income: ${income}` : null,
+    dependants ? `Dependants: ${dependants}` : null,
+  ].filter(Boolean).join(' | ');
+
   const today = new Date().toLocaleDateString('en-SG', { day: 'numeric', month: 'long', year: 'numeric' });
 
   // ── Prompt ───────────────────────────────────────────────────────────────
-  const prompt = `You are a senior portfolio strategist at SOUL Advisors, a Prudential Singapore ILP advisory firm. Today is ${today}.
+  const prompt = `You are a senior ILP portfolio strategist at SOUL Advisors, a Prudential Singapore advisory firm. Today is ${today}.
 
-## CLIENT PROFILE
+## MODULE 1 — CLIENT PROFILE
 Age: ${profile.age} | Goal: ${goalLabel} | Remaining Horizon: ${profile.horizon} years | Target: ${profile.targetRet}% p.a. | Risk Tolerance: ${profile.riskTol}
+${extProfile ? extProfile + '\n' : ''}Client Tier: ${clientTierStr}
+Shariah requirement: ${shariah === 'yes' ? 'YES — Shariah/Islamic-compliant funds only' : 'No'}
 
 ## PORTFOLIO PERFORMANCE SINCE INCEPTION
 Total Invested: ${sgd(performance.totalInvested)} | Current Value: ${sgd(performance.totalCurrentValue)} | Gain/Loss: ${pf(performance.pctGain)} (${sgd(performance.absGain)}) | CAGR: ${performance.cagr != null ? pf(performance.cagr) : '—'} p.a. | Period: ${performance.years?.toFixed(1)} years
@@ -84,7 +102,7 @@ Total Invested: ${sgd(performance.totalInvested)} | Current Value: ${sgd(perform
 Format: Fund | CCY | Current Value | Allocation% | 1M% | 3M% | 1Y% | 3Ypa%
 ${holdingRows.join('\n')}
 
-## RULE-BASED REBALANCING RECOMMENDATION (from system)
+## MODULE 3 TARGET ALLOCATION (rule-based recommendation)
 Format: Action | Fund | Current% → Target% | Amount
 ${tradeRows.join('\n')}
 
@@ -95,34 +113,44 @@ ${fundRows.join('\n')}
 
 ## YOUR TASK
 
-STEP 1 — ASSESS THE CURRENT PORTFOLIO
+STEP 1 — MODULE 1 PROFILE ASSESSMENT
+Confirm the client tier classification (${clientTierStr}) is appropriate given their age, horizon, and risk profile. Note any misalignments.
+
+STEP 2 — ASSESS THE CURRENT PORTFOLIO (Module 4 context)
 Read the 1M and 3M performance of each fund the client CURRENTLY HOLDS:
-- Which of their holdings are showing strength right now?
-- Which are lagging or under pressure?
-- How does the portfolio's recent performance compare to the overall PRULink fund universe?
+- Which holdings show momentum strength? Which are under pressure?
+- How does each holding compare to its peers in the full fund universe?
 
-STEP 2 — ASSESS THE MARKET BROADLY
-From the full fund data, identify:
-- What asset classes / regions are currently in favour?
-- What is the overall market direction (risk-on / risk-off)?
-- Any tactical opportunities the rule-based system may have missed?
+STEP 3 — MODULE 4: REBALANCING TRIGGER REVIEW
+Apply each of these three rules to the proposed trades:
+Rule 1 — Drift trigger: The system has already flagged funds drifting more than ±5% from target. Do you agree these should be acted on given current market conditions?
+Rule 2 — Performance trigger: Flag any CURRENT holding that has underperformed its category peers by more than 10% over 1 year. These are candidates for replacement.
+Rule 3 — Macro/manager trigger: Based on the 1M/3M fund data, are there macro headwinds (rate environment, geopolitical risk, currency pressure) affecting any current holding? Flag these.
 
-STEP 3 — REVIEW EACH PROPOSED TRADE
-For each rule-based trade, consider:
-- Is this the right time to execute given current market momentum?
-- Should any sell be delayed because the fund is currently performing well?
-- Should any buy be prioritised because the target fund has strong momentum?
-- Assign each trade a priority: HIGH (do now), MEDIUM (do within 1-3 months), LOW (can wait or reconsider)
+Output a Rebalancing Verdict: "Rebalance Now" | "Monitor" | "No Action Required"
 
-STEP 4 — PHASING ADVICE
-Should the client rebalance all at once, or phase it over time? Why?
+STEP 4 — REVIEW EACH PROPOSED TRADE
+For each trade, assign priority: HIGH (do now — drift/perf/macro trigger), MEDIUM (do within 1-3 months), LOW (can wait).
+Consider: should a sell be delayed (fund showing near-term strength)? Should a buy be accelerated (target fund has strong momentum)?
+
+STEP 5 — MODULE 5: FUND SWAP CANDIDATES
+For any holdings flagged for replacement in Step 3 Rule 2 or Rule 3:
+- Identify 1-2 replacement candidates from the fund universe
+- Evaluate: performance vs benchmark, risk profile match, Shariah compliance (if required), diversification impact, expense ratio
+- Recommend the best swap with a one-sentence justification
+
+STEP 6 — PHASING ADVICE
+Should the client rebalance all at once or phase over months? Consider both market conditions and the client's tier/horizon.
 
 Respond ONLY with a single valid JSON object (no markdown, no text outside the JSON):
 {
+  "tierAssessment": "1 sentence confirming or adjusting the client tier classification based on their profile",
   "marketContext": "2-3 sentences on how the current market (from 1M/3M data) specifically affects THIS client's current holdings — be concrete about which of their funds are benefiting or suffering",
-  "portfolioAssessment": "2-3 sentences assessing the portfolio's current strengths and weaknesses — reference actual fund names and their recent momentum",
+  "portfolioAssessment": "2-3 sentences assessing portfolio strengths and weaknesses using fund names and recent momentum",
+  "m4Verdict": "Rebalance Now | Monitor | No Action Required",
+  "m4TriggersFound": ["e.g. Global Equity drifted +7% above target (Rule 1)", "Asia Fund underperformed peers by 12% over 1Y (Rule 2)"],
   "rebalancingUrgency": "immediate | gradual | wait",
-  "urgencyReason": "one concise sentence explaining the urgency level based on market conditions and portfolio drift",
+  "urgencyReason": "one concise sentence explaining urgency based on market conditions and module 4 triggers",
   "adjustedTrades": [
     {
       "fund": "exact fund name as shown in Current Holdings or Rule-Based Recommendation",
@@ -131,22 +159,30 @@ Respond ONLY with a single valid JSON object (no markdown, no text outside the J
       "amount": 5000,
       "currentPct": 35.0,
       "targetPct": 25.0,
-      "rationale": "1-2 sentences: market-aware reason for this trade and its priority level"
+      "rationale": "1-2 sentences: which Module 4 rule triggered this and why the priority level"
+    }
+  ],
+  "fundSwaps": [
+    {
+      "replaceFund": "fund being replaced (name)",
+      "replacementFund": "recommended replacement (name from full fund list)",
+      "triggerRule": "Rule 2 — underperformance | Rule 3 — macro headwind",
+      "rationale": "1-2 sentences: why this swap, performance comparison, diversification impact"
     }
   ],
   "newOpportunities": [
     {
       "fund": "fund name from the full fund list (not currently held)",
       "suggestedPct": 10,
-      "reason": "1 sentence: why add this fund given current market conditions and client profile"
+      "reason": "1 sentence: why add given current market and client tier"
     }
   ],
-  "phasingAdvice": "Specific advice: do all at once or phase over X months and why",
+  "phasingAdvice": "Specific phasing advice referencing client tier and market conditions",
   "signals": [
     { "label": "short label", "detail": "one sentence", "direction": "bullish | bearish | neutral" }
   ],
   "risks": ["specific risk 1 for this rebalancing", "risk 2", "risk 3"],
-  "advisorNote": "One natural sentence the advisor can say to open the rebalancing conversation with this specific client"
+  "advisorNote": "One natural sentence the advisor can use to open the rebalancing conversation with this specific client"
 }`;
 
   // ── Call Claude ───────────────────────────────────────────────────────────
@@ -185,11 +221,15 @@ Respond ONLY with a single valid JSON object (no markdown, no text outside the J
 
     return res.status(200).json({
       success:            true,
+      tierAssessment:     result.tierAssessment     || '',
       marketContext:      result.marketContext      || '',
       portfolioAssessment:result.portfolioAssessment|| '',
+      m4Verdict:          result.m4Verdict          || '',
+      m4TriggersFound:    result.m4TriggersFound    || [],
       rebalancingUrgency: result.rebalancingUrgency || 'gradual',
       urgencyReason:      result.urgencyReason      || '',
       adjustedTrades:     result.adjustedTrades     || [],
+      fundSwaps:          result.fundSwaps          || [],
       newOpportunities:   result.newOpportunities   || [],
       phasingAdvice:      result.phasingAdvice      || '',
       signals:            result.signals            || [],

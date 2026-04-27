@@ -394,6 +394,20 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .btn-ai-reb { width:100%; padding:0.62rem; background:transparent; color:var(--accent); border:1px solid rgba(184,151,90,0.35); border-radius:var(--radius); font-family:inherit; font-size:0.82rem; font-weight:600; letter-spacing:0.04em; cursor:pointer; margin-top:0.5rem; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:0.4rem; }
 .btn-ai-reb:hover { background:rgba(184,151,90,0.08); border-color:var(--accent); }
 .btn-ai-reb:disabled { opacity:0.5; cursor:not-allowed; }
+/* ── MODULE FRAMEWORK — Tier system / Client Profiling ── */
+.al-field-row { display:flex; gap:0.5rem; }
+.al-field-row .al-field { flex:1; min-width:0; }
+.al-shariah-grp { display:flex; gap:0.4rem; }
+.al-shariah-btn { flex:1; padding:0.42rem 0.5rem; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); background:none; color:rgba(255,255,255,0.35); font-family:inherit; font-size:0.72rem; font-weight:600; letter-spacing:0.04em; cursor:pointer; transition:all 0.2s; text-align:center; }
+.al-shariah-btn.active-no { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.5); border-color:rgba(255,255,255,0.15); }
+.al-shariah-btn.active { background:rgba(167,139,250,0.12); color:#a78bfa; border-color:rgba(167,139,250,0.3); }
+.al-tier-badge { display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:3px; font-size:0.65rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; margin-left:0.4rem; }
+.al-tier-badge.t1 { background:rgba(147,197,253,0.1); color:#93c5fd; border:1px solid rgba(147,197,253,0.2); }
+.al-tier-badge.t2 { background:rgba(110,231,183,0.1); color:#6ee7b7; border:1px solid rgba(110,231,183,0.2); }
+.al-tier-badge.t3 { background:rgba(251,146,60,0.1); color:#fb923c; border:1px solid rgba(251,146,60,0.2); }
+.al-tier-badge.t4 { background:rgba(167,139,250,0.1); color:#a78bfa; border:1px solid rgba(167,139,250,0.2); }
+.rb-drift-flag { font-size:0.6rem; padding:1px 5px; border-radius:2px; background:rgba(251,191,36,0.1); color:#fcd34d; border:1px solid rgba(251,191,36,0.2); margin-left:4px; vertical-align:middle; }
+.rb-perf-flag { font-size:0.6rem; padding:1px 5px; border-radius:2px; background:rgba(248,113,113,0.1); color:#fca5a5; border:1px solid rgba(248,113,113,0.2); margin-left:4px; vertical-align:middle; }
 /* AI Rebalancer result blocks */
 .rb-ai-block { background:rgba(184,151,90,0.04); border:1px solid rgba(184,151,90,0.15); border-radius:6px; margin-bottom:1.5rem; overflow:hidden; }
 .rb-ai-hd { padding:0.65rem 1rem; background:rgba(184,151,90,0.06); border-bottom:1px solid rgba(184,151,90,0.12); display:flex; align-items:center; gap:0.6rem; }
@@ -728,6 +742,46 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
             </select>
           </div>
 
+          <!-- Module 1: extended client profile -->
+          <div class="al-field-row">
+            <div class="al-field">
+              <label class="al-label">Monthly Premium (SGD)</label>
+              <input class="al-input" type="number" id="al-monthly" min="0" placeholder="e.g. 500">
+            </div>
+            <div class="al-field">
+              <label class="al-label">Policy Tenure (yrs)</label>
+              <input class="al-input" type="number" id="al-tenure" min="1" max="40" placeholder="e.g. 20">
+            </div>
+          </div>
+          <div class="al-field-row">
+            <div class="al-field">
+              <label class="al-label">Monthly Income</label>
+              <select class="al-input" id="al-income">
+                <option value="">— Select —</option>
+                <option value="below3k">Below S$3,000</option>
+                <option value="3k5k">S$3,000–S$5,000</option>
+                <option value="5k10k">S$5,000–S$10,000</option>
+                <option value="above10k">Above S$10,000</option>
+              </select>
+            </div>
+            <div class="al-field">
+              <label class="al-label">Dependants</label>
+              <select class="al-input" id="al-dependants">
+                <option value="0">None</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3+">3 or more</option>
+              </select>
+            </div>
+          </div>
+          <div class="al-field">
+            <label class="al-label">Shariah-Compliant Portfolio (Tier 4)</label>
+            <div class="al-shariah-grp" id="al-shariah-grp">
+              <button class="al-shariah-btn active-no" data-val="no"  onclick="alShariah(this)">No</button>
+              <button class="al-shariah-btn"           data-val="yes" onclick="alShariah(this)">Yes — Islamic / Halal Only</button>
+            </div>
+          </div>
+
           <button class="btn-generate" onclick="runAllocator()">Generate Allocation →</button>
           <div class="btn-ai-divider">or</div>
           <button class="btn-ai" id="btn-ai-analysis" onclick="runAIAnalysis()">
@@ -790,6 +844,45 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
                 <button class="al-btn" data-val="low" onclick="rbRisk(this)">Low</button>
                 <button class="al-btn active" data-val="medium" onclick="rbRisk(this)">Medium</button>
                 <button class="al-btn" data-val="high" onclick="rbRisk(this)">High</button>
+              </div>
+            </div>
+            <!-- Module 1: extended client profile -->
+            <div class="al-field-row">
+              <div class="al-field">
+                <label class="al-label">Monthly Premium (SGD)</label>
+                <input class="al-input" type="number" id="rb-monthly" min="0" placeholder="e.g. 500">
+              </div>
+              <div class="al-field">
+                <label class="al-label">Policy Tenure (yrs)</label>
+                <input class="al-input" type="number" id="rb-tenure" min="1" max="40" placeholder="e.g. 15">
+              </div>
+            </div>
+            <div class="al-field-row">
+              <div class="al-field">
+                <label class="al-label">Monthly Income</label>
+                <select class="al-input" id="rb-income">
+                  <option value="">— Select —</option>
+                  <option value="below3k">Below S$3,000</option>
+                  <option value="3k5k">S$3,000–S$5,000</option>
+                  <option value="5k10k">S$5,000–S$10,000</option>
+                  <option value="above10k">Above S$10,000</option>
+                </select>
+              </div>
+              <div class="al-field">
+                <label class="al-label">Dependants</label>
+                <select class="al-input" id="rb-dependants">
+                  <option value="0">None</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3+">3 or more</option>
+                </select>
+              </div>
+            </div>
+            <div class="al-field">
+              <label class="al-label">Shariah-Compliant Portfolio (Tier 4)</label>
+              <div class="al-shariah-grp" id="rb-shariah-grp">
+                <button class="al-shariah-btn active-no" data-val="no"  onclick="rbShariah(this)">No</button>
+                <button class="al-shariah-btn"           data-val="yes" onclick="rbShariah(this)">Yes — Islamic / Halal Only</button>
               </div>
             </div>
           </div>
@@ -1452,44 +1545,136 @@ function alReason(bucket, goal) {
   return m[goal] || m.default || 'Allocation aligned to your investment profile and time horizon.';
 }
 
+// ── MODULE FRAMEWORK ──────────────────────────────────────────────────────
+
+// Module 2: detect Shariah-compliant funds by name keyword
+function isFundShariah(fund) {
+  return /shariah|islamic|syariah|sukuk/i.test(fund.name || '');
+}
+
+// Module 1: classify client into Tier 1–4
+// Returns { tier: 1|2|3|4, base: 1|2|3 } where base is the underlying risk tier used for allocation
+function clientTier(profile) {
+  const h = parseInt(profile.horizon) || 10;
+  const a = parseInt(profile.age)     || 40;
+  const r = (profile.riskTol || 'medium').toLowerCase();
+  let base;
+  if      (a >= 60 || h <= 5  || r === 'low' ) base = 1;
+  else if (h >= 10 && r === 'high')             base = 3;
+  else                                          base = 2;
+  return { tier: profile.shariah === 'yes' ? 4 : base, base };
+}
+
+const TIER_LABEL = {
+  1: 'Tier 1 — Conservative',
+  2: 'Tier 2 — Balanced',
+  3: 'Tier 3 — Aggressive',
+  4: 'Tier 4 — Shariah',
+};
+const TIER_DESC = {
+  1: 'Capital preservation · low volatility · 0–5 yr horizon or retiree',
+  2: 'Moderate growth + income · 5–10 yr horizon',
+  3: 'Maximum growth · high loss tolerance · 10+ yr horizon',
+  4: 'Shariah-compliant · Islamic screening applied',
+};
+
+// Module 3: tier-based allocation targets (Module 3 of the ILP framework)
+// Tier 1 Conservative: 60% low-risk, 30% medium-risk, 10% high-risk
+// Tier 2 Balanced:     30% low-risk, 40% medium-risk, 30% high-risk
+// Tier 3 Aggressive:   10% low-risk, 20% medium-risk, 70% high-risk
+// Tier 4 Shariah:      same split as base tier, Shariah funds only
+function tierBucketMix({ tier, base }, goal) {
+  const t = tier === 4 ? base : tier;
+  const LMH = {
+    1: { low: 60, mid: 30, hi: 10 },
+    2: { low: 30, mid: 40, hi: 30 },
+    3: { low: 10, mid: 20, hi: 70 },
+  };
+  const lmh   = LMH[t] || LMH[2];
+  let fixed   = lmh.low;
+  let multi   = lmh.mid;
+  const hiPct = lmh.hi;
+  let eq_dev  = Math.round(hiPct * 0.60);
+  let eq_em   = Math.round(hiPct * 0.30);
+  let eq_spec = hiPct - eq_dev - eq_em;
+  // Goal refinements
+  if (goal === 'income') {
+    const s = Math.min(10, eq_dev); multi += s; eq_dev -= s;
+  }
+  if (goal === 'preservation') {
+    fixed += eq_dev + eq_em + eq_spec; eq_dev = 0; eq_em = 0; eq_spec = 0;
+  }
+  return { fixed, multi, eq_dev, eq_em, eq_spec };
+}
+
+// Shariah toggle handlers
+function alShariah(btn) {
+  document.querySelectorAll('#al-shariah-grp .al-shariah-btn').forEach(b => {
+    b.classList.remove('active'); b.classList.add('active-no');
+  });
+  btn.classList.remove('active-no'); btn.classList.add('active');
+}
+function rbShariah(btn) {
+  document.querySelectorAll('#rb-shariah-grp .al-shariah-btn').forEach(b => {
+    b.classList.remove('active'); b.classList.add('active-no');
+  });
+  btn.classList.remove('active-no'); btn.classList.add('active');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 function alRisk(btn) {
   document.querySelectorAll('#al-risk-grp .al-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 
 function runAllocator() {
-  const age      = parseInt(document.getElementById('al-age').value);
-  const goal     = document.getElementById('al-goal').value;
-  const horizon  = parseInt(document.getElementById('al-horizon').value);
-  const targetRet= document.getElementById('al-ret').value;
-  const riskTol  = document.querySelector('#al-risk-grp .al-btn.active')?.dataset.val || 'medium';
-  const preferCcy= document.getElementById('al-ccy').value === 'any' ? null : document.getElementById('al-ccy').value;
-  const warn     = document.getElementById('alloc-warn');
+  const age       = parseInt(document.getElementById('al-age').value);
+  const goal      = document.getElementById('al-goal').value;
+  const horizon   = parseInt(document.getElementById('al-horizon').value);
+  const targetRet = document.getElementById('al-ret').value;
+  const riskTol   = document.querySelector('#al-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const preferCcy = document.getElementById('al-ccy').value === 'any' ? null : document.getElementById('al-ccy').value;
+  const monthly   = parseFloat(document.getElementById('al-monthly')?.value) || null;
+  const tenure    = parseInt(document.getElementById('al-tenure')?.value)    || null;
+  const income    = document.getElementById('al-income')?.value    || '';
+  const dependants= document.getElementById('al-dependants')?.value || '0';
+  const shariah   = document.querySelector('#al-shariah-grp .al-shariah-btn.active')?.dataset.val || 'no';
+  const warn      = document.getElementById('alloc-warn');
 
   if (!age || age < 18 || age > 90 || !goal || !targetRet) {
     warn.classList.remove('hidden'); return;
   }
   warn.classList.add('hidden');
-  if (!fAllFunds.length) { warn.textContent='Fund data not loaded yet. Please wait a moment.'; warn.classList.remove('hidden'); return; }
+  if (!fAllFunds.length) { warn.textContent = 'Fund data not loaded yet. Please wait a moment.'; warn.classList.remove('hidden'); return; }
 
-  const profile  = { age, goal, horizon, targetRet, riskTol };
-  const score    = alRiskScore(profile);
-  const mix      = alMix(score, goal);
-  const preferDist = goal === 'income';
+  const profile   = { age, goal, horizon, targetRet, riskTol, monthly, tenure, income, dependants, shariah };
+  const score     = alRiskScore(profile);          // 1–5 for risk display label
+  const tierObj   = clientTier(profile);            // Module 1: tier 1–4
+  const mix       = tierBucketMix(tierObj, goal);   // Module 3: allocation targets
+  const preferDist= goal === 'income';
 
-  const portfolio = [];
+  // Module 2: Shariah filter for Tier 4
+  const fundPool  = tierObj.tier === 4 ? fAllFunds.filter(f => isFundShariah(f)) : fAllFunds;
+  if (tierObj.tier === 4 && fundPool.length < 3) {
+    warn.textContent = `Only ${fundPool.length} Shariah-compliant fund(s) available — portfolio may be limited.`;
+    warn.classList.remove('hidden');
+  }
+
   const buckets = [
-    {key:'fixed',   pct: mix.fixed,   n: mix.fixed   >= 40 ? 2 : 1},
-    {key:'multi',   pct: mix.multi,   n: mix.multi   >= 28 ? 2 : 1},
-    {key:'eq_dev',  pct: mix.eq_dev,  n: mix.eq_dev  >= 28 ? 2 : 1},
-    {key:'eq_em',   pct: mix.eq_em,   n: mix.eq_em   >= 20 ? 2 : 1},
-    {key:'eq_spec', pct: mix.eq_spec, n: 1},
+    { key:'fixed',   pct: mix.fixed,   n: mix.fixed   >= 40 ? 2 : 1 },
+    { key:'multi',   pct: mix.multi,   n: mix.multi   >= 28 ? 2 : 1 },
+    { key:'eq_dev',  pct: mix.eq_dev,  n: mix.eq_dev  >= 28 ? 2 : 1 },
+    { key:'eq_em',   pct: mix.eq_em,   n: mix.eq_em   >= 20 ? 2 : 1 },
+    { key:'eq_spec', pct: mix.eq_spec, n: 1 },
   ];
 
-  for (const {key, pct, n} of buckets) {
+  const portfolio = [];
+  for (const { key, pct, n } of buckets) {
     if (pct <= 0) continue;
-    const pool = fAllFunds.filter(f => fundBucket(f) === key)
-      .sort((a,b) => alFundScore(b, goal, preferDist, preferCcy) - alFundScore(a, goal, preferDist, preferCcy));
+    // For Tier 4, fall back to full pool if no Shariah fund exists in this bucket
+    let pool = fundPool.filter(f => fundBucket(f) === key);
+    if (!pool.length && tierObj.tier === 4) pool = fAllFunds.filter(f => fundBucket(f) === key);
+    pool.sort((a,b) => alFundScore(b, goal, preferDist, preferCcy) - alFundScore(a, goal, preferDist, preferCcy));
     const picks = pool.slice(0, n);
     if (!picks.length) continue;
     picks.forEach(f => portfolio.push({ f, pct: pct / picks.length, bucket: key }));
@@ -1498,8 +1683,23 @@ function runAllocator() {
   // Normalise to 100%
   const tot = portfolio.reduce((s,x) => s + x.pct, 0);
   portfolio.forEach(x => { x.alloc = Math.round(x.pct / tot * 100); });
-  const diff = 100 - portfolio.reduce((s,x) => s + x.alloc, 0);
+  let diff = 100 - portfolio.reduce((s,x) => s + x.alloc, 0);
   if (diff && portfolio.length) portfolio.sort((a,b) => b.alloc - a.alloc)[0].alloc += diff;
+
+  // Module 3: no single fund > 30% — redistribute excess
+  let iters = 0;
+  while (iters++ < 8) {
+    const over = portfolio.filter(x => x.alloc > 30);
+    if (!over.length) break;
+    let excess = 0;
+    over.forEach(x => { excess += x.alloc - 30; x.alloc = 30; });
+    const under = portfolio.filter(x => x.alloc < 30);
+    if (!under.length) break;
+    const uTotal = under.reduce((s,x) => s + x.alloc, 0);
+    if (uTotal > 0) under.forEach(x => { x.alloc += Math.round(excess * x.alloc / uTotal); });
+    diff = 100 - portfolio.reduce((s,x) => s + x.alloc, 0);
+    if (diff) portfolio.sort((a,b) => b.alloc - a.alloc)[0].alloc += diff;
+  }
 
   // Weighted expected return (3Y)
   const withRet = portfolio.filter(x => x.f.performance['3y'] != null);
@@ -1507,10 +1707,11 @@ function runAllocator() {
     ? withRet.reduce((s,x) => s + (x.f.performance['3y'] ?? 0) * x.alloc, 0) / 100
     : null;
 
-  renderAllocation(portfolio, score, profile, expRet);
+  renderAllocation(portfolio, score, tierObj, profile, expRet);
 }
 
-function renderAllocation(portfolio, score, profile, expRet) {
+function renderAllocation(portfolio, score, tierObj, profile, expRet) {
+  const tier = tierObj?.tier || 2;
   const SL = ['','Very Conservative','Conservative','Moderate','Aggressive','Very Aggressive'];
   const SC = ['','#93c5fd','#6ee7b7','#fcd34d','#fb923c','#f87171'];
   const GL = {retirement:'Retirement Planning', growth:'Wealth Accumulation', education:'Education Fund', income:'Regular Income', preservation:'Capital Preservation'};
@@ -1526,7 +1727,8 @@ function renderAllocation(portfolio, score, profile, expRet) {
     <div class="al-result-header">
       <div class="al-profile-row">
         <span class="al-risk-pill" style="background:${SC[score]}22;color:${SC[score]};border:1px solid ${SC[score]}44">${SL[score]}</span>
-        <span class="al-info-txt">${GL[profile.goal]||profile.goal} &nbsp;·&nbsp; ${profile.horizon}-year horizon &nbsp;·&nbsp; Age ${profile.age}</span>
+        <span class="al-tier-badge t${tier}" title="${TIER_DESC[tier]}">${TIER_LABEL[tier]}</span>
+        <span class="al-info-txt" style="margin-left:0.4rem">${GL[profile.goal]||profile.goal} &nbsp;·&nbsp; ${profile.horizon}-year horizon &nbsp;·&nbsp; Age ${profile.age}</span>
       </div>
       <div class="al-summary-stats">
         <div><div class="al-stat-l">Est. Portfolio Return</div><div class="al-stat-v">${retStr}</div></div>
@@ -1793,19 +1995,24 @@ function rbSparkline(milestones) {
 
 // ── MAIN REBALANCER ─────────────────────────
 function runRebalancer() {
-  const age      = parseInt(document.getElementById('rb-age').value);
-  const goal     = document.getElementById('rb-goal').value;
-  const horizon  = parseInt(document.getElementById('rb-horizon').value);
-  const targetRet= document.getElementById('rb-ret').value;
-  const riskTol  = document.querySelector('#rb-risk-grp .al-btn.active')?.dataset.val || 'medium';
-  const startDate= document.getElementById('rb-startdate').value;
-  const type     = document.querySelector('.rb-type-btn.active')?.dataset.val || 'single';
-  const freq     = document.getElementById('rb-dca-freq').value;
-  const dcaAmt   = parseFloat(document.getElementById('rb-dca-amt').value) || 0;
-  const lump     = parseFloat(document.getElementById('rb-dca-lump').value) || 0;
-  const singleAmt= parseFloat(document.getElementById('rb-single-amt').value) || 0;
-  const holdings = rbGetHoldings();
-  const warn     = document.getElementById('rb-warn');
+  const age       = parseInt(document.getElementById('rb-age').value);
+  const goal      = document.getElementById('rb-goal').value;
+  const horizon   = parseInt(document.getElementById('rb-horizon').value);
+  const targetRet = document.getElementById('rb-ret').value;
+  const riskTol   = document.querySelector('#rb-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const startDate = document.getElementById('rb-startdate').value;
+  const type      = document.querySelector('.rb-type-btn.active')?.dataset.val || 'single';
+  const freq      = document.getElementById('rb-dca-freq').value;
+  const dcaAmt    = parseFloat(document.getElementById('rb-dca-amt').value) || 0;
+  const lump      = parseFloat(document.getElementById('rb-dca-lump').value) || 0;
+  const singleAmt = parseFloat(document.getElementById('rb-single-amt').value) || 0;
+  const monthly   = parseFloat(document.getElementById('rb-monthly')?.value) || null;
+  const tenure    = parseInt(document.getElementById('rb-tenure')?.value)    || null;
+  const income    = document.getElementById('rb-income')?.value    || '';
+  const dependants= document.getElementById('rb-dependants')?.value || '0';
+  const shariah   = document.querySelector('#rb-shariah-grp .al-shariah-btn.active')?.dataset.val || 'no';
+  const holdings  = rbGetHoldings();
+  const warn      = document.getElementById('rb-warn');
 
   if (!age || !goal || !targetRet || !startDate || !holdings.length) {
     warn.textContent = 'Please complete all fields and add at least one holding.';
@@ -1826,55 +2033,91 @@ function runRebalancer() {
   const cagr     = totalInvested > 0 && years > 0
     ? Math.pow(totalCurrentValue / totalInvested, 1/years) - 1 : null;
 
-  // ── Get recommended allocation (Portfolio Builder engine) ──
-  const profile  = { age, goal, horizon, targetRet, riskTol };
+  // ── Module 1: client tier ──────────────
+  const profile  = { age, goal, horizon, targetRet, riskTol, monthly, tenure, income, dependants, shariah };
   const score    = alRiskScore(profile);
-  const mix      = alMix(score, goal);
+  const tierObj  = clientTier(profile);
+
+  // ── Module 3: recommended allocation using tier-based targets ──
+  const mix      = tierBucketMix(tierObj, goal);
+  const fundPool = tierObj.tier === 4 ? fAllFunds.filter(f => isFundShariah(f)) : fAllFunds;
   const buckets  = [
-    {key:'fixed',  pct:mix.fixed,  n:mix.fixed  >=40?2:1},
-    {key:'multi',  pct:mix.multi,  n:mix.multi  >=28?2:1},
-    {key:'eq_dev', pct:mix.eq_dev, n:mix.eq_dev >=28?2:1},
-    {key:'eq_em',  pct:mix.eq_em,  n:mix.eq_em  >=20?2:1},
-    {key:'eq_spec',pct:mix.eq_spec,n:1},
+    { key:'fixed',   pct: mix.fixed,   n: mix.fixed   >= 40 ? 2 : 1 },
+    { key:'multi',   pct: mix.multi,   n: mix.multi   >= 28 ? 2 : 1 },
+    { key:'eq_dev',  pct: mix.eq_dev,  n: mix.eq_dev  >= 28 ? 2 : 1 },
+    { key:'eq_em',   pct: mix.eq_em,   n: mix.eq_em   >= 20 ? 2 : 1 },
+    { key:'eq_spec', pct: mix.eq_spec, n: 1 },
   ];
   const recPortfolio = [];
-  for (const {key, pct, n} of buckets) {
+  for (const { key, pct, n } of buckets) {
     if (pct <= 0) continue;
-    const pool = fAllFunds.filter(f => fundBucket(f) === key)
-      .sort((a,b) => alFundScore(b,goal,goal==='income',null) - alFundScore(a,goal,goal==='income',null));
-    pool.slice(0, n).forEach(f => recPortfolio.push({ f, alloc: pct / Math.min(n, pool.length) }));
+    let pool = fundPool.filter(f => fundBucket(f) === key);
+    if (!pool.length && tierObj.tier === 4) pool = fAllFunds.filter(f => fundBucket(f) === key);
+    pool.sort((a,b) => alFundScore(b,goal,goal==='income',null) - alFundScore(a,goal,goal==='income',null));
+    const picks = pool.slice(0, n);
+    if (!picks.length) continue;
+    picks.forEach(f => recPortfolio.push({ f, alloc: pct / picks.length }));
   }
   const recTotal = recPortfolio.reduce((s,x) => s + x.alloc, 0);
   recPortfolio.forEach(x => { x.alloc = Math.round(x.alloc / recTotal * 100); });
-  const diff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
-  if (diff && recPortfolio.length) recPortfolio.sort((a,b)=>b.alloc-a.alloc)[0].alloc += diff;
+  let rdiff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
+  if (rdiff && recPortfolio.length) recPortfolio.sort((a,b)=>b.alloc-a.alloc)[0].alloc += rdiff;
 
-  // ── Build rebalancing trades ─────────────
+  // Module 3: cap at 30%
+  let riters = 0;
+  while (riters++ < 8) {
+    const over = recPortfolio.filter(x => x.alloc > 30);
+    if (!over.length) break;
+    let excess = 0;
+    over.forEach(x => { excess += x.alloc - 30; x.alloc = 30; });
+    const under = recPortfolio.filter(x => x.alloc < 30);
+    const uTotal = under.reduce((s,x) => s + x.alloc, 0);
+    if (uTotal > 0) under.forEach(x => { x.alloc += Math.round(excess * x.alloc / uTotal); });
+    rdiff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
+    if (rdiff) recPortfolio.sort((a,b)=>b.alloc-a.alloc)[0].alloc += rdiff;
+  }
+
+  // ── Build rebalancing trades with Module 4 drift flags ─────────────
+  // Median 1Y return across all held funds (for performance trigger)
+  const held1Y = holdings.map(h => h.fund?.performance?.['1y']).filter(v => v != null).sort((a,b)=>a-b);
+  const medianHeld1Y = held1Y.length ? held1Y[Math.floor(held1Y.length/2)] : null;
+
   const trades = [];
   for (const rec of recPortfolio) {
     const targetVal  = totalCurrentValue * rec.alloc / 100;
     const curHolding = holdings.find(h => h.fund?.name === rec.f?.name);
     const curVal     = curHolding?.value || 0;
+    const curPct     = (curVal / totalCurrentValue) * 100;
     const tradeDiff  = targetVal - curVal;
+    // Module 4 Rule 1: drift trigger ±5%
+    const driftPct   = curPct - rec.alloc;
+    const driftFlag  = Math.abs(driftPct) > 5;
+    // Module 4 Rule 2: performance trigger (>10% below median held)
+    const fund1Y     = rec.f?.performance?.['1y'];
+    const perfFlag   = medianHeld1Y != null && fund1Y != null && (medianHeld1Y - fund1Y) > 0.10;
     trades.push({
-      fund: rec.f, curVal, curPct: (curVal/totalCurrentValue)*100,
+      fund: rec.f, curVal, curPct,
       targetVal, targetPct: rec.alloc,
       action: Math.abs(tradeDiff) < totalCurrentValue * 0.005 ? 'hold' : tradeDiff > 0 ? 'buy' : 'sell',
       amount: Math.abs(tradeDiff),
+      driftFlag, perfFlag,
     });
   }
   // Funds in current portfolio NOT in recommendation → sell
   for (const h of holdings) {
-    const inRec = recPortfolio.find(r => r.f?.name === h.fund?.name);
-    if (!inRec) trades.push({
-      fund: h.fund, curVal: h.value, curPct: (h.value/totalCurrentValue)*100,
-      targetVal: 0, targetPct: 0, action: 'sell', amount: h.value,
-    });
+    if (!recPortfolio.find(r => r.f?.name === h.fund?.name)) {
+      const curPct = (h.value / totalCurrentValue) * 100;
+      const driftFlag = curPct > 5; // any meaningful holding not in target is a drift flag
+      trades.push({
+        fund: h.fund, curVal: h.value, curPct,
+        targetVal: 0, targetPct: 0, action: 'sell', amount: h.value,
+        driftFlag, perfFlag: false,
+      });
+    }
   }
-  trades.sort((a,b) => ({sell:0,hold:1,buy:2}[a.action] - {sell:0,hold:1,buy:2}[b.action]));
+  trades.sort((a,b) => ({ sell:0, hold:1, buy:2 }[a.action] - { sell:0, hold:1, buy:2 }[b.action]));
 
   // ── Comparison data ──────────────────────
-  // All funds appearing in either current or recommended
   const allFundNames = new Set([
     ...holdings.map(h=>h.fund?.name).filter(Boolean),
     ...recPortfolio.map(r=>r.f?.name).filter(Boolean),
@@ -1894,11 +2137,12 @@ function runRebalancer() {
 
   renderRebalancerResults({
     totalInvested, totalCurrentValue, absGain, pctGain, cagr, years,
-    score, trades, compRows, milestones, startDate,
+    score, tierObj, trades, compRows, milestones, startDate,
   });
 }
 
-function renderRebalancerResults({ totalInvested, totalCurrentValue, absGain, pctGain, cagr, years, score, trades, compRows, milestones, startDate }) {
+function renderRebalancerResults({ totalInvested, totalCurrentValue, absGain, pctGain, cagr, years, score, tierObj, trades, compRows, milestones, startDate }) {
+  const tier = tierObj?.tier || 2;
   const SL = ['','Very Conservative','Conservative','Moderate','Aggressive','Very Aggressive'];
   const fmtSGD = v => 'S$' + Math.abs(v).toLocaleString(undefined, {minimumFractionDigits:0,maximumFractionDigits:0});
   const fmtPct = v => (v>=0?'+':'') + (v*100).toFixed(1) + '%';
@@ -1913,7 +2157,7 @@ function renderRebalancerResults({ totalInvested, totalCurrentValue, absGain, pc
     <div class="rb-kpi"><div class="rb-kpi-l">Current Value</div><div class="rb-kpi-v">${fmtSGD(totalCurrentValue)}</div><div class="rb-kpi-sub">as of today</div></div>
     <div class="rb-kpi"><div class="rb-kpi-l">Gain / Loss</div><div class="rb-kpi-v ${absGain>=0?'pos':'neg'}">${absGain>=0?'+':'-'}${fmtSGD(absGain)}</div><div class="rb-kpi-sub">${fmtPct(pctGain)} total</div></div>
     <div class="rb-kpi"><div class="rb-kpi-l">CAGR</div><div class="rb-kpi-v ${(cagr||0)>=0?'pos':'neg'}">${cagr!=null?fmtPct(cagr):'—'}</div><div class="rb-kpi-sub">annualised</div></div>
-    <div class="rb-kpi"><div class="rb-kpi-l">Risk Profile</div><div class="rb-kpi-v" style="font-size:0.88rem;line-height:1.3">${SL[score]||'Moderate'}</div><div class="rb-kpi-sub">recommended</div></div>
+    <div class="rb-kpi"><div class="rb-kpi-l">Risk Profile</div><div class="rb-kpi-v" style="font-size:0.88rem;line-height:1.3">${SL[score]||'Moderate'}</div><div class="rb-kpi-sub"><span class="al-tier-badge t${tier}" style="font-size:0.56rem;padding:1px 6px;margin-left:0">${TIER_LABEL[tier]||''}</span></div></div>
   </div>`;
 
   // Timeline
@@ -1950,12 +2194,25 @@ function renderRebalancerResults({ totalInvested, totalCurrentValue, absGain, pc
     </div>`).join('')}
   </div>`;
 
+  // Module 4 verdict
+  const driftCount = trades.filter(t => t.driftFlag).length;
+  const perfCount  = trades.filter(t => t.perfFlag).length;
+  const m4Verdict  = driftCount > 0 || perfCount > 0 ? 'Rebalance Now' : 'No Action Required';
+  const m4Color    = m4Verdict === 'Rebalance Now' ? '#fca5a5' : '#6ee7b7';
+
   // Actions
   const actHtml = `<div class="rb-actions">
-    <div class="rb-actions-hd">Rebalancing Actions</div>
+    <div class="rb-actions-hd" style="display:flex;align-items:center;gap:0.6rem">
+      Rebalancing Actions (Module 4)
+      <span style="margin-left:auto;font-size:0.65rem;font-weight:700;color:${m4Color}">${m4Verdict}</span>
+    </div>
+    ${driftCount || perfCount ? `<div style="padding:0.45rem 1rem;font-size:0.71rem;color:rgba(255,255,255,0.35);border-bottom:1px solid rgba(255,255,255,0.05)">
+      ${driftCount ? `<span class="rb-drift-flag" style="margin-right:6px">±5% drift on ${driftCount} fund${driftCount>1?'s':''}</span>` : ''}
+      ${perfCount  ? `<span class="rb-perf-flag">${perfCount} fund${perfCount>1?'s':''} underperforming peers</span>` : ''}
+    </div>` : ''}
     ${trades.map(t => `<div class="rb-action-row">
       <span class="rb-action-badge ${t.action}">${t.action.toUpperCase()}</span>
-      <span class="rb-action-name">${AI_SHORT(t.fund?.name||'')}</span>
+      <span class="rb-action-name">${AI_SHORT(t.fund?.name||'')}${t.driftFlag?'<span class="rb-drift-flag">DRIFT</span>':''}${t.perfFlag?'<span class="rb-perf-flag">PERF</span>':''}</span>
       <span class="rb-action-pcts">${t.curPct.toFixed(1)}% → ${t.targetPct.toFixed(1)}%</span>
       <span class="rb-action-amt ${t.action}">${t.action==='hold'?'No change':(t.action==='sell'?'−':'+')+fmtSGD(t.amount)}</span>
     </div>`).join('')}
@@ -1976,13 +2233,18 @@ const AI_SHORT = n => cleanName(n)
   .trim();
 
 async function runAIAnalysis() {
-  const age      = parseInt(document.getElementById('al-age').value);
-  const goal     = document.getElementById('al-goal').value;
-  const horizon  = parseInt(document.getElementById('al-horizon').value);
-  const targetRet= document.getElementById('al-ret').value;
-  const riskTol  = document.querySelector('#al-risk-grp .al-btn.active')?.dataset.val || 'medium';
-  const ccy      = document.getElementById('al-ccy').value;
-  const warn     = document.getElementById('alloc-warn');
+  const age       = parseInt(document.getElementById('al-age').value);
+  const goal      = document.getElementById('al-goal').value;
+  const horizon   = parseInt(document.getElementById('al-horizon').value);
+  const targetRet = document.getElementById('al-ret').value;
+  const riskTol   = document.querySelector('#al-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const ccy       = document.getElementById('al-ccy').value;
+  const monthly   = parseFloat(document.getElementById('al-monthly')?.value) || null;
+  const tenure    = parseInt(document.getElementById('al-tenure')?.value)    || null;
+  const income    = document.getElementById('al-income')?.value    || '';
+  const dependants= document.getElementById('al-dependants')?.value || '0';
+  const shariah   = document.querySelector('#al-shariah-grp .al-shariah-btn.active')?.dataset.val || 'no';
+  const warn      = document.getElementById('alloc-warn');
 
   if (!age || age < 18 || !goal || !targetRet) {
     warn.textContent = 'Please fill in all fields before running AI analysis.';
@@ -2018,7 +2280,13 @@ async function runAIAnalysis() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        profile: { age, goal, horizon, targetRet, riskTol, ccy: ccy === 'any' ? null : ccy },
+        profile: {
+          age, goal, horizon, targetRet, riskTol,
+          ccy: ccy === 'any' ? null : ccy,
+          monthly, tenure, income, dependants, shariah,
+          tier: clientTier({ age, goal, horizon, targetRet, riskTol, shariah }).tier,
+          tierLabel: TIER_LABEL[clientTier({ age, goal, horizon, targetRet, riskTol, shariah }).tier],
+        },
         funds:   fAllFunds,
         priceDate: meta.priceDate || '',
       }),
@@ -2035,7 +2303,7 @@ async function runAIAnalysis() {
     }
 
     const ai = await resp.json();
-    renderAIResult(ai, { age, goal, horizon, targetRet, riskTol }, out);
+    renderAIResult(ai, { age, goal, horizon, targetRet, riskTol, shariah, income, dependants }, out);
 
   } catch (e) {
     document.getElementById('ai-loader')?.remove();
@@ -2176,13 +2444,18 @@ async function runRBAIAnalysis() {
     return;
   }
 
-  const age      = parseInt(document.getElementById('rb-age').value);
-  const goal     = document.getElementById('rb-goal').value;
-  const horizon  = parseInt(document.getElementById('rb-horizon').value);
-  const targetRet= document.getElementById('rb-ret').value;
-  const riskTol  = document.querySelector('#rb-risk-grp .al-btn.active')?.dataset.val || 'medium';
-  const startDate= document.getElementById('rb-startdate').value;
-  const holdings = rbGetHoldings();
+  const age       = parseInt(document.getElementById('rb-age').value);
+  const goal      = document.getElementById('rb-goal').value;
+  const horizon   = parseInt(document.getElementById('rb-horizon').value);
+  const targetRet = document.getElementById('rb-ret').value;
+  const riskTol   = document.querySelector('#rb-risk-grp .al-btn.active')?.dataset.val || 'medium';
+  const startDate = document.getElementById('rb-startdate').value;
+  const monthly   = parseFloat(document.getElementById('rb-monthly')?.value) || null;
+  const tenure    = parseInt(document.getElementById('rb-tenure')?.value)    || null;
+  const income    = document.getElementById('rb-income')?.value    || '';
+  const dependants= document.getElementById('rb-dependants')?.value || '0';
+  const shariah   = document.querySelector('#rb-shariah-grp .al-shariah-btn.active')?.dataset.val || 'no';
+  const holdings  = rbGetHoldings();
 
   if (!holdings.length || !fAllFunds.length || !age || !goal || !startDate) {
     alert('Please complete all fields and run the rebalancer first.');
@@ -2199,47 +2472,68 @@ async function runRBAIAnalysis() {
   const cagr     = totalInvested > 0 && years > 0
     ? Math.pow(totalCurrentValue / totalInvested, 1/years) - 1 : null;
 
-  // Rebuild recommended portfolio & trades (same logic as runRebalancer)
-  const profile  = { age, goal, horizon, targetRet, riskTol };
+  // Rebuild recommended portfolio & trades using tier-based logic (same as runRebalancer)
+  const profile  = { age, goal, horizon, targetRet, riskTol, monthly, tenure, income, dependants, shariah };
   const score    = alRiskScore(profile);
-  const mix      = alMix(score, goal);
+  const tierObj  = clientTier(profile);
+  const mix      = tierBucketMix(tierObj, goal);
+  const fundPool = tierObj.tier === 4 ? fAllFunds.filter(f => isFundShariah(f)) : fAllFunds;
   const buckets  = [
-    {key:'fixed',  pct:mix.fixed,  n:mix.fixed  >=40?2:1},
-    {key:'multi',  pct:mix.multi,  n:mix.multi  >=28?2:1},
-    {key:'eq_dev', pct:mix.eq_dev, n:mix.eq_dev >=28?2:1},
-    {key:'eq_em',  pct:mix.eq_em,  n:mix.eq_em  >=20?2:1},
-    {key:'eq_spec',pct:mix.eq_spec,n:1},
+    { key:'fixed',   pct: mix.fixed,   n: mix.fixed   >= 40 ? 2 : 1 },
+    { key:'multi',   pct: mix.multi,   n: mix.multi   >= 28 ? 2 : 1 },
+    { key:'eq_dev',  pct: mix.eq_dev,  n: mix.eq_dev  >= 28 ? 2 : 1 },
+    { key:'eq_em',   pct: mix.eq_em,   n: mix.eq_em   >= 20 ? 2 : 1 },
+    { key:'eq_spec', pct: mix.eq_spec, n: 1 },
   ];
   const recPortfolio = [];
-  for (const {key, pct, n} of buckets) {
+  for (const { key, pct, n } of buckets) {
     if (pct <= 0) continue;
-    const pool = fAllFunds.filter(f => fundBucket(f) === key)
-      .sort((a,b) => alFundScore(b,goal,goal==='income',null) - alFundScore(a,goal,goal==='income',null));
-    pool.slice(0, n).forEach(f => recPortfolio.push({ f, alloc: pct / Math.min(n, pool.length) }));
+    let pool = fundPool.filter(f => fundBucket(f) === key);
+    if (!pool.length && tierObj.tier === 4) pool = fAllFunds.filter(f => fundBucket(f) === key);
+    pool.sort((a,b) => alFundScore(b,goal,goal==='income',null) - alFundScore(a,goal,goal==='income',null));
+    const picks = pool.slice(0, n);
+    if (!picks.length) continue;
+    picks.forEach(f => recPortfolio.push({ f, alloc: pct / picks.length }));
   }
   const recTotal = recPortfolio.reduce((s,x) => s + x.alloc, 0);
   recPortfolio.forEach(x => { x.alloc = Math.round(x.alloc / recTotal * 100); });
-  const rdiff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
+  let rdiff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
   if (rdiff && recPortfolio.length) recPortfolio.sort((a,b)=>b.alloc-a.alloc)[0].alloc += rdiff;
+  // Module 3: cap at 30%
+  let riters = 0;
+  while (riters++ < 8) {
+    const over = recPortfolio.filter(x => x.alloc > 30);
+    if (!over.length) break;
+    let excess = 0;
+    over.forEach(x => { excess += x.alloc - 30; x.alloc = 30; });
+    const under = recPortfolio.filter(x => x.alloc < 30);
+    const uTotal = under.reduce((s,x) => s + x.alloc, 0);
+    if (uTotal > 0) under.forEach(x => { x.alloc += Math.round(excess * x.alloc / uTotal); });
+    rdiff = 100 - recPortfolio.reduce((s,x) => s + x.alloc, 0);
+    if (rdiff) recPortfolio.sort((a,b)=>b.alloc-a.alloc)[0].alloc += rdiff;
+  }
 
   const trades = [];
   for (const rec of recPortfolio) {
     const targetVal  = totalCurrentValue * rec.alloc / 100;
     const curHolding = holdings.find(h => h.fund?.name === rec.f?.name);
     const curVal     = curHolding?.value || 0;
+    const curPct     = (curVal / totalCurrentValue) * 100;
     const tradeDiff  = targetVal - curVal;
+    const driftFlag  = Math.abs(curPct - rec.alloc) > 5;
     trades.push({
-      fund: rec.f, curVal, curPct: (curVal/totalCurrentValue)*100,
+      fund: rec.f, curVal, curPct,
       targetVal, targetPct: rec.alloc,
       action: Math.abs(tradeDiff) < totalCurrentValue * 0.005 ? 'hold' : tradeDiff > 0 ? 'buy' : 'sell',
       amount: Math.abs(tradeDiff),
+      driftFlag,
     });
   }
   for (const h of holdings) {
     if (!recPortfolio.find(r => r.f?.name === h.fund?.name)) {
       trades.push({
         fund: h.fund, curVal: h.value, curPct: (h.value/totalCurrentValue)*100,
-        targetVal: 0, targetPct: 0, action: 'sell', amount: h.value,
+        targetVal: 0, targetPct: 0, action: 'sell', amount: h.value, driftFlag: true,
       });
     }
   }
@@ -2273,7 +2567,11 @@ async function runRBAIAnalysis() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        profile: { age, goal, horizon, targetRet, riskTol },
+        profile: {
+          age, goal, horizon, targetRet, riskTol,
+          monthly, tenure, income, dependants, shariah,
+          tier: tierObj.tier, tierLabel: TIER_LABEL[tierObj.tier],
+        },
         currentHoldings,
         trades,
         performance: { totalInvested, totalCurrentValue, absGain, pctGain, cagr, years },
@@ -2345,6 +2643,39 @@ function renderRBAIResult(ai, container) {
     </div>`;
   }).join('');
 
+  // Module 4 verdict badge
+  const m4v = ai.m4Verdict || '';
+  const m4Color = m4v.includes('Now') ? '#fca5a5' : m4v.includes('Monitor') ? '#fcd34d' : '#6ee7b7';
+  const m4Html = m4v ? `<div style="display:flex;align-items:center;gap:0.6rem;padding:0.55rem 1rem;background:rgba(255,255,255,0.02);border-radius:var(--radius);border:1px solid rgba(255,255,255,0.06);margin-bottom:1rem">
+    <span style="font-size:0.63rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Module 4 Verdict</span>
+    <span style="font-size:0.72rem;font-weight:700;color:${m4Color};margin-left:auto">${m4v}</span>
+  </div>` : '';
+
+  const m4TriggersHtml = (ai.m4TriggersFound||[]).length
+    ? `<div style="padding:0 1rem 0.75rem">${(ai.m4TriggersFound||[]).map(t => `<div style="font-size:0.73rem;color:rgba(255,255,255,0.45);padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.04)">⚑ ${t}</div>`).join('')}</div>`
+    : '';
+
+  // Module 5 fund swaps
+  const swapsHtml = (ai.fundSwaps||[]).length
+    ? `<div class="rb-ai-block">
+        <div class="rb-ai-hd">
+          <span class="rb-ai-hd-title">🔄 Module 5 — Fund Swap Recommendations</span>
+          <span class="ai-badge" style="font-size:0.59rem;margin-left:auto">AI Evaluated</span>
+        </div>
+        ${(ai.fundSwaps||[]).map(sw => `<div style="padding:0.65rem 1rem;border-bottom:1px solid rgba(255,255,255,0.04)">
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.35rem">
+            <span class="rb-action-badge sell" style="font-size:0.6rem">OUT</span>
+            <span style="font-size:0.78rem;color:rgba(255,255,255,0.55);flex:1">${AI_SHORT(sw.replaceFund||'')}</span>
+            <span style="font-size:0.6rem;color:rgba(255,255,255,0.25)">${sw.triggerRule||''}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.35rem">
+            <span class="rb-action-badge buy" style="font-size:0.6rem">IN</span>
+            <span style="font-size:0.78rem;color:rgba(255,255,255,0.75);flex:1;font-weight:500">${AI_SHORT(sw.replacementFund||'')}</span>
+          </div>
+          <div style="font-size:0.73rem;color:rgba(255,255,255,0.4);line-height:1.5">${sw.rationale||''}</div>
+        </div>`).join('')}
+      </div>` : '';
+
   // New opportunities
   const oppsHtml = (ai.newOpportunities||[]).length
     ? `<div class="rb-ai-block">
@@ -2371,6 +2702,11 @@ function renderRBAIResult(ai, container) {
       <span class="rb-urgency-reason">${ai.urgencyReason||''}</span>
     </div>
 
+    ${ai.tierAssessment ? `<div class="rb-ai-block" style="margin-bottom:1rem">
+      <div class="rb-ai-hd"><span class="rb-ai-hd-title">🏷 Client Tier Assessment</span></div>
+      <div class="rb-ai-body"><div class="rb-ai-text" style="font-size:0.8rem">${ai.tierAssessment}</div></div>
+    </div>` : ''}
+
     <div class="rb-ai-block">
       <div class="rb-ai-hd">
         <span class="rb-ai-hd-title">✦ AI Market Analysis</span>
@@ -2387,6 +2723,14 @@ function renderRBAIResult(ai, container) {
       <div class="rb-ai-body"><div class="rb-ai-text">${ai.portfolioAssessment||''}</div></div>
     </div>
 
+    <div class="rb-ai-block" style="margin-bottom:1.5rem">
+      <div class="rb-ai-hd"><span class="rb-ai-hd-title">⚑ Module 4 — Rebalancing Triggers</span></div>
+      <div class="rb-ai-body" style="padding-bottom:0">
+        ${m4Html}
+        ${m4TriggersHtml}
+      </div>
+    </div>
+
     <div class="rb-actions" style="margin-bottom:1.5rem">
       <div class="rb-actions-hd" style="display:flex;align-items:center;gap:0.6rem">
         AI-Reviewed Rebalancing Actions
@@ -2395,6 +2739,7 @@ function renderRBAIResult(ai, container) {
       ${tradesHtml || '<div style="padding:1rem;font-size:0.78rem;color:rgba(255,255,255,0.35)">No trade adjustments suggested.</div>'}
     </div>
 
+    ${swapsHtml}
     ${oppsHtml}
 
     ${ai.phasingAdvice ? `<div class="rb-ai-block">
@@ -2411,7 +2756,7 @@ function renderRBAIResult(ai, container) {
 
     <div class="al-disclaimer">
       <strong>⚠ For Advisor Reference Only — Not Client-Facing Financial Advice</strong>
-      AI rebalancing analysis uses live PRULink fund momentum data to contextualise rule-based recommendations. It does not constitute a formal suitability assessment. All actions must be reviewed against Prudential Singapore's requirements, the client's completed Fact Find, and applicable prospectuses. The advisor remains solely responsible for any client recommendation.
+      AI rebalancing analysis uses the ILP 5-Module framework with live PRULink fund momentum data. It does not constitute a formal suitability assessment. All Module 4 triggers and Module 5 swap recommendations must be reviewed against Prudential Singapore's requirements, the client's completed Fact Find, and applicable prospectuses. The advisor remains solely responsible for any client recommendation.
     </div>`;
 
   container.prepend(el);

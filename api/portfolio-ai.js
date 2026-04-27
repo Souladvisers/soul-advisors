@@ -18,6 +18,8 @@ module.exports = async function handler(req, res) {
   }
 
   const { profile, funds, priceDate } = req.body || {};
+  // Destructure extended Module 1 profile fields
+  const { monthly, tenure, income, dependants, shariah, tier, tierLabel } = profile || {};
   if (!profile || !Array.isArray(funds) || !funds.length) {
     return res.status(400).json({ error: 'Missing profile or funds data.' });
   }
@@ -60,33 +62,67 @@ module.exports = async function handler(req, res) {
     preservation: 'Capital Preservation',
   }[profile.goal] || profile.goal;
 
+  // ── Module 1: client tier labels ────────────────────────────────────────
+  const tierMap = {
+    1: 'Tier 1 — Conservative (capital preservation, low volatility, 0–5 yr horizon or retiree)',
+    2: 'Tier 2 — Balanced (moderate growth + income, 5–10 yr horizon)',
+    3: 'Tier 3 — Aggressive (maximum growth, 10+ yr horizon, high loss tolerance)',
+    4: 'Tier 4 — Shariah-Compliant (Islamic screening applied across all risk levels)',
+  };
+  const clientTierStr = tierMap[tier] || tierMap[2];
+  const shariahLine = shariah === 'yes'
+    ? 'SHARIAH REQUIREMENT: YES — select ONLY Shariah/Islamic-screened funds from column (D).'
+    : 'Shariah requirement: No.';
+  const extProfile = [
+    monthly    ? `Monthly premium: S$${monthly}` : null,
+    tenure     ? `Policy tenure remaining: ${tenure} years` : null,
+    income     ? `Monthly income: ${income}` : null,
+    dependants ? `Dependants: ${dependants}` : null,
+  ].filter(Boolean).join(' | ');
+
   // ── Prompt ──────────────────────────────────────────────────────────────
-  const prompt = `You are a senior portfolio strategist at SOUL Advisors, a Prudential Singapore ILP advisory firm. Today is ${today}.
+  const prompt = `You are a senior ILP portfolio strategist at SOUL Advisors, a Prudential Singapore advisory firm. Today is ${today}.
 
-## CLIENT PROFILE
+## MODULE 1 — CLIENT PROFILE
 Age: ${profile.age} | Goal: ${goalLabel} | Horizon: ${profile.horizon} years | Target: ${profile.targetRet}% p.a. | Risk Tolerance: ${profile.riskTol} | Currency preference: ${profile.ccy || 'No preference'}
+${extProfile ? extProfile + '\n' : ''}Client Tier: ${clientTierStr}
+Investment Objective: ${goalLabel} | ILP Horizon: ${profile.horizon} years | ${shariahLine}
 
-## PRULINK FUND DATA — Live as of ${priceDate || today}
+## MODULE 2 — FUND UNIVERSE (PRULink Sub-Funds, live as of ${priceDate || today})
+Classification: (A) Low risk = money market / short-duration bond | (B) Medium risk = balanced / multi-asset / sukuk | (C) High risk = equity / sector / EM / single country | (D) Shariah-screened funds
 (1M and 3M columns are LIVE market data — use them to read current market momentum)
 
 ${header}
 ${rows.join('\n')}
 
+## MODULE 3 — PORTFOLIO CONSTRUCTION RULES
+Apply asset allocation targets based on client tier:
+- Tier 1 Conservative: 60% low-risk (A), 30% medium-risk (B), 10% high-risk (C)
+- Tier 2 Balanced: 30% low-risk (A), 40% medium-risk (B), 30% high-risk (C)
+- Tier 3 Aggressive: 10% low-risk (A), 20% medium-risk (B), 70% high-risk (C)
+- Tier 4 Shariah: apply same tier split as base risk level, but select only from (D) Shariah-screened funds
+
+Construction constraints (MANDATORY):
+1. No single fund may exceed 30% of total allocation
+2. Select minimum 3, maximum 6 funds
+3. Diversify by geography — no more than 40% in any single region
+4. Each of equities, bonds, and multi-asset must be represented where available
+5. Prefer funds with a 3+ year track record (3Ypa% column not blank)
+
 ## YOUR TASK
 
-STEP 1 — READ THE MARKET from the 1M and 3M columns above (this is live data).
+STEP 1 — READ THE MARKET from the 1M and 3M columns (live data).
 - Identify which asset classes / regions are trending up vs down right now
 - Is the market risk-on (equities leading) or risk-off (bonds / cash outperforming)?
 - Any notable divergences: EM vs developed, Asia vs global, growth vs income?
-- What does the 1Y vs 3M spread tell you about recent momentum shifts?
 
-STEP 2 — BUILD THE PORTFOLIO for this specific client.
-- Weight allocations to reflect BOTH the client profile AND current market signals
+STEP 2 — BUILD THE PORTFOLIO using Module 3 rules for this client's tier (${clientTierStr}).
+- Apply the tier allocation targets above as your starting point
 - Tactically overweight areas with positive momentum if suitable for the client's horizon
-- Avoid areas under near-term pressure unless they fit a contrarian long-term case
-- Select 5–7 funds. Allocations must total exactly 100.
+- Respect all 5 construction constraints — especially the 30% cap and fund count limit
+- ${shariah === 'yes' ? 'CRITICAL: only select Shariah-screened (Islamic) funds.' : ''}
 
-STEP 3 — EXPLAIN clearly: each fund reason should connect the current market observation to the client's goal.
+STEP 3 — EXPLAIN clearly: each fund reason must connect current market observation to the client goal and tier.
 
 Respond ONLY with a single valid JSON object (no markdown, no text outside the JSON):
 {
