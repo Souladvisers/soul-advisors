@@ -10,7 +10,7 @@
     "totalAumUSD_M": 70.9,
     "avgReturn1Y": 0.1278,
     "currency": "SGD",
-    "priceDate": "28-Apr-2026",
+    "priceDate": "29-Apr-2026",
     "pricesLive": true
   },
   "funds": [
@@ -65,8 +65,8 @@
         "si": 0.02
       },
       "dividends": [],
-      "bidPrice": 1.11472,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.11103,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Conservative (Accumulation)",
@@ -119,8 +119,8 @@
         "si": -0.003
       },
       "dividends": [],
-      "bidPrice": 0.97809,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.97549,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Growth (Accumulation)",
@@ -173,8 +173,8 @@
         "si": 0.021
       },
       "dividends": [],
-      "bidPrice": 1.1352,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.13116,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Moderate (Accumulation)",
@@ -227,8 +227,8 @@
         "si": 0.014
       },
       "dividends": [],
-      "bidPrice": 1.07526,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.07181,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Adapt 2035 Fund",
@@ -281,8 +281,8 @@
         "si": 0.039
       },
       "dividends": [],
-      "bidPrice": 2.24669,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.24088,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink America Fund",
@@ -335,8 +335,8 @@
         "si": 0.054
       },
       "dividends": [],
-      "bidPrice": 3.00236,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 3.00142,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink America Fund (USD) (Accumulation)",
@@ -389,8 +389,8 @@
         "si": 0.054
       },
       "dividends": [],
-      "bidPrice": 1.24502,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.24334,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian American Managed Fund",
@@ -443,8 +443,8 @@
         "si": 0.042
       },
       "dividends": [],
-      "bidPrice": 2.68772,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.68374,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Equity Fund",
@@ -497,8 +497,8 @@
         "si": 0.039
       },
       "dividends": [],
-      "bidPrice": 3.48132,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 3.46707,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Fixed-Income Fund (Accumulation)",
@@ -600,8 +600,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.85559,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.85251,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Fixed-Income Fund (Distribution)",
@@ -703,8 +703,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.68671,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.68424,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Income and Growth Fund (Accumulation)",
@@ -806,8 +806,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.76833,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.76466,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Income and Growth Fund (Distribution)",
@@ -909,8 +909,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.1759,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.17346,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Income and Growth Fund (USD) (Accumulation)",
@@ -1012,8 +1012,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.33198,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.32715,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Income Fund",
@@ -1115,8 +1115,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.25749,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.25402,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Low Volatility Equity Fund (Accumulation)",
@@ -1169,8 +1169,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 0.95387,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.95085,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Accumulation)",
@@ -1320,8 +1320,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.04471,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.04292,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Decumulation)",
@@ -1471,8 +1471,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.74847,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.74716,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Distribution)",
@@ -1622,8 +1622,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.79806,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.79684,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink China-India Fund",
@@ -1676,8 +1676,8 @@
         "si": 0.072
       },
       "dividends": [],
-      "bidPrice": 4.22656,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 4.20029,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Emerging Markets Fund",
@@ -1730,8 +1730,8 @@
         "si": 0.044
       },
       "dividends": [],
-      "bidPrice": 2.66779,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.65255,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink FlexGrowth Fund (SGD)",
@@ -1784,8 +1784,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 1.01031,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.00576,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Bond Fund",
@@ -1838,8 +1838,8 @@
         "si": 0.015
       },
       "dividends": [],
-      "bidPrice": 1.50023,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.50032,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Climate Change Equity Fund (Accumulation)",
@@ -1892,8 +1892,8 @@
         "si": -0.047
       },
       "dividends": [],
-      "bidPrice": 0.87075,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.86283,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Diversified Income Fund (Distribution)",
@@ -1946,8 +1946,8 @@
         "si": -0.003
       },
       "dividends": [],
-      "bidPrice": 0.94416,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.94293,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Dividend Wealth Fund (Distribution)",
@@ -2049,8 +2049,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.91432,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.90903,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Episode Macro Fund (Accumulation)",
@@ -2103,8 +2103,8 @@
         "si": 0.011
       },
       "dividends": [],
-      "bidPrice": 1.0014,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.99394,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Fund",
@@ -2206,8 +2206,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 2.53118,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.52119,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Fund (Distribution)",
@@ -2309,8 +2309,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.51552,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.50954,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Fund (USD) (Accumulation)",
@@ -2412,8 +2412,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.4452,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.43734,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Equity Growth (SGD) (Accumulation)",
@@ -2466,8 +2466,8 @@
         "si": 0.154
       },
       "dividends": [],
-      "bidPrice": 1.28694,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.26848,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Fixed-Income Fund (Accumulation)",
@@ -2520,8 +2520,8 @@
         "si": -0.016
       },
       "dividends": [],
-      "bidPrice": 0.9075,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.90512,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Fixed-Income Fund (USD) (Accumulation)",
@@ -2574,8 +2574,8 @@
         "si": -0.016
       },
       "dividends": [],
-      "bidPrice": 1.16736,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.16456,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Growth Fund (Accumulation)",
@@ -2628,8 +2628,8 @@
         "si": 0.105
       },
       "dividends": [],
-      "bidPrice": 1.31541,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.30431,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Impact ESG Equity Fund (Accumulation)",
@@ -2682,8 +2682,8 @@
         "si": -0.019
       },
       "dividends": [],
-      "bidPrice": 0.91567,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.90877,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Income Fund (Accumulation)",
@@ -2736,8 +2736,8 @@
         "si": 0.067
       },
       "dividends": [],
-      "bidPrice": 1.18672,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.18067,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Innovation Equity Fund (Accumulation)",
@@ -2790,8 +2790,8 @@
         "si": -0.012
       },
       "dividends": [],
-      "bidPrice": 0.9721,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.96058,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Managed Fund",
@@ -2893,8 +2893,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 2.68659,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.68017,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Managed Fund (Distribution)",
@@ -2996,8 +2996,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.16478,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.16199,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Multi-Asset Income Fund (Accumulation)",
@@ -3147,8 +3147,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.17718,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.17378,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Multi-Asset Income Fund (Decumulation)",
@@ -3298,8 +3298,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.84622,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.84378,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Multi-Asset Income Fund (Distribution)",
@@ -3449,8 +3449,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.93613,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.93344,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Property Securities Fund",
@@ -3503,8 +3503,8 @@
         "si": -0.004
       },
       "dividends": [],
-      "bidPrice": 0.99305,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.98922,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Signature CIO Balance Fund (Accumulation)",
@@ -3557,8 +3557,8 @@
         "si": 0.066
       },
       "dividends": [],
-      "bidPrice": 1.15063,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.15088,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Signature CIO Growth Fund (Accumulation)",
@@ -3611,8 +3611,8 @@
         "si": 0.116
       },
       "dividends": [],
-      "bidPrice": 1.2786,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.27947,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Signature CIO Income Fund (Distribution)",
@@ -3714,8 +3714,8 @@
           "rateCents": 0.43
         }
       ],
-      "bidPrice": 0.96889,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.96878,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Global Technology Fund",
@@ -3768,8 +3768,8 @@
         "si": 0.064
       },
       "dividends": [],
-      "bidPrice": 5.15233,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 5.08451,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Greater China Fund",
@@ -3822,8 +3822,8 @@
         "si": 0.058
       },
       "dividends": [],
-      "bidPrice": 2.54082,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.55024,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Greater China Fund (USD) (Accumulation)",
@@ -3876,8 +3876,8 @@
         "si": 0.058
       },
       "dividends": [],
-      "bidPrice": 1.56031,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.56155,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink India Equity Fund (soft closed)",
@@ -3930,8 +3930,8 @@
         "si": 0.04
       },
       "dividends": [],
-      "bidPrice": 1.38231,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.37401,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink India Opportunity Equity Fund (Accumulation)",
@@ -3984,8 +3984,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 0.88688,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.88058,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Islamic Global Equity Index Fund (Accumulation)",
@@ -4038,8 +4038,8 @@
         "si": 0.155
       },
       "dividends": [],
-      "bidPrice": 1.5231,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.51685,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Pan European Fund",
@@ -4092,8 +4092,8 @@
         "si": 0.035
       },
       "dividends": [],
-      "bidPrice": 2.28348,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.2714,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Singapore ASEAN Managed Fund",
@@ -4146,8 +4146,8 @@
         "si": 0.026
       },
       "dividends": [],
-      "bidPrice": 1.41895,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.41911,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Singapore Asian Managed Fund",
@@ -4200,8 +4200,8 @@
         "si": 0.054
       },
       "dividends": [],
-      "bidPrice": 5.90708,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 5.88867,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Singapore Cash Fund",
@@ -4254,8 +4254,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 1.60674,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.60679,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Singapore Dynamic Bond Fund (Accumulation)",
@@ -4437,8 +4437,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.57111,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.56921,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Singapore Dynamic Bond Fund (Distribution)",
@@ -4620,8 +4620,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.92204,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.92092,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink Singapore Growth Fund",
@@ -4674,8 +4674,8 @@
         "si": 0.058
       },
       "dividends": [],
-      "bidPrice": 2.42206,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 2.4231,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink StrategicInvest Income Fund (Distribution)",
@@ -4809,8 +4809,8 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 0.96515,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 0.96363,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink StrategicInvest Income Fund (USD) (Distribution)",
@@ -4944,8 +4944,8 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 1.03601,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.0345,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink US Dividend Wealth Fund (Distribution)",
@@ -5095,8 +5095,8 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 1.01445,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.01098,
+      "bidDate": "29-Apr-2026"
     },
     {
       "name": "PRULink US Dividend Wealth Fund (USD) (Distribution)",
@@ -5246,8 +5246,8 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 1.16145,
-      "bidDate": "28-Apr-2026"
+      "bidPrice": 1.15764,
+      "bidDate": "29-Apr-2026"
     }
   ]
 }
