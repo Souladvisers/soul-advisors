@@ -585,7 +585,7 @@
         "aboutQuote": "You think they got lucky with their wealth. Until you realize that Luck happens when preparation meets opportunity.",
         "testiLabel": "",
         "testiTitle": "",
-        "testiSub": "I am honored to be part of a chapter in your life. Thank you.",
+        "testiSub": "I am honored to be part of a chapter in your life.",
         "bookingLabel": "Complimentary Discovery Consultation",
         "bookingTitle": "Allow me to give you a hint of clarity:",
         "bookingSub": "",
@@ -605,6 +605,10 @@
         {
           "value": "AEPP®",
           "label": "Associate Estate Planning Practitioner | Precepts Group Intl"
+        },
+        {
+          "value": "36717",
+          "label": "MIN300423828"
         }
       ],
       "hiddenSections": []
