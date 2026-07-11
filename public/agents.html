@@ -524,6 +524,51 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   .tools-wrap { padding: 2rem 1rem 4rem; }
   .f-kpi-grid { grid-template-columns: repeat(2,1fr); }
 }
+
+/* ── SINGLE PREMIUM ── */
+.sp-wrap { max-width: 1140px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+.sp-grid { display: grid; grid-template-columns: 340px 1fr; gap: 1.5rem; align-items: start; }
+@media(max-width:900px){ .sp-grid { grid-template-columns: 1fr; } }
+.sp-form { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 1.5rem; position: sticky; top: 90px; }
+.sp-form-title { font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600; color: white; margin-bottom: 0.25rem; }
+.sp-form-sub { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-bottom: 1.25rem; line-height: 1.5; }
+.sp-calc-btn { width: 100%; padding: 0.72rem; background: var(--accent); color: white; border: none; border-radius: var(--radius); font-family: inherit; font-size: 0.86rem; font-weight: 600; letter-spacing: 0.05em; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; }
+.sp-calc-btn:hover { background: var(--accent-dark); }
+.sp-results { display: flex; flex-direction: column; gap: 1rem; }
+.sp-empty { text-align: center; padding: 5rem 2rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; }
+.sp-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.2; }
+.sp-empty-txt { font-size: 0.84rem; color: rgba(255,255,255,0.22); }
+.sp-scenario-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+@media(max-width:700px){ .sp-scenario-grid { grid-template-columns: 1fr; } }
+.sp-sc { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem 1.1rem; text-align: center; }
+.sp-sc.sp-sc-mid { border-color: rgba(184,151,90,0.35); background: rgba(184,151,90,0.06); }
+.sp-sc-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.3rem; }
+.sp-sc.sp-sc-mid .sp-sc-label { color: var(--accent); }
+.sp-sc-rate { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 0.6rem; }
+.sp-sc.sp-sc-mid .sp-sc-rate { color: rgba(184,151,90,0.7); }
+.sp-sc-val { font-family: 'Lora', serif; font-size: 1.55rem; font-weight: 600; color: white; line-height: 1.1; }
+.sp-sc.sp-sc-mid .sp-sc-val { color: var(--accent); }
+.sp-sc-gain { font-size: 0.72rem; margin-top: 0.35rem; }
+.sp-proj-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; overflow: hidden; }
+.sp-proj-head { background: rgba(255,255,255,0.05); padding: 0.6rem 1rem; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+.sp-proj-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.sp-proj-table th { padding: 0.5rem 0.85rem; text-align: right; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.28); border-bottom: 1px solid rgba(255,255,255,0.07); }
+.sp-proj-table th:first-child { text-align: left; }
+.sp-proj-table td { padding: 0.55rem 0.85rem; text-align: right; color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.04); font-variant-numeric: tabular-nums; }
+.sp-proj-table td:first-child { text-align: left; color: rgba(255,255,255,0.35); font-size: 0.72rem; }
+.sp-proj-table td.sp-mid-col { color: var(--accent); font-weight: 600; }
+.sp-proj-table tr:last-child td { border-bottom: none; font-weight: 700; color: white; font-size: 0.86rem; }
+.sp-proj-table tr:last-child td.sp-mid-col { color: var(--accent); }
+.sp-funds-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 1rem 1.1rem; }
+.sp-funds-title { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 0.75rem; }
+.sp-fund-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.55rem; }
+.sp-fund-row:last-child { margin-bottom: 0; }
+.sp-fund-pct { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600; color: var(--accent); min-width: 42px; }
+.sp-fund-bar-wrap { flex: 1; }
+.sp-fund-name { font-size: 0.76rem; color: rgba(255,255,255,0.7); margin-bottom: 3px; }
+.sp-fund-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.sp-fund-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); border-radius: 2px; }
+.sp-note { font-size: 0.67rem; color: rgba(255,255,255,0.2); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem; }
 </style>
 </head>
 <body>
@@ -565,6 +610,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
     <button class="ag-tab active" onclick="switchAgentTab('funds',this)">🏦 PRULink Funds</button>
     <button class="ag-tab" onclick="switchAgentTab('allocator',this)">🎯 Portfolio Builder</button>
     <button class="ag-tab" onclick="switchAgentTab('rebalancer',this)">⚖️ Rebalancer</button>
+    <button class="ag-tab" onclick="switchAgentTab('singleprem',this)">💎 Single Premium</button>
     <button class="ag-tab" onclick="switchAgentTab('elearning',this)">📚 eLearning</button>
     <button class="ag-tab" onclick="switchAgentTab('care',this)">💛 Client Care</button>
   </div>
@@ -956,6 +1002,77 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
       </div>
     </div>
   </div><!-- /p-rebalancer -->
+
+  <!-- ── SINGLE PREMIUM PANEL ── -->
+  <div class="ag-panel" id="p-singleprem">
+    <div class="sp-wrap">
+      <div class="sp-grid">
+
+        <!-- LEFT: Inputs -->
+        <div class="sp-form">
+          <div class="sp-form-title">💎 Single Premium Projection</div>
+          <div class="sp-form-sub">Enter the client's lump sum details to see projected fund values across 3 return scenarios.</div>
+
+          <div class="al-field">
+            <label class="al-label">Lump Sum Amount (SGD)</label>
+            <input class="al-input" type="number" id="sp-amount" min="0" placeholder="e.g. 50000" oninput="spCalc()">
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Client Age</label>
+            <input class="al-input" type="number" id="sp-age" min="18" max="70" placeholder="e.g. 38" oninput="spCalc()">
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Investment Horizon — <span id="sp-horizon-lbl" style="color:var(--accent)">10 years</span></label>
+            <div class="al-slider-wrap">
+              <input class="al-slider" type="range" id="sp-horizon" min="3" max="30" value="10"
+                oninput="document.getElementById('sp-horizon-lbl').textContent=this.value+' year'+(this.value==1?'':'s');spCalc()">
+            </div>
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Risk Profile</label>
+            <div class="al-btn-group" id="sp-risk-grp">
+              <button class="al-btn" data-val="conservative" onclick="spRisk(this)">Conservative</button>
+              <button class="al-btn active" data-val="moderate" onclick="spRisk(this)">Moderate</button>
+              <button class="al-btn" data-val="aggressive" onclick="spRisk(this)">Aggressive</button>
+            </div>
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Shariah-Compliant</label>
+            <div class="al-btn-group" id="sp-shariah-grp">
+              <button class="al-btn active" data-val="no" onclick="spShariah(this)">No</button>
+              <button class="al-btn" data-val="yes" onclick="spShariah(this)">Yes — Islamic Only</button>
+            </div>
+          </div>
+
+          <div class="al-field">
+            <label class="al-label">Investment Goal</label>
+            <select class="al-input" id="sp-goal" onchange="spCalc()">
+              <option value="retirement">Retirement Planning</option>
+              <option value="growth">Wealth Accumulation</option>
+              <option value="education">Education Fund</option>
+              <option value="preservation">Capital Preservation</option>
+              <option value="legacy">Legacy / Estate Planning</option>
+            </select>
+          </div>
+
+          <button class="sp-calc-btn" onclick="spCalc()">Calculate Projection →</button>
+        </div>
+
+        <!-- RIGHT: Results -->
+        <div class="sp-results" id="sp-results">
+          <div class="sp-empty">
+            <div class="sp-empty-icon">💎</div>
+            <div class="sp-empty-txt">Enter the lump sum amount and horizon to see projected values across Conservative, Moderate and Optimistic scenarios.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /p-singleprem -->
 
   <!-- ── eLEARNING PANEL ── -->
   <div class="ag-panel" id="p-elearning">
@@ -2760,6 +2877,147 @@ function renderRBAIResult(ai, container) {
     </div>`;
 
   container.prepend(el);
+}
+
+// ─────────────────────────────────────────────
+// SINGLE PREMIUM CALCULATOR
+// ─────────────────────────────────────────────
+function spRisk(btn) {
+  document.querySelectorAll('#sp-risk-grp .al-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  spCalc();
+}
+function spShariah(btn) {
+  document.querySelectorAll('#sp-shariah-grp .al-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  spCalc();
+}
+
+function spFmt(n) {
+  if (n >= 1e6) return 'S$' + (n / 1e6).toFixed(2) + 'M';
+  return 'S$' + Math.round(n).toLocaleString();
+}
+function spGain(initial, final) {
+  const pct = ((final - initial) / initial * 100).toFixed(1);
+  const col = final >= initial ? '#6ee7b7' : '#fca5a5';
+  return `<span style="color:${col}">${final >= initial ? '+' : ''}${pct}% gain</span>`;
+}
+
+function spCalc() {
+  const amount = parseFloat(document.getElementById('sp-amount').value) || 0;
+  const horizon = parseInt(document.getElementById('sp-horizon').value) || 10;
+  const risk = document.querySelector('#sp-risk-grp .al-btn.active')?.dataset.val || 'moderate';
+  const shariah = document.querySelector('#sp-shariah-grp .al-btn.active')?.dataset.val === 'yes';
+  const goal = document.getElementById('sp-goal').value;
+
+  const resultsEl = document.getElementById('sp-results');
+  if (!amount || amount < 1000) {
+    resultsEl.innerHTML = '<div class="sp-empty"><div class="sp-empty-icon">💎</div><div class="sp-empty-txt">Enter a lump sum amount of at least S$1,000 to see projections.</div></div>';
+    return;
+  }
+
+  // Return assumptions (net of fund management charges)
+  const scenarios = {
+    conservative: { low: 0.03, mid: 0.045, high: 0.06,  label: 'Conservative', rateLabel: '3% / 4.5% / 6% p.a.' },
+    moderate:     { low: 0.04, mid: 0.065, high: 0.09,  label: 'Moderate',     rateLabel: '4% / 6.5% / 9% p.a.' },
+    aggressive:   { low: 0.05, mid: 0.085, high: 0.12,  label: 'Aggressive',   rateLabel: '5% / 8.5% / 12% p.a.' },
+  };
+  const sc = scenarios[risk];
+
+  // Project value at compound interest
+  const proj = (r, yrs) => amount * Math.pow(1 + r, yrs);
+
+  // Milestone years for the table
+  const milestones = [];
+  [5, 10, 15, 20, 25, 30].forEach(y => { if (y < horizon) milestones.push(y); });
+  milestones.push(horizon);
+
+  // Scenario cards
+  const lowFinal  = proj(sc.low,  horizon);
+  const midFinal  = proj(sc.mid,  horizon);
+  const highFinal = proj(sc.high, horizon);
+
+  const scenarioHtml = `
+    <div class="sp-scenario-grid">
+      <div class="sp-sc">
+        <div class="sp-sc-label">Pessimistic</div>
+        <div class="sp-sc-rate">${(sc.low*100).toFixed(0)}% p.a. net</div>
+        <div class="sp-sc-val">${spFmt(lowFinal)}</div>
+        <div class="sp-sc-gain">${spGain(amount, lowFinal)}</div>
+      </div>
+      <div class="sp-sc sp-sc-mid">
+        <div class="sp-sc-label">Base Case</div>
+        <div class="sp-sc-rate">${(sc.mid*100).toFixed(1)}% p.a. net</div>
+        <div class="sp-sc-val">${spFmt(midFinal)}</div>
+        <div class="sp-sc-gain">${spGain(amount, midFinal)}</div>
+      </div>
+      <div class="sp-sc">
+        <div class="sp-sc-label">Optimistic</div>
+        <div class="sp-sc-rate">${(sc.high*100).toFixed(0)}% p.a. net</div>
+        <div class="sp-sc-val">${spFmt(highFinal)}</div>
+        <div class="sp-sc-gain">${spGain(amount, highFinal)}</div>
+      </div>
+    </div>`;
+
+  // Projection table
+  const tableRows = milestones.map(y => {
+    const isLast = y === horizon;
+    const low = proj(sc.low, y), mid = proj(sc.mid, y), high = proj(sc.high, y);
+    return `<tr>
+      <td>Year ${y}</td>
+      <td>${spFmt(low)}</td>
+      <td class="sp-mid-col">${spFmt(mid)}</td>
+      <td>${spFmt(high)}</td>
+    </tr>`;
+  }).join('');
+
+  const projHtml = `
+    <div class="sp-proj-box">
+      <div class="sp-proj-head">Year-by-Year Projection · Initial: ${spFmt(amount)} · Horizon: ${horizon} yrs</div>
+      <div style="overflow-x:auto">
+        <table class="sp-proj-table">
+          <thead><tr>
+            <th style="text-align:left">Year</th>
+            <th>Pessimistic</th>
+            <th>Base Case</th>
+            <th>Optimistic</th>
+          </tr></thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+  // Fund suggestions
+  const fundSuggestions = {
+    conservative: {
+      no:  [{ pct:40, name:'PRULink Singapore Cash' }, { pct:35, name:'PRULink Singapore Bond' }, { pct:25, name:'PRULink Singapore Balanced' }],
+      yes: [{ pct:45, name:'PRULink ASEAN Equity (Shariah)' }, { pct:30, name:'PRULink Global Equity (Shariah)' }, { pct:25, name:'PRULink Singapore Cash' }],
+    },
+    moderate: {
+      no:  [{ pct:40, name:'PRULink Singapore Managed' }, { pct:30, name:'PRULink Global Equity' }, { pct:20, name:'PRULink Singapore Bond' }, { pct:10, name:'PRULink Singapore Cash' }],
+      yes: [{ pct:40, name:'PRULink Global Equity (Shariah)' }, { pct:35, name:'PRULink ASEAN Equity (Shariah)' }, { pct:25, name:'PRULink Singapore Cash' }],
+    },
+    aggressive: {
+      no:  [{ pct:40, name:'PRULink Global Equity' }, { pct:30, name:'PRULink Greater China' }, { pct:20, name:'PRULink Singapore Managed' }, { pct:10, name:'PRULink Technology' }],
+      yes: [{ pct:50, name:'PRULink Global Equity (Shariah)' }, { pct:30, name:'PRULink ASEAN Equity (Shariah)' }, { pct:20, name:'PRULink Global Sukuk' }],
+    },
+  };
+  const funds = fundSuggestions[risk][shariah ? 'yes' : 'no'];
+  const fundsHtml = `
+    <div class="sp-funds-box">
+      <div class="sp-funds-title">Suggested Fund Mix — ${sc.label}${shariah ? ' · Shariah' : ''}</div>
+      ${funds.map(f => `
+        <div class="sp-fund-row">
+          <div class="sp-fund-pct">${f.pct}%</div>
+          <div class="sp-fund-bar-wrap">
+            <div class="sp-fund-name">${f.name}</div>
+            <div class="sp-fund-track"><div class="sp-fund-fill" style="width:${f.pct}%"></div></div>
+          </div>
+        </div>`).join('')}
+      <div class="sp-note" style="margin-top:0.85rem">Fund suggestion is illustrative only. Final allocation must be reviewed with a completed Fact Find and confirmed against the client's suitability assessment. Past performance does not guarantee future results. Projections assume returns are net of annual fund management charges.</div>
+    </div>`;
+
+  resultsEl.innerHTML = scenarioHtml + projHtml + fundsHtml;
 }
 
 // ─────────────────────────────────────────────
