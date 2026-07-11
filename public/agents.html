@@ -184,10 +184,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .f-dist-calc-bar input { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 0.4rem 0.7rem; color: white; font-family: inherit; font-size: 0.86rem; font-weight: 600; width: 160px; outline: none; }
 .f-dist-calc-bar input:focus { border-color: var(--accent); }
 .f-dist-calc-bar .hint { font-size: 0.67rem; color: rgba(255,255,255,0.3); }
-.f-dist-est { display: flex; gap: 0.5rem; margin-top: 0.6rem; flex-wrap: wrap; }
-.f-dist-est-item { background: rgba(184,151,90,0.08); border: 1px solid rgba(184,151,90,0.18); border-radius: 5px; padding: 0.38rem 0.65rem; text-align: center; min-width: 80px; }
-.f-dist-est-lbl { font-size: 0.57rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
-.f-dist-est-val { font-size: 0.83rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.f-dist-est { display: flex; gap: 0.4rem; margin-top: 0.65rem; flex-wrap: wrap; }
+.f-dist-est-item { background: rgba(184,151,90,0.08); border: 1px solid rgba(184,151,90,0.18); border-radius: 5px; padding: 0.35rem 0.6rem; text-align: center; min-width: 76px; flex: 1; transition: background 0.15s; }
+.f-dist-est-lbl { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 2px; white-space: nowrap; }
+.f-dist-est-val { font-size: 0.8rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
 .f-div-rows th { font-size: 0.59rem; color: rgba(255,255,255,0.33); padding: 3px 5px; border-bottom: 1px solid rgba(255,255,255,0.06); text-transform: uppercase; letter-spacing: 0.05em; }
 .f-div-rows td { padding: 4px 5px; color: rgba(255,255,255,0.55); border-bottom: 1px solid rgba(255,255,255,0.035); }
 .f-div-rows tr:last-child td { border: none; }
@@ -1406,10 +1406,13 @@ function fRenderDist(funds) {
     const latestRate  = latestDiv.ratePct  ?? null;
     const latestCents = latestDiv.rateCents ?? null;
     const latestFreq  = latestDiv.frequency || freq;
+    // Parse management fee string e.g. '1.30% p.a.' → 0.013
+    const feeMatch = (f.managementFee || '').match(/([\d.]+)\s*%/);
+    const feeRate  = feeMatch ? parseFloat(feeMatch[1]) / 100 : null;
     const rows = divs.map(d => `<tr><td>${d.payoutDate ? d.payoutDate.substring(0,10) : '—'}</td><td>${d.frequency||'—'}</td><td class="f-div-rate">${d.ratePct!=null?(d.ratePct*100).toFixed(4)+'%':d.rateCents!=null?d.rateCents+' ¢/unit':(d.rateRaw||'—')}</td></tr>`).join('');
     const moreHtml = moreDivs.length ? `<button class="f-more-btn" onclick="fToggleMore(this,'${key}')">+ ${moreDivs.length} more payments</button><div class="hidden fmore_${key}"><table style="width:100%;border-collapse:collapse;font-size:0.7rem">${moreDivs.map(d=>`<tr><td style="padding:3px 5px;color:rgba(255,255,255,0.45)">${d.payoutDate?d.payoutDate.substring(0,10):'—'}</td><td style="padding:3px 5px;color:rgba(255,255,255,0.45)">${d.frequency||'—'}</td><td style="text-align:right;font-weight:600;color:rgba(255,255,255,0.8);padding:3px 5px">${d.ratePct!=null?(d.ratePct*100).toFixed(4)+'%':d.rateCents!=null?d.rateCents+' ¢/unit':(d.rateRaw||'—')}</td></tr>`).join('')}</table></div>` : '';
     const p = f.performance;
-    return `<div class="f-dist-card" data-rate="${latestRate ?? ''}" data-cents="${latestCents ?? ''}" data-price="${f.bidPrice ?? ''}" data-freq="${latestFreq}">
+    return `<div class="f-dist-card" data-rate="${latestRate ?? ''}" data-cents="${latestCents ?? ''}" data-price="${f.bidPrice ?? ''}" data-fee="${feeRate ?? ''}" data-freq="${latestFreq}">
       <div class="f-dc-name">${cleanName(f.name)}</div>
       <div class="f-dc-meta"><span class="f-ccy">${f.currency}</span><span class="f-risk ${fRiskCls(f.risk)}">${fRiskLbl(f.risk)}</span><span class="f-freq">${freq}</span></div>
       <div class="f-dc-perf">
@@ -1440,31 +1443,54 @@ function fUpdateDistCalc() {
     const ratePct   = parseFloat(card.dataset.rate);
     const rateCents = parseFloat(card.dataset.cents);
     const bidPrice  = parseFloat(card.dataset.price);
+    const feeRate   = parseFloat(card.dataset.fee);
     const freqRaw = (card.dataset.freq || '').toLowerCase().trim();
     const mult = freqMult[freqRaw] || (freqRaw.includes('month') ? 12 : freqRaw.includes('quarter') ? 4 : freqRaw.includes('semi') ? 2 : 1);
 
     const hasPct   = !isNaN(ratePct);
     const hasCents = !isNaN(rateCents) && !isNaN(bidPrice) && bidPrice > 0;
+    const hasFee   = !isNaN(feeRate);
 
     if (!amount || (!hasPct && !hasCents)) {
       destEl.innerHTML = '';
       return;
     }
 
-    let perPayment, yieldPct, rateLabel;
+    let perPayment, grossYieldPct, rateLabel;
     if (hasCents) {
-      // Cents-per-unit: calculate units from amount and bidPrice
-      const units = amount / bidPrice;
-      perPayment = units * (rateCents / 100);
-      yieldPct   = ((rateCents / 100 / bidPrice) * mult * 100).toFixed(2);
-      rateLabel  = rateCents + ' ¢/unit';
+      const units   = amount / bidPrice;
+      perPayment    = units * (rateCents / 100);
+      grossYieldPct = ((rateCents / 100 / bidPrice) * mult * 100).toFixed(2);
+      rateLabel     = rateCents + ' \u00a2/unit';
     } else {
-      perPayment = amount * ratePct;
-      yieldPct   = (ratePct * mult * 100).toFixed(2);
-      rateLabel  = (ratePct * 100).toFixed(4) + '%';
+      perPayment    = amount * ratePct;
+      grossYieldPct = (ratePct * mult * 100).toFixed(2);
+      rateLabel     = (ratePct * 100).toFixed(4) + '%';
     }
-    const annual = perPayment * mult;
-    const fmt = n => 'S$' + n.toLocaleString('en-SG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const grossAnnual  = perPayment * mult;
+    const annualCharge = hasFee ? amount * feeRate : 0;
+    const netAnnual    = grossAnnual - annualCharge;
+    const netYieldPct  = hasFee ? (netAnnual / amount * 100).toFixed(2) : null;
+    const fmt = n => 'S$' + Math.abs(n).toLocaleString('en-SG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const netCol = netAnnual >= 0 ? '#6ee7b7' : '#fca5a5';
+
+    const feeHtml = hasFee ? `
+      <div class="f-dist-est-item" style="border-color:rgba(252,165,165,0.3);background:rgba(252,165,165,0.06)">
+        <div class="f-dist-est-lbl">Fund Charge p.a.</div>
+        <div class="f-dist-est-val" style="color:#fca5a5">&minus;${fmt(annualCharge)}</div>
+      </div>
+      <div class="f-dist-est-item" style="border-color:rgba(110,231,183,0.35);background:rgba(110,231,183,0.06)">
+        <div class="f-dist-est-lbl">Net Annual</div>
+        <div class="f-dist-est-val" style="color:${netCol}">${netAnnual < 0 ? '&minus;' : ''}${fmt(netAnnual)}</div>
+      </div>
+      <div class="f-dist-est-item" style="border-color:rgba(110,231,183,0.35);background:rgba(110,231,183,0.06)">
+        <div class="f-dist-est-lbl">Net Yield p.a.</div>
+        <div class="f-dist-est-val" style="color:${netCol}">${netYieldPct}%</div>
+      </div>` : `
+      <div class="f-dist-est-item">
+        <div class="f-dist-est-lbl">Gross Yield p.a.</div>
+        <div class="f-dist-est-val">${grossYieldPct}%</div>
+      </div>`;
 
     destEl.innerHTML = `
       <div class="f-dist-est-item">
@@ -1476,13 +1502,9 @@ function fUpdateDistCalc() {
         <div class="f-dist-est-val">${fmt(perPayment)}</div>
       </div>
       <div class="f-dist-est-item">
-        <div class="f-dist-est-lbl">Annual Est.</div>
-        <div class="f-dist-est-val">${fmt(annual)}</div>
-      </div>
-      <div class="f-dist-est-item">
-        <div class="f-dist-est-lbl">Yield p.a.</div>
-        <div class="f-dist-est-val">${yieldPct}%</div>
-      </div>`;
+        <div class="f-dist-est-lbl">Gross Annual</div>
+        <div class="f-dist-est-val">${fmt(grossAnnual)}</div>
+      </div>${feeHtml}`;
   });
 }
 
