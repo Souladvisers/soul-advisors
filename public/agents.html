@@ -1153,13 +1153,18 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           </div>
 
           <button class="sp-calc-btn" onclick="spCalc()">Calculate Projection →</button>
+          <button class="sp-calc-btn" id="sp-ai-btn" onclick="spAI()" style="background:rgba(127,196,232,0.12);border:1px solid rgba(127,196,232,0.25);color:var(--data);margin-top:0.5rem">✦ AI Market Analysis</button>
+          <div class="login-error hidden" id="sp-ai-warn" style="margin-top:0.5rem"></div>
         </div>
 
         <!-- RIGHT: Results -->
-        <div class="sp-results" id="sp-results">
-          <div class="sp-empty">
-            <div class="sp-empty-icon">💎</div>
-            <div class="sp-empty-txt">Enter the lump sum amount and horizon to see projected values across Conservative, Moderate and Optimistic scenarios.</div>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div id="sp-ai-result"></div>
+          <div class="sp-results" id="sp-results">
+            <div class="sp-empty">
+              <div class="sp-empty-icon">💎</div>
+              <div class="sp-empty-txt">Enter the lump sum amount and horizon to see projected values across Conservative, Moderate and Optimistic scenarios.</div>
+            </div>
           </div>
         </div>
 
@@ -3408,6 +3413,75 @@ function spGain(initial, final) {
   return `<span style="color:${col}">${final >= initial ? '+' : ''}${pct}% gain</span>`;
 }
 
+async function spAI() {
+  const amount  = parseFloat(document.getElementById('sp-amount').value) || 0;
+  const age     = parseInt(document.getElementById('sp-age').value) || 0;
+  const horizon = parseInt(document.getElementById('sp-horizon').value) || 10;
+  const risk    = document.querySelector('#sp-risk-grp .al-btn.active')?.dataset.val || 'moderate';
+  const shariah = document.querySelector('#sp-shariah-grp .al-btn.active')?.dataset.val === 'yes';
+  const goal    = document.getElementById('sp-goal').value;
+  const warn    = document.getElementById('sp-ai-warn');
+  const btn     = document.getElementById('sp-ai-btn');
+  const out     = document.getElementById('sp-ai-result');
+
+  if (!amount || amount < 1000) { warn.textContent = 'Enter an amount first.'; warn.classList.remove('hidden'); return; }
+  if (!age) { warn.textContent = 'Enter client age first.'; warn.classList.remove('hidden'); return; }
+  warn.classList.add('hidden');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader" style="width:14px;height:14px;border-width:1.5px;display:inline-block;border-radius:50%;border-color:rgba(127,196,232,0.2);border-top-color:var(--data);animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px"></span> Analysing…';
+
+  out.innerHTML = `<div class="al-loading" style="padding:1.25rem 1rem;border:1px solid rgba(127,196,232,0.15);border-radius:8px;background:rgba(127,196,232,0.04);margin-bottom:1rem">
+    <div class="al-loading-dots"><div class="al-loading-dot"></div><div class="al-loading-dot"></div><div class="al-loading-dot"></div></div>
+    <div class="al-loading-msg">✦ Building single premium strategy…</div>
+    <div class="al-loading-sub">Reviewing fund momentum · Matching goal: ${goal} · ${risk} profile</div>
+  </div>`;
+
+  const goalLabels = { retirement:'Retirement Planning', growth:'Wealth Accumulation', education:'Education Fund', preservation:'Capital Preservation', legacy:'Legacy / Estate Planning' };
+  const riskToTol = { conservative: '1 — Low risk, capital preservation priority', moderate: '3 — Moderate, balanced growth and protection', aggressive: '5 — High risk, maximum growth orientation' };
+
+  try {
+    const meta = await fetch('/prulink-data.json').then(r=>r.json()).then(d=>d.meta).catch(()=>({}));
+    const resp = await fetch('/api/portfolio-ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        profile: {
+          age, goal, horizon,
+          targetRet: age + horizon,
+          riskTol: riskToTol[risk],
+          shariah,
+          monthly: 'Single premium lump sum of S$' + amount.toLocaleString(),
+          tenure: horizon + ' years',
+          income: 'Single premium — S$' + amount.toLocaleString() + ' lump sum',
+          dependants: '',
+          tier: risk === 'conservative' ? 1 : risk === 'moderate' ? 2 : 3,
+          tierLabel: risk === 'conservative' ? 'Capital preservation · low volatility' : risk === 'moderate' ? 'Moderate growth + income' : 'Maximum growth · high loss tolerance',
+          context: 'Single premium ILP investment. Goal: ' + (goalLabels[goal]||goal) + '. Lump sum: S$' + amount.toLocaleString() + '. Horizon: ' + horizon + ' years. Shariah: ' + (shariah?'Yes':'No') + '. Please recommend a specific PRULink fund allocation suited to this profile, comment on current market conditions and how they affect the recommended mix, and flag any risks specific to a single premium structure (concentration, timing, lock-in).',
+        },
+        funds: fAllFunds,
+        priceDate: meta.priceDate || '',
+      }),
+    });
+
+    btn.disabled = false;
+    btn.innerHTML = '✦ AI Market Analysis';
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(()=>({}));
+      out.innerHTML = '<div style="color:#fca5a5;font-size:0.78rem;padding:0.75rem;background:rgba(252,165,165,0.06);border:1px solid rgba(252,165,165,0.2);border-radius:6px">' + (err.error||'AI analysis failed. Please try again.') + '</div>';
+      return;
+    }
+
+    const ai = await resp.json();
+    renderAIResult(ai, { age, goal, horizon, targetRet: age+horizon, riskTol: riskToTol[risk], shariah, income: 'Single premium S$'+amount.toLocaleString(), dependants: '' }, out);
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = '✦ AI Market Analysis';
+    out.innerHTML = '<div style="color:#fca5a5;font-size:0.78rem;padding:0.75rem;background:rgba(252,165,165,0.06);border:1px solid rgba(252,165,165,0.2);border-radius:6px">Network error — check connection and try again.</div>';
+  }
+}
+
 function spCalc() {
   const amount = parseFloat(document.getElementById('sp-amount').value) || 0;
   const horizon = parseInt(document.getElementById('sp-horizon').value) || 10;
@@ -3492,25 +3566,36 @@ function spCalc() {
       </div>
     </div>`;
 
-  // Fund suggestions
+  // Fund suggestions — 3-dimensional: risk × goal × shariah
   const fundSuggestions = {
     conservative: {
-      no:  [{ pct:40, name:'PRULink Singapore Cash' }, { pct:35, name:'PRULink Singapore Bond' }, { pct:25, name:'PRULink Singapore Balanced' }],
-      yes: [{ pct:45, name:'PRULink ASEAN Equity (Shariah)' }, { pct:30, name:'PRULink Global Equity (Shariah)' }, { pct:25, name:'PRULink Singapore Cash' }],
+      retirement:   { no: [{pct:35,name:'PRULink Asian Fixed-Income Fund (Distribution)'},{pct:30,name:'PRULink Global Managed Fund (Distribution)'},{pct:20,name:'PRULink Singapore Dynamic Bond Fund (Distribution)'},{pct:15,name:'PRULink Singapore Cash Fund'}], yes:[{pct:40,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:40,name:'PRULink Asian Fixed-Income Fund (Distribution)'},{pct:20,name:'PRULink Singapore Cash Fund'}] },
+      growth:       { no: [{pct:35,name:'PRULink Global Managed Fund'},{pct:30,name:'PRULink Asian Multi-Asset Income Fund (Distribution)'},{pct:25,name:'PRULink Global Fixed-Income Fund (Accumulation)'},{pct:10,name:'PRULink Singapore Cash Fund'}], yes:[{pct:45,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:35,name:'PRULink Global Multi-Asset Income Fund (Distribution)'},{pct:20,name:'PRULink Singapore Cash Fund'}] },
+      education:    { no: [{pct:40,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'},{pct:35,name:'PRULink Global Fixed-Income Fund (Accumulation)'},{pct:25,name:'PRULink Singapore Cash Fund'}], yes:[{pct:35,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:40,name:'PRULink Singapore Cash Fund'},{pct:25,name:'PRULink Global Fixed-Income Fund (Accumulation)'}] },
+      preservation: { no: [{pct:50,name:'PRULink Singapore Cash Fund'},{pct:30,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'},{pct:20,name:'PRULink Global Fixed-Income Fund (Accumulation)'}], yes:[{pct:55,name:'PRULink Singapore Cash Fund'},{pct:25,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:20,name:'PRULink Global Fixed-Income Fund (Accumulation)'}] },
+      legacy:       { no: [{pct:35,name:'PRULink Global Managed Fund (Distribution)'},{pct:30,name:'PRULink Asian Fixed-Income Fund (Distribution)'},{pct:25,name:'PRULink Global Dividend Wealth Fund (Distribution)'},{pct:10,name:'PRULink Singapore Cash Fund'}], yes:[{pct:45,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:35,name:'PRULink Asian Multi-Asset Income Fund (Distribution)'},{pct:20,name:'PRULink Singapore Cash Fund'}] },
     },
     moderate: {
-      no:  [{ pct:40, name:'PRULink Singapore Managed' }, { pct:30, name:'PRULink Global Equity' }, { pct:20, name:'PRULink Singapore Bond' }, { pct:10, name:'PRULink Singapore Cash' }],
-      yes: [{ pct:40, name:'PRULink Global Equity (Shariah)' }, { pct:35, name:'PRULink ASEAN Equity (Shariah)' }, { pct:25, name:'PRULink Singapore Cash' }],
+      retirement:   { no: [{pct:35,name:'PRULink Global Multi-Asset Income Fund (Distribution)'},{pct:25,name:'PRULink Asian Multi-Asset Income Fund (Distribution)'},{pct:25,name:'PRULink Global Managed Fund'},{pct:15,name:'PRULink Asian Fixed-Income Fund (Distribution)'}], yes:[{pct:45,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:35,name:'PRULink Global Multi-Asset Income Fund (Distribution)'},{pct:20,name:'PRULink Singapore Cash Fund'}] },
+      growth:       { no: [{pct:40,name:'PRULink Global Equity Fund'},{pct:25,name:'PRULink America Fund'},{pct:20,name:'PRULink Global Growth Fund (Accumulation)'},{pct:15,name:'PRULink Singapore ASEAN Managed Fund'}], yes:[{pct:55,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:30,name:'PRULink Global Equity Fund'},{pct:15,name:'PRULink Singapore Cash Fund'}] },
+      education:    { no: [{pct:35,name:'PRULink Global Managed Fund'},{pct:30,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'},{pct:25,name:'PRULink Global Equity Fund'},{pct:10,name:'PRULink Singapore Cash Fund'}], yes:[{pct:40,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:35,name:'PRULink Global Multi-Asset Income Fund (Distribution)'},{pct:25,name:'PRULink Singapore Cash Fund'}] },
+      preservation: { no: [{pct:35,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'},{pct:30,name:'PRULink Global Fixed-Income Fund (Accumulation)'},{pct:20,name:'PRULink Global Multi-Asset Income Fund (Distribution)'},{pct:15,name:'PRULink Singapore Cash Fund'}], yes:[{pct:40,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:35,name:'PRULink Singapore Cash Fund'},{pct:25,name:'PRULink Global Fixed-Income Fund (Accumulation)'}] },
+      legacy:       { no: [{pct:35,name:'PRULink Global Equity Fund'},{pct:30,name:'PRULink Global Dividend Wealth Fund (Distribution)'},{pct:20,name:'PRULink America Fund'},{pct:15,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'}], yes:[{pct:50,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:30,name:'PRULink Global Equity Fund'},{pct:20,name:'PRULink Singapore Cash Fund'}] },
     },
     aggressive: {
-      no:  [{ pct:40, name:'PRULink Global Equity' }, { pct:30, name:'PRULink Greater China' }, { pct:20, name:'PRULink Singapore Managed' }, { pct:10, name:'PRULink Technology' }],
-      yes: [{ pct:50, name:'PRULink Global Equity (Shariah)' }, { pct:30, name:'PRULink ASEAN Equity (Shariah)' }, { pct:20, name:'PRULink Global Sukuk' }],
+      retirement:   { no: [{pct:40,name:'PRULink Global Equity Fund (Distribution)'},{pct:30,name:'PRULink Asian Income Fund'},{pct:20,name:'PRULink US Dividend Wealth Fund (Distribution)'},{pct:10,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'}], yes:[{pct:55,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:30,name:'PRULink Asian Multi-Asset Income Fund (Distribution)'},{pct:15,name:'PRULink Singapore Cash Fund'}] },
+      growth:       { no: [{pct:35,name:'PRULink Global Equity Fund'},{pct:25,name:'PRULink America Fund'},{pct:20,name:'PRULink Global Technology Fund'},{pct:10,name:'PRULink India Opportunity Equity Fund (Accumulation)'},{pct:10,name:'PRULink Greater China Fund'}], yes:[{pct:60,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:25,name:'PRULink Global Equity Fund'},{pct:15,name:'PRULink Singapore Cash Fund'}] },
+      education:    { no: [{pct:40,name:'PRULink Global Equity Fund'},{pct:30,name:'PRULink America Fund'},{pct:20,name:'PRULink Global Managed Fund'},{pct:10,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'}], yes:[{pct:55,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:30,name:'PRULink Global Equity Fund'},{pct:15,name:'PRULink Singapore Cash Fund'}] },
+      preservation: { no: [{pct:35,name:'PRULink Asian Fixed-Income Fund (Distribution)'},{pct:25,name:'PRULink Singapore Dynamic Bond Fund (Accumulation)'},{pct:25,name:'PRULink Global Fixed-Income Fund (Accumulation)'},{pct:15,name:'PRULink Singapore Cash Fund'}], yes:[{pct:40,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:35,name:'PRULink Singapore Cash Fund'},{pct:25,name:'PRULink Global Fixed-Income Fund (Accumulation)'}] },
+      legacy:       { no: [{pct:40,name:'PRULink Global Equity Fund'},{pct:25,name:'PRULink America Fund'},{pct:20,name:'PRULink Global Technology Fund'},{pct:15,name:'PRULink Global Dividend Wealth Fund (Distribution)'}], yes:[{pct:60,name:'PRULink Islamic Global Equity Index Fund (Accumulation)'},{pct:25,name:'PRULink Global Equity Fund'},{pct:15,name:'PRULink Singapore Cash Fund'}] },
     },
   };
-  const funds = fundSuggestions[risk][shariah ? 'yes' : 'no'];
+  const goalKey = goal || 'growth';
+  const funds = (fundSuggestions[risk][goalKey] || fundSuggestions[risk].growth)[shariah ? 'yes' : 'no'];
+  const goalLabels = { retirement:'Retirement Planning', growth:'Wealth Accumulation', education:'Education Fund', preservation:'Capital Preservation', legacy:'Legacy / Estate' };
   const fundsHtml = `
     <div class="sp-funds-box">
-      <div class="sp-funds-title">Suggested Fund Mix — ${sc.label}${shariah ? ' · Shariah' : ''}</div>
+      <div class="sp-funds-title">Suggested Fund Mix — ${sc.label} · ${goalLabels[goalKey]}${shariah ? ' · Shariah' : ''}</div>
       ${funds.map(f => `
         <div class="sp-fund-row">
           <div class="sp-fund-pct">${f.pct}%</div>
