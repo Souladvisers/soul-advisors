@@ -3255,41 +3255,35 @@ function retCalc() {
   const retFmt = n => 'S$' + Math.round(Math.abs(n)).toLocaleString();
   const coverCol = covered >= 0.9 ? 'green' : covered >= 0.5 ? 'accent' : 'red';
 
-  el.innerHTML = `
-    <div class="ret-kpi-grid">
-      <div class="ret-kpi"><div class="ret-kpi-lbl">Years to Retire</div><div class="ret-kpi-val accent">${yrs}</div></div>
-      <div class="ret-kpi"><div class="ret-kpi-lbl">Monthly Need (inflation-adj.)</div><div class="ret-kpi-val">${retFmt(monthlyNeed)}/mo</div></div>
-      <div class="ret-kpi"><div class="ret-kpi-lbl">Retirement Corpus Needed</div><div class="ret-kpi-val">${retFmt(corpusNeeded)}</div></div>
-      <div class="ret-kpi"><div class="ret-kpi-lbl">Projected Savings</div><div class="ret-kpi-val">${retFmt(corpusNow)}</div></div>
-      <div class="ret-kpi"><div class="ret-kpi-lbl">Funding Gap</div><div class="ret-kpi-val ${gap>0?'red':'green'}">${gap>0?retFmt(gap):'None ✓'}</div></div>
-      <div class="ret-kpi"><div class="ret-kpi-lbl">Currently Funded</div><div class="ret-kpi-val ${coverCol}">${Math.round(covered*100)}%</div></div>
-    </div>
-    <div class="ret-track-wrap">
-      <div class="ret-track-lbl">Corpus Coverage Breakdown</div>
-      <div class="ret-bar-row">
-        <div class="ret-bar-lbl">Current savings</div>
-        <div class="ret-bar-track"><div class="ret-bar-fill" style="width:${Math.min(savings/corpusNeeded*100,100).toFixed(1)}%;background:#6ee7b7"></div></div>
-        <div class="ret-bar-val">${retFmt(savings)}</div>
-      </div>
-      <div class="ret-bar-row">
-        <div class="ret-bar-lbl">Growth to retirement</div>
-        <div class="ret-bar-track"><div class="ret-bar-fill" style="width:${Math.min((corpusNow-savings)/corpusNeeded*100,100).toFixed(1)}%;background:var(--accent)"></div></div>
-        <div class="ret-bar-val">+${retFmt(corpusNow-savings)}</div>
-      </div>
-      ${gap>0?`<div class="ret-bar-row">
-        <div class="ret-bar-lbl">Remaining gap</div>
-        <div class="ret-bar-track"><div class="ret-bar-fill" style="width:${Math.min(gap/corpusNeeded*100,100).toFixed(1)}%;background:#fca5a5"></div></div>
-        <div class="ret-bar-val" style="color:#fca5a5">${retFmt(gap)}</div>
-      </div>`:''}
-    </div>
-    ${gap>0?`<div class="ret-monthly-grid">
-      ${rates.map((s,i)=>`<div class="ret-monthly-card${i===1?' mid':''}">
-        <div class="ret-mc-rate${i===1?' mid':''}">${(s.rate*100).toFixed(0)}% p.a. return</div>
-        <div class="ret-mc-val${i===1?' mid':''}">${retFmt(s.pmt)}/mo</div>
-        <div class="ret-mc-sub">to close the gap</div>
-      </div>`).join('')}
-    </div>`:'<div class="na-summary" style="text-align:center"><div class="na-summary-title" style="color:#6ee7b7">🎉 On Track</div><div class="na-rec" style="text-align:center">Client's current savings are projected to cover retirement needs. Consider reviewing asset allocation and drawdown strategy.</div></div>'}
-    <div class="sp-note" style="margin-top:0.75rem">Assumes life expectancy of 85. Corpus PV calculated at real return (investment rate minus inflation). CPF payout reduces monthly drawdown requirement. Monthly savings shown are additional contributions needed on top of existing savings growth. For illustrative purposes only.</div>`;
+  // Build complex sections as variables to avoid deeply nested template literals
+  const gapBarHtml = gap > 0
+    ? '<div class="ret-bar-row"><div class="ret-bar-lbl">Remaining gap</div><div class="ret-bar-track"><div class="ret-bar-fill" style="width:' + Math.min(gap/corpusNeeded*100,100).toFixed(1) + '%;background:#fca5a5"></div></div><div class="ret-bar-val" style="color:#fca5a5">' + retFmt(gap) + '</div></div>'
+    : '';
+
+  const monthlyCardsHtml = rates.map(function(s, i) {
+    const mid = i === 1 ? ' mid' : '';
+    return '<div class="ret-monthly-card' + mid + '"><div class="ret-mc-rate' + mid + '">' + (s.rate*100).toFixed(0) + '% p.a. return</div><div class="ret-mc-val' + mid + '">' + retFmt(s.pmt) + '/mo</div><div class="ret-mc-sub">to close the gap</div></div>';
+  }).join('');
+
+  const bottomHtml = gap > 0
+    ? '<div class="ret-monthly-grid">' + monthlyCardsHtml + '</div>'
+    : '<div class="na-summary" style="text-align:center"><div class="na-summary-title" style="color:#6ee7b7">On Track</div><div class="na-rec" style="text-align:center">Client savings are projected to cover retirement needs. Review asset allocation and drawdown strategy.</div></div>';
+
+  el.innerHTML = '<div class="ret-kpi-grid">'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Years to Retire</div><div class="ret-kpi-val accent">' + yrs + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Monthly Need (inflation-adj.)</div><div class="ret-kpi-val">' + retFmt(monthlyNeed) + '/mo</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Retirement Corpus Needed</div><div class="ret-kpi-val">' + retFmt(corpusNeeded) + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Projected Savings</div><div class="ret-kpi-val">' + retFmt(corpusNow) + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Funding Gap</div><div class="ret-kpi-val ' + (gap>0?'red':'green') + '">' + (gap>0?retFmt(gap):'None ✓') + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Currently Funded</div><div class="ret-kpi-val ' + coverCol + '">' + Math.round(covered*100) + '%</div></div>'
+    + '</div>'
+    + '<div class="ret-track-wrap"><div class="ret-track-lbl">Corpus Coverage Breakdown</div>'
+    + '<div class="ret-bar-row"><div class="ret-bar-lbl">Current savings</div><div class="ret-bar-track"><div class="ret-bar-fill" style="width:' + Math.min(savings/corpusNeeded*100,100).toFixed(1) + '%;background:#6ee7b7"></div></div><div class="ret-bar-val">' + retFmt(savings) + '</div></div>'
+    + '<div class="ret-bar-row"><div class="ret-bar-lbl">Growth to retirement</div><div class="ret-bar-track"><div class="ret-bar-fill" style="width:' + Math.min((corpusNow-savings)/corpusNeeded*100,100).toFixed(1) + '%;background:var(--accent)"></div></div><div class="ret-bar-val">+' + retFmt(corpusNow-savings) + '</div></div>'
+    + gapBarHtml
+    + '</div>'
+    + bottomHtml
+    + '<div class="sp-note" style="margin-top:0.75rem">Assumes life expectancy of 85. Corpus PV calculated at real return (investment rate minus inflation). CPF payout reduces monthly drawdown requirement. Monthly savings shown are additional contributions needed on top of existing savings growth. For illustrative purposes only.</div>';
 }
 
 // ─────────────────────────────────────────────
