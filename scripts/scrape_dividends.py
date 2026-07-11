@@ -138,16 +138,16 @@ def main():
         bid_price, fresh_divs = scrape_fund(fund_name, slug)
 
         fund = funds_by_name[fund_name]
-        orig = json.dumps({"b": fund.get("bidPrice"), "d": fund.get("dividends", [])})
+        orig_divs = json.dumps(fund.get("dividends", []))
 
-        if bid_price is not None:
-            fund["bidPrice"] = bid_price
+        # Do NOT overwrite bidPrice here — update_prices.py fetches the PDF which
+        # gives 5-decimal precision prices for all 63 funds. Website prices are rounded.
         if fresh_divs:
             fund["dividends"] = merge_dividends(fund.get("dividends", []), fresh_divs)
         fund["url"] = BASE_URL + slug
         fund["lastDividendScrape"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        if json.dumps({"b": fund.get("bidPrice"), "d": fund.get("dividends", [])}) != orig:
+        if json.dumps(fund.get("dividends", [])) != orig_divs:
             changed += 1
 
         time.sleep(1.5)  # polite crawl delay
