@@ -37,7 +37,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve balanced capital growth by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 65:35.",
       "managementFee": null,
@@ -91,7 +91,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to provide conservative and stable returns by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 15:85.",
       "managementFee": null,
@@ -145,7 +145,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve high growth by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 85:15.",
       "managementFee": null,
@@ -199,7 +199,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve moderate returns by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 45:55.",
       "managementFee": null,
@@ -471,7 +471,7 @@
       "manager": "Financial Year End",
       "underlyingFund": null,
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Equity Fund aims to maximise long-term total return by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity in the Asia Pacific ex-Japan Region. The Fund may also invest in depository receipts including American Depositary Receipts (“ADRs”) and Global Depositary Receipts (“GDRs”), debt securities convertible into common shares, preference shares and warrants.",
+      "strategy": "The PRULink Asian Equity Fund aims to maximise long-term total return by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity in the Asia Pacific ex-Japan Region. The Fund may also invest in depository receipts including American Depositary Receipts (\u201cADRs\u201d) and Global Depositary Receipts (\u201cGDRs\u201d), debt securities convertible into common shares, preference shares and warrants.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -525,7 +525,7 @@
       "manager": "Financial Year End",
       "underlyingFund": "which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund’s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
+      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund\u2019s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
       "managementFee": "1.00% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -628,7 +628,7 @@
       "manager": "Financial Year End",
       "underlyingFund": "which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund’s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
+      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund\u2019s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
       "managementFee": "1.00% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -1040,7 +1040,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Charge Income Fund : USD 632.7 M",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Income Fund aims to maximize income by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity, in the Asia Pacific ex-Japan region. The Fund may also invest in depository receipts including American Depositary Receipt (“ADRs”) and Global Depositary Receipt (“GDRs”), debt securities convertible into common shares, preference shares and warrants.",
+      "strategy": "The PRULink Asian Income Fund aims to maximize income by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity, in the Asia Pacific ex-Japan region. The Fund may also invest in depository receipts including American Depositary Receipt (\u201cADRs\u201d) and Global Depositary Receipt (\u201cGDRs\u201d), debt securities convertible into common shares, preference shares and warrants.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -1650,7 +1650,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Charge Dragon Peacock Fund : SGD 1,065.8 M",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink China India Fund is to maximise long-term total return by investing primarily in equity and equity- related instruments of corporations, which are incorporated in, or listed in, or operating principally from, or carrying on significant business in, or derive substantial revenue from, or whose subsidiaries, related or associated corporations derive substantial revenue from, the People’s Republic of China (PRC) and the Republic of India (India).",
+      "strategy": "The investment objective of the PRULink China India Fund is to maximise long-term total return by investing primarily in equity and equity- related instruments of corporations, which are incorporated in, or listed in, or operating principally from, or carrying on significant business in, or derive substantial revenue from, or whose subsidiaries, related or associated corporations derive substantial revenue from, the People\u2019s Republic of China (PRC) and the Republic of India (India).",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -1866,7 +1866,7 @@
       "manager": "GMO Singapore Pte. Limited",
       "underlyingFund": "seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate",
       "factsheet": "View factsheet",
-      "strategy": "The Underlying Fund seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate change, to address the environment challenges presented by global climate change, or to improve the efficiency of resource consumption. The Fund’s benchmark is the MSCI All Country World Index.",
+      "strategy": "The Underlying Fund seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate change, to address the environment challenges presented by global climate change, or to improve the efficiency of resource consumption. The Fund\u2019s benchmark is the MSCI All Country World Index.",
       "managementFee": "1.50% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -2440,7 +2440,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Dynamic Growth Equity Fund : Charge",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Global Equity Growth Fund feeds into the Eastspring Investments – Global Dynamic Growth Equity Fund (the Underlying Fund), which aims to provide superior capital growth by investing primarily in shares of companies with strong growth potential.",
+      "strategy": "The PRULink Global Equity Growth Fund feeds into the Eastspring Investments \u2013 Global Dynamic Growth Equity Fund (the Underlying Fund), which aims to provide superior capital growth by investing primarily in shares of companies with strong growth potential.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -2654,9 +2654,9 @@
       "launchDate": "07 September 2021",
       "benchmark": "MSCI AC World Net (Hedged to SGD)",
       "manager": "Underlying Fund and Size",
-      "underlyingFund": "seeks to understand the world’s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services.",
+      "underlyingFund": "seeks to understand the world\u2019s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services.",
       "factsheet": "View factsheet",
-      "strategy": "The Underlying Fund seeks to understand the world’s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services. Through the Fund’s investments, we seek to improve access to, and the quality of, basic life essentials, reduce inequality and mitigate the effects of climate change. The Fund seeks to deliver long-term total returns in excess of the MSCI All Country World Index.",
+      "strategy": "The Underlying Fund seeks to understand the world\u2019s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services. Through the Fund\u2019s investments, we seek to improve access to, and the quality of, basic life essentials, reduce inequality and mitigate the effects of climate change. The Fund seeks to deliver long-term total returns in excess of the MSCI All Country World Index.",
       "managementFee": "1.50% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -3796,7 +3796,7 @@
       "manager": "Eastspring Investments (Singapore) Limited",
       "underlyingFund": "Schroder Investment Management (Hong Kong) Ltd",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People’s Republic of China, Hong Kong SAR and Taiwan companies.",
+      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People\u2019s Republic of China, Hong Kong SAR and Taiwan companies.",
       "managementFee": "1.5% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -3850,7 +3850,7 @@
       "manager": "Eastspring Investments (Singapore) Limited",
       "underlyingFund": "Schroder Investment Management (Hong Kong) Ltd",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People’s Republic of China, Hong Kong SAR and Taiwan companies.",
+      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People\u2019s Republic of China, Hong Kong SAR and Taiwan companies.",
       "managementFee": "1.5% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -4700,7 +4700,7 @@
       "launchDate": "05 August 2025",
       "benchmark": null,
       "manager": "Prudential Assurance Company Singapore (Pte) Limited",
-      "underlyingFund": " Victory Capital Management Inc. Risk Classification of Investment-",
+      "underlyingFund": "\uf0b7 Victory Capital Management Inc. Risk Classification of Investment-",
       "factsheet": "View factsheet",
       "strategy": "The Investment Objective is to provide long term capital growth and income by investing in a diversified portfolio of Underlying Funds.",
       "managementFee": "1.50% p.a.",
@@ -4774,7 +4774,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -4782,7 +4782,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -4790,7 +4790,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -4798,7 +4798,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -4806,10 +4806,10 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         }
       ],
-      "bidPrice": 0.96923,
+      "bidPrice": 0.9735,
       "bidDate": "09-Jul-2026"
     },
     {
@@ -4835,7 +4835,7 @@
       "launchDate": "05 August 2025",
       "benchmark": null,
       "manager": "Prudential Assurance Company Singapore (Pte) Limited",
-      "underlyingFund": " Victory Capital Management Inc. Risk Classification of Investment-",
+      "underlyingFund": "\uf0b7 Victory Capital Management Inc. Risk Classification of Investment-",
       "factsheet": "View factsheet",
       "strategy": "The Investment Objective is to provide long term capital growth and income by investing in a diversified portfolio of Underlying Funds.",
       "managementFee": "1.50% p.a.",
@@ -4944,7 +4944,7 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 1.04579,
+      "bidPrice": 1.0507,
       "bidDate": "09-Jul-2026"
     },
     {
@@ -5052,7 +5052,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -5060,7 +5060,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -5068,7 +5068,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -5076,7 +5076,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -5084,7 +5084,7 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         },
         {
           "frequency": "Monthly",
@@ -5092,10 +5092,10 @@
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
           "ratePct": null,
-          "rateCents": 0.55
+          "rateCents": 0.51
         }
       ],
-      "bidPrice": 1.02529,
+      "bidPrice": 1.0327,
       "bidDate": "09-Jul-2026"
     },
     {
@@ -5246,7 +5246,7 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 1.18014,
+      "bidPrice": 1.1889,
       "bidDate": "09-Jul-2026"
     }
   ]
