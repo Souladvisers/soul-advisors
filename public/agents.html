@@ -580,6 +580,74 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .sp-fund-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
 .sp-fund-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); border-radius: 2px; }
 .sp-note { font-size: 0.67rem; color: rgba(255,255,255,0.2); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem; }
+/* ── NEED ANALYSIS ── */
+.na-results { display: flex; flex-direction: column; gap: 0.9rem; }
+.na-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 1.1rem 1.25rem; }
+.na-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.na-card-title { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.8); }
+.na-status { font-size: 0.62rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase; }
+.na-ok   { background: rgba(110,231,183,0.15); color: #6ee7b7; }
+.na-warn { background: rgba(251,191,36,0.15);  color: #fbbf24; }
+.na-gap  { background: rgba(252,165,165,0.15); color: #fca5a5; }
+.na-row  { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.4rem; }
+.na-row:last-child { margin-bottom: 0; }
+.na-lbl  { color: rgba(255,255,255,0.33); }
+.na-val  { font-weight: 600; color: rgba(255,255,255,0.8); font-variant-numeric: tabular-nums; }
+.na-gap-val { color: #fca5a5; font-weight: 700; }
+.na-ok-val  { color: #6ee7b7; font-weight: 700; }
+.na-track { height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-top: 0.7rem; overflow: hidden; }
+.na-fill  { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+.na-summary { background: rgba(184,151,90,0.08); border: 1px solid rgba(184,151,90,0.2); border-radius: 8px; padding: 1rem 1.25rem; }
+.na-summary-title { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+.na-recs { display: flex; flex-direction: column; gap: 0.35rem; }
+.na-rec  { font-size: 0.76rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+/* ── RETIREMENT GAP ── */
+.ret-kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-bottom: 1rem; }
+@media(max-width:700px){ .ret-kpi-grid { grid-template-columns: 1fr 1fr; } }
+.ret-kpi { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 0.9rem 1rem; text-align: center; }
+.ret-kpi-lbl { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 0.35rem; }
+.ret-kpi-val { font-family: 'Lora', serif; font-size: 1.35rem; font-weight: 600; color: white; line-height: 1.1; }
+.ret-kpi-val.accent { color: var(--accent); }
+.ret-kpi-val.red    { color: #fca5a5; }
+.ret-kpi-val.green  { color: #6ee7b7; }
+.ret-track-wrap { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.ret-track-lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 0.75rem; }
+.ret-bar-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.55rem; }
+.ret-bar-row:last-child { margin-bottom: 0; }
+.ret-bar-lbl { font-size: 0.68rem; color: rgba(255,255,255,0.4); min-width: 90px; }
+.ret-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.ret-bar-fill { height: 100%; border-radius: 4px; }
+.ret-bar-val  { font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.7); min-width: 80px; text-align: right; font-variant-numeric: tabular-nums; }
+.ret-monthly-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem; }
+@media(max-width:600px){ .ret-monthly-grid { grid-template-columns: 1fr; } }
+.ret-monthly-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 0.85rem; text-align: center; }
+.ret-monthly-card.mid { border-color: rgba(184,151,90,0.35); background: rgba(184,151,90,0.06); }
+.ret-mc-rate  { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 0.3rem; }
+.ret-mc-rate.mid { color: var(--accent); }
+.ret-mc-val   { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600; color: white; }
+.ret-mc-val.mid { color: var(--accent); }
+.ret-mc-sub   { font-size: 0.62rem; color: rgba(255,255,255,0.28); margin-top: 0.2rem; }
+/* ── WA SCRIPTS ── */
+.scripts-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+.scripts-filter { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.scr-filter-btn { padding: 0.38rem 0.9rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; background: none; color: rgba(255,255,255,0.4); font-family: inherit; font-size: 0.72rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.scr-filter-btn.active, .scr-filter-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+.scr-name-bar { display: flex; align-items: center; gap: 0.65rem; padding: 0.7rem 0.9rem; background: rgba(184,151,90,0.07); border: 1px solid rgba(184,151,90,0.2); border-radius: var(--radius); margin-bottom: 1.25rem; flex-wrap: wrap; }
+.scr-name-bar label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+.scr-name-bar input { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 0.38rem 0.65rem; color: white; font-family: inherit; font-size: 0.86rem; width: 180px; outline: none; }
+.scr-name-bar input:focus { border-color: var(--accent); }
+.scr-name-bar .hint { font-size: 0.67rem; color: rgba(255,255,255,0.3); }
+.scripts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap: 1rem; }
+.scr-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.65rem; transition: border-color 0.2s; }
+.scr-card:hover { border-color: rgba(184,151,90,0.3); }
+.scr-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+.scr-cat { font-size: 0.58rem; font-weight: 700; padding: 2px 7px; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+.scr-title { font-size: 0.84rem; font-weight: 600; color: rgba(255,255,255,0.85); flex: 1; }
+.scr-scenario { font-size: 0.72rem; color: rgba(255,255,255,0.32); font-style: italic; }
+.scr-body { font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.65; background: rgba(255,255,255,0.03); border-radius: 5px; padding: 0.7rem 0.8rem; white-space: pre-wrap; }
+.scr-copy-btn { align-self: flex-end; padding: 0.38rem 0.9rem; border: 1px solid rgba(184,151,90,0.4); border-radius: var(--radius); background: none; color: var(--accent); font-family: inherit; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
+.scr-copy-btn:hover { background: var(--accent); color: white; }
+.scr-copy-btn.copied { background: rgba(110,231,183,0.12); color: #6ee7b7; border-color: rgba(110,231,183,0.3); }
 </style>
 </head>
 <body>
@@ -622,6 +690,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
     <button class="ag-tab" onclick="switchAgentTab('allocator',this)">🎯 Portfolio Builder</button>
     <button class="ag-tab" onclick="switchAgentTab('rebalancer',this)">⚖️ Rebalancer</button>
     <button class="ag-tab" onclick="switchAgentTab('singleprem',this)">💎 Single Premium</button>
+    <button class="ag-tab" onclick="switchAgentTab('needanalysis',this)">🛡️ Need Analysis</button>
+    <button class="ag-tab" onclick="switchAgentTab('retirement',this)">🏖️ Retirement Gap</button>
+    <button class="ag-tab" onclick="switchAgentTab('scripts',this)">💬 WA Scripts</button>
     <button class="ag-tab" onclick="switchAgentTab('elearning',this)">📚 eLearning</button>
     <button class="ag-tab" onclick="switchAgentTab('care',this)">💛 Client Care</button>
   </div>
@@ -1090,6 +1161,74 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
     </div>
   </div><!-- /p-singleprem -->
 
+  <!-- ── NEED ANALYSIS PANEL ── -->
+  <div class="ag-panel" id="p-needanalysis">
+    <div class="sp-wrap">
+      <div class="sp-grid">
+        <div class="sp-form">
+          <div class="sp-form-title">🛡️ Protection Need Analysis</div>
+          <div class="sp-form-sub">Calculate the client's protection gaps across Life, Critical Illness and Disability cover.</div>
+          <div class="al-field"><label class="al-label">Monthly Income (SGD)</label><input class="al-input" type="number" id="na-income" placeholder="e.g. 5000"></div>
+          <div class="al-field"><label class="al-label">Monthly Expenses &amp; Liabilities</label><input class="al-input" type="number" id="na-expenses" placeholder="e.g. 3000"></div>
+          <div class="al-field"><label class="al-label">Outstanding Loans (SGD)</label><input class="al-input" type="number" id="na-loans" placeholder="e.g. 200000"></div>
+          <div class="al-field"><label class="al-label">Number of Dependants</label><input class="al-input" type="number" id="na-deps" min="0" placeholder="e.g. 2"></div>
+          <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="na-age" min="18" max="70" placeholder="e.g. 35"></div>
+          <div class="al-field"><label class="al-label">Target Retirement Age</label><input class="al-input" type="number" id="na-retage" min="45" max="75" placeholder="e.g. 65"></div>
+          <div class="al-field"><label class="al-label">Existing Life Cover (SGD)</label><input class="al-input" type="number" id="na-life" placeholder="e.g. 100000"></div>
+          <div class="al-field"><label class="al-label">Existing CI Cover (SGD)</label><input class="al-input" type="number" id="na-ci" placeholder="e.g. 50000"></div>
+          <button class="sp-calc-btn" onclick="naCalc()">Analyse Protection Gaps →</button>
+        </div>
+        <div class="na-results" id="na-results">
+          <div class="sp-empty"><div class="sp-empty-icon">🛡️</div><div class="sp-empty-txt">Enter income, expenses and existing coverage to see the protection gap analysis.</div></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /p-needanalysis -->
+
+  <!-- ── RETIREMENT GAP PANEL ── -->
+  <div class="ag-panel" id="p-retirement">
+    <div class="sp-wrap">
+      <div class="sp-grid">
+        <div class="sp-form">
+          <div class="sp-form-title">🏖️ Retirement Gap Calculator</div>
+          <div class="sp-form-sub">Project how much the client needs at retirement and how much more they should save each month to get there.</div>
+          <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="ret-age" min="18" max="70" placeholder="e.g. 35"></div>
+          <div class="al-field"><label class="al-label">Target Retirement Age</label><input class="al-input" type="number" id="ret-retage" min="45" max="75" placeholder="e.g. 65"></div>
+          <div class="al-field"><label class="al-label">Monthly Lifestyle Cost Today (SGD)</label><input class="al-input" type="number" id="ret-expenses" placeholder="e.g. 4000"></div>
+          <div class="al-field"><label class="al-label">Current Savings &amp; Investments (SGD)</label><input class="al-input" type="number" id="ret-savings" placeholder="e.g. 80000"></div>
+          <div class="al-field"><label class="al-label">Expected CPF Monthly Payout at Retirement</label><input class="al-input" type="number" id="ret-cpf" placeholder="e.g. 1200 (optional)"></div>
+          <div class="al-field">
+            <label class="al-label">Assumed Investment Return — <span id="ret-ret-lbl" style="color:var(--accent)">6% p.a.</span></label>
+            <div class="al-slider-wrap"><input class="al-slider" type="range" id="ret-ret" min="2" max="10" value="6" oninput="document.getElementById('ret-ret-lbl').textContent=this.value+'% p.a.';retCalc()"></div>
+          </div>
+          <div class="al-field">
+            <label class="al-label">Inflation Assumption — <span id="ret-inf-lbl" style="color:var(--accent)">3% p.a.</span></label>
+            <div class="al-slider-wrap"><input class="al-slider" type="range" id="ret-inf" min="1" max="5" value="3" oninput="document.getElementById('ret-inf-lbl').textContent=this.value+'% p.a.';retCalc()"></div>
+          </div>
+          <button class="sp-calc-btn" onclick="retCalc()">Calculate Retirement Gap →</button>
+        </div>
+        <div id="ret-results">
+          <div class="sp-empty"><div class="sp-empty-icon">🏖️</div><div class="sp-empty-txt">Enter current age, retirement age and monthly expenses to see the retirement gap and how to close it.</div></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /p-retirement -->
+
+  <!-- ── WA SCRIPTS PANEL ── -->
+  <div class="ag-panel" id="p-scripts">
+    <div class="scripts-wrap">
+      <div class="alloc-form-title" style="margin-bottom:0.3rem">💬 WhatsApp Script Library</div>
+      <div class="alloc-form-sub" style="margin-bottom:1.25rem">Pre-written scripts for every stage of the client journey. Type a client name below to personalise before copying.</div>
+      <div class="scr-name-bar">
+        <label>Client Name</label>
+        <input type="text" id="scr-name" placeholder="e.g. Ahmad" oninput="scrRender()">
+        <span class="hint">Replaces [Name] in all scripts when you copy.</span>
+      </div>
+      <div class="scripts-filter" id="scr-filters"></div>
+      <div class="scripts-grid" id="scripts-grid"></div>
+    </div>
+  </div><!-- /p-scripts -->
+
   <!-- ── eLEARNING PANEL ── -->
   <div class="ag-panel" id="p-elearning">
     <div class="tools-wrap">
@@ -1261,6 +1400,9 @@ function switchAgentTab(tab, btn) {
   // Seed one empty row on first open of rebalancer
   if (tab === 'rebalancer' && !document.getElementById('rb-holdings-body').children.length && fAllFunds.length) {
     rbAddRow(); rbAddRow();
+  }
+  if (tab === 'scripts' && !document.getElementById('scr-filters').dataset.built) {
+    scrRender();
   }
 }
 
@@ -2979,6 +3121,262 @@ function renderRBAIResult(ai, container) {
     </div>`;
 
   container.prepend(el);
+}
+
+// ─────────────────────────────────────────────
+// NEED ANALYSIS CALCULATOR
+// ─────────────────────────────────────────────
+function naFmt(n) { return 'S$' + Math.abs(Math.round(n)).toLocaleString(); }
+
+function naCalc() {
+  const income  = parseFloat(document.getElementById('na-income').value)  || 0;
+  const expenses= parseFloat(document.getElementById('na-expenses').value) || 0;
+  const loans   = parseFloat(document.getElementById('na-loans').value)   || 0;
+  const deps    = parseInt(document.getElementById('na-deps').value)      || 0;
+  const age     = parseInt(document.getElementById('na-age').value)       || 0;
+  const retAge  = parseInt(document.getElementById('na-retage').value)    || 65;
+  const exLife  = parseFloat(document.getElementById('na-life').value)    || 0;
+  const exCI    = parseFloat(document.getElementById('na-ci').value)      || 0;
+  const el = document.getElementById('na-results');
+
+  if (!income || !age) {
+    el.innerHTML = '<div class="sp-empty"><div class="sp-empty-icon">🛡️</div><div class="sp-empty-txt">Enter at least monthly income and current age.</div></div>';
+    return;
+  }
+
+  const annualIncome = income * 12;
+  const yrsToRetire  = Math.max(retAge - age, 1);
+  const mult = deps >= 3 ? 12 : deps >= 1 ? 10 : 9;
+
+  // Life cover
+  const lifeNeeded  = annualIncome * mult + loans;
+  const lifeGap     = Math.max(lifeNeeded - exLife, 0);
+  const lifeCov     = Math.min(exLife / lifeNeeded, 1);
+
+  // CI cover — 5× annual income, min S$100k
+  const ciNeeded    = Math.max(annualIncome * 5, 100000);
+  const ciGap       = Math.max(ciNeeded - exCI, 0);
+  const ciCov       = Math.min(exCI / ciNeeded, 1);
+
+  // Disability / income protection — monthly benefit = 75% of income
+  const disBenefit  = income * 0.75;
+  const disAnnual   = disBenefit * 12 * yrsToRetire;
+
+  // Emergency fund — 6 months expenses
+  const efNeeded    = expenses * 6;
+
+  function card(icon, title, needed, existing, gap, cov, note) {
+    const status = cov >= 1 ? ['na-ok','Fully Covered'] : cov >= 0.5 ? ['na-warn','Partial Gap'] : ['na-gap','Underprotected'];
+    const fillCol = cov >= 1 ? '#6ee7b7' : cov >= 0.5 ? '#fbbf24' : '#fca5a5';
+    const gapCol  = gap > 0 ? 'na-gap-val' : 'na-ok-val';
+    return `<div class="na-card">
+      <div class="na-card-head">
+        <div class="na-card-title">${icon} ${title}</div>
+        <span class="na-status ${status[0]}">${status[1]}</span>
+      </div>
+      <div class="na-row"><span class="na-lbl">Cover needed</span><span class="na-val">${naFmt(needed)}</span></div>
+      <div class="na-row"><span class="na-lbl">Existing cover</span><span class="na-val">${naFmt(existing)}</span></div>
+      <div class="na-row"><span class="na-lbl">Gap to fill</span><span class="na-val ${gapCol}">${gap > 0 ? naFmt(gap) : '✓ Covered'}</span></div>
+      ${note ? `<div class="na-row"><span class="na-lbl" style="font-style:italic">${note}</span></div>` : ''}
+      <div class="na-track"><div class="na-fill" style="width:${Math.round(cov*100)}%;background:${fillCol}"></div></div>
+    </div>`;
+  }
+
+  const recs = [];
+  if (lifeGap > 0) recs.push(`Top up life cover by ${naFmt(lifeGap)} to meet the ${mult}× income benchmark for ${deps} dependant${deps!==1?'s':''}.`);
+  if (ciGap > 0)   recs.push(`Increase CI cover by ${naFmt(ciGap)} — current coverage at ${Math.round(exCI/ciNeeded*100)}% of recommended.`);
+  recs.push(`Disability income protection of ${naFmt(disBenefit)}/month would cover ${yrsToRetire} years to retirement.`);
+  if (expenses && expenses * 6 > 0) recs.push(`Emergency fund target: ${naFmt(efNeeded)} (6 months expenses). Confirm client has this in liquid assets.`);
+
+  el.innerHTML =
+    card('🏥','Life Cover', lifeNeeded, exLife, lifeGap, lifeCov, loans ? `Includes S$ ${Math.round(loans/1000)}k outstanding loans` : '') +
+    card('🩺','Critical Illness', ciNeeded, exCI, ciGap, ciCov, 'Benchmark: 5× annual income or S$100k min') +
+    `<div class="na-card">
+      <div class="na-card-head"><div class="na-card-title">♿ Disability / Income Protection</div><span class="na-status na-warn">Advisory</span></div>
+      <div class="na-row"><span class="na-lbl">Recommended monthly benefit</span><span class="na-val">${naFmt(disBenefit)}/mo</span></div>
+      <div class="na-row"><span class="na-lbl">Total cover to retirement</span><span class="na-val">${naFmt(disAnnual)}</span></div>
+      <div class="na-row"><span class="na-lbl">Years to retirement</span><span class="na-val">${yrsToRetire} yrs</span></div>
+    </div>` +
+    `<div class="na-summary"><div class="na-summary-title">Advisor Notes</div><div class="na-recs">${recs.map(r=>`<div class="na-rec">• ${r}</div>`).join('')}</div></div>`;
+}
+
+// ─────────────────────────────────────────────
+// RETIREMENT GAP CALCULATOR
+// ─────────────────────────────────────────────
+function retCalc() {
+  const age      = parseInt(document.getElementById('ret-age').value)     || 0;
+  const retAge   = parseInt(document.getElementById('ret-retage').value)  || 65;
+  const expenses = parseFloat(document.getElementById('ret-expenses').value) || 0;
+  const savings  = parseFloat(document.getElementById('ret-savings').value)  || 0;
+  const cpf      = parseFloat(document.getElementById('ret-cpf').value)   || 0;
+  const retRate  = parseInt(document.getElementById('ret-ret').value)     / 100;
+  const infRate  = parseInt(document.getElementById('ret-inf').value)     / 100;
+  const el       = document.getElementById('ret-results');
+
+  if (!age || !retAge || !expenses) {
+    el.innerHTML = '<div class="sp-empty"><div class="sp-empty-icon">🏖️</div><div class="sp-empty-txt">Enter age, retirement age and monthly expenses to begin.</div></div>';
+    return;
+  }
+
+  const yrs       = Math.max(retAge - age, 1);
+  const lifeExp   = 85;
+  const retYrs    = Math.max(lifeExp - retAge, 1);
+  const real      = retRate - infRate; // real return
+
+  // Inflation-adjusted monthly cost at retirement
+  const adjMonthly  = expenses * Math.pow(1 + infRate, yrs);
+  // CPF offsets part of monthly need
+  const monthlyNeed = Math.max(adjMonthly - cpf, 0);
+  // Corpus needed (annuity PV at real return, or flat if real≤0)
+  let corpusNeeded;
+  if (real > 0.001) {
+    const r = real / 12;
+    const n = retYrs * 12;
+    corpusNeeded = monthlyNeed * (1 - Math.pow(1+r,-n)) / r;
+  } else {
+    corpusNeeded = monthlyNeed * 12 * retYrs;
+  }
+
+  // Projected existing savings at retirement
+  const corpusNow = savings * Math.pow(1 + retRate, yrs);
+  const gap       = Math.max(corpusNeeded - corpusNow, 0);
+  const covered   = Math.min(corpusNow / corpusNeeded, 1);
+
+  // Monthly savings needed at 3 return scenarios
+  function monthlyPMT(r, n, fv) {
+    if (fv <= 0) return 0;
+    if (r < 0.0001) return fv / n;
+    return fv * r / (Math.pow(1+r,n) - 1);
+  }
+  const rates = [0.04, retRate, 0.09].map(r => ({
+    rate: r, pmt: monthlyPMT(r/12, yrs*12, Math.max(corpusNeeded - savings * Math.pow(1+r,yrs), 0))
+  }));
+
+  const retFmt = n => 'S$' + Math.round(Math.abs(n)).toLocaleString();
+  const coverCol = covered >= 0.9 ? 'green' : covered >= 0.5 ? 'accent' : 'red';
+
+  el.innerHTML = `
+    <div class="ret-kpi-grid">
+      <div class="ret-kpi"><div class="ret-kpi-lbl">Years to Retire</div><div class="ret-kpi-val accent">${yrs}</div></div>
+      <div class="ret-kpi"><div class="ret-kpi-lbl">Monthly Need (inflation-adj.)</div><div class="ret-kpi-val">${retFmt(monthlyNeed)}/mo</div></div>
+      <div class="ret-kpi"><div class="ret-kpi-lbl">Retirement Corpus Needed</div><div class="ret-kpi-val">${retFmt(corpusNeeded)}</div></div>
+      <div class="ret-kpi"><div class="ret-kpi-lbl">Projected Savings</div><div class="ret-kpi-val">${retFmt(corpusNow)}</div></div>
+      <div class="ret-kpi"><div class="ret-kpi-lbl">Funding Gap</div><div class="ret-kpi-val ${gap>0?'red':'green'}">${gap>0?retFmt(gap):'None ✓'}</div></div>
+      <div class="ret-kpi"><div class="ret-kpi-lbl">Currently Funded</div><div class="ret-kpi-val ${coverCol}">${Math.round(covered*100)}%</div></div>
+    </div>
+    <div class="ret-track-wrap">
+      <div class="ret-track-lbl">Corpus Coverage Breakdown</div>
+      <div class="ret-bar-row">
+        <div class="ret-bar-lbl">Current savings</div>
+        <div class="ret-bar-track"><div class="ret-bar-fill" style="width:${Math.min(savings/corpusNeeded*100,100).toFixed(1)}%;background:#6ee7b7"></div></div>
+        <div class="ret-bar-val">${retFmt(savings)}</div>
+      </div>
+      <div class="ret-bar-row">
+        <div class="ret-bar-lbl">Growth to retirement</div>
+        <div class="ret-bar-track"><div class="ret-bar-fill" style="width:${Math.min((corpusNow-savings)/corpusNeeded*100,100).toFixed(1)}%;background:var(--accent)"></div></div>
+        <div class="ret-bar-val">+${retFmt(corpusNow-savings)}</div>
+      </div>
+      ${gap>0?`<div class="ret-bar-row">
+        <div class="ret-bar-lbl">Remaining gap</div>
+        <div class="ret-bar-track"><div class="ret-bar-fill" style="width:${Math.min(gap/corpusNeeded*100,100).toFixed(1)}%;background:#fca5a5"></div></div>
+        <div class="ret-bar-val" style="color:#fca5a5">${retFmt(gap)}</div>
+      </div>`:''}
+    </div>
+    ${gap>0?`<div class="ret-monthly-grid">
+      ${rates.map((s,i)=>`<div class="ret-monthly-card${i===1?' mid':''}">
+        <div class="ret-mc-rate${i===1?' mid':''}">${(s.rate*100).toFixed(0)}% p.a. return</div>
+        <div class="ret-mc-val${i===1?' mid':''}">${retFmt(s.pmt)}/mo</div>
+        <div class="ret-mc-sub">to close the gap</div>
+      </div>`).join('')}
+    </div>`:'<div class="na-summary" style="text-align:center"><div class="na-summary-title" style="color:#6ee7b7">🎉 On Track</div><div class="na-rec" style="text-align:center">Client's current savings are projected to cover retirement needs. Consider reviewing asset allocation and drawdown strategy.</div></div>'}
+    <div class="sp-note" style="margin-top:0.75rem">Assumes life expectancy of 85. Corpus PV calculated at real return (investment rate minus inflation). CPF payout reduces monthly drawdown requirement. Monthly savings shown are additional contributions needed on top of existing savings growth. For illustrative purposes only.</div>`;
+}
+
+// ─────────────────────────────────────────────
+// WHATSAPP SCRIPT LIBRARY
+// ─────────────────────────────────────────────
+const WA_SCRIPTS = [
+  { cat:'First Contact', catCol:'#1b6ca8', title:'Referral Introduction', scenario:'A friend or existing client referred this prospect',
+    body:'Hi [Name]! My name is [FC], a financial consultant with SOUL Advisors. Your friend [Referrer] thought it might be useful for us to connect.\n\nI help people protect their income, grow their wealth and plan for retirement — without the jargon. 😊\n\nWould you be open to a quick 20-min chat just to see if there's anything I can help you with? No obligation at all.' },
+  { cat:'First Contact', catCol:'#1b6ca8', title:'Post-Networking Follow-Up', scenario:'Met at an event, seminar or introduction',
+    body:'Hi [Name], it was great meeting you earlier! 👋\n\nI'm [FC] from SOUL Advisors — we spoke briefly about financial planning. Just wanted to drop a quick message in case you ever want to continue that conversation.\n\nFeel free to reach out anytime. Looking forward to staying in touch!' },
+  { cat:'First Contact', catCol:'#1b6ca8', title:'Cold Reach-Out (Common Connection)', scenario:'Mutual contact but not a direct referral',
+    body:'Hi [Name]! I came across your profile through [Connection] and thought it'd be worth reaching out.\n\nI'm [FC], a financial consultant specialising in wealth protection and retirement planning. I work with a lot of professionals like yourself.\n\nWould you be open to a brief chat sometime? Happy to work around your schedule. 🙏' },
+  { cat:'Post-Meeting', catCol:'#2d6a4f', title:'Thank You + Next Steps', scenario:'Right after the first meeting',
+    body:'Hi [Name], thank you so much for your time today! Really appreciated the open conversation. 😊\n\nBased on what we discussed, I'll put together a summary and illustration for you. Give me a couple of days and I'll send it over.\n\nMeanwhile, if any questions come to mind, feel free to WhatsApp me anytime. Have a great rest of the week!' },
+  { cat:'Post-Meeting', catCol:'#2d6a4f', title:'Sending the Illustration', scenario:'Following up with the proposal/illustration',
+    body:'Hi [Name], as promised — here's the illustration we went through today. 📎\n\nI've highlighted the key sections on [coverage / investment plan / retirement projection]. Happy to walk you through any part over a quick call if it's easier.\n\nNo rush at all — take your time to review and let me know your thoughts. 😊' },
+  { cat:'Post-Meeting', catCol:'#2d6a4f', title:'Gentle Follow-Up (No Response)', scenario:'Client went quiet after receiving proposal',
+    body:'Hi [Name], hope you're keeping well! Just checking in — did you get a chance to look at what I sent over?\n\nNo pressure at all. If the timing isn't right or you have any concerns, I'm always happy to chat. Sometimes a quick 10-min call clears things up faster than messages. 😊\n\nJust let me know what works for you!' },
+  { cat:'Policy Anniversary', catCol:'#d68910', title:'Annual Review Invite', scenario:'Policy anniversary approaching',
+    body:'Hi [Name]! 🎉 Your policy turns [X] year(s) old this [month] — happy anniversary!\n\nThis is a great time for a quick annual review to make sure everything still aligns with your goals and any life changes since we last spoke.\n\nAre you free for a 30-min chat sometime this [week / month]? Happy to come to you or do it over a call.' },
+  { cat:'Policy Anniversary', catCol:'#d68910', title:'Beneficiary & Coverage Check', scenario:'Prompt life changes — marriage, new child, promotion',
+    body:'Hi [Name], hope all is well! It's been a while since we last reviewed your plan together.\n\nLife has a way of changing — new milestones, new responsibilities — and it's worth making sure your coverage keeps up. 😊\n\nWould you be open to a quick 20-minute review? Just to make sure everything is still working for you and your family.' },
+  { cat:'Claim Support', catCol:'#6c3483', title:'Claim Assistance Offer', scenario:'Client or family member needs to make a claim',
+    body:'Hi [Name], I heard you may need to make a claim — I'm so sorry to hear what you're going through. 🙏\n\nPlease don't worry about the process. This is exactly what the policy is for, and I'm here to guide you every step of the way.\n\nCan we get on a quick call so I can walk you through what's needed? I want to make this as smooth as possible for you.' },
+  { cat:'Claim Support', catCol:'#6c3483', title:'Claim Successfully Submitted', scenario:'After submitting the claim on behalf of client',
+    body:'Hi [Name], just wanted to let you know — your claim has been submitted. ✅\n\nThe insurer typically takes [X] working days to process. I'll keep you updated as things progress, and I'm just a message away if you need anything.\n\nTake care of yourself. 🙏' },
+  { cat:'Referral Ask', catCol:'#B8975A', title:'Happy Client Referral Ask', scenario:'Client just received good news — claim paid, policy matured, good review',
+    body:'Hi [Name], I'm really glad I could be of help! 😊\n\nIf you have any friends or family who might benefit from a conversation about financial planning — whether it's protection, investment, or just getting started — I'd love to be introduced.\n\nYou can simply share my contact or send me their name. I'll reach out gently and there's zero obligation on their part. 🙏' },
+  { cat:'Referral Ask', catCol:'#B8975A', title:'Post-Claim Referral', scenario:'Family member witnessed the claim process',
+    body:'Hi [Name], I hope [family member] is recovering well. 🙏 It was truly an honour to help your family during such a difficult time.\n\nIf there's anyone close to you — a sibling, friend, colleague — who might not have the same protection in place, I'd be honoured to help them too.\n\nJust let me know and I'll take it from there. No pressure at all.' },
+  { cat:'Education', catCol:'#4A4540', title:'Market Update Note', scenario:'After significant market movement or news',
+    body:'Hi [Name], just a quick note — with recent market movements, I wanted to reassure you that your portfolio is designed for the long term. Short-term fluctuations are normal and expected. 📊\n\nYour fund mix is built to weather this. If you'd like to talk through it or have any concerns, I'm always happy to chat.\n\nStay the course! 💪' },
+  { cat:'Education', catCol:'#4A4540', title:'New Product / Promotion Alert', scenario:'Relevant new product or limited-time offer',
+    body:'Hi [Name], thought of you when I saw this — Prudential has just launched / is offering [product/promotion], and given what we discussed about your [goal], it could be worth a quick look.\n\nNo rush at all — just wanted to flag it in case it's useful. Want me to send you a brief overview? 😊' },
+];
+
+let scrActiveFilter = 'All';
+
+function scrRender() {
+  const name   = (document.getElementById('scr-name')?.value || '').trim() || '[Name]';
+  const fcName = '[FC]';
+  const cats   = ['All', ...new Set(WA_SCRIPTS.map(s => s.cat))];
+
+  // Build filter buttons once
+  const filterEl = document.getElementById('scr-filters');
+  if (!filterEl.dataset.built) {
+    filterEl.innerHTML = cats.map(c =>
+      `<button class="scr-filter-btn${c==='All'?' active':''}" onclick="scrFilter('${c}',this)">${c}</button>`
+    ).join('');
+    filterEl.dataset.built = '1';
+  }
+
+  const visible = scrActiveFilter === 'All' ? WA_SCRIPTS : WA_SCRIPTS.filter(s => s.cat === scrActiveFilter);
+  document.getElementById('scripts-grid').innerHTML = visible.map((s, i) => {
+    const body = s.body.replace(/\[Name\]/g, name).replace(/\[FC\]/g, fcName);
+    const safeBody = body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<div class="scr-card">
+      <div class="scr-card-head">
+        <div>
+          <span class="scr-cat" style="background:${s.catCol}22;color:${s.catCol};border:1px solid ${s.catCol}44">${s.cat}</span>
+          <div class="scr-title" style="margin-top:0.35rem">${s.title}</div>
+        </div>
+      </div>
+      <div class="scr-scenario">${s.scenario}</div>
+      <div class="scr-body">${safeBody}</div>
+      <button class="scr-copy-btn" id="scr-btn-${i}" onclick="scrCopy(${i})">Copy →</button>
+    </div>`;
+  }).join('');
+}
+
+function scrFilter(cat, btn) {
+  scrActiveFilter = cat;
+  document.querySelectorAll('.scr-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  scrRender();
+}
+
+function scrCopy(idx) {
+  const name   = (document.getElementById('scr-name')?.value || '').trim() || '[Name]';
+  const text   = WA_SCRIPTS[idx].body.replace(/\[Name\]/g, name).replace(/\[FC\]/g, '[FC]');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('scr-btn-' + idx);
+    if (!btn) return;
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy →'; btn.classList.remove('copied'); }, 2500);
+  });
 }
 
 // ─────────────────────────────────────────────
