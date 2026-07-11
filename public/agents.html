@@ -3153,8 +3153,8 @@ function naCalc() {
   const lifeGap     = Math.max(lifeNeeded - exLife, 0);
   const lifeCov     = Math.min(exLife / lifeNeeded, 1);
 
-  // CI cover — 5× annual income, min S$100k
-  const ciNeeded    = Math.max(annualIncome * 5, 100000);
+  // CI cover — 5× annual income + outstanding loans, min S$100k
+  const ciNeeded    = Math.max(annualIncome * 5 + loans, 100000);
   const ciGap       = Math.max(ciNeeded - exCI, 0);
   const ciCov       = Math.min(exCI / ciNeeded, 1);
 
@@ -3190,7 +3190,7 @@ function naCalc() {
 
   el.innerHTML =
     card('🏥','Life Cover', lifeNeeded, exLife, lifeGap, lifeCov, loans ? `Includes S$ ${Math.round(loans/1000)}k outstanding loans` : '') +
-    card('🩺','Critical Illness', ciNeeded, exCI, ciGap, ciCov, 'Benchmark: 5× annual income or S$100k min') +
+    card('🩺','Critical Illness', ciNeeded, exCI, ciGap, ciCov, loans ? 'Benchmark: 5× income + loans (' + naFmt(loans) + ') or S$100k min' : 'Benchmark: 5× annual income or S$100k min') +
     `<div class="na-card">
       <div class="na-card-head"><div class="na-card-title">♿ Disability / Income Protection</div><span class="na-status na-warn">Advisory</span></div>
       <div class="na-row"><span class="na-lbl">Recommended monthly benefit</span><span class="na-val">${naFmt(disBenefit)}/mo</span></div>
