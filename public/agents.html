@@ -1246,10 +1246,22 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
             <div class="al-field"><label class="al-label">CPF OA Balance (SGD)</label><input class="al-input" type="number" id="ret-cpf-oa" placeholder="e.g. 50000" oninput="retCalc()"></div>
             <div class="al-field"><label class="al-label">CPF SA / RA Balance (SGD)</label><input class="al-input" type="number" id="ret-cpf-sa" placeholder="e.g. 80000" oninput="retCalc()"></div>
           </div>
+          <div class="al-field-row">
+            <div class="al-field">
+              <label class="al-label">Monthly OA Contribution (SGD)</label>
+              <input class="al-input" type="number" id="ret-cpf-oa-mo" placeholder="e.g. 1450" oninput="retCalc()">
+              <div class="al-hint">Employer + employee. Age &lt;35: salary × 23%.</div>
+            </div>
+            <div class="al-field">
+              <label class="al-label">Monthly SA Contribution (SGD)</label>
+              <input class="al-input" type="number" id="ret-cpf-sa-mo" placeholder="e.g. 400" oninput="retCalc()">
+              <div class="al-hint">Age &lt;35: salary × 6%.</div>
+            </div>
+          </div>
           <div class="al-field">
-            <label class="al-label">Monthly CPF Contribution — OA + SA (SGD)</label>
-            <input class="al-input" type="number" id="ret-cpf-monthly" placeholder="e.g. 1850" oninput="retCalc()">
-            <div class="al-hint">Employer + employee combined (excl. Medisave). Guide: gross salary × 29% (age &lt;35), × 28% (35–44), × 27% (45–54).</div>
+            <label class="al-label">Monthly OA Used for Housing Loan (SGD)</label>
+            <input class="al-input" type="number" id="ret-cpf-housing" placeholder="e.g. 1000 — leave blank if no CPF housing" oninput="retCalc()">
+            <div class="al-hint">OA deducted each month for HDB / private mortgage. Reduces OA accumulation available for RA at 55.</div>
           </div>
           <div class="al-field">
             <label class="al-label">CPF LIFE Payout Override — optional (SGD/mo)</label>
@@ -3319,10 +3331,14 @@ function retCalc() {
   var expenses    = parseFloat(document.getElementById('ret-expenses').value)    || 0;
   var infRate     = parseInt(document.getElementById('ret-inf').value)           / 100;
 
-  var cpfOA       = parseFloat(document.getElementById('ret-cpf-oa').value)      || 0;
-  var cpfSA       = parseFloat(document.getElementById('ret-cpf-sa').value)      || 0;
-  var cpfMonthly  = parseFloat(document.getElementById('ret-cpf-monthly').value) || 0;
-  var cpfOverride = parseFloat(document.getElementById('ret-cpf-override').value)|| 0;
+  var cpfOA       = parseFloat(document.getElementById('ret-cpf-oa').value)       || 0;
+  var cpfSA       = parseFloat(document.getElementById('ret-cpf-sa').value)       || 0;
+  var cpfOAMoIn   = parseFloat(document.getElementById('ret-cpf-oa-mo').value)    || 0;
+  var cpfSAMo     = parseFloat(document.getElementById('ret-cpf-sa-mo').value)    || 0;
+  var cpfHousing  = parseFloat(document.getElementById('ret-cpf-housing').value)  || 0;
+  var cpfOverride = parseFloat(document.getElementById('ret-cpf-override').value) || 0;
+  // Net OA monthly accumulation after housing deduction
+  var cpfOAMo     = Math.max(cpfOAMoIn - cpfHousing, 0);
 
   var cash        = parseFloat(document.getElementById('ret-cash').value)        || 0;
   var investments = parseFloat(document.getElementById('ret-inv').value)         || 0;
@@ -3346,17 +3362,6 @@ function retCalc() {
   var yrs     = Math.max(retAge - age, 1);
   var lifeExp = 85;
   var retYrs  = Math.max(lifeExp - retAge, 1);
-
-  // ── CPF OA / SA monthly contribution split by age ──────────────────────────
-  // Based on CPF statutory allocation: OA and SA portion of gross salary
-  var oaShare, saShare;
-  if (age < 35)      { oaShare = 0.793; saShare = 0.207; }   // OA:23%, SA:6% of 29%
-  else if (age < 45) { oaShare = 0.750; saShare = 0.250; }   // OA:21%, SA:7% of 28%
-  else if (age < 55) { oaShare = 0.704; saShare = 0.296; }   // OA:19%, SA:8% of 27%
-  else               { oaShare = 0.750; saShare = 0.250; }
-
-  var cpfOAMo = cpfMonthly * oaShare;
-  var cpfSAMo = cpfMonthly * saShare;
 
   // ── CPF Projection ─────────────────────────────────────────────────────────
   var FRS_2026 = 205800, BRS_2026 = 102900, ERS_2026 = 308700;
@@ -3397,7 +3402,7 @@ function retCalc() {
 
   if (cpfOverride > 0) {
     cpfPayoutMonthly = cpfOverride;
-  } else if (cpfOA || cpfSA || cpfMonthly) {
+  } else if (cpfOA || cpfSA || cpfOAMoIn || cpfSAMo) {
     cpfPayoutMonthly = estimateCpfLife(raAt65projected);
   }
 
@@ -3458,7 +3463,7 @@ function retCalc() {
 
   // CPF section (only if any CPF data entered)
   var cpfSection = '';
-  if (cpfOA || cpfSA || cpfMonthly || cpfOverride) {
+  if (cpfOA || cpfSA || cpfOAMoIn || cpfSAMo || cpfOverride) {
     cpfSection = '<div class="ret-section-hdr-out">CPF Projection</div>'
       + '<div class="ret-kpi-grid ret-kpi-3">'
       + '<div class="ret-kpi"><div class="ret-kpi-lbl">RA at Retirement</div><div class="ret-kpi-val" style="color:var(--data)">' + retFmt(raAtRetirement) + '</div></div>'
