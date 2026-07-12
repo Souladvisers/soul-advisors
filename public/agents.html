@@ -4135,8 +4135,10 @@ function pbPersistPayout(pct) {
   return 0;
 }
 
-// MDRT 2025 qualifying (USD) — converted to SGD at user FX
-var MDRT_USD = { mdrt:65300, cot:195900, tot:391800 };
+// Official MDRT Singapore qualifying amounts in SGD (MDRT conversion factor doc, 2025 & 2026)
+// Source: MDRT Commission & Premium Production Requirements table
+// 2025 membership (2024 production): SGD 72,400 | 2026 membership (2025 production): SGD 72,400
+var MDRT_SGD_BASE = { mdrt:72400, cot:217200, tot:434400 };
 
 function getBonusRate(amount, table) {
   var rate = 0;
@@ -4315,11 +4317,10 @@ function mdrtCalc() {
   var totalComm  = y1+y2+y3+y4+y5+y6;
   var totalQual  = totalComm + bonusFinal;
 
-  // ── MDRT targets in SGD (using 1.35 FX default, shown as reference) ──
-  // We show the qualifying amounts in SGD directly
-  var mdrtSGD = MDRT_USD.mdrt * 1.35;
-  var cotSGD  = MDRT_USD.cot  * 1.35;
-  var totSGD  = MDRT_USD.tot  * 1.35;
+  // ── MDRT targets in SGD (official MDRT Singapore figures) ──
+  var mdrtSGD = MDRT_SGD_BASE.mdrt;
+  var cotSGD  = MDRT_SGD_BASE.cot;
+  var totSGD  = MDRT_SGD_BASE.tot;
 
   // ── Next bonus tier ──
   function nextTier(amount, table) {
@@ -4352,9 +4353,9 @@ function mdrtCalc() {
       + '<div class="mdrt-prog-bg"><div class="mdrt-prog-fill ' + fillClass + '" style="width:' + pct.toFixed(1) + '%">'
       + (pct > 12 ? Math.round(pct) + '%' : '') + '</div></div></div>';
   }
-  var progHtml = bar('MDRT  (≈ USD 65,300)', mdrtSGD, 'mdrt-fill-mdrt', '#7FC4E8')
-    + bar('COT   (≈ USD 195,900)', cotSGD, 'mdrt-fill-cot', '#B8975A')
-    + bar('TOT   (≈ USD 391,800)', totSGD, 'mdrt-fill-tot', '#e07070');
+  var progHtml = bar('MDRT  (SGD 72,400)', mdrtSGD, 'mdrt-fill-mdrt', '#7FC4E8')
+    + bar('COT   (SGD 217,200)', cotSGD, 'mdrt-fill-cot', '#B8975A')
+    + bar('TOT   (SGD 434,400)', totSGD, 'mdrt-fill-tot', '#e07070');
 
   // ── Premium route breakdown ──
   var premHtml = '';
