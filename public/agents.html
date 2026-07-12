@@ -142,6 +142,23 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   margin-top: auto;
 }
 
+/* Onboarding guide */
+.ag-guide { background: rgba(184,151,90,0.06); border-top: 1px solid rgba(184,151,90,0.15); padding: 0.85rem 1rem; font-size: 0.71rem; }
+.ag-guide-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+.ag-guide-steps { display: flex; flex-direction: column; gap: 0.42rem; }
+.ag-guide-step { display: flex; align-items: flex-start; gap: 0.5rem; color: rgba(255,255,255,0.55); line-height: 1.4; }
+.ag-guide-num { flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; background: rgba(184,151,90,0.22); color: var(--accent); font-size: 0.6rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.ag-guide-step b { color: rgba(255,255,255,0.78); }
+.ag-guide-dismiss { margin-top: 0.65rem; font-size: 0.65rem; color: rgba(255,255,255,0.3); background: none; border: none; cursor: pointer; padding: 0; font-family: inherit; }
+.ag-guide-dismiss:hover { color: rgba(255,255,255,0.6); }
+/* Soon badges */
+.tool-card-soon { opacity: 0.55; cursor: default; pointer-events: none; }
+.soon-badge { display: inline-block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(184,151,90,0.18); color: var(--accent); border-radius: 3px; padding: 1px 5px; margin-left: 0.35rem; vertical-align: middle; }
+/* Tooltip system */
+.tip-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; font-size: 0.6rem; font-style: normal; border-radius: 50%; background: rgba(184,151,90,0.2); color: var(--accent); cursor: help; position: relative; margin-left: 3px; vertical-align: middle; }
+.tip-icon::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1a1612; color: rgba(255,255,255,0.85); font-size: 0.67rem; line-height: 1.45; padding: 0.45rem 0.65rem; border-radius: 6px; border: 1px solid var(--border-gold); white-space: normal; min-width: 200px; max-width: 280px; z-index: 200; pointer-events: none; opacity: 0; transition: opacity 0.15s; box-shadow: 0 4px 16px rgba(0,0,0,0.5); font-weight: 400; letter-spacing: 0; text-transform: none; }
+.tip-icon:hover::after { opacity: 1; }
+
 /* ── TAB PANELS ── */
 .ag-panel { display: none; }
 .ag-panel.active { display: block; margin-left: 210px; min-height: calc(100vh - 60px); }
@@ -199,6 +216,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .f-ret.neg { color: #fca5a5; }
 .f-ret.na  { color: rgba(255,255,255,0.22); }
 .f-aum { text-align: right; color: rgba(255,255,255,0.45); font-size: 0.77rem; }
+@media (max-width: 900px) { .f-col-hide { display: none; } }
 .f-empty { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.28); font-size: 0.88rem; }
 
 /* distribution cards */
@@ -816,6 +834,23 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   display: block; width: 18px; height: 1.5px;
   background: rgba(255,255,255,0.6); border-radius: 2px;
 }
+.ag-sidebar-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+  z-index: 89; opacity: 0; transition: opacity 0.25s;
+}
+.ag-sidebar-overlay.open { display: block; opacity: 1; }
+
+/* ── Client Session Bar ── */
+.client-session-bar { display: none; align-items: center; gap: 0.75rem; padding: 0.45rem 1.5rem; background: rgba(184,151,90,0.07); border-bottom: 1px solid rgba(184,151,90,0.15); font-size: 0.74rem; flex-wrap: wrap; }
+.client-session-bar.active { display: flex; }
+.csb-label { color: rgba(255,255,255,0.38); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.62rem; }
+.csb-val { color: rgba(255,255,255,0.75); font-weight: 500; }
+.csb-field { display: flex; align-items: center; gap: 0.4rem; }
+.csb-input { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 5px; color: rgba(255,255,255,0.85); padding: 0.18rem 0.5rem; font-size: 0.72rem; width: 70px; font-family: inherit; }
+.csb-btn { font-size: 0.68rem; padding: 0.2rem 0.65rem; background: rgba(184,151,90,0.2); color: var(--accent); border: 1px solid rgba(184,151,90,0.35); border-radius: 5px; cursor: pointer; font-family: inherit; }
+.csb-btn:hover { background: rgba(184,151,90,0.3); }
+.csb-clear { font-size: 0.62rem; color: rgba(255,255,255,0.25); cursor: pointer; margin-left: auto; }
+.csb-clear:hover { color: rgba(255,255,255,0.5); }
 
 /* ── Panel page-title area ── */
 .panel-header {
@@ -872,7 +907,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   <!-- Top Nav -->
   <nav class="ag-nav">
     <div style="display:flex;align-items:center;gap:0.5rem">
-      <button class="ag-ham" onclick="document.querySelector('.ag-sidebar').classList.toggle('open')" aria-label="Menu">
+      <button class="ag-ham" onclick="document.querySelector('.ag-sidebar').classList.toggle('open');document.getElementById('ag-sidebar-overlay').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
       <div class="ag-nav-brand"><span>SOUL</span> Advisors<small>Agent Hub</small></div>
@@ -886,6 +921,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   <!-- Sidebar Navigation -->
   <aside class="ag-sidebar">
     <nav class="ag-sidenav">
+
+      <div style="padding:0.5rem 1rem 0.4rem;border-bottom:1px solid var(--border)">
+        <button class="csb-btn" style="width:100%;font-size:0.67rem;text-align:left" onclick="document.getElementById('client-session-bar').classList.toggle('active')">
+          <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;vertical-align:middle;margin-right:4px"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Client Session
+        </button>
+      </div>
 
       <div class="ag-nav-section">Investment Tools</div>
 
@@ -941,8 +983,32 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
       </button>
 
     </nav>
+    <!-- Onboarding quick-guide -->
+    <div class="ag-guide" id="ag-guide">
+      <div class="ag-guide-title">Getting Started</div>
+      <div class="ag-guide-steps">
+        <div class="ag-guide-step"><span class="ag-guide-num">1</span><span>Open <b>Client Session</b> and enter age &amp; income</span></div>
+        <div class="ag-guide-step"><span class="ag-guide-num">2</span><span>Run <b>Need Analysis</b> to find protection gaps</span></div>
+        <div class="ag-guide-step"><span class="ag-guide-num">3</span><span>Use <b>Retirement Gap</b> to model CPF + savings</span></div>
+        <div class="ag-guide-step"><span class="ag-guide-num">4</span><span>Build a portfolio with <b>Portfolio Builder</b></span></div>
+        <div class="ag-guide-step"><span class="ag-guide-num">5</span><span>Track your year in <b>MDRT Tracker</b></span></div>
+      </div>
+      <button class="ag-guide-dismiss" onclick="this.parentElement.style.display='none';localStorage.setItem('guideDismissed','1')">Got it ✓</button>
+    </div>
     <div class="ag-sidebar-footer">SOUL Advisors · Agent Hub</div>
   </aside>
+
+  <div class="ag-sidebar-overlay" id="ag-sidebar-overlay" onclick="document.querySelector('.ag-sidebar').classList.remove('open');this.classList.remove('open')"></div>
+
+  <!-- Client Session Bar -->
+  <div class="client-session-bar" id="client-session-bar">
+    <span class="csb-label">Client Session</span>
+    <div class="csb-field"><span class="csb-label">Age</span><input class="csb-input" type="number" id="csb-age" placeholder="35" min="18" max="80"></div>
+    <div class="csb-field"><span class="csb-label">Income/mo</span><input class="csb-input" type="number" id="csb-income" placeholder="5000" style="width:80px"></div>
+    <div class="csb-field"><span class="csb-label">Retire at</span><input class="csb-input" type="number" id="csb-retire" placeholder="65" min="45" max="80"></div>
+    <button class="csb-btn" onclick="csbApply()">Apply to All Tools →</button>
+    <span class="csb-clear" onclick="csbClear()" title="Clear session">✕ Clear session</span>
+  </div>
 
   <!-- ── PRULink FUNDS PANEL ── -->
   <div class="ag-panel active" id="p-funds">
@@ -992,9 +1058,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
               <th>Div?</th>
               <th onclick="fSort('bidPrice')"   data-fc="bidPrice" style="text-align:right">NAV (Bid)</th>
               <th onclick="fSort('aum')"        data-fc="aum" style="text-align:right">AUM (M)</th>
-              <th onclick="fSort('1m')"         data-fc="1m"  style="text-align:right">1M</th>
-              <th onclick="fSort('3m')"         data-fc="3m"  style="text-align:right">3M</th>
-              <th onclick="fSort('1y')"         data-fc="1y"  style="text-align:right">1Y</th>
+              <th onclick="fSort('1m')"         data-fc="1m"  class="f-col-hide" style="text-align:right">1M</th>
+              <th onclick="fSort('3m')"         data-fc="3m"  class="f-col-hide" style="text-align:right">3M</th>
+              <th onclick="fSort('1y')"         data-fc="1y"  style="text-align:right;color:var(--data)">1Y ↑</th>
               <th onclick="fSort('3y')"         data-fc="3y"  style="text-align:right">3Y p.a.</th>
               <th onclick="fSort('5y')"         data-fc="5y"  style="text-align:right">5Y p.a.</th>
             </tr></thead>
@@ -1430,6 +1496,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           <div class="al-field"><label class="al-label">Target Retirement Age</label><input class="al-input" type="number" id="na-retage" min="45" max="75" placeholder="e.g. 65"></div>
           <div class="al-field"><label class="al-label">Existing Life Cover (SGD)</label><input class="al-input" type="number" id="na-life" placeholder="e.g. 100000"></div>
           <div class="al-field"><label class="al-label">Existing CI Cover (SGD)</label><input class="al-input" type="number" id="na-ci" placeholder="e.g. 50000"></div>
+          <div class="al-field"><label class="al-label">Existing Disability Cover (SGD/mo) <span class="tip-icon" data-tip="Monthly benefit from any income protection or disability policy the client already holds.">ⓘ</span></label><input class="al-input" type="number" id="na-dis" placeholder="e.g. 0"></div>
           <button class="sp-calc-btn" onclick="naCalc()">Analyse Protection Gaps →</button>
         </div>
         <div class="na-results" id="na-results">
@@ -1460,17 +1527,20 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
             <button class="ret-preset-btn" onclick="document.getElementById('ret-retage').value=65;retCalc()">65</button>
             <button class="ret-preset-btn" onclick="document.getElementById('ret-retage').value=67;retCalc()">67</button>
           </div>
-          <div class="al-field"><label class="al-label">Monthly Lifestyle Cost Today (SGD)</label><input class="al-input" type="number" id="ret-expenses" placeholder="e.g. 4000" oninput="retCalc()"></div>
+          <div class="al-field-row">
+            <div class="al-field"><label class="al-label">Monthly Lifestyle Cost Today (SGD)</label><input class="al-input" type="number" id="ret-expenses" placeholder="e.g. 4000" oninput="retCalc()"></div>
+            <div class="al-field"><label class="al-label">Life Expectancy <span class="tip-icon" data-tip="Use 90+ for safe planning. Singapore women live to ~87, men ~84. CPF LIFE pays for life regardless.">ⓘ</span></label><input class="al-input" type="number" id="ret-lifeexp" min="80" max="100" value="90" placeholder="e.g. 90" oninput="retCalc()"></div>
+          </div>
           <div class="al-field">
             <label class="al-label">Inflation Assumption — <span id="ret-inf-lbl" style="color:var(--accent)">3% p.a.</span></label>
             <div class="al-slider-wrap"><input class="al-slider" type="range" id="ret-inf" min="1" max="5" value="3" oninput="document.getElementById('ret-inf-lbl').textContent=this.value+'% p.a.';retCalc()"></div>
           </div>
 
           <div class="ret-section-hdr">CPF Position</div>
-          <div class="ret-section-note">OA earns 2.5% p.a. · SA/RA earns 4% p.a. (floor rates). CPF LIFE pays monthly from age 65.</div>
+          <div class="ret-section-note">OA earns 2.5% p.a. · SA/RA earns 4% p.a. (floor rates). CPF LIFE pays monthly from age 65. Note: additional 1% on first S$20k OA / S$40k SA / S$60k RA is not modelled (conservative estimate).</div>
           <div class="al-field-row">
-            <div class="al-field"><label class="al-label">CPF OA Balance (SGD)</label><input class="al-input" type="number" id="ret-cpf-oa" placeholder="e.g. 50000" oninput="retCalc()"></div>
-            <div class="al-field"><label class="al-label">CPF SA / RA Balance (SGD)</label><input class="al-input" type="number" id="ret-cpf-sa" placeholder="e.g. 80000" oninput="retCalc()"></div>
+            <div class="al-field"><label class="al-label">CPF OA Balance (SGD) <span class="tip-icon" data-tip="Ordinary Account. Earns 2.5% p.a. Used for housing, education, investment. At 55, transfers to RA to top up toward FRS/ERS.">ⓘ</span></label><input class="al-input" type="number" id="ret-cpf-oa" placeholder="e.g. 50000" oninput="retCalc()"></div>
+            <div class="al-field"><label class="al-label">CPF SA / RA Balance (SGD) <span class="tip-icon" data-tip="Special Account (under 55) or Retirement Account (55+). Earns 4% p.a. Becomes your CPF LIFE premium at 65.">ⓘ</span></label><input class="al-input" type="number" id="ret-cpf-sa" placeholder="e.g. 80000" oninput="retCalc()"></div>
           </div>
           <div class="al-field-row">
             <div class="al-field">
@@ -1485,12 +1555,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
             </div>
           </div>
           <div class="al-field">
-            <label class="al-label">Monthly OA Used for Housing Loan (SGD)</label>
+            <label class="al-label">Monthly OA Used for Housing Loan (SGD) <span class="tip-icon" data-tip="Amount deducted monthly from OA for HDB/private mortgage. Reduces OA accumulation available for RA at 55, which lowers CPF LIFE payout.">ⓘ</span></label>
             <input class="al-input" type="number" id="ret-cpf-housing" placeholder="e.g. 1000 — leave blank if no CPF housing" oninput="retCalc()">
             <div class="al-hint">OA deducted each month for HDB / private mortgage. Reduces OA accumulation available for RA at 55.</div>
           </div>
           <div class="al-field">
-            <label class="al-label">CPF LIFE Payout Override — optional (SGD/mo)</label>
+            <label class="al-label">CPF LIFE Payout Override — optional (SGD/mo) <span class="tip-icon" data-tip="Leave blank to auto-estimate from RA balance. If you have the client's CPF projection letter, enter the exact figure here for accuracy.">ⓘ</span></label>
             <input class="al-input" type="number" id="ret-cpf-override" placeholder="Leave blank — auto-estimated from RA balance" oninput="retCalc()">
             <div class="al-hint">Use your client's actual CPF projection letter figure here if available.</div>
           </div>
@@ -1612,7 +1682,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           <!-- ── Shared: Persistency + FX + Month ── -->
           <div class="mdrt-persist-row" style="margin-top:0.6rem;margin-bottom:0.7rem">
             <div class="al-field">
-              <label class="al-label">Overall Persistency (%)</label>
+              <label class="al-label">Overall Persistency (%) <span class="tip-icon" data-tip="Percentage of policies still in-force after 19 months. Affects your production bonus payout multiplier. 95%+ is excellent; below 80% may reduce bonus significantly.">ⓘ</span></label>
               <input class="al-slider" type="range" id="md-persist" min="75" max="100" value="95"
                 oninput="document.getElementById('md-persist-lbl').textContent=this.value+'%';mdrtCalc()">
             </div>
@@ -1767,7 +1837,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   <div class="ag-panel" id="p-care">
     <div class="tools-wrap">
       <div class="tools-title">Client Care</div>
-      <div class="tools-sub">Service tools for policy servicing and client follow-up.</div>
+      <div class="tools-sub">Service tools for policy servicing, client follow-up and relationship management.</div>
       <div class="tools-grid">
         <a class="tool-card" href="/client-care" target="_blank">
           <div class="tool-icon">💛</div>
@@ -1775,6 +1845,30 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           <div class="tool-desc">Policy servicing requests, claims assistance and client follow-up workflows.</div>
           <div class="tool-arrow">Open tool →</div>
         </a>
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">🎂</div>
+          <div class="tool-name">Anniversary &amp; Birthday Tracker <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Automated alerts for policy anniversaries and client birthdays — never miss a touchpoint.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">📋</div>
+          <div class="tool-name">Claims Tracker <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Track open claims, document submissions and payout status for your clients in one place.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">🤝</div>
+          <div class="tool-name">Referral Manager <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Log referrals, track conversion status and thank clients who introduce new prospects.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">📁</div>
+          <div class="tool-name">Client Portfolio View <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">View a client's full policy portfolio, coverage summary and upcoming renewal dates.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1867,6 +1961,10 @@ function showLogin() {
 }
 
 function showApp(member) {
+  if (localStorage.getItem('guideDismissed')) {
+    var g = document.getElementById('ag-guide');
+    if (g) g.style.display = 'none';
+  }
   document.getElementById('login-overlay').classList.add('hidden');
   const app = document.getElementById('app');
   app.style.display = 'flex';
@@ -3661,6 +3759,7 @@ function naCalc() {
   const retAge  = parseInt(document.getElementById('na-retage').value)    || 65;
   const exLife  = parseFloat(document.getElementById('na-life').value)    || 0;
   const exCI    = parseFloat(document.getElementById('na-ci').value)      || 0;
+  const exDis   = parseFloat(document.getElementById('na-dis').value)     || 0;
   const el = document.getElementById('na-results');
 
   if (!income || !age) {
@@ -3684,6 +3783,8 @@ function naCalc() {
 
   // Disability / income protection — monthly benefit = 75% of income
   const disBenefit  = income * 0.75;
+  const disGap      = Math.max(disBenefit - exDis, 0);
+  const disCov      = exDis > 0 ? Math.min(exDis / disBenefit, 1) : 0;
   const disAnnual   = disBenefit * 12 * yrsToRetire;
 
   // Emergency fund — 6 months expenses
@@ -3709,18 +3810,16 @@ function naCalc() {
   const recs = [];
   if (lifeGap > 0) recs.push(`Top up life cover by ${naFmt(lifeGap)} to meet the ${mult}× income benchmark for ${deps} dependant${deps!==1?'s':''}.`);
   if (ciGap > 0)   recs.push(`Increase CI cover by ${naFmt(ciGap)} — current coverage at ${Math.round(exCI/ciNeeded*100)}% of recommended.`);
-  recs.push(`Disability income protection of ${naFmt(disBenefit)}/month would cover ${yrsToRetire} years to retirement.`);
+  if (disGap > 0) recs.push(`Top up disability/income protection by ${naFmt(disGap)}/month — recommended benefit is ${naFmt(disBenefit)}/mo (75% of income).`);
+  else if (exDis >= disBenefit) recs.push(`Disability income protection looks adequate at ${naFmt(exDis)}/mo. Review exclusions and deferment period.`);
+  else recs.push(`Disability income protection: recommend ${naFmt(disBenefit)}/month to cover ${yrsToRetire} years to retirement.`);
   if (expenses && expenses * 6 > 0) recs.push(`Emergency fund target: ${naFmt(efNeeded)} (6 months expenses). Confirm client has this in liquid assets.`);
 
   el.innerHTML =
     card('🏥','Life Cover', lifeNeeded, exLife, lifeGap, lifeCov, loans ? `Includes S$ ${Math.round(loans/1000)}k outstanding loans` : '') +
     card('🩺','Critical Illness', ciNeeded, exCI, ciGap, ciCov, loans ? 'Benchmark: 5× income + loans (' + naFmt(loans) + ') or S$100k min' : 'Benchmark: 5× annual income or S$100k min') +
-    `<div class="na-card">
-      <div class="na-card-head"><div class="na-card-title">♿ Disability / Income Protection</div><span class="na-status na-warn">Advisory</span></div>
-      <div class="na-row"><span class="na-lbl">Recommended monthly benefit</span><span class="na-val">${naFmt(disBenefit)}/mo</span></div>
-      <div class="na-row"><span class="na-lbl">Total cover to retirement</span><span class="na-val">${naFmt(disAnnual)}</span></div>
-      <div class="na-row"><span class="na-lbl">Years to retirement</span><span class="na-val">${yrsToRetire} yrs</span></div>
-    </div>` +
+    card('♿','Disability / Income Protection', disBenefit, exDis, disGap, disCov,
+      `75% income replacement · ${yrsToRetire} yrs to retirement · Total: ${naFmt(disBenefit * 12 * yrsToRetire)}`) +
     `<div class="na-summary"><div class="na-summary-title">Advisor Notes</div><div class="na-recs">${recs.map(r=>`<div class="na-rec">• ${r}</div>`).join('')}</div></div>`;
 }
 
@@ -3728,6 +3827,33 @@ function naCalc() {
 // RETIREMENT GAP CALCULATOR
 // ─────────────────────────────────────────────
 let retStratRate = 0.04; // default conservative
+
+// ── Client Session Bar ─────────────────────────────────────────
+function csbApply() {
+  var age    = document.getElementById('csb-age').value;
+  var income = document.getElementById('csb-income').value;
+  var retire = document.getElementById('csb-retire').value;
+  // Retirement Gap
+  if (age    && document.getElementById('ret-age'))    document.getElementById('ret-age').value    = age;
+  if (retire && document.getElementById('ret-retage')) document.getElementById('ret-retage').value = retire;
+  // Need Analysis
+  if (age    && document.getElementById('na-age'))     document.getElementById('na-age').value     = age;
+  if (income && document.getElementById('na-income'))  document.getElementById('na-income').value  = income;
+  if (retire && document.getElementById('na-retage'))  document.getElementById('na-retage').value  = retire;
+  // Portfolio Builder
+  if (age    && document.getElementById('al-age'))     document.getElementById('al-age').value     = age;
+  // Single Premium
+  if (age    && document.getElementById('sp-age'))     document.getElementById('sp-age').value     = age;
+  // Rebalancer
+  if (age    && document.getElementById('rb-age'))     document.getElementById('rb-age').value     = age;
+  // Auto-calc wherever possible
+  if (document.getElementById('p-retirement').classList.contains('active')) retCalc();
+  if (document.getElementById('p-needanalysis').classList.contains('active')) naCalc();
+}
+function csbClear() {
+  ['csb-age','csb-income','csb-retire'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('client-session-bar').classList.remove('active');
+}
 
 function setRetStrat(s) {
   var rates = { conservative: 0.04, moderate: 0.06, growth: 0.08, aggressive: 0.10 };
@@ -3791,7 +3917,7 @@ function retCalc() {
   }
 
   var yrs     = Math.max(retAge - age, 1);
-  var lifeExp = 85;
+  var lifeExp = parseInt(document.getElementById('ret-lifeexp').value) || 90;
   var retYrs  = Math.max(lifeExp - retAge, 1);
 
   // ── CPF Projection ─────────────────────────────────────────────────────────
@@ -3875,7 +4001,7 @@ function retCalc() {
     corpusNeeded = postNeed * (1 - Math.pow(1 + rMo, -nPost)) / rMo;
   } else {
     var preYrs  = Math.max(65 - retAge, 0);
-    var postYrs = Math.max(lifeExp - 65, 0);
+    var postYrs = Math.max(lifeExp - 65, 0);  // lifeExp from input
     var pvPre   = adjMonthly * (1 - Math.pow(1 + rMo, -(preYrs*12))) / rMo;
     var postNeed2 = Math.max(adjMonthly - cpfPayoutMonthly, 0);
     var pvPost  = postNeed2 > 0
@@ -3983,7 +4109,7 @@ function retCalc() {
     + '<div class="ret-section-hdr-out">Non-CPF Corpus Breakdown</div>'
     + '<div class="ret-track-wrap">' + cashBar + invBar + othBar + gapBar + '</div>'
     + bottomHtml
-    + '<div class="sp-note" style="margin-top:0.75rem">Life expectancy 85. CPF LIFE Standard Plan estimated from RA balance at 65 (2026 BRS/FRS/ERS benchmarks). Two-phase drawdown model applied when retirement age is before 65. Corpus PV discounted at real return (investment rate minus inflation). Cash earns 2%, other assets 3%, investment bucket earns selected strategy rate. For illustrative purposes only — not financial advice.</div>';
+    + '<div class="sp-note" style="margin-top:0.75rem">Life expectancy set to client input (default 90). CPF LIFE Standard Plan estimated from RA balance at 65 (2026 BRS/FRS/ERS benchmarks). Two-phase drawdown model applied when retirement age is before 65. Corpus PV discounted at real return (investment rate minus inflation). Cash earns 2%, other assets 3%, investment bucket earns selected strategy rate. For illustrative purposes only — not financial advice.</div>';
 }
 
 // ─────────────────────────────────────────────
@@ -5157,7 +5283,7 @@ function commCalc() {
     +'<div class="comm-kpi"><div class="comm-kpi-val">'+commFmt(y1)+'</div><div class="comm-kpi-lbl">Year 1 Commission</div></div>'
     +'<div class="comm-kpi"><div class="comm-kpi-val">'+commFmt(y5)+'</div><div class="comm-kpi-lbl">5-Year Total</div></div>'
     +'<div class="comm-kpi"><div class="comm-kpi-val">'+commFmt(total)+'</div><div class="comm-kpi-lbl">Full Term Total</div></div>'
-    +'<div class="comm-kpi"><div class="comm-kpi-val">'+eff+'%</div><div class="comm-kpi-lbl">Effective Rate</div></div>'
+    +'<div class="comm-kpi"><div class="comm-kpi-val">'+eff+'%</div><div class="comm-kpi-lbl">Effective Rate <span class="tip-icon" data-tip="Total commissions across all years as a percentage of the annual premium. E.g. 40% means you earn 40¢ in commissions for every $1 of annual premium.">ⓘ</span></div></div>'
     +'</div>';
 
   var barHtml='<div class="comm-bar-hdr"><span>Year</span><span>Commission</span></div>';
