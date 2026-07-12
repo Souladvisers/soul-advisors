@@ -1424,7 +1424,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
               </div>
             </div>
             <button class="al-btn" onclick="commCalc()" style="width:100%;margin-top:0.4rem">Calculate Commission</button>
-            <div id="comm-hint" class="comm-note" style="margin-top:0.7rem"></div>
+            <div id="comm-age-wrap" style="display:none;margin-bottom:0.8rem">
+            <div class="al-field">
+              <label class="al-label">Life Assured Age Band (for PRUVantage 5yr)</label>
+              <select class="al-input" id="comm-age-band" onchange="commCalc()">
+                <option value="le50">Age ≤ 50</option>
+                <option value="51to65">Age 51 – 65</option>
+                <option value="ge66">Age ≥ 66</option>
+              </select>
+            </div>
+          </div>
+          <div id="comm-hint" class="comm-note" style="margin-top:0.7rem"></div>
           </div>
           <div class="comm-results" id="comm-results">
             <div class="comm-empty">
@@ -3932,8 +3942,8 @@ boot();
    COMMISSION CALCULATOR — PACS Mar 2026
    ════════════════════════════════════════════ */
 
-// Standard Protection table (PruLife, PruSave, PruWealth, PruGolden, etc.)
-// Key: PPT in years → [Y1%, Y2%, Y3%, Y4%, Y5%, Y6%]
+// ── Standard Protection table (PruLife, PruSave, PruWealth, PruGolden, PruFlexiCash…)
+// Key: PPT → [Y1%, Y2%, Y3%, Y4%, Y5%, Y6%]
 var STD_TABLE = {
   1:  [2.0,  0,    0,    0,    0,    0],
   2:  [3.3,  2.7,  0,    0,    0,    0],
@@ -3944,136 +3954,244 @@ var STD_TABLE = {
   25: [55.0, 25.0, 10.0, 4.0,  3.0,  3.0]
 };
 
-// CI / Term Vantage (PruTerm Vantage, Crisis Cover III, Early Stage CI, PruVital Cover)
+// ── CI / Term Vantage table (PruTerm Vantage, Crisis Cover III, Early Stage CI, PruVital Cover)
 var CI_TABLE = {
   10: [22.0, 10.0, 6.8,  0.4, 0.4, 0.4],
   15: [33.0, 15.0, 10.2, 0.6, 0.6, 0.6],
   25: [55.0, 25.0, 17.0, 1.0, 1.0, 1.0]
 };
 
-// PruLife Vantage Achiever Prime / PruActive Life (PAL V)
+// ── PruLife Vantage Achiever Prime / PruActive Life (PAL V)
 var PAL_TABLE = {
-  10: [22.0, 10.0, 6.8,  0.4, 0.4, 0.4],
-  15: [35.7, 16.1, 11.1, 0.7, 0.7, 0.7],
-  25: [57.7, 26.1, 17.9, 1.1, 1.1, 1.1]
+   3: [8.0,   5.6,  1.1,  0.0, 0.0, 0.0],
+   4: [10.0,  5.9,  2.3,  0.1, 0.0, 0.0],
+   5: [12.1,  6.3,  3.4,  0.1, 0.1, 0.0],
+   6: [14.0,  6.5,  4.5,  0.2, 0.2, 0.2],
+   7: [16.0,  7.5,  5.0,  0.2, 0.2, 0.2],
+   8: [18.0,  8.3,  5.7,  0.3, 0.3, 0.3],
+   9: [19.9,  9.3,  6.2,  0.3, 0.3, 0.3],
+  10: [22.0, 10.0,  6.8,  0.4, 0.4, 0.4],
+  15: [35.7, 16.1, 11.1,  0.7, 0.7, 0.7],
+  25: [57.7, 26.1, 17.9,  1.1, 1.1, 1.1]
 };
 
-// PruTriple Protect
+// ── PruTriple Protect
 var PPT_TABLE = {
   10: [20.0, 12.0, 6.8,  0.4, 0.4, 0.4],
+  11: [22.0, 13.2, 7.6,  0.4, 0.4, 0.4],
+  12: [24.0, 14.4, 8.1,  0.5, 0.5, 0.5],
+  13: [26.0, 15.6, 8.9,  0.5, 0.5, 0.5],
+  14: [28.0, 16.8, 9.4,  0.6, 0.6, 0.6],
+  15: [30.0, 18.0,10.2,  0.6, 0.6, 0.6],
+  20: [40.0, 24.0,13.6,  0.8, 0.8, 0.8],
+  25: [50.0, 30.0,17.0,  1.0, 1.0, 1.0]
+};
+
+// ── Crisis Care III (PruActive Term) RP — single PPT=PT
+var CC3RP_TABLE = {
+  10: [22.0, 10.0,  6.8, 0.4, 0.4, 0.4],
+  11: [24.2, 11.0,  7.6, 0.4, 0.4, 0.4],
+  12: [26.4, 12.0,  8.1, 0.5, 0.5, 0.5],
+  13: [28.6, 13.0,  8.9, 0.5, 0.5, 0.5],
+  14: [30.8, 14.0,  9.4, 0.6, 0.6, 0.6],
+  15: [33.0, 15.0, 10.2, 0.6, 0.6, 0.6],
+  16: [35.2, 16.0, 11.0, 0.6, 0.6, 0.6],
+  17: [37.4, 17.0, 11.5, 0.7, 0.7, 0.7],
+  20: [44.0, 20.0, 13.6, 0.8, 0.8, 0.8],
+  25: [55.0, 25.0, 17.0, 1.0, 1.0, 1.0]
+};
+
+// ── PRUActive Protect (entry ANB < 50) — single PPT
+var PRUAP_TABLE = {
+  10: [20.0, 12.0,  6.8, 0.4, 0.4, 0.4],
+  11: [22.0, 13.2,  7.6, 0.4, 0.4, 0.4],
+  12: [24.0, 14.4,  8.1, 0.5, 0.5, 0.5],
+  13: [26.0, 15.6,  8.9, 0.5, 0.5, 0.5],
+  14: [28.0, 16.8,  9.4, 0.6, 0.6, 0.6],
+  15: [30.0, 18.0, 10.2, 0.6, 0.6, 0.6],
+  16: [32.0, 19.2, 11.0, 0.6, 0.6, 0.6],
+  20: [40.0, 24.0, 13.6, 0.8, 0.8, 0.8],
   25: [50.0, 30.0, 17.0, 1.0, 1.0, 1.0]
 };
 
-// ILP table (PruLink Enhanced Protector, Heritage, Protection Account)
-// Formula: Y1=N*2.2%, Y2=N*1.2%, Y3=N*0.4%, Y4-Y6=N*0.2%  (N=PPT)
-// Capped at confirmed >=25yr: [55.0, 30.0, 10.0, 5.0, 5.0, 5.0]
+// ── ILP formula (PruLink Enhanced Protector, Heritage, Protection Account)
+// Y1=N*2.2%, Y2=N*1.2%, Y3=N*0.4%, Y4-Y6=N*0.2%  (capped at 25yr)
 function ilpRates(ppt) {
   var n = Math.min(ppt, 25);
   return [
-    parseFloat((n * 2.2).toFixed(1)),
-    parseFloat((n * 1.2).toFixed(1)),
-    parseFloat((n * 0.4).toFixed(1)),
-    parseFloat((n * 0.2).toFixed(1)),
-    parseFloat((n * 0.2).toFixed(1)),
-    parseFloat((n * 0.2).toFixed(1))
+    parseFloat((n*2.2).toFixed(1)), parseFloat((n*1.2).toFixed(1)),
+    parseFloat((n*0.4).toFixed(1)), parseFloat((n*0.2).toFixed(1)),
+    parseFloat((n*0.2).toFixed(1)), parseFloat((n*0.2).toFixed(1))
   ];
 }
 
-// PruActive Saver II/III & PruActive Retirement II RP — 2-term lookup [PPT, PT]
-// Returns [Y1%, Y2%, Y3%, Y4-Y6%]
+// ── PruActive Saver II/III & PruActive Retirement II RP (2-term lookup)
+// Rows: [PPT, PT(or >=30→99), Y1, Y2, Y3, Y4-Y6]
 var PAS_TABLE = [
-  // [ppt, pt, Y1, Y2, Y3, Y4_6]
-  [5,  10, 11.0, 7.0,  1.60, 0.20],
-  [5,  20, 12.1, 7.6,  1.88, 0.21],
-  [5,  30, 13.2, 8.3,  2.04, 0.23],
-  [10, 10, 18.7, 11.9, 2.38, 0.34],
-  [10, 15, 19.8, 12.5, 2.62, 0.36],
-  [15, 15, 28.0, 17.8, 3.67, 0.51],
-  [15, 20, 33.0, 21.0, 4.20, 0.60],
-  [15, 25, 37.4, 23.8, 4.76, 0.68],
-  [17, 25, 42.2, 26.8, 5.52, 0.76],
-  [18, 20, 39.6, 25.2, 5.04, 0.72],
-  [18, 25, 44.6, 28.4, 5.77, 0.81],
-  [21, 21, 46.2, 29.4, 5.88, 0.84],
-  [21, 25, 50.6, 32.2, 6.44, 0.92],
-  [21, 99, 55.0, 35.0, 7.80, 1.00],
-  [22, 99, 55.0, 35.0,10.88, 1.04],
-  [25, 25, 55.0, 35.0, 7.00, 1.00]
+  [5, 10, 11.0, 7.0, 1.60, 0.20],[5, 20, 12.1, 7.6, 1.88, 0.21],[5, 30, 13.2, 8.3, 2.04, 0.23],
+  [10,10, 18.7,11.9, 2.38, 0.34],[10,15, 19.8,12.5, 2.62, 0.36],
+  [15,15, 28.0,17.8, 3.67, 0.51],[15,20, 33.0,21.0, 4.20, 0.60],[15,25, 37.4,23.8, 4.76, 0.68],
+  [17,25, 42.2,26.8, 5.52, 0.76],
+  [18,20, 39.6,25.2, 5.04, 0.72],[18,25, 44.6,28.4, 5.77, 0.81],
+  [21,21, 46.2,29.4, 5.88, 0.84],[21,25, 50.6,32.2, 6.44, 0.92],[21,99, 55.0,35.0, 7.80, 1.00],
+  [22,99, 55.0,35.0,10.88, 1.04],
+  [25,25, 55.0,35.0, 7.00, 1.00]
 ];
 
-// PruActive Retirement II SP — single premium rate by policy term
-var PAR_SP = {5:3.90,6:4.05,7:4.15,8:4.25,9:4.35,10:4.45,
-  11:4.46,12:4.47,13:4.48,14:4.49,15:4.50,
-  16:4.51,17:4.52,18:4.53,19:4.54,20:4.55,
-  21:4.56,22:4.57,23:4.58,24:4.59,25:4.60,
+// ── PruActive Term (2-term lookup) [PPT, PT, Y1, Y2, Y3, Y4-Y6]
+var PAT_TABLE = [
+  [5, 5, 11.0, 5.0, 3.60, 0.20],[5, 10, 11.6, 5.3, 3.80, 0.20],[5, 15, 12.3, 5.6, 4.00, 0.20],
+  [7, 7, 15.4, 7.0, 4.70, 0.30],[7, 10, 15.8, 7.2, 5.00, 0.30],[7, 15, 16.4, 7.5, 5.20, 0.30],
+  [9, 9, 19.8, 9.0, 6.00, 0.40],[9, 10, 20.0, 9.1, 6.10, 0.40],[9, 15, 20.9, 9.5, 6.40, 0.40],
+  [12,12, 26.4,12.0, 8.10, 0.50],[12,15, 27.2,12.4, 8.40, 0.50],[12,20, 28.4,12.9, 8.90, 0.60],
+  [16,16, 35.2,16.0,11.00, 0.60],[16,20, 36.6,16.7,11.30, 0.70],[16,25, 38.0,17.3,11.80, 0.70],
+  [21,21, 46.2,21.0,14.40, 0.80],[21,99, 48.1,21.9,14.80, 0.90]
+];
+
+// ── Crisis Care II (PruActive Term) 2-term [PPT, PT, Y1, Y2, Y3, Y4-Y6]
+var CC2_TABLE = [
+  [6, 10, 13.7, 6.4, 4.30, 0.20],[6, 15, 14.1, 6.6, 4.50, 0.20],
+  [8, 10, 17.9, 8.2, 5.70, 0.30],[8, 15, 18.5, 8.5, 5.90, 0.30],
+  [10,11, 22.2,10.1, 6.90, 0.40],[10,15, 23.1,10.5, 7.30, 0.40],[10,20, 24.0,11.0, 7.60, 0.50],
+  [13,15, 29.2,13.3, 9.10, 0.50],[13,20, 30.3,13.8, 9.50, 0.60],
+  [17,20, 38.5,17.5,12.00, 0.70],[17,25, 40.0,18.2,12.40, 0.70],
+  [21,21, 46.2,21.0,14.40, 0.80],[21,99, 48.1,21.9,14.80, 0.90]
+];
+
+// ── PruGolden Income / PruGolden Retirement RP (single PPT lookup)
+var GOLDEN_TABLE = {
+  3:  [6.6,  3.0,  2.4,  0.0, 0.0, 0.0],
+  4:  [8.8,  4.0,  2.3,  0.9, 0.0, 0.0],
+  5:  [11.0, 5.0,  2.4,  0.9, 0.7, 0.0],
+  6:  [13.2, 6.0,  2.4,  1.0, 0.7, 0.7],
+  7:  [15.4, 7.0,  2.9,  1.1, 0.8, 0.8],
+  8:  [17.6, 8.0,  3.1,  1.3, 1.0, 1.0],
+  9:  [19.8, 9.0,  3.6,  1.4, 1.1, 1.1],
+  10: [22.0,10.0,  4.0,  1.6, 1.2, 1.2],
+  15: [33.0,15.0,  6.0,  2.4, 1.8, 1.8],
+  20: [44.0,20.0,  8.0,  3.2, 2.4, 2.4],
+  25: [55.0,25.0, 10.0,  4.0, 3.0, 3.0]
+};
+
+// ── PruLifetime Income (limited PPT options)
+var LIFETIME_TABLE = {
+  4:  [8.8,  4.0, 2.3, 0.9, 0.0, 0.0],
+  10: [22.0,10.0, 4.0, 1.6, 1.2, 1.2],
+  20: [44.0,20.0, 8.0, 3.2, 2.4, 2.4]
+};
+
+// ── PruUniversal Vantage Limited Pay USD (5yr PPT only)
+var PUV_LP = [60.0, 2.8, 2.8, 2.8, 2.8, 0.0];
+
+// ── PRUVantage Wealth USD — 5yr has age bands; 10/15/20/25yr flat
+var VANTAGE_WEALTH = {
+  '5_le50':  [8.35, 4.85, 2.20, 1.10, 1.10, 0.00],
+  '5_51to65':[6.95, 4.00, 1.85, 0.90, 0.90, 0.00],
+  '5_ge66':  [1.90, 1.10, 0.50, 0.25, 0.25, 0.00],
+  10: [19.0, 11.0,  5.0,  2.0,  1.50, 1.50],
+  15: [28.5, 16.5,  7.5,  3.0,  2.25, 2.25],
+  20: [38.0, 22.0, 10.0,  4.0,  3.00, 3.00],
+  25: [47.5, 27.5, 12.5,  5.0,  3.75, 3.75]
+};
+
+// ── PRUVantage Prosper SGD/USD — 5yr has age bands; 10/15/20/25yr same as Wealth
+var VANTAGE_PROSPER = {
+  '5_le50':  [9.00, 5.30, 2.40, 1.20, 1.20, 0.00],
+  '5_51to65':[7.60, 4.40, 2.00, 1.00, 1.00, 0.00],
+  '5_ge66':  [2.40, 1.40, 0.65, 0.30, 0.30, 0.00],
+  10: [19.0, 11.0,  5.0,  2.0,  1.50, 1.50],
+  15: [28.5, 16.5,  7.5,  3.0,  2.25, 2.25],
+  20: [38.0, 22.0, 10.0,  4.0,  3.00, 3.00],
+  25: [47.5, 27.5, 12.5,  5.0,  3.75, 3.75]
+};
+
+// ── SimpleTerm RP (2-term lookup) [PPT, PT, Y1, Y2, Y3, Y4-Y6]
+var SIMPLETERM_TABLE = [
+  [6,  6,  6.85, 3.15, 2.05, 0.15],[6,  10, 6.85, 3.15, 2.05, 0.15],[6,  15, 7.20, 3.30, 2.25, 0.15],
+  [11, 11,12.10, 5.50, 3.80, 0.20],[11, 15,12.50, 5.75, 3.90, 0.25],[11, 20,13.20, 6.00, 4.10, 0.25],
+  [17, 17,18.70, 8.50, 5.75, 0.35],[17, 20,19.20, 8.75, 6.05, 0.35],[17, 25,19.90, 9.05, 6.30, 0.35],
+  [21, 21,24.00,10.90, 7.40, 0.45],[21, 25,24.70,11.20, 7.60, 0.45]
+];
+
+// ── Single premium rates ────────────────────────────────────────────────────
+var PAR_SP  = {5:3.90,6:4.05,7:4.15,8:4.25,9:4.35,10:4.45,11:4.46,12:4.47,13:4.48,14:4.49,
+  15:4.50,16:4.51,17:4.52,18:4.53,19:4.54,20:4.55,21:4.56,22:4.57,23:4.58,24:4.59,25:4.60,
   26:4.61,27:4.62,28:4.63,29:4.64,30:4.65};
-
-// PruActive Saver III SP/SRS — single premium by policy term
-var PAS3_SP = {10:1.20,11:1.30,12:1.40,13:1.50,14:1.60,15:1.70,
-  16:1.80,17:1.90,18:2.00,19:2.10,20:2.20,
-  21:2.30,22:2.40,23:2.50,24:2.60,25:2.70,
-  26:2.80,27:2.90,28:3.00,29:3.10,30:3.20};
-
-// PRULink FlexGrowth SP/SRS
+var PAS3_SP = {10:1.20,11:1.30,12:1.40,13:1.50,14:1.60,15:1.70,16:1.80,17:1.90,18:2.00,
+  19:2.10,20:2.20,21:2.30,22:2.40,23:2.50,24:2.60,25:2.70,26:2.80,27:2.90,28:3.00,29:3.10,30:3.20};
 var FLEX_SP = {12:1.500,15:2.400};
+var SIMPLETERM_SP = {10:2.11,11:2.13,12:2.15,13:2.17,14:2.20,15:2.22,16:2.25,17:2.27,18:2.30,
+  19:2.33,20:2.35,21:2.38,22:2.41,23:2.44,24:2.47,25:2.50};
 
+// ── Product catalogue ────────────────────────────────────────────────────────
 var COMM_PRODUCTS = {
   protection: [
-    {id:'prulife',     label:'PruLife / PruWealth / PruSave',  table:'std'},
-    {id:'pugolden',    label:'PruGolden / PruFlexiCash',        table:'std'},
-    {id:'termvantage', label:'PruTerm Vantage',                 table:'ci'},
-    {id:'crisis',      label:'Crisis Cover III',                table:'ci'},
-    {id:'esci',        label:'Early Stage Crisis Cover',        table:'ci'},
-    {id:'vital',       label:'PruVital Cover',                  table:'ci'},
-    {id:'pal',         label:'PruActive Life (PAL V)',          table:'pal'},
-    {id:'vantage',     label:'PruLife Vantage Achiever Prime',  table:'pal'},
-    {id:'triple',      label:'PruTriple Protect',               table:'ppt'}
+    {id:'prulife',     label:'PruLife / PruWealth / PruSave',       table:'std'},
+    {id:'pugolden',    label:'PruGolden / PruFlexiCash',             table:'std'},
+    {id:'termvantage', label:'PruTerm Vantage',                      table:'ci'},
+    {id:'crisis',      label:'Crisis Cover III',                     table:'ci'},
+    {id:'esci',        label:'Early Stage Crisis Cover',             table:'ci'},
+    {id:'vital',       label:'PruVital Cover',                       table:'ci'},
+    {id:'pal',         label:'PruActive Life (PAL V)',               table:'pal'},
+    {id:'vantage',     label:'PruLife Vantage Achiever Prime',       table:'pal'},
+    {id:'triple',      label:'PruTriple Protect',                    table:'ppt'},
+    {id:'pat',         label:'PruActive Term',                       table:'pat'},
+    {id:'cc2',         label:'Crisis Care II (PruActive Term)',      table:'cc2'},
+    {id:'cc3rp',       label:'Crisis Care III RP (PruActive Term)',  table:'cc3rp'},
+    {id:'pruap',       label:'PRUActive Protect (ANB < 50)',         table:'pruap'},
+    {id:'lpp',         label:'Life Protect Plus (PRUActive Protect)',table:'cc3rp'},
+    {id:'cancer360',   label:'PRUCancer 360',                        table:'cancer360'},
+    {id:'prushield',   label:'PruShield (MediShield)',               table:'prushield'},
+    {id:'pru_pa',      label:'PruPersonal Accident (Age ≤ 50)',      table:'pru_pa'},
+    {id:'pru_pa_gt50', label:'PruPersonal Accident (Age > 50)',      table:'pru_pa_gt50'}
   ],
   savings: [
-    {id:'pas2',        label:'PruActive Saver II (Regular Prem)', table:'pas'},
-    {id:'pas3',        label:'PruActive Saver III (Regular Prem)', table:'pas'},
-    {id:'plps',        label:'PruLink Premier Saver',            table:'plps'}
+    {id:'pas2',        label:'PruActive Saver II (RP)',              table:'pas'},
+    {id:'pas3',        label:'PruActive Saver III (RP)',             table:'pas'},
+    {id:'pruac',       label:'PRUActive Cash',                       table:'pas'},
+    {id:'plps',        label:'PruLink Premier Saver',                table:'plps'},
+    {id:'simpleterm',  label:'SimpleTerm (RP)',                      table:'simpleterm'},
+    {id:'golden_inc',  label:'PruGolden Income (3yr pay)',           table:'golden_inc'},
+    {id:'golden_ret',  label:'PruGolden Retirement RP',             table:'golden_ret'}
   ],
   retirement: [
-    {id:'par2rp',      label:'PruActive Retirement II (Regular Prem)', table:'pas'},
-    {id:'par2sp',      label:'PruActive Retirement II (Single Prem)',  table:'par_sp'},
-    {id:'pas3sp',      label:'PruActive Saver III SP/SRS',             table:'pas3_sp'}
+    {id:'par2rp',      label:'PruActive Retirement II (RP)',         table:'pas'},
+    {id:'par2sp',      label:'PruActive Retirement II (SP)',         table:'par_sp'},
+    {id:'pas3sp',      label:'PruActive Saver III SP/SRS',           table:'pas3_sp'},
+    {id:'lifetime',    label:'PruLifetime Income',                   table:'lifetime'},
+    {id:'golden_ret2', label:'PruGolden Retirement RP',             table:'golden_ret'}
   ],
   ilp: [
-    {id:'plep',        label:'PruLink Enhanced Protector',      table:'ilp'},
-    {id:'heritage',    label:'PRULink Heritage Account',        table:'ilp'},
-    {id:'plpa',        label:'PruLink Protection Account',      table:'ilp'},
-    {id:'supersaver',  label:'PruLink SuperSaver (Cash/SRS top-up)', table:'ss'},
-    {id:'supersaveroa',label:'PruLink SuperSaver (OA/SA top-up)',    table:'ss_oa'},
-    {id:'flexgrowth',  label:'PRULink FlexGrowth SP/SRS',      table:'flex_sp'},
-    {id:'investgrowth',label:'PruLink InvestGrowth (Cash/SRS)', table:'ig'},
-    {id:'investgrowthoa',label:'PruLink InvestGrowth (OA/SA)',  table:'ig_oa'}
+    {id:'plep',        label:'PruLink Enhanced Protector',           table:'ilp'},
+    {id:'heritage',    label:'PRULink Heritage Account',             table:'ilp'},
+    {id:'plpa',        label:'PruLink Protection Account',           table:'ilp'},
+    {id:'vantage_w',   label:'PRUVantage Wealth (USD)',              table:'vantage_wealth'},
+    {id:'vantage_p',   label:'PRUVantage Prosper (SGD/USD)',         table:'vantage_prosper'},
+    {id:'puv_lp',      label:'PruUniversal Vantage Limited Pay USD', table:'puv_lp'},
+    {id:'supersaver',  label:'PruLink SuperSaver Cash/SRS (top-up)', table:'ss'},
+    {id:'supersaveroa',label:'PruLink SuperSaver OA/SA (top-up)',    table:'ss_oa'},
+    {id:'flexgrowth',  label:'PRULink FlexGrowth SP/SRS',            table:'flex_sp'},
+    {id:'investgrowth',label:'PruLink InvestGrowth Cash/SRS',        table:'ig'},
+    {id:'investgrowthoa',label:'PruLink InvestGrowth OA/SA',         table:'ig_oa'}
   ],
   singleprem: [
-    {id:'par2sp_cat',  label:'PruActive Retirement II SP',     table:'par_sp'},
-    {id:'pas3sp_cat',  label:'PruActive Saver III SP/SRS',     table:'pas3_sp'},
-    {id:'flexsp_cat',  label:'PRULink FlexGrowth SP/SRS',      table:'flex_sp'},
-    {id:'sssp_cat',    label:'PruLink SuperSaver Cash/SRS',    table:'ss'},
-    {id:'ssoasp_cat',  label:'PruLink SuperSaver OA/SA',       table:'ss_oa'},
-    {id:'igsp_cat',    label:'PruLink InvestGrowth Cash/SRS',  table:'ig'},
-    {id:'igoasp_cat',  label:'PruLink InvestGrowth OA/SA',     table:'ig_oa'}
+    {id:'par2sp_cat',      label:'PruActive Retirement II SP',       table:'par_sp'},
+    {id:'pas3sp_cat',      label:'PruActive Saver III SP/SRS',       table:'pas3_sp'},
+    {id:'flexsp_cat',      label:'PRULink FlexGrowth SP/SRS',        table:'flex_sp'},
+    {id:'sssp_cat',        label:'PruLink SuperSaver Cash/SRS',      table:'ss'},
+    {id:'ssoasp_cat',      label:'PruLink SuperSaver OA/SA',         table:'ss_oa'},
+    {id:'igsp_cat',        label:'PruLink InvestGrowth Cash/SRS',    table:'ig'},
+    {id:'igoasp_cat',      label:'PruLink InvestGrowth OA/SA',       table:'ig_oa'},
+    {id:'simpleterm_sp_c', label:'SimpleTerm SP',                    table:'simpleterm_sp'},
+    {id:'plv_sp',          label:'PruLife Vantage SP',               table:'plv_sp'},
+    {id:'plve_sp',         label:'PruLife Vantage Elite SP',         table:'plve_sp'},
+    {id:'puv_sp',          label:'PruUniversal Vantage USD SP',      table:'puv_sp'}
   ]
 };
 
 var _commCat = 'protection';
 
-
-function elSubTab(name, btn) {
-  document.querySelectorAll('.el-subtab').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.el-section').forEach(s => s.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  var sec = document.getElementById('el-' + name);
-  if (sec) sec.classList.add('active');
-  // init scripts on first reveal
-  if (name === 'scripts' && !document.getElementById('scr-filters').dataset.built) {
-    scrRender();
-  }
-}
+// ── Tab switching ────────────────────────────────────────────────────────────
 function commSetCat(cat, btn) {
   _commCat = cat;
   document.querySelectorAll('.comm-cat-btn').forEach(b => b.classList.remove('active'));
@@ -4081,84 +4199,103 @@ function commSetCat(cat, btn) {
   var sel = document.getElementById('comm-product');
   sel.innerHTML = '<option value="">— select product —</option>';
   (COMM_PRODUCTS[cat] || []).forEach(function(p) {
-    var o = document.createElement('option');
-    o.value = p.id;
-    o.textContent = p.label;
-    sel.appendChild(o);
+    var o = document.createElement('option'); o.value = p.id; o.textContent = p.label; sel.appendChild(o);
   });
   commOnProductChange();
 }
 
+function commGetProd(pid) {
+  var found = null;
+  Object.values(COMM_PRODUCTS).forEach(function(arr){ arr.forEach(function(p){ if (p.id===pid) found=p; }); });
+  return found;
+}
+
 function commOnProductChange() {
-  var sel = document.getElementById('comm-product');
-  var pid = sel.value;
-  var prod = null;
-  Object.values(COMM_PRODUCTS).forEach(function(arr) {
-    arr.forEach(function(p) { if (p.id === pid) prod = p; });
-  });
-  var table = prod ? prod.table : '';
-  var isSP = ['par_sp','pas3_sp','flex_sp','ss','ss_oa','ig','ig_oa'].indexOf(table) !== -1;
-  var is2term = table === 'pas';
-  var isPLPS  = table === 'plps';
+  var pid  = document.getElementById('comm-product').value;
+  var prod = commGetProd(pid);
+  var tbl  = prod ? prod.table : '';
 
-  // PPT wrap — hide for flat SP products
-  document.getElementById('comm-ppt-wrap').style.display = isSP ? 'none' : '';
-  // Policy term — show only for 2-term (pas)
-  document.getElementById('comm-pt-wrap').style.display = is2term ? '' : 'none';
+  var flatSP  = ['par_sp','pas3_sp','flex_sp','ss','ss_oa','ig','ig_oa',
+                 'simpleterm_sp','plv_sp','plve_sp','puv_sp'].indexOf(tbl) !== -1;
+  var is2term = ['pas','pat','cc2','simpleterm'].indexOf(tbl) !== -1;
+  var fixedPPT= tbl === 'puv_lp';           // always 5yr
+  var noTerm  = ['prushield','pru_pa','pru_pa_gt50','cancer360'].indexOf(tbl) !== -1;
+  var golden3 = tbl === 'golden_inc';        // 3yr fixed PPT
+  var needAge = ['vantage_wealth','vantage_prosper'].indexOf(tbl) !== -1;
 
-  // Hints
-  var hint = '';
-  if (table === 'std')     hint = 'Standard protection table. Commission paid over first 6 policy years.';
-  if (table === 'ci')      hint = 'CI/Term Vantage table. Higher Y3 vs standard, lower Y4-Y6.';
-  if (table === 'pal')     hint = 'PAL / Vantage Achiever Prime table.';
-  if (table === 'ppt')     hint = 'PruTriple Protect table. Available terms: 10yr or 25yr PPT.';
-  if (table === 'ilp')     hint = 'ILP formula: Y1=PPT×2.2%, Y2=PPT×1.2%, Y3=PPT×0.4%, Y4-Y6=PPT×0.2%. Capped at 25-year rates.';
-  if (table === 'pas')     hint = 'PruActive Saver/Retirement RP. Requires both Premium Paying Term and Policy/Coverage Term. Nearest combination will be used.';
-  if (table === 'par_sp')  hint = 'Single premium — flat rate by policy term (5-30 years). Enter lump sum in Annual Premium field.';
-  if (table === 'pas3_sp') hint = 'Single premium (SP/SRS) — flat rate by policy term (10-30 years). Enter lump sum in Annual Premium field.';
-  if (table === 'flex_sp') hint = 'Single premium — available for 12yr and 15yr policy terms only.';
-  if (table === 'ss')      hint = 'Flat 2.25% on each top-up/RSP contribution (Cash or SRS).';
-  if (table === 'ss_oa')   hint = 'Flat 0.50% on each top-up/RSP contribution (OA or SA).';
-  if (table === 'ig')      hint = 'Flat 2.25% on each contribution (Cash/SRS).';
-  if (table === 'ig_oa')   hint = 'Flat 0.125% on each contribution (OA/SA eTop-up).';
-  if (table === 'plps')    hint = 'PruLink Premier Saver: Y1=22.5%, Y2=11.25%. Two commission years only.';
-  document.getElementById('comm-hint').textContent = hint;
+  var pptWrap = document.getElementById('comm-ppt-wrap');
+  var ptWrap  = document.getElementById('comm-pt-wrap');
+  var ageWrap = document.getElementById('comm-age-wrap');
 
+  pptWrap.style.display = (flatSP || noTerm || golden3) ? 'none' : '';
+  ptWrap.style.display  = is2term ? '' : 'none';
+  if (ageWrap) ageWrap.style.display = needAge ? '' : 'none';
+
+  if (fixedPPT) document.getElementById('comm-ppt').value = 5;
+  if (golden3)  document.getElementById('comm-ppt').value = 3;
+
+  var hints = {
+    std:'Standard protection table. Commission paid over first 6 policy years.',
+    ci:'CI/Vantage table. Higher Y3, lower Y4-Y6 vs standard.',
+    pal:'PruActive Life / Vantage Achiever Prime table.',
+    ppt:'PruTriple Protect table.',
+    ilp:'ILP formula: Y1=PPT×2.2%, Y2=PPT×1.2%, Y3=PPT×0.4%, Y4-Y6=PPT×0.2% (capped at 25yr).',
+    pas:'2-term table (PPT & Policy Term). Nearest combination used.',
+    par_sp:'Single premium — rate by policy term (5-30yr).',
+    pas3_sp:'Single premium (SP/SRS) — rate by policy term (10-30yr).',
+    flex_sp:'Single premium — 12yr or 15yr policy term only.',
+    ss:'Flat 2.25% on each top-up / RSP (Cash or SRS).',
+    ss_oa:'Flat 0.50% on each top-up / RSP (OA or SA).',
+    ig:'Flat 2.25% on each contribution (Cash/SRS).',
+    ig_oa:'Flat 0.125% on each contribution (OA/SA eTop-up).',
+    plps:'PruLink Premier Saver: Y1=22.5%, Y2=11.25%. Two commission years.',
+    pat:'PruActive Term 2-term table (PPT & Coverage Term). Nearest match used.',
+    cc2:'Crisis Care II 2-term table. Enter PPT and Coverage/Policy Term.',
+    cc3rp:'Crisis Care III RP — single term (PPT = coverage term).',
+    pruap:'PRUActive Protect for ANB < 50. Enter premium paying / coverage term.',
+    cancer360:'PRUCancer 360 — 5-year PPT only: Y1=10%, Y2-Y5=5%.',
+    prushield:'PruShield: Y1=30%, Y2-Y10=7%, Y11-Y20=4%. Enter annual premium.',
+    pru_pa:'Personal Accident ≤50: 30% every year. Enter annual premium.',
+    pru_pa_gt50:'Personal Accident >50: 15% every year. Enter annual premium.',
+    vantage_wealth:'PRUVantage Wealth. 5yr PPT uses age band; 10/15/20/25yr standard. Select age band below.',
+    vantage_prosper:'PRUVantage Prosper. 5yr PPT uses age band; 10/15/20/25yr standard. Select age band below.',
+    puv_lp:'PruUniversal Vantage Limited Pay USD — 5yr only: Y1=60%, Y2-Y5=2.8%.',
+    golden_ret:'PruGolden Retirement RP. Enter premium paying term (3-25yr).',
+    golden_inc:'PruGolden Income — 3-year pay: Y1=6.6%, Y2=3%, Y3=2.4%.',
+    lifetime:'PruLifetime Income — available PPT 4, 10 or 20yr. Nearest match used.',
+    simpleterm:'SimpleTerm RP — 2-term table. Enter PPT and Coverage Term.',
+    simpleterm_sp:'SimpleTerm SP — rate by policy term (10-25yr).',
+    plv_sp:'PruLife Vantage SP: flat 4.17% of single premium.',
+    plve_sp:'PruLife Vantage Elite SP: flat 5.00% of single premium.',
+    puv_sp:'PruUniversal Vantage USD SP: flat 7.50% of single premium.'
+  };
+  document.getElementById('comm-hint').textContent = hints[tbl] || '';
   commCalc();
 }
 
+// ── Nearest-match helpers ────────────────────────────────────────────────────
 function commGetStdRates(tableObj, ppt) {
   var keys = Object.keys(tableObj).map(Number).sort(function(a,b){return a-b;});
-  // Nearest match
-  var best = keys[0];
-  keys.forEach(function(k){ if (Math.abs(k-ppt) < Math.abs(best-ppt)) best=k; });
+  var best = keys.reduce(function(a,b){ return Math.abs(b-ppt)<Math.abs(a-ppt)?b:a; });
   return {rates: tableObj[best], matchedPPT: best};
 }
-
-function commGetPASRates(ppt, pt) {
-  // find nearest row by minimising ppt distance, then pt distance
-  var best = PAS_TABLE[0];
-  PAS_TABLE.forEach(function(row) {
+function commGet2term(tableArr, ppt, pt) {
+  var best = tableArr[0];
+  tableArr.forEach(function(row){
     var dCur  = Math.abs(row[0]-ppt)*100 + Math.abs(Math.min(row[1],40)-Math.min(pt,40));
     var dBest = Math.abs(best[0]-ppt)*100 + Math.abs(Math.min(best[1],40)-Math.min(pt,40));
     if (dCur < dBest) best = row;
   });
-  // [Y1, Y2, Y3, Y4, Y5, Y6]
-  return {
-    rates: [best[2], best[3], best[4], best[5], best[5], best[5]],
-    matchedPPT: best[0], matchedPT: best[1]
-  };
+  return {rates:[best[2],best[3],best[4],best[5],best[5],best[5]], matchedPPT:best[0], matchedPT:best[1]};
 }
 
-function commFmt(n) { return '$' + n.toLocaleString('en-SG', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+// ── Formatting ───────────────────────────────────────────────────────────────
+function commFmt(n){ return '$'+n.toLocaleString('en-SG',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
+// ── Main calculation ──────────────────────────────────────────────────────────
 function commCalc() {
   var sel = document.getElementById('comm-product');
-  var pid = sel.value;
-  var prod = null;
-  Object.values(COMM_PRODUCTS).forEach(function(arr) {
-    arr.forEach(function(p) { if (p.id === pid) prod = p; });
-  });
+  var prod = commGetProd(sel.value);
   if (!prod) return;
 
   var premium = parseFloat(document.getElementById('comm-premium').value) || 0;
@@ -4166,109 +4303,158 @@ function commCalc() {
 
   var ppt = parseInt(document.getElementById('comm-ppt').value) || 0;
   var pt  = parseInt(document.getElementById('comm-pt').value)  || 0;
-  var table = prod.table;
+  var ageBandEl = document.getElementById('comm-age-band');
+  var ageBand = ageBandEl ? ageBandEl.value : 'le50';
 
-  var rows = [];     // [{yr, rate, amount}]
-  var note = '';
-
-  // ── Single premium / flat rate products ──
+  var tbl   = prod.table;
+  var rows  = [];
+  var note  = '';
   var flatRate = null;
-  if (table === 'ss')      flatRate = 2.25;
-  if (table === 'ss_oa')   flatRate = 0.50;
-  if (table === 'ig')      flatRate = 2.25;
-  if (table === 'ig_oa')   flatRate = 0.125;
 
-  if (flatRate !== null) {
-    rows = [{yr:'Upfront', rate: flatRate, amount: premium * flatRate / 100}];
-    note = 'Flat rate on each contribution.';
-  } else if (table === 'par_sp') {
-    var key = Math.max(5, Math.min(30, pt || ppt || 10));
-    var keys2 = Object.keys(PAR_SP).map(Number);
-    var near = keys2.reduce(function(a,b){ return Math.abs(b-key)<Math.abs(a-key)?b:a; });
-    flatRate = PAR_SP[near];
-    rows = [{yr:'Upfront', rate: flatRate, amount: premium * flatRate / 100}];
-    note = 'PruActive Retirement II SP — policy term matched to ' + near + 'yr (' + flatRate + '%).';
-  } else if (table === 'pas3_sp') {
-    var key3 = Math.max(10, Math.min(30, pt || ppt || 10));
-    var keys3 = Object.keys(PAS3_SP).map(Number);
-    var near3 = keys3.reduce(function(a,b){ return Math.abs(b-key3)<Math.abs(a-key3)?b:a; });
-    flatRate = PAS3_SP[near3];
-    rows = [{yr:'Upfront', rate: flatRate, amount: premium * flatRate / 100}];
-    note = 'PruActive Saver III SP — policy term matched to ' + near3 + 'yr (' + flatRate + '%).';
-  } else if (table === 'flex_sp') {
-    var keyf = (pt || ppt || 12);
-    var nearf = Math.abs(keyf-12) <= Math.abs(keyf-15) ? 12 : 15;
-    flatRate = FLEX_SP[nearf];
-    rows = [{yr:'Upfront', rate: flatRate, amount: premium * flatRate / 100}];
-    note = 'PRULink FlexGrowth SP — policy term matched to ' + nearf + 'yr (' + flatRate + '%).';
-  } else if (table === 'plps') {
-    rows = [
-      {yr:'Year 1', rate: 22.5, amount: premium * 22.5 / 100},
-      {yr:'Year 2', rate: 11.25, amount: premium * 11.25 / 100}
-    ];
-    note = 'PruLink Premier Saver: 2 commission years only.';
-  } else {
-    // Regular premium multi-year table
-    if (ppt <= 0) { document.getElementById('comm-results').innerHTML = '<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter Premium Paying Term to calculate.</div></div>'; return; }
-
-    var rates6 = [];
-    var matchNote = '';
-
-    if (table === 'ilp') {
-      rates6 = ilpRates(ppt);
-      matchNote = 'ILP formula for PPT ' + Math.min(ppt,25) + 'yr.';
-    } else if (table === 'pas') {
-      if (pt <= 0) { document.getElementById('comm-results').innerHTML = '<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter both PPT and Policy Term for this product.</div></div>'; return; }
-      var res = commGetPASRates(ppt, pt);
-      rates6 = res.rates;
-      matchNote = 'Nearest match: PPT ' + res.matchedPPT + 'yr / PT ' + (res.matchedPT >= 40 ? '≥30' : res.matchedPT) + 'yr.';
+  // ── Flat single premium products ──
+  var flatRates = {ss:2.25, ss_oa:0.50, ig:2.25, ig_oa:0.125, plv_sp:4.17, plve_sp:5.00, puv_sp:7.50};
+  if (flatRates[tbl] !== undefined) {
+    flatRate = flatRates[tbl];
+    rows = [{yr:'Upfront', rate:flatRate, amount:premium*flatRate/100}];
+    note = 'Flat rate on each contribution / single premium.';
+  } else if (tbl === 'par_sp') {
+    var k=Object.keys(PAR_SP).map(Number); var key=Math.max(5,Math.min(30,pt||ppt||10));
+    var near=k.reduce(function(a,b){return Math.abs(b-key)<Math.abs(a-key)?b:a;});
+    flatRate=PAR_SP[near];
+    rows=[{yr:'Upfront',rate:flatRate,amount:premium*flatRate/100}];
+    note='PruActive Retirement II SP — '+near+'yr policy term ('+flatRate+'%).';
+  } else if (tbl === 'pas3_sp') {
+    var k3=Object.keys(PAS3_SP).map(Number); var key3=Math.max(10,Math.min(30,pt||ppt||10));
+    var near3=k3.reduce(function(a,b){return Math.abs(b-key3)<Math.abs(a-key3)?b:a;});
+    flatRate=PAS3_SP[near3];
+    rows=[{yr:'Upfront',rate:flatRate,amount:premium*flatRate/100}];
+    note='PruActive Saver III SP — '+near3+'yr ('+flatRate+'%).';
+  } else if (tbl === 'flex_sp') {
+    var keyf=pt||ppt||12; var nearf=Math.abs(keyf-12)<=Math.abs(keyf-15)?12:15;
+    flatRate=FLEX_SP[nearf];
+    rows=[{yr:'Upfront',rate:flatRate,amount:premium*flatRate/100}];
+    note='PRULink FlexGrowth SP — '+nearf+'yr ('+flatRate+'%).';
+  } else if (tbl === 'simpleterm_sp') {
+    var kst=Object.keys(SIMPLETERM_SP).map(Number); var keyst=Math.max(10,Math.min(25,pt||ppt||15));
+    var nearst=kst.reduce(function(a,b){return Math.abs(b-keyst)<Math.abs(a-keyst)?b:a;});
+    flatRate=SIMPLETERM_SP[nearst]; rows=[{yr:'Upfront',rate:flatRate,amount:premium*flatRate/100}];
+    note='SimpleTerm SP — '+nearst+'yr ('+flatRate+'%).';
+  }
+  // ── Special display products ──
+  else if (tbl === 'prushield') {
+    // Y1=30%, Y2-Y10=7%, Y11-Y20=4%
+    rows=[{yr:'Year 1',rate:30.0,amount:premium*0.30}];
+    for(var y=2;y<=10;y++) rows.push({yr:'Year '+y,rate:7.0,amount:premium*0.07});
+    for(var y=11;y<=20;y++) rows.push({yr:'Year '+y,rate:4.0,amount:premium*0.04});
+    note='PruShield A&H commission structure (assumes same premium each year).';
+  } else if (tbl === 'pru_pa') {
+    rows=[{yr:'Year 1',rate:30.0,amount:premium*0.30},{yr:'Renewal',rate:30.0,amount:premium*0.30}];
+    note='PruPersonal Accident Age ≤50: 30% year 1 and each renewal.';
+  } else if (tbl === 'pru_pa_gt50') {
+    rows=[{yr:'Year 1',rate:15.0,amount:premium*0.15},{yr:'Renewal',rate:15.0,amount:premium*0.15}];
+    note='PruPersonal Accident Age >50: 15% year 1 and each renewal.';
+  } else if (tbl === 'cancer360') {
+    rows=[{yr:'Year 1',rate:10.0,amount:premium*0.10},
+          {yr:'Year 2',rate:5.0,amount:premium*0.05},{yr:'Year 3',rate:5.0,amount:premium*0.05},
+          {yr:'Year 4',rate:5.0,amount:premium*0.05},{yr:'Year 5',rate:5.0,amount:premium*0.05}];
+    note='PRUCancer 360 — 5-year PPT: Y1=10%, Y2-Y5=5% each.';
+  } else if (tbl === 'plps') {
+    rows=[{yr:'Year 1',rate:22.5,amount:premium*0.225},{yr:'Year 2',rate:11.25,amount:premium*0.1125}];
+    note='PruLink Premier Saver: 2 commission years only.';
+  } else if (tbl === 'puv_lp') {
+    rows=[];
+    [60.0,2.8,2.8,2.8,2.8].forEach(function(r,i){ rows.push({yr:'Year '+(i+1),rate:r,amount:premium*r/100}); });
+    note='PruUniversal Vantage Limited Pay USD — 5yr PPT only.';
+  }
+  // ── Age-band products ──
+  else if (tbl === 'vantage_wealth' || tbl === 'vantage_prosper') {
+    var vtbl = tbl === 'vantage_wealth' ? VANTAGE_WEALTH : VANTAGE_PROSPER;
+    if (ppt <= 0) { document.getElementById('comm-results').innerHTML='<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter Premium Paying Term.</div></div>'; return; }
+    var rates6;
+    if (ppt <= 5) {
+      var bandKey = ageBand === '51to65' ? '5_51to65' : ageBand === 'ge66' ? '5_ge66' : '5_le50';
+      rates6 = vtbl[bandKey];
+      note = (tbl==='vantage_wealth'?'PRUVantage Wealth':'PRUVantage Prosper')+' 5yr PPT — age band '+ageBand.replace('le','≤').replace('ge','≥').replace('51to65','51-65')+'.';
     } else {
-      var tbl = table === 'std' ? STD_TABLE : table === 'ci' ? CI_TABLE : table === 'pal' ? PAL_TABLE : PPT_TABLE;
-      var res2 = commGetStdRates(tbl, ppt);
-      rates6 = res2.rates;
-      matchNote = 'PPT matched to ' + res2.matchedPPT + 'yr table.';
+      var nearPPT = [10,15,20,25].reduce(function(a,b){return Math.abs(b-ppt)<Math.abs(a-ppt)?b:a;});
+      rates6 = vtbl[nearPPT];
+      note = (tbl==='vantage_wealth'?'PRUVantage Wealth':'PRUVantage Prosper')+' — PPT matched to '+nearPPT+'yr.';
+    }
+    rates6.forEach(function(r,i){ if(r>0) rows.push({yr:'Year '+(i+1),rate:r,amount:premium*r/100}); });
+  }
+  // ── Golden Income (fixed 3yr) ──
+  else if (tbl === 'golden_inc') {
+    var g3=GOLDEN_TABLE[3];
+    g3.forEach(function(r,i){ if(r>0) rows.push({yr:'Year '+(i+1),rate:r,amount:premium*r/100}); });
+    note='PruGolden Income — 3-year pay.';
+  }
+  // ── Regular premium multi-year tables ──
+  else {
+    if (ppt <= 0) { document.getElementById('comm-results').innerHTML='<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter Premium Paying Term.</div></div>'; return; }
+    var rates6=[]; var matchNote='';
+
+    if (tbl==='ilp') {
+      rates6=ilpRates(ppt); matchNote='ILP formula for PPT '+Math.min(ppt,25)+'yr.';
+    } else if (tbl==='pas') {
+      if(!pt){document.getElementById('comm-results').innerHTML='<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter both PPT and Policy Term.</div></div>';return;}
+      var r=commGet2term(PAS_TABLE,ppt,pt); rates6=r.rates; matchNote='Nearest match: PPT '+r.matchedPPT+'yr / PT '+(r.matchedPT>=40?'≥30':r.matchedPT)+'yr.';
+    } else if (tbl==='pat') {
+      if(!pt){document.getElementById('comm-results').innerHTML='<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter both PPT and Coverage Term.</div></div>';return;}
+      var r=commGet2term(PAT_TABLE,ppt,pt); rates6=r.rates; matchNote='PruActive Term — nearest: PPT '+r.matchedPPT+'yr / PT '+(r.matchedPT>=40?'≥21':r.matchedPT)+'yr.';
+    } else if (tbl==='cc2') {
+      if(!pt){document.getElementById('comm-results').innerHTML='<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter both PPT and Coverage Term.</div></div>';return;}
+      var r=commGet2term(CC2_TABLE,ppt,pt); rates6=r.rates; matchNote='Crisis Care II — nearest: PPT '+r.matchedPPT+'yr / PT '+(r.matchedPT>=40?'≥21':r.matchedPT)+'yr.';
+    } else if (tbl==='simpleterm') {
+      if(!pt){document.getElementById('comm-results').innerHTML='<div class="comm-empty"><div class="comm-empty-icon">💰</div><div class="comm-empty-txt">Enter both PPT and Coverage Term.</div></div>';return;}
+      var r=commGet2term(SIMPLETERM_TABLE,ppt,pt); rates6=r.rates; matchNote='SimpleTerm RP — nearest: PPT '+r.matchedPPT+'yr / PT '+(r.matchedPT>=40?'≥21':r.matchedPT)+'yr.';
+    } else if (tbl==='golden_ret') {
+      var res=commGetStdRates(GOLDEN_TABLE,ppt); rates6=res.rates; matchNote='PruGolden Retirement RP — PPT matched to '+res.matchedPPT+'yr.';
+    } else if (tbl==='lifetime') {
+      var res=commGetStdRates(LIFETIME_TABLE,ppt); rates6=res.rates; matchNote='PruLifetime Income — PPT matched to '+res.matchedPPT+'yr.';
+    } else if (tbl==='cc3rp') {
+      var res=commGetStdRates(CC3RP_TABLE,ppt); rates6=res.rates; matchNote='Crisis Care III RP — PPT matched to '+res.matchedPPT+'yr.';
+    } else if (tbl==='pruap') {
+      var res=commGetStdRates(PRUAP_TABLE,ppt); rates6=res.rates; matchNote='PRUActive Protect — PPT matched to '+res.matchedPPT+'yr.';
+    } else {
+      var tableMap={std:STD_TABLE,ci:CI_TABLE,pal:PAL_TABLE,ppt:PPT_TABLE};
+      var res=commGetStdRates(tableMap[tbl]||STD_TABLE,ppt); rates6=res.rates; matchNote='PPT matched to '+res.matchedPPT+'yr.';
     }
 
-    for (var i = 0; i < rates6.length; i++) {
-      if (rates6[i] > 0) {
-        rows.push({yr: 'Year ' + (i+1), rate: rates6[i], amount: premium * rates6[i] / 100});
-      }
+    for(var i=0;i<rates6.length;i++){
+      if(rates6[i]>0) rows.push({yr:'Year '+(i+1),rate:rates6[i],amount:premium*rates6[i]/100});
     }
-    note = matchNote;
+    note=matchNote;
   }
 
-  // ── Render ──
-  var total = rows.reduce(function(s,r){ return s + r.amount; }, 0);
-  var y1    = rows.length > 0 ? rows[0].amount : 0;
-  var y5    = rows.slice(0,5).reduce(function(s,r){ return s + r.amount; }, 0);
-  var eff   = premium > 0 ? (total / premium * 100).toFixed(2) : '0.00';
+  // ── Render ───────────────────────────────────────────────────────────────
+  var total=rows.reduce(function(s,r){return s+r.amount;},0);
+  var y1   =rows.length>0?rows[0].amount:0;
+  var y5   =rows.slice(0,5).reduce(function(s,r){return s+r.amount;},0);
+  var eff  =premium>0?(total/premium*100).toFixed(2):'0.00';
+  var maxAmt=Math.max.apply(null,rows.map(function(r){return r.amount;}));
 
-  var maxAmt = Math.max.apply(null, rows.map(function(r){ return r.amount; }));
+  var kpiHtml='<div class="comm-kpis">'
+    +'<div class="comm-kpi"><div class="comm-kpi-val">'+commFmt(y1)+'</div><div class="comm-kpi-lbl">Year 1 Commission</div></div>'
+    +'<div class="comm-kpi"><div class="comm-kpi-val">'+commFmt(y5)+'</div><div class="comm-kpi-lbl">5-Year Total</div></div>'
+    +'<div class="comm-kpi"><div class="comm-kpi-val">'+commFmt(total)+'</div><div class="comm-kpi-lbl">Full Term Total</div></div>'
+    +'<div class="comm-kpi"><div class="comm-kpi-val">'+eff+'%</div><div class="comm-kpi-lbl">Effective Rate</div></div>'
+    +'</div>';
 
-  var kpiHtml = '<div class="comm-kpis">'
-    + '<div class="comm-kpi"><div class="comm-kpi-val">' + commFmt(y1) + '</div><div class="comm-kpi-lbl">Year 1 Commission</div></div>'
-    + '<div class="comm-kpi"><div class="comm-kpi-val">' + commFmt(y5) + '</div><div class="comm-kpi-lbl">5-Year Total</div></div>'
-    + '<div class="comm-kpi"><div class="comm-kpi-val">' + commFmt(total) + '</div><div class="comm-kpi-lbl">Full Term Total</div></div>'
-    + '<div class="comm-kpi"><div class="comm-kpi-val">' + eff + '%</div><div class="comm-kpi-lbl">Effective Rate</div></div>'
-    + '</div>';
-
-  var barHtml = '<div class="comm-bar-hdr"><span>Year</span><span>Commission</span></div>';
-  rows.forEach(function(r) {
-    var pct = maxAmt > 0 ? (r.amount / maxAmt * 100) : 0;
-    barHtml += '<div class="comm-bar-row">'
-      + '<div class="comm-bar-yr">' + r.yr + '</div>'
-      + '<div class="comm-bar-bg"><div class="comm-bar-fill" style="width:' + pct.toFixed(1) + '%"></div></div>'
-      + '<div class="comm-bar-amt">' + commFmt(r.amount) + '</div>'
-      + '<div class="comm-bar-pct">(' + r.rate.toFixed(3).replace(/\.?0+$/,'') + '%)</div>'
-      + '</div>';
+  var barHtml='<div class="comm-bar-hdr"><span>Year</span><span>Commission</span></div>';
+  rows.forEach(function(r){
+    var pct=maxAmt>0?(r.amount/maxAmt*100):0;
+    barHtml+='<div class="comm-bar-row">'
+      +'<div class="comm-bar-yr">'+r.yr+'</div>'
+      +'<div class="comm-bar-bg"><div class="comm-bar-fill" style="width:'+pct.toFixed(1)+'%"></div></div>'
+      +'<div class="comm-bar-amt">'+commFmt(r.amount)+'</div>'
+      +'<div class="comm-bar-pct">('+r.rate.toFixed(3).replace(/\.?0+$/,'')+'%)</div>'
+      +'</div>';
   });
 
-  var noteHtml = note ? '<div class="comm-note">* ' + note + ' Based on PACS Commission Table Mar 2026. Actual commission subject to your agency contract tier.</div>' : '';
-
-  document.getElementById('comm-results').innerHTML = kpiHtml + barHtml + noteHtml;
+  var noteHtml=note?'<div class="comm-note">* '+note+' Based on PACS Commission Table Mar 2026. Actual commission subject to your agency contract tier.</div>':'';
+  document.getElementById('comm-results').innerHTML=kpiHtml+barHtml+noteHtml;
 }
 
-// initialise commission product list on first load
 (function(){ commSetCat('protection', document.querySelector('.comm-cat-btn')); })();
 
 </script>
