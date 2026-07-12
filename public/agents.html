@@ -832,6 +832,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   font-size: 0.8rem; color: rgba(255,255,255,0.38);
   margin: 0;
 }
+
+/* ── Retirement gap: housing warnings & diversion row ── */
+.ret-warn { background:rgba(252,165,58,0.10); border:1px solid rgba(252,165,58,0.30); border-radius:var(--radius); padding:0.6rem 0.9rem; font-size:0.78rem; color:#fcd34d; margin-bottom:0.75rem; line-height:1.5; }
+.ret-divert-row { display:flex; flex-wrap:wrap; align-items:center; gap:0.35rem 0.55rem; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--radius); padding:0.55rem 0.85rem; margin-bottom:0.75rem; font-size:0.76rem; }
+.ret-divert-lbl { color:rgba(255,255,255,0.45); }
+.ret-divert-val { font-weight:600; }
+.ret-divert-arrow { color:rgba(255,255,255,0.22); font-size:0.9rem; }
+.ret-divert-impact { width:100%; font-size:0.71rem; color:#fca5a5; padding-top:0.3rem; border-top:1px solid var(--border); margin-top:0.15rem; }
+.ret-cpf-note { font-size:0.76rem; color:rgba(255,255,255,0.45); background:rgba(127,196,232,0.07); border:1px solid rgba(127,196,232,0.15); border-radius:var(--radius); padding:0.55rem 0.85rem; margin-top:0.6rem; line-height:1.55; }
+.ret-cpf-note b { color:rgba(255,255,255,0.78); }
 </style>
 </head>
 <body>
@@ -3757,7 +3767,9 @@ function retCalc() {
   var cpfHousing  = parseFloat(document.getElementById('ret-cpf-housing').value)  || 0;
   var cpfOverride = parseFloat(document.getElementById('ret-cpf-override').value) || 0;
   // Net OA monthly accumulation after housing deduction
-  var cpfOAMo     = Math.max(cpfOAMoIn - cpfHousing, 0);
+  var cpfOAMo         = Math.max(cpfOAMoIn - cpfHousing, 0);
+  var housingMissingOA  = cpfHousing > 0 && cpfOAMoIn === 0;
+  var housingFullyCover = cpfHousing > 0 && cpfOAMoIn > 0 && cpfHousing >= cpfOAMoIn;
 
   var cash        = parseFloat(document.getElementById('ret-cash').value)        || 0;
   var investments = parseFloat(document.getElementById('ret-inv').value)         || 0;
@@ -3825,6 +3837,17 @@ function retCalc() {
     cpfPayoutMonthly = estimateCpfLife(raAt65projected);
   }
 
+  // Without-housing CPF LIFE (for comparison, under-55 path only)
+  var cpfPayoutNoHousing = 0;
+  if (cpfHousing > 0 && cpfOAMoIn > 0 && age < 55) {
+    var _yT55 = Math.max(55 - age, 0);
+    var _oaFull = fvLumpSum(cpfOA, cpfOARate, _yT55) + fvAnnuity(cpfOAMoIn, cpfOARate, _yT55);
+    var _saFull = fvLumpSum(cpfSA, cpfSARate, _yT55) + fvAnnuity(cpfSAMo,   cpfSARate, _yT55);
+    var _oaToRaFull = Math.min(_oaFull, Math.max(FRS_2026 - _saFull, 0));
+    var _raAt55Full = Math.min(_saFull + _oaToRaFull, ERS_2026);
+    cpfPayoutNoHousing = estimateCpfLife(fvLumpSum(_raAt55Full, cpfSARate, 10));
+  }
+
   if (raAt65projected >= ERS_2026)      cpfTier = 'Enhanced Retirement Sum';
   else if (raAt65projected >= FRS_2026) cpfTier = 'Full Retirement Sum';
   else if (raAt65projected >= BRS_2026) cpfTier = 'Basic Retirement Sum';
@@ -3882,13 +3905,36 @@ function retCalc() {
 
   // CPF section (only if any CPF data entered)
   var cpfSection = '';
-  if (cpfOA || cpfSA || cpfOAMoIn || cpfSAMo || cpfOverride) {
-    cpfSection = '<div class="ret-section-hdr-out">CPF Projection</div>'
+  if (cpfOA || cpfSA || cpfOAMoIn || cpfSAMo || cpfOverride || cpfHousing) {
+    var _hwarn = '';
+    if (housingMissingOA) {
+      _hwarn = '<div class="ret-warn">⚠️ You entered a housing deduction but no monthly OA contribution — enter your OA monthly contribution above to see the impact on your retirement.</div>';
+    } else if (housingFullyCover) {
+      _hwarn = '<div class="ret-warn">⚠️ Your housing deduction (S$' + Math.round(cpfHousing).toLocaleString() + '/mo) equals or exceeds your OA monthly contribution (S$' + Math.round(cpfOAMoIn).toLocaleString() + '/mo). No OA funds remain to grow toward retirement — only your existing OA balance continues to earn 2.5%.</div>';
+    }
+    var _divRow = '';
+    if (cpfHousing > 0 && cpfOAMoIn > 0) {
+      var _diff = cpfPayoutNoHousing - cpfPayoutMonthly;
+      _divRow = '<div class="ret-divert-row">'
+        + '<span class="ret-divert-lbl">OA contribution</span><span class="ret-divert-val">S$' + Math.round(cpfOAMoIn).toLocaleString() + '/mo</span>'
+        + '<span class="ret-divert-arrow">→</span>'
+        + '<span class="ret-divert-lbl" style="color:#fca5a5">Housing</span><span class="ret-divert-val" style="color:#fca5a5">−S$' + Math.round(cpfHousing).toLocaleString() + '/mo</span>'
+        + '<span class="ret-divert-arrow">→</span>'
+        + '<span class="ret-divert-lbl" style="color:#6ee7b7">Toward retirement</span><span class="ret-divert-val" style="color:#6ee7b7">S$' + Math.round(cpfOAMo).toLocaleString() + '/mo</span>'
+        + (_diff > 0 && age < 55 ? '<span class="ret-divert-impact">CPF LIFE reduced by ~S$' + Math.round(_diff).toLocaleString() + '/mo — this increases your savings gap</span>' : '')
+        + '</div>';
+    }
+    var _lifeDiffLabel = cpfPayoutNoHousing > cpfPayoutMonthly
+      ? ' <span style="font-size:0.64rem;color:#fca5a5;font-weight:400">(−S$' + Math.round(cpfPayoutNoHousing - cpfPayoutMonthly).toLocaleString() + '/mo due to housing)</span>'
+      : '';
+    cpfSection = _hwarn
+      + '<div class="ret-section-hdr-out">CPF Projection</div>'
       + '<div class="ret-kpi-grid ret-kpi-3">'
       + '<div class="ret-kpi"><div class="ret-kpi-lbl">RA at Retirement</div><div class="ret-kpi-val" style="color:var(--data)">' + retFmt(raAtRetirement) + '</div></div>'
-      + '<div class="ret-kpi"><div class="ret-kpi-lbl">CPF LIFE (from 65)</div><div class="ret-kpi-val" style="color:var(--data)">' + retFmt(cpfPayoutMonthly) + '/mo</div></div>'
+      + '<div class="ret-kpi"><div class="ret-kpi-lbl">CPF LIFE (from 65)</div><div class="ret-kpi-val" style="color:var(--data)">' + retFmt(cpfPayoutMonthly) + '/mo' + _lifeDiffLabel + '</div></div>'
       + '<div class="ret-kpi"><div class="ret-kpi-lbl">Retirement Sum Tier</div><div class="ret-kpi-val" style="font-size:0.75rem">' + (cpfTier || '—') + '</div></div>'
-      + '</div>';
+      + '</div>'
+      + _divRow;
   }
 
   // Non-CPF breakdown bars
@@ -3911,8 +3957,18 @@ function retCalc() {
     return '<div class="ret-monthly-card' + mid + '"><div class="ret-mc-rate' + mid + '">' + (s.rate*100).toFixed(0) + '% p.a. return</div><div class="ret-mc-val' + mid + '">' + retFmt(s.pmt) + '/mo</div><div class="ret-mc-sub">extra savings needed</div></div>';
   }).join('');
 
+  var _cpfNote = '';
+  if (cpfPayoutMonthly > 0) {
+    _cpfNote = '<div class="ret-cpf-note">These figures assume CPF LIFE pays <b>S$' + Math.round(cpfPayoutMonthly).toLocaleString() + '/mo</b> from age 65'
+      + (cpfPayoutNoHousing > cpfPayoutMonthly
+          ? ', reduced from <b>S$' + Math.round(cpfPayoutNoHousing).toLocaleString() + '/mo</b> because OA funds are diverted to housing. Without the housing deduction your monthly savings needed would be lower.'
+          : '.')
+      + '</div>';
+  } else if (housingMissingOA) {
+    _cpfNote = '<div class="ret-cpf-note" style="border-color:rgba(252,165,58,0.3);color:#fcd34d">Enter your CPF balances and monthly OA contribution to factor CPF LIFE income into this gap — it will reduce the amount you need to save.</div>';
+  }
   var bottomHtml = gap > 0
-    ? '<div class="ret-section-hdr-out">Monthly Savings to Close the Gap</div><div class="ret-monthly-grid">' + monthlyCards + '</div>'
+    ? '<div class="ret-section-hdr-out">Monthly Savings to Close the Gap</div><div class="ret-monthly-grid">' + monthlyCards + '</div>' + _cpfNote
     : '<div class="na-summary" style="text-align:center;margin-top:1rem"><div class="na-summary-title" style="color:#6ee7b7">On Track ✓</div><div class="na-rec" style="text-align:center">Projected non-CPF corpus covers the retirement corpus requirement. Focus conversation on drawdown strategy, asset allocation, and legacy planning.</div></div>';
 
   el.innerHTML = '<div class="ret-kpi-grid">'
