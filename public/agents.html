@@ -3823,8 +3823,8 @@ function retCalc() {
     var oaAt55 = fvLumpSum(cpfOA, cpfOARate, yrsTo55) + fvAnnuity(cpfOAMo, cpfOARate, yrsTo55);
     var saAt55 = fvLumpSum(cpfSA, cpfSARate, yrsTo55) + fvAnnuity(cpfSAMo, cpfSARate, yrsTo55);
 
-    // At 55: RA = SA + OA top-up to FRS (capped at ERS)
-    var oaToRa = Math.min(oaAt55, Math.max(FRS_2026 - saAt55, 0));
+    // At 55: RA = SA + OA top-up; can go to ERS voluntarily (not just FRS)
+    var oaToRa = Math.min(oaAt55, Math.max(ERS_2026 - saAt55, 0));
     var raAt55 = Math.min(saAt55 + oaToRa, ERS_2026);
 
     raAt65projected  = fvLumpSum(raAt55, cpfSARate, yrsFrom55To65);
@@ -3843,7 +3843,7 @@ function retCalc() {
     var _yT55 = Math.max(55 - age, 0);
     var _oaFull = fvLumpSum(cpfOA, cpfOARate, _yT55) + fvAnnuity(cpfOAMoIn, cpfOARate, _yT55);
     var _saFull = fvLumpSum(cpfSA, cpfSARate, _yT55) + fvAnnuity(cpfSAMo,   cpfSARate, _yT55);
-    var _oaToRaFull = Math.min(_oaFull, Math.max(FRS_2026 - _saFull, 0));
+    var _oaToRaFull = Math.min(_oaFull, Math.max(ERS_2026 - _saFull, 0));
     var _raAt55Full = Math.min(_saFull + _oaToRaFull, ERS_2026);
     cpfPayoutNoHousing = estimateCpfLife(fvLumpSum(_raAt55Full, cpfSARate, 10));
   }
