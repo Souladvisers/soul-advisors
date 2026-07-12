@@ -851,6 +851,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .csb-btn:hover { background: rgba(184,151,90,0.3); }
 .csb-clear { font-size: 0.62rem; color: rgba(255,255,255,0.25); cursor: pointer; margin-left: auto; }
 .csb-clear:hover { color: rgba(255,255,255,0.5); }
+.csb-cpf-preview { font-size: 0.62rem; color: rgba(184,151,90,0.85); background: rgba(184,151,90,0.07); border: 1px solid rgba(184,151,90,0.2); border-radius: 5px; padding: 0.18rem 0.55rem; white-space: nowrap; }
+.csb-divider { width: 1px; height: 1.2rem; background: rgba(255,255,255,0.08); margin: 0 0.1rem; }
+.csb-session-badge { display: none; align-items: center; gap: 0.5rem; font-size: 0.7rem; color: var(--accent); background: rgba(184,151,90,0.07); border: 1px solid rgba(184,151,90,0.2); border-radius: 6px; padding: 0.35rem 0.75rem; margin-bottom: 0.85rem; }
+.csb-session-badge .csb-badge-from { margin-left: auto; font-size: 0.6rem; opacity: 0.5; }
+body.csb-session-on .csb-session-badge { display: flex; }
+body.csb-session-on .csb-hide-field { display: none !important; }
 
 /* ── Panel page-title area ── */
 .panel-header {
@@ -1003,9 +1009,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   <!-- Client Session Bar -->
   <div class="client-session-bar" id="client-session-bar">
     <span class="csb-label">Client Session</span>
-    <div class="csb-field"><span class="csb-label">Age</span><input class="csb-input" type="number" id="csb-age" placeholder="35" min="18" max="80"></div>
-    <div class="csb-field"><span class="csb-label">Income/mo</span><input class="csb-input" type="number" id="csb-income" placeholder="5000" style="width:80px"></div>
+    <div class="csb-field"><span class="csb-label">Age</span><input class="csb-input" type="number" id="csb-age" placeholder="35" min="18" max="80" oninput="csbUpdateCpfPreview()"></div>
+    <div class="csb-field"><span class="csb-label">Income/mo</span><input class="csb-input" type="number" id="csb-income" placeholder="5000" style="width:80px" oninput="csbUpdateCpfPreview()"></div>
     <div class="csb-field"><span class="csb-label">Retire at</span><input class="csb-input" type="number" id="csb-retire" placeholder="65" min="45" max="80"></div>
+    <div class="csb-field"><span class="csb-label">Incr/yr</span><input class="csb-input" type="number" id="csb-increment" placeholder="3" min="0" max="20" value="3" style="width:42px"><span class="csb-label" style="margin-left:1px">%</span></div>
+    <div class="csb-divider"></div>
+    <div class="csb-cpf-preview" id="csb-cpf-preview" style="display:none"></div>
     <button class="csb-btn" onclick="csbApply()">Apply to All Tools →</button>
     <span class="csb-clear" onclick="csbClear()" title="Clear session">✕ Clear session</span>
   </div>
@@ -1135,7 +1144,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           <div class="alloc-form-title">Portfolio Builder</div>
           <div class="alloc-form-sub">Enter the client's profile to generate a suggested fund allocation as a starting point for your conversation.</div>
 
-          <div class="al-field">
+          <div class="csb-session-badge" id="al-session-badge"></div>
+          <div class="al-field csb-hide-field">
             <label class="al-label">Client Age</label>
             <input class="al-input" type="number" id="al-age" min="18" max="80" placeholder="e.g. 35">
           </div>
@@ -1262,7 +1272,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           <!-- 1. Client Profile -->
           <div class="rb-section">
             <div class="rb-section-title">Client Profile</div>
-            <div class="al-field"><label class="al-label">Age</label><input class="al-input" type="number" id="rb-age" min="18" max="90" placeholder="e.g. 42"></div>
+            <div class="csb-session-badge" id="rb-session-badge"></div>
+            <div class="al-field csb-hide-field"><label class="al-label">Age</label><input class="al-input" type="number" id="rb-age" min="18" max="90" placeholder="e.g. 42"></div>
             <div class="al-field"><label class="al-label">Investment Goal</label>
               <select class="al-input" id="rb-goal">
                 <option value="">— Select goal —</option>
@@ -1420,7 +1431,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
             <input class="al-input" type="number" id="sp-amount" min="0" placeholder="e.g. 50000" oninput="spCalc()">
           </div>
 
-          <div class="al-field">
+          <div class="csb-session-badge" id="sp-session-badge"></div>
+          <div class="al-field csb-hide-field">
             <label class="al-label">Client Age</label>
             <input class="al-input" type="number" id="sp-age" min="18" max="70" placeholder="e.g. 38" oninput="spCalc()">
           </div>
@@ -1492,8 +1504,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           <div class="al-field"><label class="al-label">Monthly Expenses &amp; Liabilities</label><input class="al-input" type="number" id="na-expenses" placeholder="e.g. 3000"></div>
           <div class="al-field"><label class="al-label">Outstanding Loans (SGD)</label><input class="al-input" type="number" id="na-loans" placeholder="e.g. 200000"></div>
           <div class="al-field"><label class="al-label">Number of Dependants</label><input class="al-input" type="number" id="na-deps" min="0" placeholder="e.g. 2"></div>
-          <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="na-age" min="18" max="70" placeholder="e.g. 35"></div>
-          <div class="al-field"><label class="al-label">Target Retirement Age</label><input class="al-input" type="number" id="na-retage" min="45" max="75" placeholder="e.g. 65"></div>
+          <div class="csb-session-badge" id="na-session-badge"></div>
+          <div class="al-field csb-hide-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="na-age" min="18" max="70" placeholder="e.g. 35"></div>
+          <div class="al-field csb-hide-field"><label class="al-label">Target Retirement Age</label><input class="al-input" type="number" id="na-retage" min="45" max="75" placeholder="e.g. 65"></div>
           <div class="al-field"><label class="al-label">Existing Life Cover (SGD)</label><input class="al-input" type="number" id="na-life" placeholder="e.g. 100000"></div>
           <div class="al-field"><label class="al-label">Existing CI Cover (SGD)</label><input class="al-input" type="number" id="na-ci" placeholder="e.g. 50000"></div>
           <div class="al-field"><label class="al-label">Existing Disability Cover (SGD/mo) <span class="tip-icon" data-tip="Monthly benefit from any income protection or disability policy the client already holds.">ⓘ</span></label><input class="al-input" type="number" id="na-dis" placeholder="e.g. 0"></div>
@@ -1515,11 +1528,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           <div class="sp-form-sub">Singapore-specific retirement plan with CPF LIFE projection, multi-bucket savings, and investment strategy analysis.</div>
 
           <div class="ret-section-hdr">Personal Details</div>
-          <div class="al-field-row">
+          <div class="csb-session-badge" id="ret-session-badge"></div>
+          <div class="al-field-row csb-hide-field">
             <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="ret-age" min="18" max="80" placeholder="e.g. 35" oninput="retCalc()"></div>
             <div class="al-field"><label class="al-label">Target Retirement Age</label><input class="al-input" type="number" id="ret-retage" min="45" max="80" placeholder="e.g. 65" oninput="retCalc()"></div>
           </div>
-          <div class="ret-presets">
+          <div class="ret-presets csb-hide-field">
             <span class="ret-preset-lbl">Retire at:</span>
             <button class="ret-preset-btn" onclick="document.getElementById('ret-retage').value=55;retCalc()">55</button>
             <button class="ret-preset-btn" onclick="document.getElementById('ret-retage').value=60;retCalc()">60</button>
@@ -1591,6 +1605,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
           </div>
           <div class="al-hint" style="margin-bottom:0.5rem">Strategy return applied to ILP / Unit Trust bucket. Cash earns 2% p.a. Other assets assumed at 3% p.a.</div>
 
+          <input type="hidden" id="ret-income" value="">
+          <input type="hidden" id="ret-salary-increment" value="3">
           <button class="sp-calc-btn" onclick="retCalc()">Calculate Retirement Gap →</button>
         </div>
         <div id="ret-results">
@@ -3829,6 +3845,37 @@ function naCalc() {
 let retStratRate = 0.04; // default conservative
 
 // ── Client Session Bar ─────────────────────────────────────────
+function getCpfRates(age) {
+  if (age < 35) return { oaPct: 0.23, saPct: 0.06, maPct: 0.08 };
+  if (age < 45) return { oaPct: 0.21, saPct: 0.07, maPct: 0.09 };
+  if (age < 50) return { oaPct: 0.19, saPct: 0.08, maPct: 0.10 };
+  if (age < 55) return { oaPct: 0.15, saPct: 0.115, maPct: 0.105 };
+  if (age < 60) return { oaPct: 0.12, saPct: 0.035, maPct: 0.105 };
+  if (age < 65) return { oaPct: 0.035, saPct: 0.025, maPct: 0.105 };
+  return { oaPct: 0.01, saPct: 0.01, maPct: 0.105 };
+}
+
+function getCpfAlloc(age, grossIncome) {
+  var OW_CEIL = 7400;
+  var wage = Math.min(grossIncome, OW_CEIL);
+  var r = getCpfRates(age);
+  return {
+    oa: Math.round(wage * r.oaPct),
+    sa: Math.round(wage * r.saPct),
+    ma: Math.round(wage * r.maPct)
+  };
+}
+
+function csbUpdateCpfPreview() {
+  var age    = parseFloat(document.getElementById('csb-age').value);
+  var income = parseFloat(document.getElementById('csb-income').value);
+  var preview = document.getElementById('csb-cpf-preview');
+  if (!age || !income || age < 18) { preview.style.display = 'none'; return; }
+  var alloc = getCpfAlloc(age, income);
+  preview.textContent = 'CPF: OA $' + alloc.oa.toLocaleString() + ' · SA $' + alloc.sa.toLocaleString() + ' · MA $' + alloc.ma.toLocaleString() + '/mo';
+  preview.style.display = '';
+}
+
 function csbApply() {
   var age    = document.getElementById('csb-age').value;
   var income = document.getElementById('csb-income').value;
@@ -3846,12 +3893,39 @@ function csbApply() {
   if (age    && document.getElementById('sp-age'))     document.getElementById('sp-age').value     = age;
   // Rebalancer
   if (age    && document.getElementById('rb-age'))     document.getElementById('rb-age').value     = age;
+  // Session badge — hide repetitive fields across panels
+  if (age) {
+    document.body.classList.add('csb-session-on');
+    var badgeHtml = '👤 Age <b>' + age + '</b>'
+      + (retire ? ' &nbsp;·&nbsp; Retire at <b>' + retire + '</b>' : '')
+      + '<span class="csb-badge-from">from Client Session</span>';
+    ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge'].forEach(function(id){
+      var b = document.getElementById(id); if (b) b.innerHTML = badgeHtml;
+    });
+  }
+  // CPF auto-allocation into Retirement Gap
+  var increment = document.getElementById('csb-increment').value || '3';
+  if (document.getElementById('ret-income'))          document.getElementById('ret-income').value          = income || '';
+  if (document.getElementById('ret-salary-increment')) document.getElementById('ret-salary-increment').value = increment;
+  if (age && income) {
+    var alloc = getCpfAlloc(parseFloat(age), parseFloat(income));
+    if (document.getElementById('ret-cpf-oa-mo')) document.getElementById('ret-cpf-oa-mo').value = alloc.oa;
+    if (document.getElementById('ret-cpf-sa-mo')) document.getElementById('ret-cpf-sa-mo').value = alloc.sa;
+  }
   // Auto-calc wherever possible
   if (document.getElementById('p-retirement').classList.contains('active')) retCalc();
   if (document.getElementById('p-needanalysis').classList.contains('active')) naCalc();
 }
 function csbClear() {
   ['csb-age','csb-income','csb-retire'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('csb-increment').value = '3';
+  document.getElementById('csb-cpf-preview').style.display = 'none';
+  if (document.getElementById('ret-income'))           document.getElementById('ret-income').value = '';
+  if (document.getElementById('ret-salary-increment')) document.getElementById('ret-salary-increment').value = '3';
+  document.body.classList.remove('csb-session-on');
+  ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge'].forEach(function(id){
+    var b = document.getElementById(id); if (b) b.innerHTML = '';
+  });
   document.getElementById('client-session-bar').classList.remove('active');
 }
 
@@ -3946,8 +4020,29 @@ function retCalc() {
     var yrsFrom55To65 = Math.max(65 - 55, 0);
     var yrsFrom55ToRet = Math.max(retAge - 55, 0);
 
-    var oaAt55 = fvLumpSum(cpfOA, cpfOARate, yrsTo55) + fvAnnuity(cpfOAMo, cpfOARate, yrsTo55);
-    var saAt55 = fvLumpSum(cpfSA, cpfSARate, yrsTo55) + fvAnnuity(cpfSAMo, cpfSARate, yrsTo55);
+    var incomeForSim = parseFloat(document.getElementById('ret-income').value) || 0;
+    var incRate      = (parseFloat(document.getElementById('ret-salary-increment').value) || 3) / 100;
+
+    var oaAt55, saAt55;
+    if (incomeForSim > 0 && yrsTo55 > 0) {
+      // Year-by-year simulation: salary grows at incRate, CPF rates shift at bracket boundaries
+      oaAt55 = cpfOA; saAt55 = cpfSA;
+      var OW_CEIL = 7400;
+      var monthsTo55 = Math.round(yrsTo55 * 12);
+      for (var m = 0; m < monthsTo55; m++) {
+        var yr = m / 12;
+        var simAge = age + yr;
+        var r = getCpfRates(simAge);
+        var salary = Math.min(incomeForSim * Math.pow(1 + incRate, yr), OW_CEIL);
+        var oaMo = Math.max(salary * r.oaPct - cpfHousing, 0);
+        var saMo = salary * r.saPct;
+        oaAt55 = oaAt55 * (1 + cpfOARate / 12) + oaMo;
+        saAt55 = saAt55 * (1 + cpfSARate / 12) + saMo;
+      }
+    } else {
+      oaAt55 = fvLumpSum(cpfOA, cpfOARate, yrsTo55) + fvAnnuity(cpfOAMo, cpfOARate, yrsTo55);
+      saAt55 = fvLumpSum(cpfSA, cpfSARate, yrsTo55) + fvAnnuity(cpfSAMo, cpfSARate, yrsTo55);
+    }
 
     // At 55: RA = SA + OA top-up; can go to ERS voluntarily (not just FRS)
     var oaToRa = Math.min(oaAt55, Math.max(ERS_2026 - saAt55, 0));
@@ -3967,8 +4062,21 @@ function retCalc() {
   var cpfPayoutNoHousing = 0;
   if (cpfHousing > 0 && cpfOAMoIn > 0 && age < 55) {
     var _yT55 = Math.max(55 - age, 0);
-    var _oaFull = fvLumpSum(cpfOA, cpfOARate, _yT55) + fvAnnuity(cpfOAMoIn, cpfOARate, _yT55);
-    var _saFull = fvLumpSum(cpfSA, cpfSARate, _yT55) + fvAnnuity(cpfSAMo,   cpfSARate, _yT55);
+    var _oaFull, _saFull;
+    if (incomeForSim > 0 && _yT55 > 0) {
+      _oaFull = cpfOA; _saFull = cpfSA;
+      var _mTo55 = Math.round(_yT55 * 12);
+      for (var _m = 0; _m < _mTo55; _m++) {
+        var _yr = _m / 12;
+        var _r = getCpfRates(age + _yr);
+        var _sal = Math.min(incomeForSim * Math.pow(1 + incRate, _yr), 7400);
+        _oaFull = _oaFull * (1 + cpfOARate / 12) + _sal * _r.oaPct;
+        _saFull = _saFull * (1 + cpfSARate / 12) + _sal * _r.saPct;
+      }
+    } else {
+      _oaFull = fvLumpSum(cpfOA, cpfOARate, _yT55) + fvAnnuity(cpfOAMoIn, cpfOARate, _yT55);
+      _saFull = fvLumpSum(cpfSA, cpfSARate, _yT55) + fvAnnuity(cpfSAMo,   cpfSARate, _yT55);
+    }
     var _oaToRaFull = Math.min(_oaFull, Math.max(ERS_2026 - _saFull, 0));
     var _raAt55Full = Math.min(_saFull + _oaToRaFull, ERS_2026);
     cpfPayoutNoHousing = estimateCpfLife(fvLumpSum(_raAt55Full, cpfSARate, 10));
