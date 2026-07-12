@@ -1556,7 +1556,8 @@ body.csb-session-on .csb-hide-field { display: none !important; }
             <div class="al-field"><label class="al-label">CPF OA Balance (SGD) <span class="tip-icon" data-tip="Ordinary Account. Earns 2.5% p.a. Used for housing, education, investment. At 55, transfers to RA to top up toward FRS/ERS.">ⓘ</span></label><input class="al-input" type="number" id="ret-cpf-oa" placeholder="e.g. 50000" oninput="retCalc()"></div>
             <div class="al-field"><label class="al-label">CPF SA / RA Balance (SGD) <span class="tip-icon" data-tip="Special Account (under 55) or Retirement Account (55+). Earns 4% p.a. Becomes your CPF LIFE premium at 65.">ⓘ</span></label><input class="al-input" type="number" id="ret-cpf-sa" placeholder="e.g. 80000" oninput="retCalc()"></div>
           </div>
-          <div class="al-field-row">
+          <div class="csb-session-badge" id="ret-cpf-session-badge"></div>
+          <div class="al-field-row csb-hide-field">
             <div class="al-field">
               <label class="al-label">Monthly OA Contribution (SGD)</label>
               <input class="al-input" type="number" id="ret-cpf-oa-mo" placeholder="e.g. 1450" oninput="retCalc()">
@@ -3911,6 +3912,8 @@ function csbApply() {
     var alloc = getCpfAlloc(parseFloat(age), parseFloat(income));
     if (document.getElementById('ret-cpf-oa-mo')) document.getElementById('ret-cpf-oa-mo').value = alloc.oa;
     if (document.getElementById('ret-cpf-sa-mo')) document.getElementById('ret-cpf-sa-mo').value = alloc.sa;
+    var cpfBadge = document.getElementById('ret-cpf-session-badge');
+    if (cpfBadge) cpfBadge.innerHTML = '⚙️ OA <b>$' + alloc.oa.toLocaleString() + '/mo</b> &nbsp;·&nbsp; SA <b>$' + alloc.sa.toLocaleString() + '/mo</b> &nbsp;·&nbsp; MA <b>$' + alloc.ma.toLocaleString() + '/mo</b><span class="csb-badge-from">auto-calculated</span>';
   }
   // Auto-calc wherever possible
   if (document.getElementById('p-retirement').classList.contains('active')) retCalc();
@@ -3923,7 +3926,7 @@ function csbClear() {
   if (document.getElementById('ret-income'))           document.getElementById('ret-income').value = '';
   if (document.getElementById('ret-salary-increment')) document.getElementById('ret-salary-increment').value = '3';
   document.body.classList.remove('csb-session-on');
-  ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge'].forEach(function(id){
+  ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge','ret-cpf-session-badge'].forEach(function(id){
     var b = document.getElementById(id); if (b) b.innerHTML = '';
   });
   document.getElementById('client-session-bar').classList.remove('active');
