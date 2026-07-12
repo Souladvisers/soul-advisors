@@ -821,6 +821,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
   .ag-sidebar { transform: translateX(-210px); transition: transform 0.25s; }
   .ag-sidebar.open { transform: translateX(0); }
   .ag-panel.active { margin-left: 0; }
+  .client-session-bar { margin-left: 0; }
   .ag-ham { display: flex; }
 }
 @media (min-width: 769px) {
@@ -841,7 +842,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .ag-sidebar-overlay.open { display: block; opacity: 1; }
 
 /* ── Client Session Bar ── */
-.client-session-bar { display: none; align-items: center; gap: 0.75rem; padding: 0.45rem 1.5rem; background: rgba(184,151,90,0.07); border-bottom: 1px solid rgba(184,151,90,0.15); font-size: 0.74rem; flex-wrap: wrap; }
+.client-session-bar { display: none; align-items: center; gap: 0.75rem; padding: 0.45rem 1.5rem; background: rgba(184,151,90,0.07); border-bottom: 1px solid rgba(184,151,90,0.15); font-size: 0.74rem; flex-wrap: wrap; margin-left: 210px; }
 .client-session-bar.active { display: flex; }
 .csb-label { color: rgba(255,255,255,0.38); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.62rem; }
 .csb-val { color: rgba(255,255,255,0.75); font-weight: 500; }
