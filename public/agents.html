@@ -1459,7 +1459,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 
           <!-- ── Route 2: Premium ── -->
           <div class="mdrt-pane" id="mdrt-pane-prem">
-            <div class="al-hint" style="margin-bottom:0.8rem">Add each policy you plan to sell. The system calculates your Y1 commission automatically using PACS commission rates.</div>
+            <div class="al-hint" style="margin-bottom:0.8rem">Add each policy you plan to sell. MDRT qualification is based on <b>total premiums sold</b> (threshold: SGD 217,200). Commission rates are used only to estimate your Production Bonus.</div>
             <div class="mdrt-prem-lbl">
               <span>Product</span><span>PPT (yrs)</span><span>Annual Prem (SGD)</span><span></span>
             </div>
@@ -4136,9 +4136,12 @@ function pbPersistPayout(pct) {
 }
 
 // Official MDRT Singapore qualifying amounts in SGD (MDRT conversion factor doc, 2025 & 2026)
-// Source: MDRT Commission & Premium Production Requirements table
-// 2025 membership (2024 production): SGD 72,400 | 2026 membership (2025 production): SGD 72,400
-var MDRT_SGD_BASE = { mdrt:72400, cot:217200, tot:434400 };
+// Commission method: SGD 72,400 / 217,200 / 434,400
+// Premium method:   SGD 217,200 / 651,600 / 1,303,200
+var MDRT_SGD_BASE = {
+  mdrt:72400, cot:217200, tot:434400,
+  premMdrt:217200, premCot:651600, premTot:1303200
+};
 
 function getBonusRate(amount, table) {
   var rate = 0;
@@ -4238,7 +4241,7 @@ function mdrtDelRow(id) {
 }
 
 function mdrtGetPremY1() {
-  var total = 0;
+  var totalComm = 0, totalPrem = 0;
   var details = [];
   _mdrtRows.forEach(function(id) {
     var prod = document.getElementById('mpr-prod-'+id);
@@ -4250,10 +4253,11 @@ function mdrtGetPremY1() {
     if (prem <= 0) return;
     var rate = getCommRate(prod.value, ppt);
     var comm = prem * rate / 100;
-    total += comm;
+    totalComm += comm;
+    totalPrem += prem;
     details.push({prod: prod.options[prod.selectedIndex].text, ppt: ppt, prem: prem, rate: rate, comm: comm});
   });
-  return {total: total, details: details};
+  return {total: totalComm, totalPrem: totalPrem, details: details};
 }
 
 // ── Route / PY switchers ─────────────────────────────────────────────────
@@ -4283,7 +4287,7 @@ function mdrtCalc() {
   var month   = parseInt(document.getElementById('md-month').value)     || new Date().getMonth()+1;
 
   var y1=0, y2=0, y3=0, y4=0, y5=0, y6=0;
-  var premDetails = [];
+  var premDetails = [], totalPremSold = 0;
 
   if (_mdrtRoute === 'comm') {
     y1 = parseFloat(document.getElementById('md-y1').value) || 0;
@@ -4294,7 +4298,8 @@ function mdrtCalc() {
     y6 = parseFloat(document.getElementById('md-y6').value) || 0;
   } else {
     var premResult = mdrtGetPremY1();
-    y1 = premResult.total;
+    y1 = premResult.total;        // Y1 commission (for bonus calc)
+    totalPremSold = premResult.totalPrem;  // total premiums (for MDRT qualification)
     premDetails = premResult.details;
     y2 = parseFloat(document.getElementById('md-py2').value)  || 0;
     y3 = parseFloat(document.getElementById('md-py3').value)  || 0;
@@ -4337,31 +4342,39 @@ function mdrtCalc() {
 
   // ── Projection ──
   var remainMo = Math.max(12 - month, 0);
-  function needMsg(target, label, colour) {
-    var gap = target - totalQual;
+  function needMsg(target, label, colour, qualVal) {
+    var gap = target - qualVal;
     if (gap <= 0) return '<span style="color:#5cb85c">✓ <b>' + label + ' achieved!</b></span>';
     var monthly = remainMo > 0 ? ' (' + mFmt(gap/remainMo) + '/mo for ' + remainMo + ' remaining months)' : '';
     return label + ': need <b style="color:' + colour + '">' + mFmt(gap) + '</b>' + monthly;
   }
 
   // ── Progress bar ──
-  function bar(label, target, fillClass, colour) {
-    var pct = Math.min(totalQual / target * 100, 100);
-    var over = totalQual >= target;
+  function bar(label, target, fillClass, colour, q) {
+    var pct = Math.min(q / target * 100, 100);
+    var over = q >= target;
     return '<div class="mdrt-prog-wrap">'
-      + '<div class="mdrt-prog-hdr"><span>' + label + (over ? ' <span style="color:#5cb85c">✓</span>' : '') + '</span><span style="color:' + colour + '">' + mFmt(totalQual) + ' / ' + mFmt(target) + ' SGD</span></div>'
+      + '<div class="mdrt-prog-hdr"><span>' + label + (over ? ' <span style="color:#5cb85c">✓</span>' : '') + '</span><span style="color:' + colour + '">' + mFmt(q) + ' / ' + mFmt(target) + ' SGD</span></div>'
       + '<div class="mdrt-prog-bg"><div class="mdrt-prog-fill ' + fillClass + '" style="width:' + pct.toFixed(1) + '%">'
       + (pct > 12 ? Math.round(pct) + '%' : '') + '</div></div></div>';
   }
-  var progHtml = bar('MDRT  (SGD 72,400)', mdrtSGD, 'mdrt-fill-mdrt', '#7FC4E8')
-    + bar('COT   (SGD 217,200)', cotSGD, 'mdrt-fill-cot', '#B8975A')
-    + bar('TOT   (SGD 434,400)', totSGD, 'mdrt-fill-tot', '#e07070');
+  var progHtml;
+  if (_mdrtRoute === 'prem') {
+    // Premium route: qualification measured by premiums sold, not commissions
+    progHtml = bar('MDRT  (SGD 217,200 premiums)', MDRT_SGD_BASE.premMdrt, 'mdrt-fill-mdrt', '#7FC4E8', totalPremSold)
+      + bar('COT   (SGD 651,600 premiums)', MDRT_SGD_BASE.premCot, 'mdrt-fill-cot', '#B8975A', totalPremSold)
+      + bar('TOT   (SGD 1,303,200 premiums)', MDRT_SGD_BASE.premTot, 'mdrt-fill-tot', '#e07070', totalPremSold);
+  } else {
+    progHtml = bar('MDRT  (SGD 72,400)', mdrtSGD, 'mdrt-fill-mdrt', '#7FC4E8', totalQual)
+      + bar('COT   (SGD 217,200)', cotSGD, 'mdrt-fill-cot', '#B8975A', totalQual)
+      + bar('TOT   (SGD 434,400)', totSGD, 'mdrt-fill-tot', '#e07070', totalQual);
+  }
 
   // ── Premium route breakdown ──
   var premHtml = '';
   if (_mdrtRoute === 'prem' && premDetails.length > 0) {
-    premHtml = '<div class="mdrt-section-hdr">Premium → Commission Breakdown</div>'
-      + '<table class="mdrt-bonus-table"><tr><th>Product</th><th>PPT</th><th class="num">Annual Prem</th><th class="num">Y1 Rate</th><th class="num">Y1 Comm</th></tr>';
+    premHtml = '<div class="mdrt-section-hdr">Premium → Commission (for Bonus Calculation)</div>'
+      + '<table class="mdrt-bonus-table"><tr><th>Product</th><th>PPT</th><th class="num">Annual Prem</th><th class="num">Y1 Rate</th><th class="num">Est. Y1 Comm</th></tr>';
     premDetails.forEach(function(d) {
       premHtml += '<tr><td style="font-size:0.68rem">' + d.prod.split('(')[0].trim() + '</td><td>' + d.ppt + 'yr</td><td class="num">' + mFmt(d.prem) + '</td><td class="num">' + d.rate.toFixed(1) + '%</td><td class="hi">' + mFmt(d.comm) + '</td></tr>';
     });
@@ -4386,23 +4399,42 @@ function mdrtCalc() {
   bonusTblHtml += '<tr class="mdrt-hi"><td colspan="2"><b>Total (after ' + persist + '% persistency → ' + (persistMul*100).toFixed(0) + '% payout)</b></td><td></td><td class="hi">' + mFmt2(bonusFinal) + '</td></tr></table>';
 
   // ── KPIs ──
-  var kpiHtml = '<div class="mdrt-kpis">'
-    + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt(y1) + '</div><div class="mdrt-kpi-lbl">Y1 Commission (SGD)</div></div>'
-    + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt2(bonusFinal) + '</div><div class="mdrt-kpi-lbl">Production Bonus (SGD)</div></div>'
-    + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt(totalQual) + '</div><div class="mdrt-kpi-lbl">Total Qualifying (SGD)</div></div>'
-    + '</div>';
+  var kpiHtml;
+  if (_mdrtRoute === 'prem') {
+    kpiHtml = '<div class="mdrt-kpis">'
+      + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt(totalPremSold) + '</div><div class="mdrt-kpi-lbl">Total Premiums Sold (SGD)</div></div>'
+      + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt(y1) + '</div><div class="mdrt-kpi-lbl">Est. Y1 Commission (SGD)</div></div>'
+      + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt2(bonusFinal) + '</div><div class="mdrt-kpi-lbl">Production Bonus (SGD)</div></div>'
+      + '</div>';
+  } else {
+    kpiHtml = '<div class="mdrt-kpis">'
+      + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt(y1) + '</div><div class="mdrt-kpi-lbl">Y1 Commission (SGD)</div></div>'
+      + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt2(bonusFinal) + '</div><div class="mdrt-kpi-lbl">Production Bonus (SGD)</div></div>'
+      + '<div class="mdrt-kpi"><div class="mdrt-kpi-val">' + mFmt(totalQual) + '</div><div class="mdrt-kpi-lbl">Total Qualifying (SGD)</div></div>'
+      + '</div>';
+  }
 
   // ── What you need ──
   var needHtml = '<div class="mdrt-need">'
     + '<div>' + curTierMsg + '</div>'
     + '<div style="margin-top:0.3rem">' + nextMsg + '</div>'
-    + '<div style="margin-top:0.6rem;padding-top:0.5rem;border-top:1px solid var(--border)">'
-    + '<div>' + needMsg(mdrtSGD,'MDRT','#7FC4E8') + '</div>'
-    + '<div>' + needMsg(cotSGD, 'COT', '#B8975A') + '</div>'
-    + '<div>' + needMsg(totSGD, 'TOT', '#e07070') + '</div>'
-    + '</div></div>';
+    + '<div style="margin-top:0.6rem;padding-top:0.5rem;border-top:1px solid var(--border)">';
+  if (_mdrtRoute === 'prem') {
+    needHtml += '<div>' + needMsg(MDRT_SGD_BASE.premMdrt,'MDRT (premium basis)','#7FC4E8',totalPremSold) + '</div>'
+      + '<div>' + needMsg(MDRT_SGD_BASE.premCot,'COT (premium basis)','#B8975A',totalPremSold) + '</div>'
+      + '<div>' + needMsg(MDRT_SGD_BASE.premTot,'TOT (premium basis)','#e07070',totalPremSold) + '</div>';
+  } else {
+    needHtml += '<div>' + needMsg(mdrtSGD,'MDRT','#7FC4E8',totalQual) + '</div>'
+      + '<div>' + needMsg(cotSGD,'COT','#B8975A',totalQual) + '</div>'
+      + '<div>' + needMsg(totSGD,'TOT','#e07070',totalQual) + '</div>';
+  }
+  needHtml += '</div></div>';
 
-  var noteHtml = '<div class="mdrt-note">Production Bonus: OAI 002/25. Y1 uses PY'+_mdrtPY+' updated table; Y2-Y6 use pre-2025 table. Persistency: ≥92%→100%, ≥90%→95%, ≥85%→85%, ≥80%→70%, &lt;80%→0%. MDRT SGD targets estimated at 1.35 FX (MDRT ≈ SGD 88,155 / COT ≈ SGD 264,465 / TOT ≈ SGD 528,930). Qualifying income = all commission years + adjusted Production Bonus.</div>';
+  var noteHtml = '<div class="mdrt-note">Production Bonus: OAI 002/25. Y1 uses PY'+_mdrtPY+' updated table; Y2–Y6 use pre-2025 table. Persistency: ≥92%→100%, ≥90%→95%, ≥85%→85%, ≥80%→70%, &lt;80%→0%. '
+    + ((_mdrtRoute === 'prem')
+      ? 'Premium route: MDRT qualification based on total new premiums sold (SGD 217,200 / 651,600 / 1,303,200). Production Bonus is estimated from your Y1 commission.'
+      : 'Commission route: MDRT qualification = all commission years + adjusted Production Bonus (SGD 72,400 / 217,200 / 434,400).')
+    + ' Official thresholds from MDRT 2025 &amp; 2026 Conversion Factor document.</div>';
 
   document.getElementById('mdrt-results').innerHTML =
     kpiHtml
