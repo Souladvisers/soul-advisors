@@ -3938,6 +3938,18 @@ function spCalc() {
 // ─────────────────────────────────────────────
 boot();
 
+/* ── eLearning sub-tab switcher ─────────────── */
+function elSubTab(name, btn) {
+  document.querySelectorAll('.el-subtab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.el-section').forEach(s => s.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  var sec = document.getElementById('el-' + name);
+  if (sec) sec.classList.add('active');
+  if (name === 'scripts' && !document.getElementById('scr-filters').dataset.built) {
+    scrRender();
+  }
+}
+
 /* ════════════════════════════════════════════
    COMMISSION CALCULATOR — PACS Mar 2026
    ════════════════════════════════════════════ */
