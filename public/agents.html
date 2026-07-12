@@ -3945,17 +3945,18 @@ function setRetStrat(s) {
   if (s !== 'custom') retCalc();
 }
 
-function estimateCpfLife(raAt65) {
-  // CPF LIFE Standard Plan monthly payout — interpolated from 2026 published figures
-  // BRS $102,900 → ~$870/mo · FRS $205,800 → ~$1,660/mo · ERS $308,700 → ~$2,370/mo
-  if (raAt65 <= 0) return 0;
+function estimateCpfLife(ra55) {
+  // CPF LIFE Standard Plan monthly payout — interpolated from 2026 published figures.
+  // Input: RA balance AT AGE 55 (BRS $102,900 → $870/mo · FRS $205,800 → $1,660/mo · ERS $308,700 → $2,370/mo).
+  // Standard Plan payout is fixed at the time of setup; capped at ERS tier.
+  if (ra55 <= 0) return 0;
   var BRS = 102900, BRS_PAY = 870;
   var FRS = 205800, FRS_PAY = 1660;
   var ERS = 308700, ERS_PAY = 2370;
-  if (raAt65 <= BRS) return Math.round(raAt65 / BRS * BRS_PAY);
-  if (raAt65 <= FRS) return Math.round(BRS_PAY + (raAt65 - BRS) / (FRS - BRS) * (FRS_PAY - BRS_PAY));
-  if (raAt65 <= ERS) return Math.round(FRS_PAY + (raAt65 - FRS) / (ERS - FRS) * (ERS_PAY - FRS_PAY));
-  return Math.round(ERS_PAY + (raAt65 - ERS) * 0.006);
+  if (ra55 <= BRS) return Math.round(ra55 / BRS * BRS_PAY);
+  if (ra55 <= FRS) return Math.round(BRS_PAY + (ra55 - BRS) / (FRS - BRS) * (FRS_PAY - BRS_PAY));
+  if (ra55 <= ERS) return Math.round(FRS_PAY + (ra55 - FRS) / (ERS - FRS) * (ERS_PAY - FRS_PAY));
+  return ERS_PAY; // Standard Plan caps at ERS; CPF LIFE Extra not modelled
 }
 
 function retCalc() {
@@ -4056,10 +4057,16 @@ function retCalc() {
     raAtRetirement   = retAge <= 55 ? raAt55 : fvLumpSum(raAt55, cpfSARate, yrsFrom55ToRet);
   }
 
+  // CPF LIFE payout is published against RA-at-55 amounts (BRS/FRS/ERS).
+  // For under-55 we have raAt55 directly; for 55+ we back-calculate from current RA.
+  var ra55ForLife = (age >= 55)
+    ? cpfSA / Math.pow(cpfSARate + 1, Math.max(age - 55, 0))
+    : (typeof raAt55 !== 'undefined' ? raAt55 : 0);
+
   if (cpfOverride > 0) {
     cpfPayoutMonthly = cpfOverride;
   } else if (cpfOA || cpfSA || cpfOAMoIn || cpfSAMo) {
-    cpfPayoutMonthly = estimateCpfLife(raAt65projected);
+    cpfPayoutMonthly = estimateCpfLife(ra55ForLife);
   }
 
   // Without-housing CPF LIFE (for comparison, under-55 path only)
@@ -4083,13 +4090,13 @@ function retCalc() {
     }
     var _oaToRaFull = Math.min(_oaFull, Math.max(ERS_2026 - _saFull, 0));
     var _raAt55Full = Math.min(_saFull + _oaToRaFull, ERS_2026);
-    cpfPayoutNoHousing = estimateCpfLife(fvLumpSum(_raAt55Full, cpfSARate, 10));
+    cpfPayoutNoHousing = estimateCpfLife(_raAt55Full);
   }
 
-  if (raAt65projected >= ERS_2026)      cpfTier = 'Enhanced Retirement Sum';
-  else if (raAt65projected >= FRS_2026) cpfTier = 'Full Retirement Sum';
-  else if (raAt65projected >= BRS_2026) cpfTier = 'Basic Retirement Sum';
-  else if (raAt65projected > 0)         cpfTier = 'Below Basic RS';
+  if (ra55ForLife >= ERS_2026)      cpfTier = 'Enhanced Retirement Sum';
+  else if (ra55ForLife >= FRS_2026) cpfTier = 'Full Retirement Sum';
+  else if (ra55ForLife >= BRS_2026) cpfTier = 'Basic Retirement Sum';
+  else if (ra55ForLife > 0)         cpfTier = 'Below Basic RS';
 
   // ── Non-CPF Corpus Projection ──────────────────────────────────────────────
   var cashAtRet  = fvLumpSum(cash, cashRate, yrs);
@@ -4131,7 +4138,8 @@ function retCalc() {
     if (r < 0.0001) return fv / n;
     return fv * r / (Math.pow(1 + r, n) - 1);
   }
-  var pmtRates = [0.04, invRate, 0.09].map(function(rate) {
+  var _rateList = [0.04, invRate, 0.09].filter(function(v, i, a) { return a.indexOf(v) === i; });
+  var pmtRates = _rateList.map(function(rate) {
     var futNonCpf = fvLumpSum(cash, cashRate, yrs) + fvLumpSum(investments, rate, yrs) + fvLumpSum(otherAssets, otherRate, yrs);
     var futGap = Math.max(corpusNeeded - futNonCpf, 0);
     return { rate: rate, pmt: monthlyPMT(rate/12, yrs*12, futGap) };
