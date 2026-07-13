@@ -10,7 +10,7 @@
     "totalAumUSD_M": 70.9,
     "avgReturn1Y": 0.1278,
     "currency": "SGD",
-    "priceDate": "09-Jul-2026",
+    "priceDate": "10-Jul-2026",
     "pricesLive": true,
     "dividendScrapeDate": "2026-07-11T17:01:18Z"
   },
@@ -66,8 +66,8 @@
         "si": 0.02
       },
       "dividends": [],
-      "bidPrice": 1.14057,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.14454,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Conservative (Accumulation)",
@@ -120,8 +120,8 @@
         "si": -0.003
       },
       "dividends": [],
-      "bidPrice": 0.98007,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.98138,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Growth (Accumulation)",
@@ -174,8 +174,8 @@
         "si": 0.021
       },
       "dividends": [],
-      "bidPrice": 1.17518,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.18131,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink ActiveInvest Portfolio - Moderate (Accumulation)",
@@ -228,8 +228,8 @@
         "si": 0.014
       },
       "dividends": [],
-      "bidPrice": 1.09243,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.09437,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Adapt 2035 Fund",
@@ -282,8 +282,8 @@
         "si": 0.039
       },
       "dividends": [],
-      "bidPrice": 2.31557,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.32835,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink America Fund",
@@ -336,8 +336,8 @@
         "si": 0.054
       },
       "dividends": [],
-      "bidPrice": 3.05086,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 3.06301,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink America Fund (USD) (Accumulation)",
@@ -390,8 +390,8 @@
         "si": 0.054
       },
       "dividends": [],
-      "bidPrice": 1.24473,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.25257,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian American Managed Fund",
@@ -444,8 +444,8 @@
         "si": 0.042
       },
       "dividends": [],
-      "bidPrice": 2.80328,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.80527,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian Equity Fund",
@@ -498,8 +498,8 @@
         "si": 0.039
       },
       "dividends": [],
-      "bidPrice": 3.74706,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 3.75687,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian Fixed-Income Fund (Accumulation)",
@@ -601,8 +601,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 0.83065,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.82963,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian Fixed-Income Fund (Distribution)",
@@ -752,8 +752,8 @@
           "ratePct": 0.0125
         }
       ],
-      "bidPrice": 0.65831,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.6575,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-asian-fixed-income-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:00:47Z"
     },
@@ -857,8 +857,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.83678,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.8334,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian Income and Growth Fund (Distribution)",
@@ -1020,8 +1020,8 @@
           "ratePct": 0.0206
         }
       ],
-      "bidPrice": 1.22142,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 1.21917,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-asian-income-and-growth-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:00:49Z"
     },
@@ -1125,8 +1125,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.37484,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.37293,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian Income Fund",
@@ -1324,8 +1324,8 @@
           "ratePct": 0.025
         }
       ],
-      "bidPrice": 1.34604,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 1.35155,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-asian-income-fund",
       "lastDividendScrape": "2026-07-11T17:00:51Z"
     },
@@ -1380,8 +1380,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 0.98447,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.98371,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Accumulation)",
@@ -1531,8 +1531,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.08661,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.09002,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Asian Multi-Asset Income Fund (Decumulation)",
@@ -1682,8 +1682,8 @@
           "ratePct": 0.0172
         }
       ],
-      "bidPrice": 0.76423,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.76665,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-asian-multi-asset-income-fund-decumulation",
       "lastDividendScrape": "2026-07-11T17:00:53Z"
     },
@@ -1835,8 +1835,8 @@
           "ratePct": 0.0125
         }
       ],
-      "bidPrice": 0.82074,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.82323,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-asian-multi-asset-income-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:00:55Z"
     },
@@ -1891,8 +1891,8 @@
         "si": 0.072
       },
       "dividends": [],
-      "bidPrice": 4.18429,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 4.19074,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Emerging Markets Fund",
@@ -1945,8 +1945,8 @@
         "si": 0.044
       },
       "dividends": [],
-      "bidPrice": 2.8655,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.91628,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink FlexGrowth Fund (SGD)",
@@ -1999,8 +1999,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 1.02474,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.0194,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Bond Fund",
@@ -2053,8 +2053,8 @@
         "si": 0.015
       },
       "dividends": [],
-      "bidPrice": 1.50341,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.50534,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Climate Change Equity Fund (Accumulation)",
@@ -2107,8 +2107,8 @@
         "si": -0.047
       },
       "dividends": [],
-      "bidPrice": 0.81047,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.81834,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Diversified Income Fund (Distribution)",
@@ -2166,8 +2166,8 @@
           "rateCents": 5.0
         }
       ],
-      "bidPrice": 0.96295,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.96042,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-global-diversified-income-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:00:57Z"
     },
@@ -2419,8 +2419,8 @@
           "ratePct": 0.0045
         }
       ],
-      "bidPrice": 0.90398,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.90858,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-global-dividend-wealth-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:00:59Z"
     },
@@ -2475,8 +2475,8 @@
         "si": 0.011
       },
       "dividends": [],
-      "bidPrice": 0.98359,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.97985,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Equity Fund",
@@ -2578,8 +2578,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 2.58678,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.58789,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Equity Fund (Distribution)",
@@ -2765,8 +2765,8 @@
           "ratePct": 0.006
         }
       ],
-      "bidPrice": 1.53949,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 1.54015,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-global-equity-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:01:00Z"
     },
@@ -2870,8 +2870,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.452,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.45656,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Equity Growth (SGD) (Accumulation)",
@@ -2924,8 +2924,8 @@
         "si": 0.154
       },
       "dividends": [],
-      "bidPrice": 1.32003,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.33929,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Fixed-Income Fund (Accumulation)",
@@ -2978,8 +2978,8 @@
         "si": -0.016
       },
       "dividends": [],
-      "bidPrice": 0.90555,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.90696,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Fixed-Income Fund (USD) (Accumulation)",
@@ -3032,8 +3032,8 @@
         "si": -0.016
       },
       "dividends": [],
-      "bidPrice": 1.16904,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.17149,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Growth Fund (Accumulation)",
@@ -3086,8 +3086,8 @@
         "si": 0.105
       },
       "dividends": [],
-      "bidPrice": 1.34301,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.36065,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Impact ESG Equity Fund (Accumulation)",
@@ -3140,8 +3140,8 @@
         "si": -0.019
       },
       "dividends": [],
-      "bidPrice": 0.9705,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.98577,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Income Fund (Accumulation)",
@@ -3194,8 +3194,8 @@
         "si": 0.067
       },
       "dividends": [],
-      "bidPrice": 1.19923,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.20957,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Innovation Equity Fund (Accumulation)",
@@ -3248,8 +3248,8 @@
         "si": -0.012
       },
       "dividends": [],
-      "bidPrice": 0.98879,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.0011,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Managed Fund",
@@ -3351,8 +3351,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 2.77156,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.77965,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Managed Fund (Distribution)",
@@ -3538,8 +3538,8 @@
           "ratePct": 0.0125
         }
       ],
-      "bidPrice": 1.18671,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 1.19017,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-global-managed-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:01:02Z"
     },
@@ -3691,8 +3691,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.17488,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.17507,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Multi-Asset Income Fund (Decumulation)",
@@ -3842,8 +3842,8 @@
           "ratePct": 0.0157
         }
       ],
-      "bidPrice": 0.83135,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.83149,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-global-multi-asset-income-fund-decumulation",
       "lastDividendScrape": "2026-07-11T17:01:04Z"
     },
@@ -3995,8 +3995,8 @@
           "ratePct": 0.0112
         }
       ],
-      "bidPrice": 0.92418,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.92433,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-global-multi-asset-income-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:01:06Z"
     },
@@ -4051,8 +4051,8 @@
         "si": -0.004
       },
       "dividends": [],
-      "bidPrice": 1.04815,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.03406,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Signature CIO Balance Fund (Accumulation)",
@@ -4105,8 +4105,8 @@
         "si": 0.066
       },
       "dividends": [],
-      "bidPrice": 1.16546,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.15579,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Signature CIO Growth Fund (Accumulation)",
@@ -4159,8 +4159,8 @@
         "si": 0.116
       },
       "dividends": [],
-      "bidPrice": 1.30358,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.29163,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Global Signature CIO Income Fund (Distribution)",
@@ -4342,8 +4342,8 @@
           "rateCents": 0.43
         }
       ],
-      "bidPrice": 0.96615,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.96071,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-global-signature-cio-income-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:01:08Z"
     },
@@ -4398,8 +4398,8 @@
         "si": 0.064
       },
       "dividends": [],
-      "bidPrice": 5.72599,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 5.85619,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Greater China Fund",
@@ -4452,8 +4452,8 @@
         "si": 0.058
       },
       "dividends": [],
-      "bidPrice": 2.5468,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.56619,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Greater China Fund (USD) (Accumulation)",
@@ -4506,8 +4506,8 @@
         "si": 0.058
       },
       "dividends": [],
-      "bidPrice": 1.54289,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.55542,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink India Equity Fund (soft closed)",
@@ -4561,7 +4561,7 @@
       },
       "dividends": [],
       "bidPrice": 1.15535,
-      "bidDate": "09-Jul-2026"
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink India Opportunity Equity Fund (Accumulation)",
@@ -4614,8 +4614,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 0.92508,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 0.93666,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Islamic Global Equity Index Fund (Accumulation)",
@@ -4668,8 +4668,8 @@
         "si": 0.155
       },
       "dividends": [],
-      "bidPrice": 1.61545,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.62715,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Pan European Fund",
@@ -4722,8 +4722,8 @@
         "si": 0.035
       },
       "dividends": [],
-      "bidPrice": 2.34986,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.3599,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Singapore ASEAN Managed Fund",
@@ -4776,8 +4776,8 @@
         "si": 0.026
       },
       "dividends": [],
-      "bidPrice": 1.44948,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.45851,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Singapore Asian Managed Fund",
@@ -4830,8 +4830,8 @@
         "si": 0.054
       },
       "dividends": [],
-      "bidPrice": 6.34133,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 6.41032,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Singapore Cash Fund",
@@ -4884,8 +4884,8 @@
         "si": null
       },
       "dividends": [],
-      "bidPrice": 1.61012,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.61017,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Singapore Dynamic Bond Fund (Accumulation)",
@@ -5067,8 +5067,8 @@
           "rateCents": null
         }
       ],
-      "bidPrice": 1.57778,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 1.57873,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink Singapore Dynamic Bond Fund (Distribution)",
@@ -5230,8 +5230,8 @@
           "rateCents": 1.0
         }
       ],
-      "bidPrice": 0.916,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.91655,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-singapore-dynamic-bond-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:01:10Z"
     },
@@ -5286,8 +5286,8 @@
         "si": 0.058
       },
       "dividends": [],
-      "bidPrice": 2.58719,
-      "bidDate": "09-Jul-2026"
+      "bidPrice": 2.6207,
+      "bidDate": "10-Jul-2026"
     },
     {
       "name": "PRULink StrategicInvest Income Fund (Distribution)",
@@ -5389,8 +5389,8 @@
           "rateCents": 0.51
         }
       ],
-      "bidPrice": 0.96923,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 0.97354,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-strategicinvest-income-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:01:11Z"
     },
@@ -5494,8 +5494,8 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 1.04579,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 1.05071,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-strategicinvest-income-fund-usd-distribution",
       "lastDividendScrape": "2026-07-11T17:01:13Z"
     },
@@ -5739,8 +5739,8 @@
           "rateCents": 0.51
         }
       ],
-      "bidPrice": 1.02529,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 1.0327,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-us-dividend-wealth-fund-distribution",
       "lastDividendScrape": "2026-07-11T17:01:15Z"
     },
@@ -5932,8 +5932,8 @@
           "rateCents": 0.55
         }
       ],
-      "bidPrice": 1.18014,
-      "bidDate": "09-Jul-2026",
+      "bidPrice": 1.18886,
+      "bidDate": "10-Jul-2026",
       "url": "https://www.prudential.com.sg/products/wealth-accumulation/ilp/prulink-funds/prulink-us-dividend-wealth-fund-usd-distribution",
       "lastDividendScrape": "2026-07-11T17:01:17Z"
     }
