@@ -3929,7 +3929,7 @@ function renderRBAIResult(ai, container) {
 //           Mastersportal, Cherwell/Oxford, Shorelight, x-rates.com 2024 averages. Jul 2025.
 var EDU_DATA = [
   // f=flag, k=country key, c=cost SGD, i=inflation CAGR, y=degree years, n=notes shown in ref table
-  {f:'🇸🇬', k:'Singapore',   c:90000,  i:0.035, y:4, n:'NUS/NTU/SMU local (SC/PR) with MOE grant + 4yr living; intl students ~50% more'},
+  {f:'🇸🇬', k:'Singapore',   c:155000, i:0.035, y:4, n:'International rate at NUS/NTU/SMU (unsubsidised). SC/PR with MOE Tuition Grant pay ~$90K — tick SC/PR checkbox per child.'},
   {f:'🇲🇾', k:'Malaysia',    c:50000,  i:0.040, y:4, n:'Taylor\'s / Sunway / Monash Malaysia + living; MYR-based'},
   {f:'🇦🇺', k:'Australia',   c:210000, i:0.050, y:4, n:'Group of Eight (Melb/UNSW/ANU/Monash); AUD fees rising ~5% p.a. in recent years'},
   {f:'🇬🇧', k:'UK',          c:215000, i:0.045, y:3, n:'Russell Group 3-yr (Manchester/Leeds/Edinburgh); London +20%; intl fees up 37% since 2022'},
@@ -3988,8 +3988,34 @@ function eduMakeChildHTML(labelNum) {
     + '</div>'
     + '<div class="al-field-row" style="margin-bottom:0">'
     + '<div class="al-field" style="flex:2"><label class="al-label">University Destination</label>'
-    + '<select class="al-input edu-dest" onchange="eduCalc()">' + EDU_OPTIONS_HTML + '</select>'
+    + '<select class="al-input edu-dest" onchange="eduOnDestChange(this)">' + EDU_OPTIONS_HTML + '</select>'
     + '</div></div>'
+    + '<div class="edu-sg-opts" style="display:none;margin-top:0.65rem">'
+    +   '<label style="display:flex;align-items:center;gap:0.5rem;font-size:0.76rem;color:rgba(255,255,255,0.78);cursor:pointer">'
+    +     '<input type="checkbox" class="edu-sg-citizen" style="accent-color:var(--accent);width:15px;height:15px" onchange="eduOnSgChange(this)">'
+    +     'Singapore Citizen / PR'
+    +     '<span style="font-size:0.65rem;color:rgba(255,255,255,0.35)">— qualifies for MOE Tuition Grant</span>'
+    +   '</label>'
+    +   '<div class="edu-sg-subsidy" style="display:none;margin-top:0.55rem;background:rgba(76,175,80,0.07);border:1px solid rgba(76,175,80,0.22);border-radius:7px;padding:0.6rem 0.8rem">'
+    +     '<div style="font-weight:600;color:#4caf50;font-size:0.76rem;margin-bottom:0.45rem">🎓 MOE Subsidy Breakdown</div>'
+    +     '<table style="font-size:0.73rem;width:100%;border-collapse:collapse">'
+    +       '<tr><td style="padding:0.18rem 0;color:rgba(255,255,255,0.6)">International rate (unsubsidised)</td><td style="text-align:right;color:rgba(255,255,255,0.6)">$155,000</td></tr>'
+    +       '<tr><td style="padding:0.18rem 0;color:rgba(255,255,255,0.6)">MOE Tuition Grant (SC / PR)</td><td style="text-align:right;color:#4caf50">− $65,000</td></tr>'
+    +       '<tr style="border-top:1px solid rgba(255,255,255,0.08)">'
+    +         '<td style="padding:0.28rem 0 0.1rem;font-weight:600;color:rgba(255,255,255,0.9)">Subsidised total (tuition + living)</td>'
+    +         '<td style="text-align:right;font-weight:700;color:#4caf50">$90,000</td>'
+    +       '</tr>'
+    +     '</table>'
+    +     '<div style="margin-top:0.55rem;font-size:0.67rem;line-height:1.75;color:rgba(255,255,255,0.45)">'
+    +       '<b style="color:rgba(255,255,255,0.6)">Additional savings if eligible:</b><br>'
+    +       '• <b>MOE Bursary</b> — PCI ≤$690/mth: up to −$2,600/yr off tuition · PCI ≤$1,500/mth: up to −$900/yr<br>'
+    +       '• <b>CPF Education Scheme</b> — parents can use CPF OA savings to pay tuition directly<br>'
+    +       '• <b>Tuition Fee Loan</b> — borrow up to 90% of tuition fees, repay after graduation<br>'
+    +       '• <b>Community scholarships</b> — Mendaki (Malay) · CDAC (Chinese) · SINDA (Indian) · Eurasian Association<br>'
+    +       '• <b>Merit scholarships</b> — PSC, EDB, MAS, DSTA; university bursaries at NUS / NTU / SMU'
+    +     '</div>'
+    +   '</div>'
+    + '</div>'
     + '</div>';
 }
 
@@ -4023,6 +4049,28 @@ function eduUpdateLabels() {
   if (note) note.textContent = blocks.length > 0 ? blocks.length + ' child' + (blocks.length > 1 ? 'ren' : '') + ' added' : '';
 }
 
+function eduOnDestChange(sel) {
+  var block = sel.closest('.edu-child-block');
+  var sgOpts = block.querySelector('.edu-sg-opts');
+  if (sgOpts) {
+    sgOpts.style.display = sel.value === 'Singapore' ? 'block' : 'none';
+    if (sel.value !== 'Singapore') {
+      var cb = block.querySelector('.edu-sg-citizen');
+      if (cb) cb.checked = false;
+      var sub = block.querySelector('.edu-sg-subsidy');
+      if (sub) sub.style.display = 'none';
+    }
+  }
+  eduCalc();
+}
+
+function eduOnSgChange(cb) {
+  var block = cb.closest('.edu-child-block');
+  var sub = block.querySelector('.edu-sg-subsidy');
+  if (sub) sub.style.display = cb.checked ? 'block' : 'none';
+  eduCalc();
+}
+
 function eduPMT(fv, annRate, months) {
   if (months <= 0) return 0;
   if (annRate < 0.001) return fv / months;
@@ -4044,11 +4092,14 @@ function eduCalc() {
     var uniAge = parseFloat(uniAgeEl ? uniAgeEl.value : '') || 18;
     var name = (nameEl && nameEl.value) ? nameEl.value : ('Child ' + (idx + 1));
     var d = EDU_COSTS[dest];
+    var sgCb = block.querySelector('.edu-sg-citizen');
+    var isSgLocal = dest === 'Singapore' && sgCb && sgCb.checked;
+    var baseCost = isSgLocal ? 90000 : d.cost;
     var yrs = Math.max(uniAge - (isNaN(age) ? 0 : age), 0.5);
-    var projCost = d.cost * Math.pow(1 + d.inf, yrs);
+    var projCost = baseCost * Math.pow(1 + d.inf, yrs);
     var moCash = projCost / (yrs * 12);
     var moInv = eduPMT(projCost, 0.05, Math.round(yrs * 12));
-    children.push({name:name, dest:dest, yrs:yrs, baseCost:d.cost, inf:d.inf, projCost:projCost, moCash:moCash, moInv:moInv});
+    children.push({name:name, dest:dest, yrs:yrs, baseCost:baseCost, inf:d.inf, projCost:projCost, moCash:moCash, moInv:moInv, isSgLocal:isSgLocal});
   });
   var res = document.getElementById('edu-results');
   if (!res) return;
@@ -4069,7 +4120,8 @@ function eduCalc() {
 
   var tbl = '<table class="edu-table"><thead><tr><th>Child</th><th>Destination</th><th>Yrs</th><th>Today\'s Cost</th><th>Projected Cost</th><th>Monthly Cash</th><th>Monthly @5%</th></tr></thead><tbody>';
   children.forEach(function(c) {
-    tbl += '<tr><td>' + c.name + '</td><td>' + c.dest + '</td><td>' + c.yrs.toFixed(1) + '</td><td>' + fmt(c.baseCost) + '</td><td>' + fmt(c.projCost) + '</td><td>' + fmt(c.moCash) + '/mo</td><td style="color:var(--accent)">' + fmt(c.moInv) + '/mo</td></tr>';
+    var destLabel = c.dest + (c.isSgLocal ? ' <span style="font-size:0.65rem;color:#4caf50;font-weight:600">(SC/PR)</span>' : '');
+    tbl += '<tr><td>' + c.name + '</td><td>' + destLabel + '</td><td>' + c.yrs.toFixed(1) + '</td><td>' + fmt(c.baseCost) + '</td><td>' + fmt(c.projCost) + '</td><td>' + fmt(c.moCash) + '/mo</td><td style="color:var(--accent)">' + fmt(c.moInv) + '/mo</td></tr>';
   });
   if (children.length > 1) {
     tbl += '<tr style="font-weight:600;border-top:1px solid rgba(184,151,90,0.25)"><td colspan="4">Total</td><td>' + fmt(totalProj) + '</td><td>' + fmt(totalCash) + '/mo</td><td style="color:var(--accent)">' + fmt(totalInv) + '/mo</td></tr>';
