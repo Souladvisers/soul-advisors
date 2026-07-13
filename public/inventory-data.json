@@ -1,0 +1,11 @@
+{
+  "agents": [
+    { "subdomain": "arief",              "name": "Abdullah Arief Ali", "accent": "#314b54", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [], "private": true },
+    { "subdomain": "nora",              "name": "Noraziemah",         "accent": "#5a7fb8", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
+    { "subdomain": "dzulqarnain",       "name": "Dzulqarnain",        "accent": "#5ab87a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
+    { "subdomain": "suhaimiahmad",      "name": "Suhaimi Ahmad",      "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
+    { "subdomain": "muhammadirsyad",    "name": "Muhammad Irsyad",    "accent": "#4701e9", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
+    { "subdomain": "iqbalnikmatullah",  "name": "Iqbal Nikmatullah",  "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
+    { "subdomain": "yani",              "name": "ilyani ali",         "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] }
+  ]
+}

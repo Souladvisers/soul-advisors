@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Target Planner — SOUL Advisors</title>
+<meta name="description" content="Target planner — turns each consultant's annual goal and YTD production into a weekly activity plan, SOUL Advisors.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent:       #B8975A;
+  --accent-light: #E8D5A3;
+  --accent-dark:  #8A6E3A;
+  --cream:        #FAF8F3;
+  --dark:         #1C1A17;
+  --mid:          #4A4540;
+  --muted:        #8A8278;
+  --border:       rgba(184,151,90,0.2);
+  --radius:       4px;
+
+  --green-bg: #DCFCE7; --green-tx: #166534;
+  --amber-bg: #FEF3C7; --amber-tx: #92400E;
+  --red-bg:   #FEE2E2; --red-tx:   #991B1B;
+  --blue-bg:  #E3F2FB; --blue-tx:  #1E6091;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); line-height: 1.6; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,248,243,0.96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 64px;
+}
+.nav-brand { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--dark); text-decoration: none; }
+.nav-brand span { color: var(--accent); }
+.nav-right { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: var(--radius); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.2s; border: 1px solid var(--accent); background: none; font-family: inherit; }
+.btn-outline { background: transparent; color: var(--accent-dark); }
+.btn-outline:hover { background: var(--accent); color: white; }
+.btn-solid { background: var(--accent); color: white; }
+.btn-solid:hover { background: var(--accent-dark); }
+.btn-ghost { background: transparent; color: var(--muted); border-color: rgba(0,0,0,0.15); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.page-hero {
+  padding: 100px 2rem 48px;
+  background: linear-gradient(135deg, var(--dark) 0%, #2C2318 100%);
+  color: white; position: relative; overflow: hidden;
+}
+.page-hero::after {
+  content: ''; position: absolute; right: -80px; top: -80px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,151,90,0.15) 0%, transparent 70%);
+}
+.hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.eyebrow {
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--accent); }
+.page-hero h1 { font-family: 'Lora', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; margin-bottom: 0.5rem; }
+.page-hero p { color: rgba(255,255,255,0.6); font-size: 0.92rem; max-width: 600px; margin-bottom: 1.5rem; }
+.hero-sub { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+.hero-sub b { color: var(--accent-light); }
+
+.page-body { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+.section-title { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600; color: var(--dark); }
+
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.1rem; }
+.plan-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem; }
+.plan-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem; gap: 0.5rem; }
+.plan-agent { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.95rem; }
+.plan-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.pace-pill { font-size: 0.65rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; white-space: nowrap; }
+.pace-ahead  { background: var(--green-bg); color: var(--green-tx); }
+.pace-onpace { background: var(--blue-bg);  color: var(--blue-tx); }
+.pace-behind { background: var(--red-bg);   color: var(--red-tx); }
+.pace-done   { background: var(--accent-light); color: var(--accent-dark); }
+
+.progress-track { background: var(--cream); border-radius: 8px; height: 10px; overflow: hidden; margin-bottom: 0.4rem; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 8px; transition: width 0.3s; }
+.progress-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-bottom: 1rem; }
+.progress-label b { color: var(--dark); }
+
+.plan-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1rem; margin-bottom: 1rem; font-size: 0.78rem; }
+.plan-stat-label { color: var(--muted); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.plan-stat-val { font-weight: 600; color: var(--dark); font-variant-numeric: tabular-nums; }
+
+.plan-box { background: var(--cream); border-radius: var(--radius); padding: 0.8rem 1rem; font-size: 0.8rem; }
+.plan-box-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-dark); margin-bottom: 0.4rem; }
+.plan-box-line { display: flex; justify-content: space-between; padding: 2px 0; }
+.plan-box-line b { color: var(--dark); }
+.plan-empty { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 1.5rem 0; }
+.empty-state { text-align: center; padding: 3rem 2rem; color: var(--muted); font-size: 0.88rem; }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(28,26,23,0.55); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: 6px; width: 100%; max-width: 420px; padding: 1.75rem; max-height: 90vh; overflow-y: auto; }
+.modal h2 { font-family: 'Lora', serif; font-size: 1.1rem; margin-bottom: 0.3rem; }
+.modal p.sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem; }
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.35rem; }
+.field input, .field select { width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 0.88rem; background: var(--cream); color: var(--dark); outline: none; }
+.field input:focus, .field select:focus { border-color: var(--accent); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 1.5rem; }
+.form-msg { font-size: 0.8rem; padding: 0.6rem 0.8rem; border-radius: var(--radius); margin-bottom: 1rem; display: none; }
+.form-msg.error { display: block; background: var(--red-bg); color: var(--red-tx); }
+.form-msg.success { display: block; background: var(--green-bg); color: var(--green-tx); }
+
+@media (max-width: 768px) {
+  nav { padding: 0 1rem; height: auto; flex-wrap: wrap; padding-top: 0.5rem; padding-bottom: 0.5rem; }
+  .page-hero { padding: 130px 1rem 40px; }
+  .page-body { padding: 1.5rem 1rem 4rem; }
+  .field-row { grid-template-columns: 1fr; }
+  .plan-stats { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/"><span>SOUL</span> Advisors</a>
+  <div class="nav-right">
+    <button class="btn btn-outline" id="coachModeBtn">Coach Mode</button>
+    <button class="btn btn-solid" id="openSetBtn">+ Set My Target</button>
+    <a class="btn btn-ghost" href="/board">Board</a>
+    <a class="btn btn-ghost" href="/calendar">Calendar</a>
+    <a class="btn btn-ghost" href="/pipeline">Pipeline</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="eyebrow">SOUL Advisors · Target Planner</div>
+    <h1>Hit Your Target</h1>
+    <p>Put in your annual target and where you stand year-to-date — the planner works backwards to what you need to do every week to get there.</p>
+    <div class="hero-sub" id="yearProgress">–</div>
+  </div>
+</div>
+
+<div class="page-body">
+  <div class="section-head">
+    <div class="section-title">Consultant Plans</div>
+    <div class="section-count" id="sectionCount"></div>
+  </div>
+  <div class="plan-grid" id="planGrid">
+    <div class="empty-state">Loading…</div>
+  </div>
+</div>
+
+<!-- Set target modal -->
+<div class="modal-overlay" id="setModal">
+  <div class="modal">
+    <h2>Set My Target</h2>
+    <p class="sub">Sign in and enter your annual target plus year-to-date figures.</p>
+    <div class="form-msg" id="formMsg"></div>
+    <form id="setForm">
+      <div class="field">
+        <label for="fSubdomain">Agent</label>
+        <select id="fSubdomain" required>
+          <option value="" disabled selected>Select your name…</option>
+          <option value="nora">Noraziemah</option>
+          <option value="dzulqarnain">Dzulqarnain</option>
+          <option value="suhaimiahmad">Suhaimi Ahmad</option>
+          <option value="muhammadirsyad">Muhammad Irsyad</option>
+          <option value="iqbalnikmatullah">Iqbal Nikmatullah</option>
+          <option value="yani">ilyani ali</option>
+          <option value="arief">Abdullah Arief Ali</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fPassword">Password</label>
+        <input type="password" id="fPassword" required>
+      </div>
+      <div class="field">
+        <label for="fTarget">Annual Target (SGD Premium)</label>
+        <input type="number" id="fTarget" min="0" step="100" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="fYtdProduction">YTD Production (SGD)</label>
+          <input type="number" id="fYtdProduction" min="0" step="100" required>
+        </div>
+        <div class="field">
+          <label for="fYtdCases">YTD Cases Closed</label>
+          <input type="number" id="fYtdCases" min="0" step="1" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="fYtdClients">YTD Clients</label>
+        <input type="number" id="fYtdClients" min="0" step="1" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelSetBtn">Cancel</button>
+        <button type="submit" class="btn btn-solid" id="submitSetBtn">Save Target</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Coach Mode login modal -->
+<div class="modal-overlay" id="coachModal">
+  <div class="modal">
+    <h2>Coach Mode</h2>
+    <p class="sub">Private to you — reveals your own target plan on this page.</p>
+    <div class="form-msg" id="coachFormMsg"></div>
+    <form id="coachLoginForm">
+      <div class="field">
+        <label for="cPassword">Your Admin Password</label>
+        <input type="password" id="cPassword" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelCoachBtn">Cancel</button>
+        <button type="submit" class="btn btn-solid" id="submitCoachBtn">Unlock</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const planGrid    = document.getElementById('planGrid');
+const setModal    = document.getElementById('setModal');
+const formMsg     = document.getElementById('formMsg');
+const coachModal  = document.getElementById('coachModal');
+const coachFormMsg = document.getElementById('coachFormMsg');
+
+let coachMode = false;
+let adminSubdomain = null;
+let adminPasswordHash = null;
+
+function fmtMoney(n) {
+  return 'S$' + Math.round(n || 0).toLocaleString('en-SG');
+}
+
+async function sha256Hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function yearMeta() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const isLeap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  const daysInYear = isLeap ? 366 : 365;
+  const startOfYear = new Date(year, 0, 1);
+  const dayOfYear = Math.floor((now - startOfYear) / 86400000) + 1;
+  const daysRemaining = Math.max(daysInYear - dayOfYear, 1);
+  return { year, daysInYear, dayOfYear, daysRemaining, weeksRemaining: daysRemaining / 7 };
+}
+
+function computePlan(t, ym) {
+  const remaining = Math.max(t.annualTarget - t.ytdProduction, 0);
+  const expectedYtd = t.annualTarget * (ym.dayOfYear / ym.daysInYear);
+  const progressPct = t.annualTarget > 0 ? Math.min((t.ytdProduction / t.annualTarget) * 100, 100) : 0;
+
+  let pace = 'onpace', paceLabel = 'On Pace';
+  if (remaining <= 0) { pace = 'done'; paceLabel = 'Target Reached'; }
+  else if (t.ytdProduction >= expectedYtd * 1.05) { pace = 'ahead'; paceLabel = 'Ahead of Pace'; }
+  else if (t.ytdProduction < expectedYtd * 0.9) { pace = 'behind'; paceLabel = 'Behind Pace'; }
+
+  const premiumPerWeek = remaining / ym.weeksRemaining;
+  const avgCaseSize = t.ytdCases > 0 ? t.ytdProduction / t.ytdCases : null;
+  const casesNeeded = avgCaseSize ? remaining / avgCaseSize : null;
+  const casesPerWeek = casesNeeded !== null ? casesNeeded / ym.weeksRemaining : null;
+
+  return { remaining, progressPct, pace, paceLabel, premiumPerWeek, casesPerWeek, avgCaseSize };
+}
+
+function conversionFor(subdomain, appointments) {
+  const year = new Date().getFullYear();
+  const mine = appointments.filter(a => a.subdomain === subdomain && a.date.startsWith(String(year)));
+  const openings = mine.filter(a => a.type === 'Opening').length;
+  const closings = mine.filter(a => a.type === 'Closing').length;
+  if (openings === 0 || closings === 0) return null;
+  return closings / openings;
+}
+
+async function loadPlans() {
+  try {
+    const params = new URLSearchParams();
+    if (coachMode) { params.set('adminSubdomain', adminSubdomain); params.set('adminPasswordHash', adminPasswordHash); }
+    const qs = params.toString() ? '?' + params : '';
+    const [targetsRes, apptsRes] = await Promise.all([
+      fetch('/api/targets' + qs),
+      fetch('/api/appointments' + qs),
+    ]);
+    const targetsData = await targetsRes.json();
+    const apptsData = await apptsRes.json();
+    renderPlans(targetsData.targets || [], apptsData.appointments || []);
+  } catch (err) {
+    planGrid.innerHTML = '<div class="empty-state">Could not load target data.</div>';
+  }
+}
+
+function renderPlans(targets, appointments) {
+  const ym = yearMeta();
+  document.getElementById('yearProgress').innerHTML =
+    `Day <b>${ym.dayOfYear}</b> of ${ym.daysInYear} this year · <b>${ym.daysRemaining}</b> days left to hit your target`;
+  document.getElementById('sectionCount').textContent = targets.length + ' consultant' + (targets.length === 1 ? '' : 's');
+
+  if (!targets.length) {
+    planGrid.innerHTML = '<div class="empty-state">No consultants yet.</div>';
+    return;
+  }
+
+  planGrid.innerHTML = targets.map(t => {
+    if (!t.annualTarget || t.annualTarget <= 0) {
+      return `
+        <div class="plan-card">
+          <div class="plan-card-head">
+            <div class="plan-agent"><span class="plan-dot" style="background:${t.accent || '#B8975A'}"></span>${t.name}</div>
+          </div>
+          <div class="plan-empty">No target set yet.</div>
+        </div>`;
+    }
+
+    const plan = computePlan(t, ym);
+    const conv = conversionFor(t.subdomain, appointments);
+    const openingsPerWeek = (conv && plan.casesPerWeek !== null) ? plan.casesPerWeek / conv : null;
+
+    return `
+      <div class="plan-card">
+        <div class="plan-card-head">
+          <div class="plan-agent"><span class="plan-dot" style="background:${t.accent || '#B8975A'}"></span>${t.name}</div>
+          <span class="pace-pill pace-${plan.pace}">${plan.paceLabel}</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${plan.progressPct}%"></div></div>
+        <div class="progress-label"><span>${fmtMoney(t.ytdProduction)} YTD</span><span><b>${plan.progressPct.toFixed(0)}%</b> of ${fmtMoney(t.annualTarget)}</span></div>
+
+        <div class="plan-stats">
+          <div><div class="plan-stat-label">Remaining</div><div class="plan-stat-val">${fmtMoney(plan.remaining)}</div></div>
+          <div><div class="plan-stat-label">YTD Cases / Clients</div><div class="plan-stat-val">${t.ytdCases} / ${t.ytdClients}</div></div>
+        </div>
+
+        ${plan.remaining <= 0 ? `
+          <div class="plan-box"><div class="plan-box-title">Target Reached</div><div class="plan-box-line">Keep the momentum going for next tier.</div></div>
+        ` : `
+          <div class="plan-box">
+            <div class="plan-box-title">Weekly Plan to Hit Target</div>
+            <div class="plan-box-line"><span>Premium needed</span><b>${fmtMoney(plan.premiumPerWeek)}/wk</b></div>
+            ${plan.casesPerWeek !== null ? `<div class="plan-box-line"><span>Cases to close</span><b>${plan.casesPerWeek.toFixed(1)}/wk</b></div>` : ''}
+            ${openingsPerWeek !== null ? `<div class="plan-box-line"><span>Openings needed (your conv. rate)</span><b>${openingsPerWeek.toFixed(1)}/wk</b></div>` : `<div class="plan-box-line"><span>Openings needed</span><b>Log Opening/Closing appts for this</b></div>`}
+          </div>
+        `}
+      </div>`;
+  }).join('');
+}
+
+document.getElementById('openSetBtn').addEventListener('click', () => {
+  formMsg.className = 'form-msg';
+  formMsg.textContent = '';
+  setModal.classList.add('open');
+});
+document.getElementById('cancelSetBtn').addEventListener('click', () => setModal.classList.remove('open'));
+setModal.addEventListener('click', (e) => { if (e.target === setModal) setModal.classList.remove('open'); });
+
+document.getElementById('setForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById('submitSetBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Saving…';
+  formMsg.className = 'form-msg';
+
+  try {
+    const subdomain    = document.getElementById('fSubdomain').value;
+    const password     = document.getElementById('fPassword').value;
+    const passwordHash = await sha256Hex(password);
+    const annualTarget   = document.getElementById('fTarget').value;
+    const ytdProduction  = document.getElementById('fYtdProduction').value;
+    const ytdCases       = document.getElementById('fYtdCases').value;
+    const ytdClients     = document.getElementById('fYtdClients').value;
+
+    const res = await fetch('/api/targets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subdomain, passwordHash, annualTarget, ytdProduction, ytdCases, ytdClients }),
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || 'Failed to save target');
+
+    formMsg.className = 'form-msg success';
+    formMsg.textContent = 'Saved! Refreshing plan…';
+    await loadPlans();
+    setTimeout(() => { setModal.classList.remove('open'); document.getElementById('setForm').reset(); }, 900);
+  } catch (err) {
+    formMsg.className = 'form-msg error';
+    formMsg.textContent = err.message;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Save Target';
+  }
+});
+
+// ── Coach Mode login ──
+document.getElementById('coachModeBtn').addEventListener('click', () => {
+  if (coachMode) {
+    coachMode = false;
+    adminSubdomain = null;
+    adminPasswordHash = null;
+    document.getElementById('coachModeBtn').textContent = 'Coach Mode';
+    loadPlans();
+    return;
+  }
+  coachFormMsg.className = 'form-msg';
+  coachFormMsg.textContent = '';
+  coachModal.classList.add('open');
+});
+document.getElementById('cancelCoachBtn').addEventListener('click', () => coachModal.classList.remove('open'));
+coachModal.addEventListener('click', (e) => { if (e.target === coachModal) coachModal.classList.remove('open'); });
+
+document.getElementById('coachLoginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById('submitCoachBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Checking…';
+  coachFormMsg.className = 'form-msg';
+
+  try {
+    const password = document.getElementById('cPassword').value;
+    const passwordHash = await sha256Hex(password);
+    const params = new URLSearchParams({ adminSubdomain: 'arief', adminPasswordHash: passwordHash });
+    const res = await fetch('/api/targets?' + params);
+    const data = await res.json();
+    if (!data.isAdmin) throw new Error('Incorrect password');
+
+    adminSubdomain = 'arief';
+    adminPasswordHash = passwordHash;
+    coachMode = true;
+    document.getElementById('coachModeBtn').textContent = 'Exit Coach Mode';
+    coachModal.classList.remove('open');
+    document.getElementById('coachLoginForm').reset();
+    await loadPlans();
+  } catch (err) {
+    coachFormMsg.className = 'form-msg error';
+    coachFormMsg.textContent = err.message;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Unlock';
+  }
+});
+
+loadPlans();
+</script>
+</body>
+</html>

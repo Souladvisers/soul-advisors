@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Health — SOUL Advisors</title>
+<meta name="description" content="Coach-only pipeline health view — stage conversion trend and stalled cases, derived from existing calendar data, SOUL Advisors.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent:       #B8975A;
+  --accent-light: #E8D5A3;
+  --accent-dark:  #8A6E3A;
+  --cream:        #FAF8F3;
+  --dark:         #1C1A17;
+  --mid:          #4A4540;
+  --muted:        #8A8278;
+  --border:       rgba(184,151,90,0.2);
+  --radius:       4px;
+
+  --green-bg: #DCFCE7; --green-tx: #166534;
+  --amber-bg: #FEF3C7; --amber-tx: #92400E;
+  --red-bg:   #FEE2E2; --red-tx:   #991B1B;
+  --blue-bg:  #E3F2FB; --blue-tx:  #1E6091;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); line-height: 1.6; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,248,243,0.96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 64px;
+}
+.nav-brand { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--dark); text-decoration: none; }
+.nav-brand span { color: var(--accent); }
+.nav-right { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: var(--radius); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.2s; border: 1px solid var(--accent); background: none; font-family: inherit; }
+.btn-outline { background: transparent; color: var(--accent-dark); }
+.btn-outline:hover { background: var(--accent); color: white; }
+.btn-solid { background: var(--accent); color: white; }
+.btn-solid:hover { background: var(--accent-dark); }
+.btn-ghost { background: transparent; color: var(--muted); border-color: rgba(0,0,0,0.15); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.page-hero {
+  padding: 100px 2rem 48px;
+  background: linear-gradient(135deg, var(--dark) 0%, #2C2318 100%);
+  color: white; position: relative; overflow: hidden;
+}
+.page-hero::after {
+  content: ''; position: absolute; right: -80px; top: -80px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,151,90,0.15) 0%, transparent 70%);
+}
+.hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.eyebrow {
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--accent); }
+.page-hero h1 { font-family: 'Lora', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; margin-bottom: 0.5rem; }
+.page-hero p { color: rgba(255,255,255,0.6); font-size: 0.92rem; max-width: 620px; }
+
+.page-body { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+.lock-panel { text-align: center; padding: 4rem 2rem; background: white; border: 1px solid var(--border); border-radius: var(--radius); }
+.lock-panel .icon { font-size: 2rem; margin-bottom: 1rem; }
+.lock-panel h2 { font-family: 'Lora', serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+.lock-panel p { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.5rem; }
+
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; margin-top: 2.5rem; }
+.section-head:first-child { margin-top: 0; }
+.section-title { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600; color: var(--dark); }
+.section-sub { font-size: 0.8rem; color: var(--muted); margin-top: -0.9rem; margin-bottom: 1.25rem; }
+
+.conv-table-wrap, .stalled-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: white; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th { padding: 0.65rem 0.9rem; text-align: left; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); background: var(--cream); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 0.75rem 0.9rem; border-bottom: 1px solid rgba(184,151,90,0.08); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(184,151,90,0.04); }
+.agent-cell { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.agent-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.num-cell { text-align: right; font-variant-numeric: tabular-nums; }
+.rate-badge { font-size: 0.68rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; white-space: nowrap; }
+.rate-up   { background: var(--green-bg); color: var(--green-tx); }
+.rate-flat { background: var(--blue-bg);  color: var(--blue-tx); }
+.rate-down { background: var(--red-bg);   color: var(--red-tx); }
+.rate-na   { background: var(--cream);    color: var(--muted); }
+.days-badge { font-size: 0.68rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; white-space: nowrap; }
+.days-warn  { background: var(--amber-bg); color: var(--amber-tx); }
+.days-alert { background: var(--red-bg);   color: var(--red-tx); }
+.empty-state { text-align: center; padding: 2.5rem 2rem; color: var(--muted); font-size: 0.88rem; }
+
+@media (max-width: 768px) {
+  nav { padding: 0 1rem; }
+  .page-hero { padding: 90px 1rem 40px; }
+  .page-body { padding: 1.5rem 1rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/"><span>SOUL</span> Advisors</a>
+  <div class="nav-right">
+    <button class="btn btn-outline" id="coachModeBtn">Coach Mode</button>
+    <a class="btn btn-ghost" href="/plan">Plan</a>
+    <a class="btn btn-ghost" href="/board">Board</a>
+    <a class="btn btn-ghost" href="/calendar">Calendar</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="eyebrow">SOUL Advisors · Coach Only</div>
+    <h1>Pipeline Health</h1>
+    <p>Where each consultant's pipeline is thinning, before it shows up in the monthly numbers — derived automatically from appointments already logged on the calendar. No extra data entry required from the team.</p>
+  </div>
+</div>
+
+<div class="page-body">
+  <div id="lockedView" class="lock-panel">
+    <div class="icon">🔒</div>
+    <h2>Coach Mode required</h2>
+    <p>This view uses client-level appointment data to spot stalled cases and conversion drops — private to you.</p>
+    <button class="btn btn-solid" id="unlockBtn">Unlock Coach Mode</button>
+  </div>
+
+  <div id="unlockedView" style="display:none;">
+    <div class="section-head">
+      <div class="section-title">Stage Conversion — This Month vs Last</div>
+    </div>
+    <div class="section-sub">Opening → Closing rate, per consultant. A dropping rate flags a closing-skill issue; a dropping Openings count flags a prospecting issue.</div>
+    <div class="conv-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th style="text-align:right;">Openings (last → this month)</th>
+            <th style="text-align:right;">Closings (last → this month)</th>
+            <th style="text-align:right;">Conversion Rate</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody id="convBody"></tbody>
+      </table>
+    </div>
+
+    <div class="section-head">
+      <div class="section-title">Stalled Cases</div>
+    </div>
+    <div class="section-sub">Clients with an Opening logged but no Closing since — sorted by longest-open first. Matched by client name, so consistent naming helps accuracy.</div>
+    <div class="stalled-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th>Client</th>
+            <th>Opened</th>
+            <th style="text-align:right;">Days Open</th>
+          </tr>
+        </thead>
+        <tbody id="stalledBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Coach Mode login modal -->
+<div class="modal-overlay" id="coachModal" style="display:none; position:fixed; inset:0; background:rgba(28,26,23,0.55); z-index:200; align-items:center; justify-content:center; padding:1rem;">
+  <div style="background:white; border-radius:6px; width:100%; max-width:420px; padding:1.75rem;">
+    <h2 style="font-family:'Lora',serif; font-size:1.1rem; margin-bottom:0.3rem;">Coach Mode</h2>
+    <p style="font-size:0.8rem; color:var(--muted); margin-bottom:1.25rem;">Sign in with your admin password to view pipeline health.</p>
+    <div class="form-msg" id="coachFormMsg" style="font-size:0.8rem; padding:0.6rem 0.8rem; border-radius:var(--radius); margin-bottom:1rem; display:none;"></div>
+    <form id="coachLoginForm">
+      <div style="margin-bottom:1rem;">
+        <label style="display:block; font-size:0.72rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--mid); margin-bottom:0.35rem;">Your Admin Password</label>
+        <input type="password" id="cPassword" required style="width:100%; padding:0.55rem 0.7rem; border:1px solid var(--border); border-radius:var(--radius); font-family:inherit; font-size:0.88rem; background:var(--cream); color:var(--dark); outline:none;">
+      </div>
+      <div style="display:flex; gap:0.6rem; justify-content:flex-end; margin-top:1.5rem;">
+        <button type="button" class="btn btn-ghost" id="cancelCoachBtn">Cancel</button>
+        <button type="submit" class="btn btn-solid" id="submitCoachBtn">Unlock</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const lockedView   = document.getElementById('lockedView');
+const unlockedView = document.getElementById('unlockedView');
+const coachModal   = document.getElementById('coachModal');
+const coachFormMsg = document.getElementById('coachFormMsg');
+
+let adminSubdomain = null;
+let adminPasswordHash = null;
+
+async function sha256Hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function monthKey(dateStr) { return dateStr.slice(0, 7); }
+
+function stageStats(appointments, subdomain, mKey) {
+  const mine = appointments.filter(a => a.subdomain === subdomain && monthKey(a.date) === mKey);
+  const openings = mine.filter(a => a.type === 'Opening').length;
+  const closings = mine.filter(a => a.type === 'Closing').length;
+  const rate = openings > 0 ? closings / openings : null;
+  return { openings, closings, rate };
+}
+
+function findStalled(appointments, subdomain) {
+  const mine = appointments.filter(a => a.subdomain === subdomain && a.clientName && a.clientName.trim());
+  const byClient = {};
+  mine.forEach(a => {
+    const key = a.clientName.trim().toLowerCase();
+    (byClient[key] = byClient[key] || []).push(a);
+  });
+
+  const stalled = [];
+  Object.values(byClient).forEach(appts => {
+    appts.sort((a, b) => a.date.localeCompare(b.date));
+    const openings = appts.filter(a => a.type === 'Opening');
+    if (!openings.length) return;
+    const lastOpening = openings[openings.length - 1];
+    const closedAfter = appts.some(a => a.type === 'Closing' && a.date >= lastOpening.date);
+    if (closedAfter) return;
+    const daysOpen = Math.floor((Date.now() - new Date(lastOpening.date + 'T00:00:00').getTime()) / 86400000);
+    if (daysOpen >= 14) {
+      stalled.push({ clientName: lastOpening.clientName, date: lastOpening.date, daysOpen });
+    }
+  });
+  return stalled.sort((a, b) => b.daysOpen - a.daysOpen);
+}
+
+function fmtDateShort(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function rateClass(lastRate, thisRate) {
+  if (thisRate === null) return 'rate-na';
+  if (lastRate === null) return 'rate-flat';
+  const delta = thisRate - lastRate;
+  if (delta > 0.05) return 'rate-up';
+  if (delta < -0.05) return 'rate-down';
+  return 'rate-flat';
+}
+
+function trendLabel(lastRate, thisRate) {
+  if (thisRate === null) return 'No data this month';
+  if (lastRate === null) return 'No prior month to compare';
+  const delta = thisRate - lastRate;
+  if (delta > 0.05) return '▲ Improving';
+  if (delta < -0.05) return '▼ Dropping — worth a conversation';
+  return '– Steady';
+}
+
+async function loadPipeline() {
+  const params = new URLSearchParams({ adminSubdomain, adminPasswordHash });
+  const [invRes, apptRes] = await Promise.all([
+    fetch('/api/inventory?' + params),
+    fetch('/api/appointments?' + params),
+  ]);
+  const inv = await invRes.json();
+  const appt = await apptRes.json();
+  render(inv.agents || [], appt.appointments || []);
+}
+
+function render(agents, appointments) {
+  const now = new Date();
+  const thisKey = monthKey(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`);
+  const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastKey = monthKey(`${lastMonthDate.getFullYear()}-${String(lastMonthDate.getMonth() + 1).padStart(2, '0')}-01`);
+
+  const convBody = document.getElementById('convBody');
+  convBody.innerHTML = agents.map(a => {
+    const last = stageStats(appointments, a.subdomain, lastKey);
+    const thisM = stageStats(appointments, a.subdomain, thisKey);
+    const rateTxt = thisM.rate !== null ? (thisM.rate * 100).toFixed(0) + '%' : '—';
+    return `
+      <tr>
+        <td><div class="agent-cell"><span class="agent-dot" style="background:${a.accent || '#B8975A'}"></span>${a.name}</div></td>
+        <td class="num-cell">${last.openings} → ${thisM.openings}</td>
+        <td class="num-cell">${last.closings} → ${thisM.closings}</td>
+        <td class="num-cell">${rateTxt}</td>
+        <td><span class="rate-badge ${rateClass(last.rate, thisM.rate)}">${trendLabel(last.rate, thisM.rate)}</span></td>
+      </tr>`;
+  }).join('') || '<tr><td colspan="5" class="empty-state">No agents yet.</td></tr>';
+
+  const allStalled = [];
+  agents.forEach(a => {
+    findStalled(appointments, a.subdomain).forEach(s => allStalled.push({ ...s, agentName: a.name, accent: a.accent }));
+  });
+  allStalled.sort((a, b) => b.daysOpen - a.daysOpen);
+
+  const stalledBody = document.getElementById('stalledBody');
+  if (!allStalled.length) {
+    stalledBody.innerHTML = '<tr><td colspan="4" class="empty-state">No stalled cases detected — pipeline is moving.</td></tr>';
+  } else {
+    stalledBody.innerHTML = allStalled.map(s => `
+      <tr>
+        <td><div class="agent-cell"><span class="agent-dot" style="background:${s.accent || '#B8975A'}"></span>${s.agentName}</div></td>
+        <td>${s.clientName}</td>
+        <td>${fmtDateShort(s.date)}</td>
+        <td class="num-cell"><span class="days-badge ${s.daysOpen >= 30 ? 'days-alert' : 'days-warn'}">${s.daysOpen}d</span></td>
+      </tr>`).join('');
+  }
+}
+
+document.getElementById('unlockBtn').addEventListener('click', () => {
+  coachFormMsg.className = ''; coachFormMsg.style.display = 'none';
+  coachModal.style.display = 'flex';
+});
+document.getElementById('cancelCoachBtn').addEventListener('click', () => coachModal.style.display = 'none');
+coachModal.addEventListener('click', (e) => { if (e.target === coachModal) coachModal.style.display = 'none'; });
+
+document.getElementById('coachModeBtn').addEventListener('click', () => {
+  if (adminSubdomain) {
+    adminSubdomain = null; adminPasswordHash = null;
+    document.getElementById('coachModeBtn').textContent = 'Coach Mode';
+    lockedView.style.display = 'block';
+    unlockedView.style.display = 'none';
+    return;
+  }
+  coachFormMsg.style.display = 'none';
+  coachModal.style.display = 'flex';
+});
+
+document.getElementById('coachLoginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById('submitCoachBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Checking…';
+  coachFormMsg.style.display = 'none';
+
+  try {
+    const password = document.getElementById('cPassword').value;
+    const passwordHash = await sha256Hex(password);
+    const params = new URLSearchParams({ adminSubdomain: 'arief', adminPasswordHash: passwordHash });
+    const res = await fetch('/api/inventory?' + params);
+    const data = await res.json();
+    if (!data.isAdmin) throw new Error('Incorrect password');
+
+    adminSubdomain = 'arief';
+    adminPasswordHash = passwordHash;
+    document.getElementById('coachModeBtn').textContent = 'Exit Coach Mode';
+    coachModal.style.display = 'none';
+    document.getElementById('coachLoginForm').reset();
+    lockedView.style.display = 'none';
+    unlockedView.style.display = 'block';
+    await loadPipeline();
+  } catch (err) {
+    coachFormMsg.textContent = err.message;
+    coachFormMsg.style.cssText = 'display:block; font-size:0.8rem; padding:0.6rem 0.8rem; border-radius:4px; margin-bottom:1rem; background:#FEE2E2; color:#991B1B;';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Unlock';
+  }
+});
+</script>
+</body>
+</html>
