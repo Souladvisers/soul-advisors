@@ -884,6 +884,22 @@ body.csb-session-on .csb-hide-field { display: none !important; }
 .ret-divert-impact { width:100%; font-size:0.71rem; color:#fca5a5; padding-top:0.3rem; border-top:1px solid var(--border); margin-top:0.15rem; }
 .ret-cpf-note { font-size:0.76rem; color:rgba(255,255,255,0.45); background:rgba(127,196,232,0.07); border:1px solid rgba(127,196,232,0.15); border-radius:var(--radius); padding:0.55rem 0.85rem; margin-top:0.6rem; line-height:1.55; }
 .ret-cpf-note b { color:rgba(255,255,255,0.78); }
+/* Education & Tax panels */
+.edu-table { width:100%; border-collapse:collapse; font-size:0.78rem; margin-top:0.75rem; }
+.edu-table th { background:rgba(184,151,90,0.12); color:var(--accent); font-weight:600; padding:0.45rem 0.6rem; text-align:left; border-bottom:1px solid rgba(184,151,90,0.25); }
+.edu-table td { padding:0.4rem 0.6rem; border-bottom:1px solid rgba(255,255,255,0.05); color:rgba(255,255,255,0.82); }
+.edu-table tr:last-child td { border-bottom:none; }
+.tax-auto-badge { display:flex; align-items:center; gap:0.5rem; font-size:0.72rem; color:rgba(127,196,232,0.85); background:rgba(127,196,232,0.07); border:1px solid rgba(127,196,232,0.18); border-radius:5px; padding:0.3rem 0.65rem; margin-bottom:0.5rem; }
+.tax-relief-row { display:flex; align-items:center; gap:0.65rem; padding:0.35rem 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.78rem; }
+.tax-relief-row label { flex:1; color:rgba(255,255,255,0.75); cursor:pointer; }
+.tax-relief-row input[type="checkbox"] { accent-color:var(--accent); width:15px; height:15px; cursor:pointer; }
+.tax-relief-row .al-input { width:100px; padding:0.22rem 0.5rem; font-size:0.75rem; }
+.tax-relief-row .al-hint { margin:0; }
+.edu-ref-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:0.4rem; margin-top:0.6rem; }
+.edu-ref-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:6px; padding:0.4rem 0.65rem; font-size:0.72rem; }
+.edu-ref-card .erc-country { font-weight:600; color:rgba(255,255,255,0.85); }
+.edu-ref-card .erc-cost { color:var(--accent); }
+.edu-ref-card .erc-inf { color:rgba(255,255,255,0.4); font-size:0.65rem; }
 </style>
 </head>
 <body>
@@ -969,6 +985,16 @@ body.csb-session-on .csb-hide-field { display: none !important; }
       <button class="ag-navitem" onclick="switchAgentTab('retirement',this)">
         <svg viewBox="0 0 24 24"><path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"/></svg>
         Retirement Gap
+      </button>
+
+      <button class="ag-navitem" onclick="switchAgentTab('education',this)">
+        <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        Education Planning
+      </button>
+
+      <button class="ag-navitem" onclick="switchAgentTab('tax',this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Tax Optimisation
       </button>
 
       <hr class="ag-nav-sep">
@@ -1619,6 +1645,239 @@ body.csb-session-on .csb-hide-field { display: none !important; }
   </div><!-- /p-retirement -->
 
 
+  <!-- ── EDUCATION PLANNING PANEL ── -->
+  <div class="ag-panel" id="p-education">
+    <div class="sp-wrap">
+      <div class="sp-grid">
+        <div class="sp-form">
+          <div class="sp-form-title">🎓 Education Planning</div>
+          <div class="sp-form-sub">Project university costs for up to 3 children across 18 destinations. Calculates monthly savings at cash vs 5% p.a. investment return, accounting for country-specific education inflation.</div>
+
+          <div class="ret-section-hdr">Child 1</div>
+          <div class="al-field-row">
+            <div class="al-field"><label class="al-label">Name</label><input class="al-input" type="text" id="edu-c1-name" placeholder="e.g. Emma" oninput="eduCalc()"></div>
+            <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="edu-c1-age" min="0" max="17" placeholder="e.g. 5" oninput="eduCalc()"></div>
+            <div class="al-field"><label class="al-label">Uni Start Age</label><input class="al-input" type="number" id="edu-c1-unitage" min="17" max="25" value="18" oninput="eduCalc()"></div>
+          </div>
+          <div class="al-field-row">
+            <div class="al-field" style="flex:2"><label class="al-label">University Destination</label>
+              <select class="al-input" id="edu-c1-dest" onchange="eduCalc()">
+                <option value="">— Select country —</option>
+                <option value="Singapore">🇸🇬 Singapore (~S$60,000)</option>
+                <option value="Malaysia">🇲🇾 Malaysia (~S$35,000)</option>
+                <option value="Australia">🇦🇺 Australia (~S$195,000)</option>
+                <option value="UK">🇬🇧 UK (~S$270,000)</option>
+                <option value="USA">🇺🇸 USA (~S$330,000)</option>
+                <option value="Canada">🇨🇦 Canada (~S$200,000)</option>
+                <option value="New Zealand">🇳🇿 New Zealand (~S$150,000)</option>
+                <option value="Japan">🇯🇵 Japan (~S$120,000)</option>
+                <option value="South Korea">🇰🇷 South Korea (~S$100,000)</option>
+                <option value="Hong Kong">🇭🇰 Hong Kong (~S$160,000)</option>
+                <option value="Germany">🇩🇪 Germany (~S$50,000)</option>
+                <option value="Netherlands">🇳🇱 Netherlands (~S$80,000)</option>
+                <option value="Ireland">🇮🇪 Ireland (~S$90,000)</option>
+                <option value="China">🇨🇳 China (~S$70,000)</option>
+                <option value="India">🇮🇳 India (~S$40,000)</option>
+                <option value="Taiwan">🇹🇼 Taiwan (~S$55,000)</option>
+                <option value="Thailand">🇹🇭 Thailand (~S$45,000)</option>
+                <option value="Indonesia">🇮🇩 Indonesia (~S$30,000)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ret-section-hdr" style="margin-top:1rem">Child 2</div>
+          <div class="al-field-row">
+            <div class="al-field"><label class="al-label">Name</label><input class="al-input" type="text" id="edu-c2-name" placeholder="e.g. Liam" oninput="eduCalc()"></div>
+            <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="edu-c2-age" min="0" max="17" placeholder="e.g. 3" oninput="eduCalc()"></div>
+            <div class="al-field"><label class="al-label">Uni Start Age</label><input class="al-input" type="number" id="edu-c2-unitage" min="17" max="25" value="18" oninput="eduCalc()"></div>
+          </div>
+          <div class="al-field-row">
+            <div class="al-field" style="flex:2"><label class="al-label">University Destination</label>
+              <select class="al-input" id="edu-c2-dest" onchange="eduCalc()">
+                <option value="">— Select country —</option>
+                <option value="Singapore">🇸🇬 Singapore (~S$60,000)</option>
+                <option value="Malaysia">🇲🇾 Malaysia (~S$35,000)</option>
+                <option value="Australia">🇦🇺 Australia (~S$195,000)</option>
+                <option value="UK">🇬🇧 UK (~S$270,000)</option>
+                <option value="USA">🇺🇸 USA (~S$330,000)</option>
+                <option value="Canada">🇨🇦 Canada (~S$200,000)</option>
+                <option value="New Zealand">🇳🇿 New Zealand (~S$150,000)</option>
+                <option value="Japan">🇯🇵 Japan (~S$120,000)</option>
+                <option value="South Korea">🇰🇷 South Korea (~S$100,000)</option>
+                <option value="Hong Kong">🇭🇰 Hong Kong (~S$160,000)</option>
+                <option value="Germany">🇩🇪 Germany (~S$50,000)</option>
+                <option value="Netherlands">🇳🇱 Netherlands (~S$80,000)</option>
+                <option value="Ireland">🇮🇪 Ireland (~S$90,000)</option>
+                <option value="China">🇨🇳 China (~S$70,000)</option>
+                <option value="India">🇮🇳 India (~S$40,000)</option>
+                <option value="Taiwan">🇹🇼 Taiwan (~S$55,000)</option>
+                <option value="Thailand">🇹🇭 Thailand (~S$45,000)</option>
+                <option value="Indonesia">🇮🇩 Indonesia (~S$30,000)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ret-section-hdr" style="margin-top:1rem">Child 3</div>
+          <div class="al-field-row">
+            <div class="al-field"><label class="al-label">Name</label><input class="al-input" type="text" id="edu-c3-name" placeholder="e.g. Sofia" oninput="eduCalc()"></div>
+            <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="edu-c3-age" min="0" max="17" placeholder="e.g. 1" oninput="eduCalc()"></div>
+            <div class="al-field"><label class="al-label">Uni Start Age</label><input class="al-input" type="number" id="edu-c3-unitage" min="17" max="25" value="18" oninput="eduCalc()"></div>
+          </div>
+          <div class="al-field-row">
+            <div class="al-field" style="flex:2"><label class="al-label">University Destination</label>
+              <select class="al-input" id="edu-c3-dest" onchange="eduCalc()">
+                <option value="">— Select country —</option>
+                <option value="Singapore">🇸🇬 Singapore (~S$60,000)</option>
+                <option value="Malaysia">🇲🇾 Malaysia (~S$35,000)</option>
+                <option value="Australia">🇦🇺 Australia (~S$195,000)</option>
+                <option value="UK">🇬🇧 UK (~S$270,000)</option>
+                <option value="USA">🇺🇸 USA (~S$330,000)</option>
+                <option value="Canada">🇨🇦 Canada (~S$200,000)</option>
+                <option value="New Zealand">🇳🇿 New Zealand (~S$150,000)</option>
+                <option value="Japan">🇯🇵 Japan (~S$120,000)</option>
+                <option value="South Korea">🇰🇷 South Korea (~S$100,000)</option>
+                <option value="Hong Kong">🇭🇰 Hong Kong (~S$160,000)</option>
+                <option value="Germany">🇩🇪 Germany (~S$50,000)</option>
+                <option value="Netherlands">🇳🇱 Netherlands (~S$80,000)</option>
+                <option value="Ireland">🇮🇪 Ireland (~S$90,000)</option>
+                <option value="China">🇨🇳 China (~S$70,000)</option>
+                <option value="India">🇮🇳 India (~S$40,000)</option>
+                <option value="Taiwan">🇹🇼 Taiwan (~S$55,000)</option>
+                <option value="Thailand">🇹🇭 Thailand (~S$45,000)</option>
+                <option value="Indonesia">🇮🇩 Indonesia (~S$30,000)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:1.25rem">
+            <button class="sp-calc-btn" style="background:rgba(184,151,90,0.08);border:1px solid rgba(184,151,90,0.3);color:var(--accent);font-size:0.75rem" onclick="document.getElementById('edu-ref-table').style.display=document.getElementById('edu-ref-table').style.display==='none'?'block':'none'">📊 Show / Hide Country Cost Reference</button>
+            <div id="edu-ref-table" style="display:none;margin-top:0.75rem">
+              <div class="edu-ref-grid">
+                <div class="edu-ref-card"><div class="erc-country">🇸🇬 Singapore</div><div class="erc-cost">S$60,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇲🇾 Malaysia</div><div class="erc-cost">S$35,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇦🇺 Australia</div><div class="erc-cost">S$195,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇬🇧 UK</div><div class="erc-cost">S$270,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇺🇸 USA</div><div class="erc-cost">S$330,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇨🇦 Canada</div><div class="erc-cost">S$200,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇳🇿 New Zealand</div><div class="erc-cost">S$150,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇯🇵 Japan</div><div class="erc-cost">S$120,000</div><div class="erc-inf">Inflation: 2.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇰🇷 South Korea</div><div class="erc-cost">S$100,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇭🇰 Hong Kong</div><div class="erc-cost">S$160,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇩🇪 Germany</div><div class="erc-cost">S$50,000</div><div class="erc-inf">Inflation: 2.5% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇳🇱 Netherlands</div><div class="erc-cost">S$80,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇮🇪 Ireland</div><div class="erc-cost">S$90,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇨🇳 China</div><div class="erc-cost">S$70,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇮🇳 India</div><div class="erc-cost">S$40,000</div><div class="erc-inf">Inflation: 5.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇹🇼 Taiwan</div><div class="erc-cost">S$55,000</div><div class="erc-inf">Inflation: 2.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇹🇭 Thailand</div><div class="erc-cost">S$45,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
+                <div class="edu-ref-card"><div class="erc-country">🇮🇩 Indonesia</div><div class="erc-cost">S$30,000</div><div class="erc-inf">Inflation: 5.0% p.a.</div></div>
+              </div>
+              <div class="al-hint" style="margin-top:0.5rem">Costs are total estimates for a 4-year degree (tuition + living) at private/international institutions, in today's SGD. Inflation rates reflect historical education cost growth in each country.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sp-results">
+          <div id="edu-results"><div class="sp-empty">Select a university destination to see cost projections and monthly savings required.</div></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /p-education -->
+
+
+  <!-- ── TAX OPTIMISATION PANEL ── -->
+  <div class="ag-panel" id="p-tax">
+    <div class="sp-wrap">
+      <div class="sp-grid">
+        <div class="sp-form">
+          <div class="sp-form-title">📋 Tax Optimisation</div>
+          <div class="sp-form-sub">Singapore YA 2026. Compute your personal income tax, identify applicable reliefs, and model SRS / CPF top-up strategies to legally reduce your tax bill.</div>
+
+          <div class="csb-session-badge" id="tax-session-badge"></div>
+
+          <div class="ret-section-hdr">Client Profile</div>
+          <div class="al-field-row">
+            <div class="al-field csb-hide-field"><label class="al-label">Age</label><input class="al-input" type="number" id="tax-age" placeholder="35" min="18" max="80" oninput="taxCalc()"></div>
+            <div class="al-field"><label class="al-label">Residency Status</label>
+              <select class="al-input" id="tax-nationality" onchange="taxCalc()">
+                <option value="SC_PR">Singapore Citizen / PR</option>
+                <option value="Foreigner">Foreigner (EP / SP)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ret-section-hdr">Income (Annual)</div>
+          <div class="al-field-row">
+            <div class="al-field"><label class="al-label">Employment Income</label><input class="al-input" type="number" id="tax-income" placeholder="e.g. 72000" oninput="taxCalc()"><div class="al-hint">Auto-filled from Client Session × 12</div></div>
+            <div class="al-field"><label class="al-label">Bonus / Variable</label><input class="al-input" type="number" id="tax-bonus" placeholder="0" oninput="taxCalc()"></div>
+            <div class="al-field"><label class="al-label">Other Income</label><input class="al-input" type="number" id="tax-other" placeholder="0" oninput="taxCalc()"><div class="al-hint">Rental, freelance, etc.</div></div>
+          </div>
+
+          <div class="ret-section-hdr">Auto-Granted Reliefs</div>
+          <div class="tax-auto-badge" id="tax-auto-badge">ℹ️ Enter income and age above to see auto-computed reliefs (Earned Income + CPF/PF Relief).</div>
+
+          <div class="ret-section-hdr">Claimable Reliefs</div>
+          <div style="margin-bottom:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.38)">Check applicable reliefs and enter amounts where required. Total relief capped at $80,000.</div>
+
+          <div class="tax-relief-row">
+            <input type="checkbox" id="tax-r-srs" onchange="taxCalc()">
+            <label for="tax-r-srs">SRS Contribution <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">(SC/PR max $15,300 · Foreigner max $35,700)</span></label>
+            <input class="al-input" type="number" id="tax-srs" placeholder="0" min="0" oninput="document.getElementById('tax-r-srs').checked=true;taxCalc()">
+          </div>
+          <div class="tax-relief-row">
+            <input type="checkbox" id="tax-r-cpf-top-self" onchange="taxCalc()">
+            <label for="tax-r-cpf-top-self">CPF Cash Top-Up (Self) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">max $8,000</span></label>
+            <input class="al-input" type="number" id="tax-cpf-top-self" placeholder="0" min="0" max="8000" oninput="document.getElementById('tax-r-cpf-top-self').checked=true;taxCalc()">
+          </div>
+          <div class="tax-relief-row">
+            <input type="checkbox" id="tax-r-cpf-top-fam" onchange="taxCalc()">
+            <label for="tax-r-cpf-top-fam">CPF Cash Top-Up (Family) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">max $8,000</span></label>
+            <input class="al-input" type="number" id="tax-cpf-top-fam" placeholder="0" min="0" max="8000" oninput="document.getElementById('tax-r-cpf-top-fam').checked=true;taxCalc()">
+          </div>
+          <div class="tax-relief-row">
+            <input type="checkbox" id="tax-r-life-ins" onchange="taxCalc()">
+            <label for="tax-r-life-ins">Life Insurance Relief <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">max $5,000 (only if CPF &lt; $5,000)</span></label>
+            <input class="al-input" type="number" id="tax-life-ins" placeholder="0" min="0" max="5000" oninput="document.getElementById('tax-r-life-ins').checked=true;taxCalc()">
+          </div>
+          <div class="tax-relief-row">
+            <input type="checkbox" id="tax-spouse" onchange="taxCalc()">
+            <label for="tax-spouse">Spouse Relief <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$2,000 (spouse income &lt; $4,000)</span></label>
+          </div>
+          <div class="tax-relief-row">
+            <label>Qualifying Child Relief (QCR) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$4,000 per child</span></label>
+            <input class="al-input" type="number" id="tax-children" placeholder="0" min="0" max="10" style="width:60px" oninput="taxCalc()">
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.38)">children</span>
+          </div>
+          <div class="tax-relief-row">
+            <input type="checkbox" id="tax-nsman" onchange="taxCalc()">
+            <label for="tax-nsman">NSman Relief (Self) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$3,000 (key appointment) / $1,500</span></label>
+            <select class="al-input" id="tax-nsman-type" onchange="taxCalc()" style="width:120px">
+              <option value="1500">$1,500</option>
+              <option value="3000">$3,000 (key)</option>
+            </select>
+          </div>
+          <div class="tax-relief-row">
+            <label>Parent Relief (staying with you) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$9,000 each</span></label>
+            <input class="al-input" type="number" id="tax-parents-staying" placeholder="0" min="0" max="2" style="width:60px" oninput="taxCalc()">
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.38)">parents</span>
+          </div>
+          <div class="tax-relief-row">
+            <label>Parent Relief (not staying) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$5,500 each</span></label>
+            <input class="al-input" type="number" id="tax-parents-not-staying" placeholder="0" min="0" max="2" style="width:60px" oninput="taxCalc()">
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.38)">parents</span>
+          </div>
+
+          <div style="margin-top:1.1rem">
+            <button class="sp-calc-btn" onclick="taxCalc()">Calculate Tax →</button>
+          </div>
+        </div>
+
+        <div class="sp-results">
+          <div id="tax-results"><div class="sp-empty">Enter income details to compute Singapore YA 2026 tax and identify optimisation opportunities.</div></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /p-tax -->
 
 
   <!-- ── eLEARNING PANEL ── -->
@@ -3764,6 +4023,259 @@ function renderRBAIResult(ai, container) {
 }
 
 // ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// EDUCATION PLANNING CALCULATOR
+// ─────────────────────────────────────────────
+var EDU_COSTS = {
+  'Singapore':   {cost:60000,  inf:0.03},
+  'Malaysia':    {cost:35000,  inf:0.04},
+  'Australia':   {cost:195000, inf:0.04},
+  'UK':          {cost:270000, inf:0.035},
+  'USA':         {cost:330000, inf:0.04},
+  'Canada':      {cost:200000, inf:0.035},
+  'New Zealand': {cost:150000, inf:0.035},
+  'Japan':       {cost:120000, inf:0.02},
+  'South Korea': {cost:100000, inf:0.03},
+  'Hong Kong':   {cost:160000, inf:0.03},
+  'Germany':     {cost:50000,  inf:0.025},
+  'Netherlands': {cost:80000,  inf:0.03},
+  'Ireland':     {cost:90000,  inf:0.03},
+  'China':       {cost:70000,  inf:0.035},
+  'India':       {cost:40000,  inf:0.05},
+  'Taiwan':      {cost:55000,  inf:0.02},
+  'Thailand':    {cost:45000,  inf:0.04},
+  'Indonesia':   {cost:30000,  inf:0.05}
+};
+
+function eduPMT(fv, annRate, months) {
+  if (months <= 0) return 0;
+  if (annRate < 0.001) return fv / months;
+  var r = annRate / 12;
+  return fv * r / (Math.pow(1 + r, months) - 1);
+}
+
+function eduCalc() {
+  var children = [];
+  for (var i = 1; i <= 3; i++) {
+    var dest = document.getElementById('edu-c'+i+'-dest').value;
+    if (!dest) continue;
+    var age = parseFloat(document.getElementById('edu-c'+i+'-age').value);
+    var uniAge = parseFloat(document.getElementById('edu-c'+i+'-unitage').value) || 18;
+    var name = document.getElementById('edu-c'+i+'-name').value || ('Child ' + i);
+    var yrs = Math.max(uniAge - (isNaN(age) ? 0 : age), 0.5);
+    var d = EDU_COSTS[dest];
+    var projCost = d.cost * Math.pow(1 + d.inf, yrs);
+    var moCash = projCost / (yrs * 12);
+    var moInv = eduPMT(projCost, 0.05, Math.round(yrs * 12));
+    children.push({name:name, dest:dest, yrs:yrs, baseCost:d.cost, projCost:projCost, moCash:moCash, moInv:moInv});
+  }
+  var res = document.getElementById('edu-results');
+  if (!res) return;
+  if (children.length === 0) {
+    res.innerHTML = '<div class="sp-empty">Select at least one destination to see projections.</div>';
+    return;
+  }
+  var fmt = function(n) { return '$' + Math.round(n).toLocaleString(); };
+  var totalCash = children.reduce(function(s,c){return s+c.moCash;},0);
+  var totalInv  = children.reduce(function(s,c){return s+c.moInv;},0);
+  var totalProj = children.reduce(function(s,c){return s+c.projCost;},0);
+
+  var kpi = '<div class="ret-kpi-grid" style="grid-template-columns:repeat(3,1fr)">'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Total Projected Cost</div><div class="ret-kpi-val">' + fmt(totalProj) + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Monthly (Cash)</div><div class="ret-kpi-val">' + fmt(totalCash) + '/mo</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Monthly (5% p.a.)</div><div class="ret-kpi-val" style="color:var(--accent)">' + fmt(totalInv) + '/mo</div></div>'
+    + '</div>';
+
+  var tbl = '<table class="edu-table"><thead><tr><th>Child</th><th>Destination</th><th>Years</th><th>Today\'s Cost</th><th>Projected Cost</th><th>Monthly Cash</th><th>Monthly 5%</th></tr></thead><tbody>';
+  children.forEach(function(c) {
+    tbl += '<tr><td>' + c.name + '</td><td>' + c.dest + '</td><td>' + c.yrs.toFixed(1) + '</td><td>' + fmt(c.baseCost) + '</td><td>' + fmt(c.projCost) + '</td><td>' + fmt(c.moCash) + '/mo</td><td style="color:var(--accent)">' + fmt(c.moInv) + '/mo</td></tr>';
+  });
+  if (children.length > 1) {
+    tbl += '<tr style="font-weight:600;border-top:1px solid rgba(184,151,90,0.25)"><td colspan="4">Total</td><td>' + fmt(totalProj) + '</td><td>' + fmt(totalCash) + '/mo</td><td style="color:var(--accent)">' + fmt(totalInv) + '/mo</td></tr>';
+  }
+  tbl += '</tbody></table>';
+  var note = '<div class="al-hint" style="margin-top:0.6rem">Costs are 4-year degree estimates in today\'s SGD (tuition + living), grown by country education inflation. Monthly savings at 5% assumes consistent net investment return over the accumulation period.</div>';
+  res.innerHTML = kpi + tbl + note;
+}
+
+// ─────────────────────────────────────────────
+// TAX OPTIMISATION CALCULATOR
+// ─────────────────────────────────────────────
+function calcSgTax(income) {
+  if (income <= 0) return 0;
+  var bands = [
+    [0,20000,0],[20000,30000,0.02],[30000,40000,0.035],[40000,80000,0.07],
+    [80000,120000,0.115],[120000,160000,0.15],[160000,200000,0.18],
+    [200000,240000,0.19],[240000,280000,0.195],[280000,320000,0.20],
+    [320000,500000,0.22],[500000,1000000,0.23],[1000000,1e12,0.24]
+  ];
+  var tax = 0;
+  for (var i = 0; i < bands.length; i++) {
+    if (income <= bands[i][0]) break;
+    tax += (Math.min(income, bands[i][1]) - bands[i][0]) * bands[i][2];
+  }
+  return tax;
+}
+
+function getMarginalRate(income) {
+  if (income <= 0)       return 0;
+  if (income <= 20000)   return 0;
+  if (income <= 30000)   return 0.02;
+  if (income <= 40000)   return 0.035;
+  if (income <= 80000)   return 0.07;
+  if (income <= 120000)  return 0.115;
+  if (income <= 160000)  return 0.15;
+  if (income <= 200000)  return 0.18;
+  if (income <= 240000)  return 0.19;
+  if (income <= 280000)  return 0.195;
+  if (income <= 320000)  return 0.20;
+  if (income <= 500000)  return 0.22;
+  if (income <= 1000000) return 0.23;
+  return 0.24;
+}
+
+function taxCalc() {
+  var ageV = parseFloat(document.getElementById('tax-age').value) || 35;
+  var annIncome = parseFloat(document.getElementById('tax-income').value) || 0;
+  var bonus     = parseFloat(document.getElementById('tax-bonus').value)  || 0;
+  var other     = parseFloat(document.getElementById('tax-other').value)  || 0;
+  var totalIncome = annIncome + bonus + other;
+  var fmt = function(n) { return '$' + Math.round(n).toLocaleString(); };
+  var pct = function(n) { return n.toFixed(1) + '%'; };
+
+  // CPF employee contribution (OW ceiling $7,400/mo = $88,800/yr)
+  var empRate = ageV < 55 ? 0.20 : (ageV < 60 ? 0.155 : (ageV < 65 ? 0.105 : 0.075));
+  var owAnn = 7400 * 12;
+  var cpfEmpContrib = Math.min(annIncome, owAnn) * empRate;
+  var cpfRelief = Math.min(cpfEmpContrib, 37740);
+
+  // Earned Income Relief (auto by age)
+  var eir = ageV < 55 ? 1000 : (ageV < 60 ? 6000 : 8000);
+
+  // Update auto-badge
+  var autoBadge = document.getElementById('tax-auto-badge');
+  if (autoBadge && totalIncome > 0) {
+    autoBadge.innerHTML = '⚙️ Earned Income Relief: <b>' + fmt(eir) + '</b>&nbsp;&nbsp;·&nbsp;&nbsp;CPF / PF Relief: <b>' + fmt(cpfRelief) + '</b>&nbsp;&nbsp;<span style="opacity:0.5;font-size:0.67rem">auto-granted by IRAS</span>';
+  }
+
+  var assessable = Math.max(totalIncome - cpfRelief, 0);
+
+  // Claimable reliefs
+  var isForeigner = document.getElementById('tax-nationality').value === 'Foreigner';
+  var srsMax = isForeigner ? 35700 : 15300;
+  var srsRaw = parseFloat(document.getElementById('tax-srs').value) || 0;
+  var srs = document.getElementById('tax-r-srs').checked ? Math.min(srsRaw, srsMax) : 0;
+
+  var cpfTopSelfRaw = parseFloat(document.getElementById('tax-cpf-top-self').value) || 0;
+  var cpfTopSelf = document.getElementById('tax-r-cpf-top-self').checked ? Math.min(cpfTopSelfRaw, 8000) : 0;
+
+  var cpfTopFamRaw = parseFloat(document.getElementById('tax-cpf-top-fam').value) || 0;
+  var cpfTopFam = document.getElementById('tax-r-cpf-top-fam').checked ? Math.min(cpfTopFamRaw, 8000) : 0;
+
+  var lifeInsRaw = parseFloat(document.getElementById('tax-life-ins').value) || 0;
+  var lifeIns = (document.getElementById('tax-r-life-ins').checked && cpfRelief < 5000) ? Math.min(lifeInsRaw, 5000) : 0;
+
+  var spouseRel = document.getElementById('tax-spouse').checked ? 2000 : 0;
+
+  var qcrCount = parseInt(document.getElementById('tax-children').value) || 0;
+  var qcr = qcrCount * 4000;
+
+  var nsmanAmt = document.getElementById('tax-nsman').checked ? (parseInt(document.getElementById('tax-nsman-type').value) || 1500) : 0;
+
+  var parentsStaying = Math.min(parseInt(document.getElementById('tax-parents-staying').value) || 0, 2);
+  var parentsNotStay = Math.min(parseInt(document.getElementById('tax-parents-not-staying').value) || 0, 2);
+  var parentRel = parentsStaying * 9000 + parentsNotStay * 5500;
+
+  var totalClaimable = srs + cpfTopSelf + cpfTopFam + lifeIns + spouseRel + qcr + nsmanAmt + parentRel;
+  var totalReliefsOpt = Math.min(eir + totalClaimable, 80000);
+  var totalReliefsBefore = eir;
+
+  var chargeableBefore = Math.max(assessable - totalReliefsBefore, 0);
+  var chargeableAfter  = Math.max(assessable - totalReliefsOpt, 0);
+
+  var taxBefore = calcSgTax(chargeableBefore);
+  var taxAfter  = calcSgTax(chargeableAfter);
+
+  // PIT Rebate YA2026: 60% capped at $200
+  var rebBefore = Math.min(taxBefore * 0.60, 200);
+  var rebAfter  = Math.min(taxAfter  * 0.60, 200);
+  var netBefore = Math.max(taxBefore - rebBefore, 0);
+  var netAfter  = Math.max(taxAfter  - rebAfter,  0);
+  var savings   = netBefore - netAfter;
+  var margBefore = getMarginalRate(chargeableBefore) * 100;
+  var margAfter  = getMarginalRate(chargeableAfter)  * 100;
+
+  var res = document.getElementById('tax-results');
+  if (!res) return;
+  if (totalIncome <= 0) {
+    res.innerHTML = '<div class="sp-empty">Enter income details to compute YA 2026 tax.</div>';
+    return;
+  }
+
+  var kpi = '<div class="ret-kpi-grid" style="grid-template-columns:repeat(4,1fr)">'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Tax Before</div><div class="ret-kpi-val">' + fmt(netBefore) + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Tax After Optimisation</div><div class="ret-kpi-val" style="color:var(--accent)">' + fmt(netAfter) + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Annual Savings</div><div class="ret-kpi-val" style="color:#4caf50">' + fmt(savings) + '</div></div>'
+    + '<div class="ret-kpi"><div class="ret-kpi-lbl">Effective Rate</div><div class="ret-kpi-val">' + pct(totalIncome > 0 ? netAfter/totalIncome*100 : 0) + '</div></div>'
+    + '</div>';
+
+  var comp = '<table class="edu-table" style="margin-top:1rem"><thead><tr><th></th><th>Before</th><th>After Optimisation</th></tr></thead><tbody>'
+    + '<tr><td>Total Income</td><td>' + fmt(totalIncome) + '</td><td>' + fmt(totalIncome) + '</td></tr>'
+    + '<tr><td>Less: CPF Relief (auto)</td><td>(' + fmt(cpfRelief) + ')</td><td>(' + fmt(cpfRelief) + ')</td></tr>'
+    + '<tr><td>Assessable Income</td><td>' + fmt(assessable) + '</td><td>' + fmt(assessable) + '</td></tr>'
+    + '<tr><td>Less: Personal Reliefs</td><td>(' + fmt(totalReliefsBefore) + ')</td><td>(' + fmt(totalReliefsOpt) + ')</td></tr>'
+    + '<tr><td>Chargeable Income</td><td>' + fmt(chargeableBefore) + '</td><td>' + fmt(chargeableAfter) + '</td></tr>'
+    + '<tr><td>Gross Tax</td><td>' + fmt(taxBefore) + '</td><td>' + fmt(taxAfter) + '</td></tr>'
+    + '<tr><td>PIT Rebate (60%, max $200)</td><td>(' + fmt(rebBefore) + ')</td><td>(' + fmt(rebAfter) + ')</td></tr>'
+    + '<tr style="font-weight:600;color:var(--accent)"><td>Net Tax Payable</td><td>' + fmt(netBefore) + '</td><td>' + fmt(netAfter) + '</td></tr>'
+    + '</tbody></table>';
+
+  var margNote = '<div class="al-hint" style="margin-top:0.65rem">Marginal rate: <b>' + pct(margBefore) + '</b> → <b>' + pct(margAfter) + '</b> after optimisation. Every $1 of additional relief at marginal rate <b>' + pct(margAfter) + '</b> saves <b>' + pct(margAfter) + '</b> in tax. Total relief cap: $80,000.</div>';
+
+  // SRS strategy
+  var srsHtml = '';
+  if (srs > 0 || srsRaw > 0) {
+    var actualSrs = Math.min(srsRaw, srsMax);
+    var srsTaxSave = actualSrs * getMarginalRate(chargeableAfter);
+    srsHtml = '<div class="ret-section-hdr" style="margin-top:1.1rem">SRS Strategy</div>'
+      + '<div class="al-hint">Contribution <b>' + fmt(actualSrs) + '</b> of <b>' + fmt(srsMax) + '</b> cap saves <b>' + fmt(srsTaxSave) + '/yr</b> now. '
+      + 'At drawdown after 62: only 50% taxable. Withdraw up to $40,000/yr tax-free across the 10-year window.</div>';
+    if (actualSrs < srsMax) {
+      srsHtml += '<div class="al-hint" style="color:rgba(184,151,90,0.85)">Top up remaining <b>' + fmt(srsMax - actualSrs) + '</b> to maximise → save additional <b>' + fmt((srsMax - actualSrs) * getMarginalRate(chargeableAfter)) + '/yr</b>.</div>';
+    }
+  }
+
+  // CPF top-up strategy
+  var cpfTopHtml = '';
+  if (cpfTopSelf > 0 || cpfTopFam > 0) {
+    var cpfTopSave = (cpfTopSelf + cpfTopFam) * getMarginalRate(chargeableAfter);
+    cpfTopHtml = '<div class="ret-section-hdr" style="margin-top:1rem">CPF Cash Top-Up Strategy</div>'
+      + '<div class="al-hint">Top-up to SA (under 55) or RA earns <b>4% p.a.</b> risk-free. Tax saving: <b>' + fmt(cpfTopSave) + '/yr</b>. '
+      + 'Max: $8,000 self + $8,000 family = $16,000 total relief.</div>';
+  }
+
+  // Quick wins (unclaimed maximums)
+  var wins = [];
+  var margR = getMarginalRate(chargeableAfter);
+  if (!document.getElementById('tax-r-srs').checked || srsRaw < srsMax) {
+    var srsGap = srsMax - (document.getElementById('tax-r-srs').checked ? Math.min(srsRaw, srsMax) : 0);
+    if (srsGap > 0) wins.push('Max SRS (' + fmt(srsGap) + ' more) → save <b>' + fmt(srsGap * margR) + '/yr</b>');
+  }
+  if (!document.getElementById('tax-r-cpf-top-self').checked || cpfTopSelfRaw < 8000) {
+    var selfGap = 8000 - (document.getElementById('tax-r-cpf-top-self').checked ? Math.min(cpfTopSelfRaw,8000) : 0);
+    if (selfGap > 0) wins.push('CPF top-up self (' + fmt(selfGap) + ' more) → save <b>' + fmt(selfGap * margR) + '/yr</b>');
+  }
+  if (!document.getElementById('tax-r-cpf-top-fam').checked || cpfTopFamRaw < 8000) {
+    var famGap = 8000 - (document.getElementById('tax-r-cpf-top-fam').checked ? Math.min(cpfTopFamRaw,8000) : 0);
+    if (famGap > 0) wins.push('CPF top-up family (' + fmt(famGap) + ' more) → save <b>' + fmt(famGap * margR) + '/yr</b>');
+  }
+  var winsHtml = wins.length > 0
+    ? '<div class="ret-section-hdr" style="margin-top:1rem">Quick Wins</div><ul style="padding-left:1.2rem;margin:0.4rem 0;font-size:0.77rem;color:rgba(255,255,255,0.8);line-height:1.7">' + wins.map(function(w){return '<li>' + w + '</li>';}).join('') + '</ul>'
+    : '';
+
+  res.innerHTML = kpi + comp + margNote + srsHtml + cpfTopHtml + winsHtml;
+}
+
 // NEED ANALYSIS CALCULATOR
 // ─────────────────────────────────────────────
 function naFmt(n) { return 'S$' + Math.abs(Math.round(n)).toLocaleString(); }
@@ -3901,7 +4413,7 @@ function csbApply() {
     var badgeHtml = '👤 Age <b>' + age + '</b>'
       + (retire ? ' &nbsp;·&nbsp; Retire at <b>' + retire + '</b>' : '')
       + '<span class="csb-badge-from">from Client Session</span>';
-    ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge'].forEach(function(id){
+    ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge','tax-session-badge'].forEach(function(id){
       var b = document.getElementById(id); if (b) b.innerHTML = badgeHtml;
     });
   }
@@ -3916,9 +4428,14 @@ function csbApply() {
     var cpfBadge = document.getElementById('ret-cpf-session-badge');
     if (cpfBadge) cpfBadge.innerHTML = '⚙️ OA <b>$' + alloc.oa.toLocaleString() + '/mo</b> &nbsp;·&nbsp; SA <b>$' + alloc.sa.toLocaleString() + '/mo</b> &nbsp;·&nbsp; MA <b>$' + alloc.ma.toLocaleString() + '/mo</b><span class="csb-badge-from">auto-calculated</span>';
   }
+  // Tax Optimisation — auto-fill age and annual income
+  if (age    && document.getElementById('tax-age'))    document.getElementById('tax-age').value    = age;
+  if (income && document.getElementById('tax-income')) document.getElementById('tax-income').value = Math.round(parseFloat(income) * 12);
   // Auto-calc wherever possible
   if (document.getElementById('p-retirement').classList.contains('active')) retCalc();
   if (document.getElementById('p-needanalysis').classList.contains('active')) naCalc();
+  if (document.getElementById('p-tax').classList.contains('active')) taxCalc();
+  if (document.getElementById('p-education').classList.contains('active')) eduCalc();
 }
 function csbClear() {
   ['csb-age','csb-income','csb-retire'].forEach(function(id){ document.getElementById(id).value=''; });
@@ -3926,8 +4443,10 @@ function csbClear() {
   document.getElementById('csb-cpf-preview').style.display = 'none';
   if (document.getElementById('ret-income'))           document.getElementById('ret-income').value = '';
   if (document.getElementById('ret-salary-increment')) document.getElementById('ret-salary-increment').value = '3';
+  if (document.getElementById('tax-age'))              document.getElementById('tax-age').value    = '';
+  if (document.getElementById('tax-income'))           document.getElementById('tax-income').value = '';
   document.body.classList.remove('csb-session-on');
-  ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge','ret-cpf-session-badge'].forEach(function(id){
+  ['al-session-badge','rb-session-badge','sp-session-badge','na-session-badge','ret-session-badge','ret-cpf-session-badge','tax-session-badge'].forEach(function(id){
     var b = document.getElementById(id); if (b) b.innerHTML = '';
   });
   document.getElementById('client-session-bar').classList.remove('active');
