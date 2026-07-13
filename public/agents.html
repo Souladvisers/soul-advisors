@@ -900,6 +900,12 @@ body.csb-session-on .csb-hide-field { display: none !important; }
 .edu-ref-card .erc-country { font-weight:600; color:rgba(255,255,255,0.85); }
 .edu-ref-card .erc-cost { color:var(--accent); }
 .edu-ref-card .erc-inf { color:rgba(255,255,255,0.4); font-size:0.65rem; }
+.edu-child-block { border-top:1px solid rgba(255,255,255,0.05); padding-top:0.65rem; margin-top:0.55rem; }
+.edu-child-block:first-child { border-top:none; margin-top:0; padding-top:0; }
+.edu-remove-btn { background:none; border:none; color:rgba(255,255,255,0.28); cursor:pointer; font-size:0.7rem; padding:0.1rem 0.35rem; border-radius:4px; transition:color 0.15s; }
+.edu-remove-btn:hover { color:#f87171; }
+.edu-add-btn { background:rgba(184,151,90,0.08); border:1px solid rgba(184,151,90,0.3); color:var(--accent); font-size:0.75rem; border-radius:6px; padding:0.4rem 0.9rem; cursor:pointer; transition:background 0.15s; }
+.edu-add-btn:hover { background:rgba(184,151,90,0.18); }
 </style>
 </head>
 <body>
@@ -1651,128 +1657,20 @@ body.csb-session-on .csb-hide-field { display: none !important; }
       <div class="sp-grid">
         <div class="sp-form">
           <div class="sp-form-title">🎓 Education Planning</div>
-          <div class="sp-form-sub">Project university costs for up to 3 children across 18 destinations. Calculates monthly savings at cash vs 5% p.a. investment return, accounting for country-specific education inflation.</div>
+          <div class="sp-form-sub">Project university costs for each child across 18 destinations. Add as many children as needed — monthly savings shown at cash vs 5% p.a. investment return, with country-specific education inflation applied.</div>
 
-          <div class="ret-section-hdr">Child 1</div>
-          <div class="al-field-row">
-            <div class="al-field"><label class="al-label">Name</label><input class="al-input" type="text" id="edu-c1-name" placeholder="e.g. Emma" oninput="eduCalc()"></div>
-            <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="edu-c1-age" min="0" max="17" placeholder="e.g. 5" oninput="eduCalc()"></div>
-            <div class="al-field"><label class="al-label">Uni Start Age</label><input class="al-input" type="number" id="edu-c1-unitage" min="17" max="25" value="18" oninput="eduCalc()"></div>
-          </div>
-          <div class="al-field-row">
-            <div class="al-field" style="flex:2"><label class="al-label">University Destination</label>
-              <select class="al-input" id="edu-c1-dest" onchange="eduCalc()">
-                <option value="">— Select country —</option>
-                <option value="Singapore">🇸🇬 Singapore (~S$60,000)</option>
-                <option value="Malaysia">🇲🇾 Malaysia (~S$35,000)</option>
-                <option value="Australia">🇦🇺 Australia (~S$195,000)</option>
-                <option value="UK">🇬🇧 UK (~S$270,000)</option>
-                <option value="USA">🇺🇸 USA (~S$330,000)</option>
-                <option value="Canada">🇨🇦 Canada (~S$200,000)</option>
-                <option value="New Zealand">🇳🇿 New Zealand (~S$150,000)</option>
-                <option value="Japan">🇯🇵 Japan (~S$120,000)</option>
-                <option value="South Korea">🇰🇷 South Korea (~S$100,000)</option>
-                <option value="Hong Kong">🇭🇰 Hong Kong (~S$160,000)</option>
-                <option value="Germany">🇩🇪 Germany (~S$50,000)</option>
-                <option value="Netherlands">🇳🇱 Netherlands (~S$80,000)</option>
-                <option value="Ireland">🇮🇪 Ireland (~S$90,000)</option>
-                <option value="China">🇨🇳 China (~S$70,000)</option>
-                <option value="India">🇮🇳 India (~S$40,000)</option>
-                <option value="Taiwan">🇹🇼 Taiwan (~S$55,000)</option>
-                <option value="Thailand">🇹🇭 Thailand (~S$45,000)</option>
-                <option value="Indonesia">🇮🇩 Indonesia (~S$30,000)</option>
-              </select>
-            </div>
-          </div>
+          <div id="edu-children-container"></div>
 
-          <div class="ret-section-hdr" style="margin-top:1rem">Child 2</div>
-          <div class="al-field-row">
-            <div class="al-field"><label class="al-label">Name</label><input class="al-input" type="text" id="edu-c2-name" placeholder="e.g. Liam" oninput="eduCalc()"></div>
-            <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="edu-c2-age" min="0" max="17" placeholder="e.g. 3" oninput="eduCalc()"></div>
-            <div class="al-field"><label class="al-label">Uni Start Age</label><input class="al-input" type="number" id="edu-c2-unitage" min="17" max="25" value="18" oninput="eduCalc()"></div>
-          </div>
-          <div class="al-field-row">
-            <div class="al-field" style="flex:2"><label class="al-label">University Destination</label>
-              <select class="al-input" id="edu-c2-dest" onchange="eduCalc()">
-                <option value="">— Select country —</option>
-                <option value="Singapore">🇸🇬 Singapore (~S$60,000)</option>
-                <option value="Malaysia">🇲🇾 Malaysia (~S$35,000)</option>
-                <option value="Australia">🇦🇺 Australia (~S$195,000)</option>
-                <option value="UK">🇬🇧 UK (~S$270,000)</option>
-                <option value="USA">🇺🇸 USA (~S$330,000)</option>
-                <option value="Canada">🇨🇦 Canada (~S$200,000)</option>
-                <option value="New Zealand">🇳🇿 New Zealand (~S$150,000)</option>
-                <option value="Japan">🇯🇵 Japan (~S$120,000)</option>
-                <option value="South Korea">🇰🇷 South Korea (~S$100,000)</option>
-                <option value="Hong Kong">🇭🇰 Hong Kong (~S$160,000)</option>
-                <option value="Germany">🇩🇪 Germany (~S$50,000)</option>
-                <option value="Netherlands">🇳🇱 Netherlands (~S$80,000)</option>
-                <option value="Ireland">🇮🇪 Ireland (~S$90,000)</option>
-                <option value="China">🇨🇳 China (~S$70,000)</option>
-                <option value="India">🇮🇳 India (~S$40,000)</option>
-                <option value="Taiwan">🇹🇼 Taiwan (~S$55,000)</option>
-                <option value="Thailand">🇹🇭 Thailand (~S$45,000)</option>
-                <option value="Indonesia">🇮🇩 Indonesia (~S$30,000)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="ret-section-hdr" style="margin-top:1rem">Child 3</div>
-          <div class="al-field-row">
-            <div class="al-field"><label class="al-label">Name</label><input class="al-input" type="text" id="edu-c3-name" placeholder="e.g. Sofia" oninput="eduCalc()"></div>
-            <div class="al-field"><label class="al-label">Current Age</label><input class="al-input" type="number" id="edu-c3-age" min="0" max="17" placeholder="e.g. 1" oninput="eduCalc()"></div>
-            <div class="al-field"><label class="al-label">Uni Start Age</label><input class="al-input" type="number" id="edu-c3-unitage" min="17" max="25" value="18" oninput="eduCalc()"></div>
-          </div>
-          <div class="al-field-row">
-            <div class="al-field" style="flex:2"><label class="al-label">University Destination</label>
-              <select class="al-input" id="edu-c3-dest" onchange="eduCalc()">
-                <option value="">— Select country —</option>
-                <option value="Singapore">🇸🇬 Singapore (~S$60,000)</option>
-                <option value="Malaysia">🇲🇾 Malaysia (~S$35,000)</option>
-                <option value="Australia">🇦🇺 Australia (~S$195,000)</option>
-                <option value="UK">🇬🇧 UK (~S$270,000)</option>
-                <option value="USA">🇺🇸 USA (~S$330,000)</option>
-                <option value="Canada">🇨🇦 Canada (~S$200,000)</option>
-                <option value="New Zealand">🇳🇿 New Zealand (~S$150,000)</option>
-                <option value="Japan">🇯🇵 Japan (~S$120,000)</option>
-                <option value="South Korea">🇰🇷 South Korea (~S$100,000)</option>
-                <option value="Hong Kong">🇭🇰 Hong Kong (~S$160,000)</option>
-                <option value="Germany">🇩🇪 Germany (~S$50,000)</option>
-                <option value="Netherlands">🇳🇱 Netherlands (~S$80,000)</option>
-                <option value="Ireland">🇮🇪 Ireland (~S$90,000)</option>
-                <option value="China">🇨🇳 China (~S$70,000)</option>
-                <option value="India">🇮🇳 India (~S$40,000)</option>
-                <option value="Taiwan">🇹🇼 Taiwan (~S$55,000)</option>
-                <option value="Thailand">🇹🇭 Thailand (~S$45,000)</option>
-                <option value="Indonesia">🇮🇩 Indonesia (~S$30,000)</option>
-              </select>
-            </div>
+          <div style="margin-top:0.85rem;display:flex;align-items:center;gap:0.85rem">
+            <button class="edu-add-btn" onclick="eduAddChild()">+ Add Child</button>
+            <span id="edu-child-count" style="font-size:0.7rem;color:rgba(255,255,255,0.32)"></span>
           </div>
 
           <div style="margin-top:1.25rem">
-            <button class="sp-calc-btn" style="background:rgba(184,151,90,0.08);border:1px solid rgba(184,151,90,0.3);color:var(--accent);font-size:0.75rem" onclick="document.getElementById('edu-ref-table').style.display=document.getElementById('edu-ref-table').style.display==='none'?'block':'none'">📊 Show / Hide Country Cost Reference</button>
+            <button class="edu-add-btn" onclick="var t=document.getElementById('edu-ref-table');t.style.display=t.style.display==='none'?'block':'none'">📊 Show / Hide Country Cost Reference</button>
             <div id="edu-ref-table" style="display:none;margin-top:0.75rem">
-              <div class="edu-ref-grid">
-                <div class="edu-ref-card"><div class="erc-country">🇸🇬 Singapore</div><div class="erc-cost">S$60,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇲🇾 Malaysia</div><div class="erc-cost">S$35,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇦🇺 Australia</div><div class="erc-cost">S$195,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇬🇧 UK</div><div class="erc-cost">S$270,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇺🇸 USA</div><div class="erc-cost">S$330,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇨🇦 Canada</div><div class="erc-cost">S$200,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇳🇿 New Zealand</div><div class="erc-cost">S$150,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇯🇵 Japan</div><div class="erc-cost">S$120,000</div><div class="erc-inf">Inflation: 2.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇰🇷 South Korea</div><div class="erc-cost">S$100,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇭🇰 Hong Kong</div><div class="erc-cost">S$160,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇩🇪 Germany</div><div class="erc-cost">S$50,000</div><div class="erc-inf">Inflation: 2.5% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇳🇱 Netherlands</div><div class="erc-cost">S$80,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇮🇪 Ireland</div><div class="erc-cost">S$90,000</div><div class="erc-inf">Inflation: 3.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇨🇳 China</div><div class="erc-cost">S$70,000</div><div class="erc-inf">Inflation: 3.5% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇮🇳 India</div><div class="erc-cost">S$40,000</div><div class="erc-inf">Inflation: 5.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇹🇼 Taiwan</div><div class="erc-cost">S$55,000</div><div class="erc-inf">Inflation: 2.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇹🇭 Thailand</div><div class="erc-cost">S$45,000</div><div class="erc-inf">Inflation: 4.0% p.a.</div></div>
-                <div class="edu-ref-card"><div class="erc-country">🇮🇩 Indonesia</div><div class="erc-cost">S$30,000</div><div class="erc-inf">Inflation: 5.0% p.a.</div></div>
-              </div>
-              <div class="al-hint" style="margin-top:0.5rem">Costs are total estimates for a 4-year degree (tuition + living) at private/international institutions, in today's SGD. Inflation rates reflect historical education cost growth in each country.</div>
+              <div class="edu-ref-grid" id="edu-ref-grid"></div>
+              <div class="al-hint" style="margin-top:0.5rem">Costs are total estimates (tuition + living) in today's SGD at a reputable university — not cheapest, not Ivy League. UK/Netherlands reflects a 3-year degree. Inflation rates are long-run historical CAGR per country.</div>
             </div>
           </div>
         </div>
@@ -4026,26 +3924,104 @@ function renderRBAIResult(ai, container) {
 // ─────────────────────────────────────────────
 // EDUCATION PLANNING CALCULATOR
 // ─────────────────────────────────────────────
-var EDU_COSTS = {
-  'Singapore':   {cost:60000,  inf:0.03},
-  'Malaysia':    {cost:35000,  inf:0.04},
-  'Australia':   {cost:195000, inf:0.04},
-  'UK':          {cost:270000, inf:0.035},
-  'USA':         {cost:330000, inf:0.04},
-  'Canada':      {cost:200000, inf:0.035},
-  'New Zealand': {cost:150000, inf:0.035},
-  'Japan':       {cost:120000, inf:0.02},
-  'South Korea': {cost:100000, inf:0.03},
-  'Hong Kong':   {cost:160000, inf:0.03},
-  'Germany':     {cost:50000,  inf:0.025},
-  'Netherlands': {cost:80000,  inf:0.03},
-  'Ireland':     {cost:90000,  inf:0.03},
-  'China':       {cost:70000,  inf:0.035},
-  'India':       {cost:40000,  inf:0.05},
-  'Taiwan':      {cost:55000,  inf:0.02},
-  'Thailand':    {cost:45000,  inf:0.04},
-  'Indonesia':   {cost:30000,  inf:0.05}
-};
+// Education data: costs in today's SGD (tuition + living), long-run inflation CAGR per country
+// Research: EducationData.org, StudyAustralia, DAAD, HKU, Statistics Canada, SmartWealth.sg,
+//           Mastersportal, Cherwell/Oxford, Shorelight, x-rates.com 2024 averages. Jul 2025.
+var EDU_DATA = [
+  // f=flag, k=country key, c=cost SGD, i=inflation CAGR, y=degree years, n=notes shown in ref table
+  {f:'🇸🇬', k:'Singapore',   c:90000,  i:0.035, y:4, n:'NUS/NTU/SMU local (SC/PR) with MOE grant + 4yr living; intl students ~50% more'},
+  {f:'🇲🇾', k:'Malaysia',    c:50000,  i:0.040, y:4, n:'Taylor\'s / Sunway / Monash Malaysia + living; MYR-based'},
+  {f:'🇦🇺', k:'Australia',   c:210000, i:0.050, y:4, n:'Group of Eight (Melb/UNSW/ANU/Monash); AUD fees rising ~5% p.a. in recent years'},
+  {f:'🇬🇧', k:'UK',          c:215000, i:0.045, y:3, n:'Russell Group 3-yr (Manchester/Leeds/Edinburgh); London +20%; intl fees up 37% since 2022'},
+  {f:'🇺🇸', k:'USA',         c:250000, i:0.045, y:4, n:'Top-50 state flagship (Michigan/UCLA/UNC); private Ivies ~$400K+; HEPI CAGR ~4.8%'},
+  {f:'🇨🇦', k:'Canada',      c:230000, i:0.045, y:4, n:'U15 research uni (UofT/UBC/McGill); CAD fees rising sharply; visa restrictions 2024'},
+  {f:'🇳🇿', k:'New Zealand', c:195000, i:0.040, y:4, n:'University of Auckland / Otago; NZD fees + Auckland living; NZD weakened 2023-24'},
+  {f:'🇯🇵', k:'Japan',       c:73000,  i:0.015, y:4, n:'National uni (Tokyo/Kyoto/Osaka); near-flat fee history; JPY historically weak 2023-24'},
+  {f:'🇰🇷', k:'South Korea', c:70000,  i:0.025, y:4, n:'SKY equiv. (SNU/Yonsei/Korea); government caps fee hikes; Seoul living moderate'},
+  {f:'🇭🇰', k:'Hong Kong',   c:220000, i:0.040, y:4, n:'HKU/CUHK/HKUST non-local; HKD pegged to USD; accommodation scarce'},
+  {f:'🇩🇪', k:'Germany',     c:72000,  i:0.020, y:4, n:'Public uni — near-zero tuition (except Baden-Württemberg); living ~EUR 12K/yr; DAAD data'},
+  {f:'🇳🇱', k:'Netherlands', c:110000, i:0.035, y:3, n:'3-yr bachelor (Amsterdam/Delft/Leiden); non-EEA fees EUR 13–20K/yr; Amsterdam living high'},
+  {f:'🇮🇪', k:'Ireland',     c:205000, i:0.045, y:4, n:'UCD/Trinity non-EU; Dublin housing shortage drives living costs near UK levels'},
+  {f:'🇨🇳', k:'China',       c:37000,  i:0.040, y:4, n:'Fudan/PKU/Zhejiang English-taught intl programs; very affordable; CNY-denominated'},
+  {f:'🇮🇳', k:'India',       c:85000,  i:0.090, y:4, n:'Good private uni (Ashoka/Manipal/Symbiosis); 8–10% edu inflation; IITs better value'},
+  {f:'🇹🇼', k:'Taiwan',      c:90000,  i:0.025, y:4, n:'NTU/NTHU/NCKU intl rate; MoE regulates fees; very affordable living; tech-strong'},
+  {f:'🇹🇭', k:'Thailand',    c:100000, i:0.040, y:4, n:'Chulalongkorn / Mahidol intl program; Bangkok living; regional recognition'},
+  {f:'🇮🇩', k:'Indonesia',   c:70000,  i:0.060, y:4, n:'UI/UGM intl program; IDR-denominated; high local edu inflation; FX risk over time'}
+];
+
+// Build lookup map and options HTML from EDU_DATA
+var EDU_COSTS = {};
+var EDU_OPTIONS_HTML = '<option value="">— Select country —</option>';
+EDU_DATA.forEach(function(d) {
+  EDU_COSTS[d.k] = {cost: d.c, inf: d.i, years: d.y};
+  EDU_OPTIONS_HTML += '<option value="' + d.k + '">' + d.f + ' ' + d.k + '</option>';
+});
+
+// Populate reference table cards
+function eduBuildRefTable() {
+  var grid = document.getElementById('edu-ref-grid');
+  if (!grid || grid.innerHTML) return;
+  grid.innerHTML = EDU_DATA.map(function(d) {
+    var yrsLabel = d.y === 3 ? '3-year degree' : '4-year degree';
+    return '<div class="edu-ref-card">'
+      + '<div class="erc-country">' + d.f + ' ' + d.k + '</div>'
+      + '<div class="erc-cost">S$' + d.c.toLocaleString() + '</div>'
+      + '<div class="erc-inf">Inflation: ' + (d.i*100).toFixed(1) + '% p.a. · ' + yrsLabel + '</div>'
+      + '<div class="erc-inf" style="margin-top:0.15rem;opacity:0.7">' + d.n + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+var eduChildCounter = 0;
+
+function eduMakeChildHTML(labelNum) {
+  var uid = ++eduChildCounter;
+  return '<div class="edu-child-block" id="edu-block-' + uid + '">'
+    + '<div class="ret-section-hdr" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.45rem">'
+    + '<span class="edu-block-title">Child ' + labelNum + '</span>'
+    + '<button class="edu-remove-btn" onclick="eduRemoveChild(\'edu-block-' + uid + '\')">✕ Remove</button>'
+    + '</div>'
+    + '<div class="al-field-row">'
+    + '<div class="al-field"><label class="al-label">Name</label><input class="al-input edu-name" type="text" placeholder="e.g. Emma" oninput="eduCalc()"></div>'
+    + '<div class="al-field"><label class="al-label">Current Age</label><input class="al-input edu-age" type="number" min="0" max="17" placeholder="e.g. 5" oninput="eduCalc()"></div>'
+    + '<div class="al-field"><label class="al-label">Uni Start Age</label><input class="al-input edu-unitage" type="number" min="17" max="25" value="18" oninput="eduCalc()"></div>'
+    + '</div>'
+    + '<div class="al-field-row" style="margin-bottom:0">'
+    + '<div class="al-field" style="flex:2"><label class="al-label">University Destination</label>'
+    + '<select class="al-input edu-dest" onchange="eduCalc()">' + EDU_OPTIONS_HTML + '</select>'
+    + '</div></div>'
+    + '</div>';
+}
+
+function eduAddChild() {
+  var container = document.getElementById('edu-children-container');
+  if (!container) return;
+  var count = container.querySelectorAll('.edu-child-block').length;
+  if (count >= 8) {
+    document.getElementById('edu-child-count').textContent = 'Max 8 children reached.';
+    return;
+  }
+  container.insertAdjacentHTML('beforeend', eduMakeChildHTML(count + 1));
+  eduUpdateLabels();
+  eduCalc();
+}
+
+function eduRemoveChild(blockId) {
+  var block = document.getElementById(blockId);
+  if (block) block.remove();
+  eduUpdateLabels();
+  eduCalc();
+}
+
+function eduUpdateLabels() {
+  var blocks = document.querySelectorAll('#edu-children-container .edu-child-block');
+  blocks.forEach(function(b, i) {
+    var title = b.querySelector('.edu-block-title');
+    if (title) title.textContent = 'Child ' + (i + 1);
+  });
+  var note = document.getElementById('edu-child-count');
+  if (note) note.textContent = blocks.length > 0 ? blocks.length + ' child' + (blocks.length > 1 ? 'ren' : '') + ' added' : '';
+}
 
 function eduPMT(fv, annRate, months) {
   if (months <= 0) return 0;
@@ -4055,24 +4031,29 @@ function eduPMT(fv, annRate, months) {
 }
 
 function eduCalc() {
+  eduBuildRefTable();
+  var blocks = document.querySelectorAll('#edu-children-container .edu-child-block');
   var children = [];
-  for (var i = 1; i <= 3; i++) {
-    var dest = document.getElementById('edu-c'+i+'-dest').value;
-    if (!dest) continue;
-    var age = parseFloat(document.getElementById('edu-c'+i+'-age').value);
-    var uniAge = parseFloat(document.getElementById('edu-c'+i+'-unitage').value) || 18;
-    var name = document.getElementById('edu-c'+i+'-name').value || ('Child ' + i);
-    var yrs = Math.max(uniAge - (isNaN(age) ? 0 : age), 0.5);
+  blocks.forEach(function(block, idx) {
+    var dest = block.querySelector('.edu-dest').value;
+    if (!dest) return;
+    var ageEl = block.querySelector('.edu-age');
+    var uniAgeEl = block.querySelector('.edu-unitage');
+    var nameEl = block.querySelector('.edu-name');
+    var age = parseFloat(ageEl ? ageEl.value : '');
+    var uniAge = parseFloat(uniAgeEl ? uniAgeEl.value : '') || 18;
+    var name = (nameEl && nameEl.value) ? nameEl.value : ('Child ' + (idx + 1));
     var d = EDU_COSTS[dest];
+    var yrs = Math.max(uniAge - (isNaN(age) ? 0 : age), 0.5);
     var projCost = d.cost * Math.pow(1 + d.inf, yrs);
     var moCash = projCost / (yrs * 12);
     var moInv = eduPMT(projCost, 0.05, Math.round(yrs * 12));
-    children.push({name:name, dest:dest, yrs:yrs, baseCost:d.cost, projCost:projCost, moCash:moCash, moInv:moInv});
-  }
+    children.push({name:name, dest:dest, yrs:yrs, baseCost:d.cost, inf:d.inf, projCost:projCost, moCash:moCash, moInv:moInv});
+  });
   var res = document.getElementById('edu-results');
   if (!res) return;
   if (children.length === 0) {
-    res.innerHTML = '<div class="sp-empty">Select at least one destination to see projections.</div>';
+    res.innerHTML = '<div class="sp-empty">Select a university destination for at least one child to see projections.</div>';
     return;
   }
   var fmt = function(n) { return '$' + Math.round(n).toLocaleString(); };
@@ -4086,7 +4067,7 @@ function eduCalc() {
     + '<div class="ret-kpi"><div class="ret-kpi-lbl">Monthly (5% p.a.)</div><div class="ret-kpi-val" style="color:var(--accent)">' + fmt(totalInv) + '/mo</div></div>'
     + '</div>';
 
-  var tbl = '<table class="edu-table"><thead><tr><th>Child</th><th>Destination</th><th>Years</th><th>Today\'s Cost</th><th>Projected Cost</th><th>Monthly Cash</th><th>Monthly 5%</th></tr></thead><tbody>';
+  var tbl = '<table class="edu-table"><thead><tr><th>Child</th><th>Destination</th><th>Yrs</th><th>Today\'s Cost</th><th>Projected Cost</th><th>Monthly Cash</th><th>Monthly @5%</th></tr></thead><tbody>';
   children.forEach(function(c) {
     tbl += '<tr><td>' + c.name + '</td><td>' + c.dest + '</td><td>' + c.yrs.toFixed(1) + '</td><td>' + fmt(c.baseCost) + '</td><td>' + fmt(c.projCost) + '</td><td>' + fmt(c.moCash) + '/mo</td><td style="color:var(--accent)">' + fmt(c.moInv) + '/mo</td></tr>';
   });
@@ -4094,7 +4075,7 @@ function eduCalc() {
     tbl += '<tr style="font-weight:600;border-top:1px solid rgba(184,151,90,0.25)"><td colspan="4">Total</td><td>' + fmt(totalProj) + '</td><td>' + fmt(totalCash) + '/mo</td><td style="color:var(--accent)">' + fmt(totalInv) + '/mo</td></tr>';
   }
   tbl += '</tbody></table>';
-  var note = '<div class="al-hint" style="margin-top:0.6rem">Costs are 4-year degree estimates in today\'s SGD (tuition + living), grown by country education inflation. Monthly savings at 5% assumes consistent net investment return over the accumulation period.</div>';
+  var note = '<div class="al-hint" style="margin-top:0.6rem">Costs in today\'s SGD grown by each country\'s historical education inflation rate. Monthly @5% assumes a consistent net investment return; Cash assumes no growth. Costs cover tuition + living at a reputable (non-Ivy) institution.</div>';
   res.innerHTML = kpi + tbl + note;
 }
 
@@ -5941,6 +5922,9 @@ function commCalc() {
 }
 
 (function(){ commSetCat('protection', document.querySelector('.comm-cat-btn')); })();
+
+// Init education panel with one child block on load
+(function(){ if(document.getElementById('edu-children-container')) eduAddChild(); })();
 
 </script>
 </body>
