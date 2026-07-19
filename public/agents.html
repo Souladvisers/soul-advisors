@@ -4720,22 +4720,32 @@ function retCalc() {
   var cpfSection = '';
   if (cpfOA || cpfSA || cpfOAMoIn || cpfSAMo || cpfOverride || cpfHousing) {
     var _hwarn = '';
-    if (housingMissingOA) {
-      _hwarn = '<div class="ret-warn">⚠️ You entered a housing deduction but no monthly OA contribution — enter your OA monthly contribution above to see the impact on your retirement.</div>';
-    } else if (housingFullyCover) {
-      _hwarn = '<div class="ret-warn">⚠️ Your housing deduction (S$' + Math.round(cpfHousing).toLocaleString() + '/mo) equals or exceeds your OA monthly contribution (S$' + Math.round(cpfOAMoIn).toLocaleString() + '/mo). No OA funds remain to grow toward retirement — only your existing OA balance continues to earn 2.5%.</div>';
-    }
     var _divRow = '';
-    if (cpfHousing > 0 && cpfOAMoIn > 0) {
-      var _diff = cpfPayoutNoHousing - cpfPayoutMonthly;
-      _divRow = '<div class="ret-divert-row">'
-        + '<span class="ret-divert-lbl">OA contribution</span><span class="ret-divert-val">S$' + Math.round(cpfOAMoIn).toLocaleString() + '/mo</span>'
-        + '<span class="ret-divert-arrow">→</span>'
-        + '<span class="ret-divert-lbl" style="color:#fca5a5">Housing</span><span class="ret-divert-val" style="color:#fca5a5">−S$' + Math.round(cpfHousing).toLocaleString() + '/mo</span>'
-        + '<span class="ret-divert-arrow">→</span>'
-        + '<span class="ret-divert-lbl" style="color:#6ee7b7">Toward retirement</span><span class="ret-divert-val" style="color:#6ee7b7">S$' + Math.round(cpfOAMo).toLocaleString() + '/mo</span>'
-        + (_diff > 0 && age < 55 ? '<span class="ret-divert-impact">CPF LIFE reduced by ~S$' + Math.round(_diff).toLocaleString() + '/mo — this increases your savings gap</span>' : '')
-        + '</div>';
+    if (age < 55) {
+      // Under 55: unused OA (after housing) still transfers into RA at 55, so the
+      // diversion visual reflects a real effect on CPF LIFE — safe to show.
+      if (housingMissingOA) {
+        _hwarn = '<div class="ret-warn">⚠️ You entered a housing deduction but no monthly OA contribution — enter your OA monthly contribution above to see the impact on your retirement.</div>';
+      } else if (housingFullyCover) {
+        _hwarn = '<div class="ret-warn">⚠️ Your housing deduction (S$' + Math.round(cpfHousing).toLocaleString() + '/mo) equals or exceeds your OA monthly contribution (S$' + Math.round(cpfOAMoIn).toLocaleString() + '/mo). No OA funds remain to grow toward retirement — only your existing OA balance continues to earn 2.5%.</div>';
+      }
+      if (cpfHousing > 0 && cpfOAMoIn > 0) {
+        var _diff = cpfPayoutNoHousing - cpfPayoutMonthly;
+        _divRow = '<div class="ret-divert-row">'
+          + '<span class="ret-divert-lbl">OA contribution</span><span class="ret-divert-val">S$' + Math.round(cpfOAMoIn).toLocaleString() + '/mo</span>'
+          + '<span class="ret-divert-arrow">→</span>'
+          + '<span class="ret-divert-lbl" style="color:#fca5a5">Housing</span><span class="ret-divert-val" style="color:#fca5a5">−S$' + Math.round(cpfHousing).toLocaleString() + '/mo</span>'
+          + '<span class="ret-divert-arrow">→</span>'
+          + '<span class="ret-divert-lbl" style="color:#6ee7b7">Toward retirement</span><span class="ret-divert-val" style="color:#6ee7b7">S$' + Math.round(cpfOAMo).toLocaleString() + '/mo</span>'
+          + (_diff > 0 ? '<span class="ret-divert-impact">CPF LIFE reduced by ~S$' + Math.round(_diff).toLocaleString() + '/mo — this increases your savings gap</span>' : '')
+          + '</div>';
+      }
+    } else if (cpfHousing > 0) {
+      // 55+: RA is already set from the age-55 transfer. Ongoing OA housing
+      // payments reduce the OA balance but don't retroactively change RA or
+      // CPF LIFE — no diversion visual, since it wouldn't reflect anything
+      // the calculation actually does.
+      _hwarn = '<div class="ret-warn">ℹ️ At 55+, your Retirement Account is already set from your age-55 transfer. Ongoing OA housing payments reduce your OA balance but do not change your RA or CPF LIFE payout unless you make a voluntary RA top-up.</div>';
     }
     var _lifeDiffLabel = cpfPayoutNoHousing > cpfPayoutMonthly
       ? ' <span style="font-size:0.64rem;color:#fca5a5;font-weight:400">(−S$' + Math.round(cpfPayoutNoHousing - cpfPayoutMonthly).toLocaleString() + '/mo due to housing)</span>'
