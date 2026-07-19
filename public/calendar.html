@@ -109,6 +109,16 @@ nav {
 .agenda-del:hover { color: var(--red-tx); }
 .empty-state { text-align: center; padding: 3rem 2rem; color: var(--muted); font-size: 0.88rem; }
 
+.coaching-wrap { border: 1px solid var(--border); border-radius: var(--radius); background: white; overflow: hidden; margin-bottom: 1rem; }
+.slot-item { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1.1rem; border-bottom: 1px solid rgba(184,151,90,0.08); flex-wrap: wrap; }
+.slot-item:last-child { border-bottom: none; }
+.slot-date { font-size: 0.82rem; font-weight: 500; min-width: 170px; }
+.slot-duration { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
+.slot-status { font-size: 0.78rem; flex: 1; min-width: 160px; }
+.slot-status.open { color: var(--accent-dark); font-weight: 600; }
+.slot-status.booked { color: var(--mid); }
+.slot-actions { display: flex; gap: 0.5rem; }
+
 /* ── MODAL ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0; background: rgba(28,26,23,0.55);
@@ -187,6 +197,14 @@ nav {
   <div class="agenda-wrap" id="agendaWrap">
     <div class="empty-state">Loading…</div>
   </div>
+
+  <div class="section-head" style="margin-top:2.5rem;">
+    <div class="section-title">Book Coaching with Arief</div>
+    <button class="btn btn-solid btn-small" id="openSlotBtn" style="display:none;">+ Open Coaching Slot</button>
+  </div>
+  <div class="coaching-wrap" id="coachingWrap">
+    <div class="empty-state">Loading…</div>
+  </div>
 </div>
 
 <!-- Add appointment modal -->
@@ -248,6 +266,76 @@ nav {
   </div>
 </div>
 
+<!-- Book / cancel a coaching slot -->
+<div class="modal-overlay" id="slotActionModal">
+  <div class="modal">
+    <h2 id="slotActionTitle">Book This Slot</h2>
+    <p class="sub" id="slotActionSub">Sign in to confirm your booking.</p>
+    <div class="form-msg" id="slotActionMsg"></div>
+    <form id="slotActionForm">
+      <div class="field">
+        <label for="saSubdomain">Agent</label>
+        <select id="saSubdomain" required>
+          <option value="" disabled selected>Select your name…</option>
+          <option value="nora">Noraziemah</option>
+          <option value="dzulqarnain">Dzulqarnain</option>
+          <option value="suhaimiahmad">Suhaimi Ahmad</option>
+          <option value="muhammadirsyad">Muhammad Irsyad</option>
+          <option value="iqbalnikmatullah">Iqbal Nikmatullah</option>
+          <option value="yani">ilyani ali</option>
+          <option value="yaxin">Yaxin</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="saPassword">Password</label>
+        <input type="password" id="saPassword" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelSlotActionBtn">Cancel</button>
+        <button type="submit" class="btn btn-solid" id="submitSlotActionBtn">Confirm</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Coach opens a new coaching slot -->
+<div class="modal-overlay" id="openSlotModal">
+  <div class="modal">
+    <h2>Open a Coaching Slot</h2>
+    <p class="sub">Agents will see this on the calendar and can book it — first come, first served. Only one booking per slot.</p>
+    <div class="form-msg" id="openSlotMsg"></div>
+    <form id="openSlotForm">
+      <div class="field-row">
+        <div class="field">
+          <label for="osDate">Date</label>
+          <input type="date" id="osDate" required>
+        </div>
+        <div class="field">
+          <label for="osTime">Time</label>
+          <input type="time" id="osTime" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="osDuration">Duration</label>
+        <select id="osDuration">
+          <option value="15">15 min</option>
+          <option value="30" selected>30 min</option>
+          <option value="45">45 min</option>
+          <option value="60">60 min</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="osNotes">Notes (optional)</label>
+        <textarea id="osNotes" placeholder="e.g. Focus: closing techniques"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelOpenSlotBtn">Cancel</button>
+        <button type="submit" class="btn btn-solid" id="submitOpenSlotBtn">Open Slot</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Coach Mode login modal -->
 <div class="modal-overlay" id="coachModal">
   <div class="modal">
@@ -280,6 +368,9 @@ let coachMode = false;
 let adminSubdomain = null;
 let adminPasswordHash = null;
 let allAppointments = [];
+let allSlots = [];
+let pendingSlotAction = null; // 'book' | 'cancel'
+let pendingSlotId = null;
 let viewYear, viewMonth; // viewMonth 0-indexed
 
 const today = new Date();
@@ -395,6 +486,166 @@ window.deleteAppointment = async function (id) {
   }
 };
 
+// ── Coaching Slots ──
+async function loadCoachingSlots() {
+  try {
+    const res = await fetch('/api/coaching-slots');
+    const data = await res.json();
+    allSlots = data.slots || [];
+  } catch (err) {
+    allSlots = [];
+  }
+  renderCoachingSlots();
+}
+
+function fmtSlotDateTime(date, time) {
+  const d = new Date(date + 'T00:00:00');
+  return d.toLocaleDateString('en-SG', { weekday: 'short', day: 'numeric', month: 'short' }) + ' · ' + time;
+}
+
+function renderCoachingSlots() {
+  document.getElementById('openSlotBtn').style.display = coachMode ? 'inline-flex' : 'none';
+
+  const upcoming = allSlots
+    .filter(s => s.date >= todayStr())
+    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+  const wrap = document.getElementById('coachingWrap');
+  if (!upcoming.length) {
+    wrap.innerHTML = '<div class="empty-state">No coaching slots open right now.</div>';
+    return;
+  }
+
+  wrap.innerHTML = upcoming.map(s => {
+    let statusHtml, actionHtml;
+    if (s.status === 'open') {
+      statusHtml = '<span class="slot-status open">Open — first come, first served</span>';
+      actionHtml = `<button class="btn btn-solid btn-small" onclick="startBookSlot('${s.id}')">Book This Slot</button>`
+        + (coachMode ? ` <button class="btn btn-ghost btn-small" onclick="coachRemoveSlot('${s.id}')">Remove</button>` : '');
+    } else {
+      statusHtml = `<span class="slot-status booked">Booked by <b>${s.bookedBy.name}</b>${s.googleEventId ? ' · 📅 synced to calendar' : ''}</span>`;
+      actionHtml = coachMode
+        ? `<button class="btn btn-ghost btn-small" onclick="coachCancelSlot('${s.id}')">Cancel</button>`
+        : `<button class="btn btn-ghost btn-small" onclick="startCancelSlot('${s.id}')">Cancel My Booking</button>`;
+    }
+    return `
+      <div class="slot-item">
+        <div class="slot-date">${fmtSlotDateTime(s.date, s.time)} <span class="slot-duration">(${s.duration} min)</span></div>
+        ${statusHtml}
+        <div class="slot-actions">${actionHtml}</div>
+      </div>`;
+  }).join('');
+}
+
+window.startBookSlot = function (id) {
+  pendingSlotAction = 'book'; pendingSlotId = id;
+  document.getElementById('slotActionTitle').textContent = 'Book This Slot';
+  document.getElementById('slotActionSub').textContent = 'Sign in to confirm your booking.';
+  document.getElementById('submitSlotActionBtn').textContent = 'Confirm Booking';
+  document.getElementById('slotActionMsg').className = 'form-msg';
+  document.getElementById('slotActionModal').classList.add('open');
+};
+
+window.startCancelSlot = function (id) {
+  pendingSlotAction = 'cancel'; pendingSlotId = id;
+  document.getElementById('slotActionTitle').textContent = 'Cancel My Booking';
+  document.getElementById('slotActionSub').textContent = "Confirm it's you to free up this slot.";
+  document.getElementById('submitSlotActionBtn').textContent = 'Cancel Booking';
+  document.getElementById('slotActionMsg').className = 'form-msg';
+  document.getElementById('slotActionModal').classList.add('open');
+};
+
+window.coachCancelSlot = async function (id) {
+  if (!confirm('Cancel this booking?')) return;
+  try {
+    const res = await fetch('/api/coaching-slots', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'cancel', id, adminSubdomain, adminPasswordHash }),
+    });
+    if (!res.ok) throw new Error((await res.json()).error || 'Failed to cancel');
+    await loadCoachingSlots();
+  } catch (err) { alert(err.message); }
+};
+
+window.coachRemoveSlot = async function (id) {
+  if (!confirm('Remove this open slot?')) return;
+  try {
+    const res = await fetch('/api/coaching-slots', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'remove', id, adminSubdomain, adminPasswordHash }),
+    });
+    if (!res.ok) throw new Error((await res.json()).error || 'Failed to remove');
+    await loadCoachingSlots();
+  } catch (err) { alert(err.message); }
+};
+
+document.getElementById('cancelSlotActionBtn').addEventListener('click', () => document.getElementById('slotActionModal').classList.remove('open'));
+document.getElementById('slotActionModal').addEventListener('click', (e) => { if (e.target.id === 'slotActionModal') e.target.classList.remove('open'); });
+
+document.getElementById('slotActionForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitSlotActionBtn');
+  btn.disabled = true;
+  const msg = document.getElementById('slotActionMsg');
+  msg.className = 'form-msg';
+  try {
+    const subdomain = document.getElementById('saSubdomain').value;
+    const password = document.getElementById('saPassword').value;
+    const passwordHash = await sha256Hex(password);
+    const res = await fetch('/api/coaching-slots', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: pendingSlotAction, id: pendingSlotId, subdomain, passwordHash }),
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || 'Failed');
+    msg.className = 'form-msg success';
+    msg.textContent = pendingSlotAction === 'book' ? 'Booked!' : 'Cancelled.';
+    await loadCoachingSlots();
+    setTimeout(() => { document.getElementById('slotActionModal').classList.remove('open'); document.getElementById('slotActionForm').reset(); }, 800);
+  } catch (err) {
+    msg.className = 'form-msg error';
+    msg.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('openSlotBtn').addEventListener('click', () => {
+  document.getElementById('openSlotMsg').className = 'form-msg';
+  document.getElementById('openSlotModal').classList.add('open');
+});
+document.getElementById('cancelOpenSlotBtn').addEventListener('click', () => document.getElementById('openSlotModal').classList.remove('open'));
+document.getElementById('openSlotModal').addEventListener('click', (e) => { if (e.target.id === 'openSlotModal') e.target.classList.remove('open'); });
+
+document.getElementById('openSlotForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitOpenSlotBtn');
+  btn.disabled = true;
+  const msg = document.getElementById('openSlotMsg');
+  msg.className = 'form-msg';
+  try {
+    const date = document.getElementById('osDate').value;
+    const time = document.getElementById('osTime').value;
+    const duration = document.getElementById('osDuration').value;
+    const notes = document.getElementById('osNotes').value;
+    const res = await fetch('/api/coaching-slots', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'open', adminSubdomain, adminPasswordHash, date, time, duration, notes }),
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || 'Failed to open slot');
+    msg.className = 'form-msg success';
+    msg.textContent = 'Slot opened!';
+    await loadCoachingSlots();
+    setTimeout(() => { document.getElementById('openSlotModal').classList.remove('open'); document.getElementById('openSlotForm').reset(); }, 800);
+  } catch (err) {
+    msg.className = 'form-msg error';
+    msg.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
 document.getElementById('prevMonthBtn').addEventListener('click', () => {
   viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }
   renderCalendar();
@@ -465,6 +716,7 @@ document.getElementById('coachModeBtn').addEventListener('click', () => {
     adminPasswordHash = null;
     document.getElementById('coachModeBtn').textContent = 'Coach Mode';
     loadAppointments();
+    renderCoachingSlots();
     return;
   }
   coachFormMsg.className = 'form-msg';
@@ -496,6 +748,7 @@ document.getElementById('coachLoginForm').addEventListener('submit', async (e) =
     coachModal.classList.remove('open');
     document.getElementById('coachLoginForm').reset();
     await loadAppointments();
+    renderCoachingSlots();
   } catch (err) {
     coachFormMsg.className = 'form-msg error';
     coachFormMsg.textContent = err.message;
@@ -506,6 +759,7 @@ document.getElementById('coachLoginForm').addEventListener('submit', async (e) =
 });
 
 loadAppointments();
+loadCoachingSlots();
 </script>
 </body>
 </html>
