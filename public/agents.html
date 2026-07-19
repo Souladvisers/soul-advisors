@@ -698,6 +698,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: white
 .ret-strat-btn.active span { color:var(--data); opacity:0.65; }
 .ret-kpi-3 { grid-template-columns:repeat(3,1fr) !important; }
 @media(max-width:700px){ .ret-kpi-3 { grid-template-columns:repeat(2,1fr) !important; } }
+.ret-kpi-4 { grid-template-columns:repeat(4,1fr) !important; }
+@media(max-width:700px){ .ret-kpi-4 { grid-template-columns:repeat(2,1fr) !important; } }
 /* ── WA SCRIPTS ── */
 .scripts-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 2rem 5rem; }
 .scripts-filter { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
@@ -4587,11 +4589,11 @@ function retCalc() {
   var cpfTier = '';
 
   if (age >= 55) {
-    // Already has RA — grows at 4%
+    // Already has RA — grows at 4%, plus any ongoing monthly RA contribution
     var yrsTo65  = Math.max(65 - age, 0);
     var yrsToRet = Math.max(retAge - age, 0);
     raAt65projected  = fvLumpSum(cpfSA, cpfSARate, yrsTo65) + fvAnnuity(cpfSAMo, cpfSARate, yrsTo65);
-    raAtRetirement   = fvLumpSum(cpfSA, cpfSARate, yrsToRet);
+    raAtRetirement   = fvLumpSum(cpfSA, cpfSARate, yrsToRet) + fvAnnuity(cpfSAMo, cpfSARate, yrsToRet);
   } else {
     // Under 55: accumulate OA + SA → transfer to RA at 55 → grow to 65
     var yrsTo55      = Math.max(55 - age, 0);
@@ -4626,8 +4628,10 @@ function retCalc() {
     var oaToRa = Math.min(oaAt55, Math.max(ERS_2026 - saAt55, 0));
     var raAt55 = Math.min(saAt55 + oaToRa, ERS_2026);
 
-    raAt65projected  = fvLumpSum(raAt55, cpfSARate, yrsFrom55To65);
-    raAtRetirement   = retAge <= 55 ? raAt55 : fvLumpSum(raAt55, cpfSARate, yrsFrom55ToRet);
+    // RA at retirement compounds forward from the RA-at-55 anchor, plus any
+    // ongoing monthly RA contribution for clients who keep working past 55.
+    raAt65projected  = fvLumpSum(raAt55, cpfSARate, yrsFrom55To65) + fvAnnuity(cpfSAMo, cpfSARate, yrsFrom55To65);
+    raAtRetirement   = retAge <= 55 ? raAt55 : fvLumpSum(raAt55, cpfSARate, yrsFrom55ToRet) + fvAnnuity(cpfSAMo, cpfSARate, yrsFrom55ToRet);
   }
 
   // CPF LIFE payout is published against RA-at-55 amounts (BRS/FRS/ERS).
@@ -4758,7 +4762,8 @@ function retCalc() {
       : '';
     cpfSection = _hwarn
       + '<div class="ret-section-hdr-out">CPF Projection</div>'
-      + '<div class="ret-kpi-grid ret-kpi-3">'
+      + '<div class="ret-kpi-grid ret-kpi-4">'
+      + '<div class="ret-kpi"><div class="ret-kpi-lbl">RA at Age 55' + (age >= 55 ? ' (est.)' : '') + '</div><div class="ret-kpi-val" style="color:var(--data)">' + retFmt(ra55ForLife) + '</div></div>'
       + '<div class="ret-kpi"><div class="ret-kpi-lbl">RA at Retirement</div><div class="ret-kpi-val" style="color:var(--data)">' + retFmt(raAtRetirement) + '</div></div>'
       + '<div class="ret-kpi"><div class="ret-kpi-lbl">CPF LIFE (from 65)</div><div class="ret-kpi-val" style="color:var(--data)">' + retFmt(cpfPayoutMonthly) + '/mo' + _lifeDiffLabel + '</div></div>'
       + '<div class="ret-kpi"><div class="ret-kpi-lbl">Retirement Sum Tier</div><div class="ret-kpi-val" style="font-size:0.75rem">' + (cpfTier || '—') + '</div></div>'
