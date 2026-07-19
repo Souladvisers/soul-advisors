@@ -624,6 +624,12 @@
           "body": "Easy to communicate. With the massive knowledge on policies, good with numbers and the different recommendations, our coverage and plans are well managed. My wife has a better understanding now, that matters more.",
           "name": "Khairul",
           "role": "Freight forwarder"
+        },
+        {
+          "title": "Last Mile Planning",
+          "body": "Sharing with Iqbal about whats the difficulties i might foresee in the future. Without no doubt we go through a few proposal in different session for different possible outcomes. \n\nYes. I would say for my cases without no doubt is a bit hard in the beginning but we manage to break through the outcomes in different scenarios.\n\nI would like to take this opportunity to highly recommend him for those who’s finding an advisors for your future planning.",
+          "name": "Muhammad Sufyan",
+          "role": "Civil Servant"
         }
       ],
       "yearsExperience": "10",
@@ -687,6 +693,25 @@
       "email": "ilyani.pru@gmail.com",
       "accent": "#b8975a",
       "passwordHash": "72df26bb3617a1e7c30be7b76571093435ef10b70f7531181ce1621934026997"
+    },
+    {
+      "id": "member_1784039899138",
+      "bio": "",
+      "credentials": [],
+      "specialisations": [],
+      "testimonials": [],
+      "yearsExperience": "",
+      "photo": "",
+      "isAdmin": false,
+      "whatsapp": "",
+      "name": "Yaxin",
+      "subdomain": "yaxin",
+      "title": "FC",
+      "agentCode": "",
+      "phone": "",
+      "email": "m1581843363@gmail.com",
+      "accent": "#b8975a",
+      "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
     }
   ]
 }
