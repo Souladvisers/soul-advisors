@@ -6,6 +6,7 @@
     { "subdomain": "suhaimiahmad",      "name": "Suhaimi Ahmad",      "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
     { "subdomain": "muhammadirsyad",    "name": "Muhammad Irsyad",    "accent": "#4701e9", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
     { "subdomain": "iqbalnikmatullah",  "name": "Iqbal Nikmatullah",  "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
-    { "subdomain": "yani",              "name": "ilyani ali",         "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] }
+    { "subdomain": "yani",              "name": "ilyani ali",         "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] },
+    { "subdomain": "yaxin",              "name": "Yaxin",              "accent": "#b8975a", "casesOpen": 0, "premium": 0, "status": "On Track", "notes": "", "updatedAt": null, "history": [], "coachingLog": [] }
   ]
 }

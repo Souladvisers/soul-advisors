@@ -6,6 +6,7 @@
     { "subdomain": "suhaimiahmad",      "name": "Suhaimi Ahmad",      "accent": "#b8975a", "annualTarget": 0, "ytdProduction": 0, "ytdCases": 0, "ytdClients": 0, "updatedAt": null, "history": [] },
     { "subdomain": "muhammadirsyad",    "name": "Muhammad Irsyad",    "accent": "#4701e9", "annualTarget": 0, "ytdProduction": 0, "ytdCases": 0, "ytdClients": 0, "updatedAt": null, "history": [] },
     { "subdomain": "iqbalnikmatullah",  "name": "Iqbal Nikmatullah",  "accent": "#b8975a", "annualTarget": 0, "ytdProduction": 0, "ytdCases": 0, "ytdClients": 0, "updatedAt": null, "history": [] },
-    { "subdomain": "yani",              "name": "ilyani ali",         "accent": "#b8975a", "annualTarget": 0, "ytdProduction": 0, "ytdCases": 0, "ytdClients": 0, "updatedAt": null, "history": [] }
+    { "subdomain": "yani",              "name": "ilyani ali",         "accent": "#b8975a", "annualTarget": 0, "ytdProduction": 0, "ytdCases": 0, "ytdClients": 0, "updatedAt": null, "history": [] },
+    { "subdomain": "yaxin",              "name": "Yaxin",              "accent": "#b8975a", "annualTarget": 0, "ytdProduction": 0, "ytdCases": 0, "ytdClients": 0, "updatedAt": null, "history": [] }
   ]
 }
