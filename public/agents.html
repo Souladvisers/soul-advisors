@@ -4407,14 +4407,20 @@ function naCalc() {
 let retStratRate = 0.04; // default conservative
 
 // ── Client Session Bar ─────────────────────────────────────────
+// CPF allocation rates (% of Ordinary Wage, capped at the $7,400 OW ceiling),
+// per official CPF Board table effective 1 January 2026. "saPct" is the
+// Special Account slice below 55, and the Retirement Account slice from 55
+// onward (SA is closed at 55 and folded into RA under current CPF rules).
+// Source: https://www.cpf.gov.sg/content/dam/web/employer/employer-obligations/documents/CPFAllocationRatesfromJanuary2026.pdf
 function getCpfRates(age) {
-  if (age < 35) return { oaPct: 0.23, saPct: 0.06, maPct: 0.08 };
-  if (age < 45) return { oaPct: 0.21, saPct: 0.07, maPct: 0.09 };
-  if (age < 50) return { oaPct: 0.19, saPct: 0.08, maPct: 0.10 };
-  if (age < 55) return { oaPct: 0.15, saPct: 0.115, maPct: 0.105 };
-  if (age < 60) return { oaPct: 0.12, saPct: 0.035, maPct: 0.105 };
-  if (age < 65) return { oaPct: 0.035, saPct: 0.025, maPct: 0.105 };
-  return { oaPct: 0.01, saPct: 0.01, maPct: 0.105 };
+  if (age < 35) return { oaPct: 0.23,  saPct: 0.06,  maPct: 0.08  };
+  if (age < 45) return { oaPct: 0.21,  saPct: 0.07,  maPct: 0.09  };
+  if (age < 50) return { oaPct: 0.19,  saPct: 0.08,  maPct: 0.10  };
+  if (age < 55) return { oaPct: 0.15,  saPct: 0.115, maPct: 0.105 };
+  if (age < 60) return { oaPct: 0.12,  saPct: 0.115, maPct: 0.105 };
+  if (age < 65) return { oaPct: 0.035, saPct: 0.11,  maPct: 0.105 };
+  if (age < 70) return { oaPct: 0.01,  saPct: 0.05,  maPct: 0.105 };
+  return         { oaPct: 0.01,  saPct: 0.01,  maPct: 0.105 };
 }
 
 function getCpfAlloc(age, grossIncome) {
