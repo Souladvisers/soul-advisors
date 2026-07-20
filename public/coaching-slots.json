@@ -36,6 +36,17 @@
       "bookedBy": null,
       "googleEventId": null,
       "createdAt": "2026-07-20T23:57:07.399Z"
+    },
+    {
+      "id": "slot-1784591863123",
+      "date": "2026-07-24",
+      "time": "10:00",
+      "duration": 60,
+      "notes": "VIA ZOOM",
+      "status": "open",
+      "bookedBy": null,
+      "googleEventId": null,
+      "createdAt": "2026-07-20T23:57:43.123Z"
     }
   ]
 }
