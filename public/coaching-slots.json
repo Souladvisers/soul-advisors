@@ -25,6 +25,17 @@
       "bookedBy": null,
       "googleEventId": null,
       "createdAt": "2026-07-19T22:14:48.618Z"
+    },
+    {
+      "id": "slot-1784591827399",
+      "date": "2026-07-22",
+      "time": "10:00",
+      "duration": 45,
+      "notes": "",
+      "status": "open",
+      "bookedBy": null,
+      "googleEventId": null,
+      "createdAt": "2026-07-20T23:57:07.399Z"
     }
   ]
 }
