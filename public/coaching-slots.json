@@ -6,8 +6,12 @@
       "time": "10:00",
       "duration": 60,
       "notes": "",
-      "status": "open",
-      "bookedBy": null,
+      "status": "booked",
+      "bookedBy": {
+        "subdomain": "nora",
+        "name": "Noraziemah",
+        "bookedAt": "2026-07-20T07:24:15.944Z"
+      },
       "googleEventId": null,
       "createdAt": "2026-07-19T22:14:27.362Z"
     },
