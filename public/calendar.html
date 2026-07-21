@@ -24,6 +24,7 @@
   --review-bg: #E3F2FB; --review-tx: #1E6091; --review-dot: #7FC4E8;
   --opening-bg: #E4F5EA; --opening-tx: #276749; --opening-dot: #5AB87A;
   --closing-bg: #F5EEDF; --closing-tx: #8A6E3A; --closing-dot: #B8975A;
+  --coaching-bg: #EDE4F5; --coaching-tx: #6B3FA0; --coaching-dot: #9B6FCE;
   --red-bg: #FEE2E2; --red-tx: #991B1B;
   --green-bg: #DCFCE7; --green-tx: #166534;
 }
@@ -89,6 +90,7 @@ nav {
 .cal-chip.review { background: var(--review-bg); color: var(--review-tx); }
 .cal-chip.opening { background: var(--opening-bg); color: var(--opening-tx); }
 .cal-chip.closing { background: var(--closing-bg); color: var(--closing-tx); }
+.cal-chip.coaching { background: var(--coaching-bg); color: var(--coaching-tx); }
 .cal-chip-more { font-size: 0.64rem; color: var(--muted); }
 
 .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
@@ -104,6 +106,7 @@ nav {
 .type-pill.review { background: var(--review-bg); color: var(--review-tx); }
 .type-pill.opening { background: var(--opening-bg); color: var(--opening-tx); }
 .type-pill.closing { background: var(--closing-bg); color: var(--closing-tx); }
+.type-pill.coaching { background: var(--coaching-bg); color: var(--coaching-tx); }
 .agenda-client { font-size: 0.78rem; color: var(--mid); flex: 1; }
 .agenda-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.9rem; padding: 2px 6px; }
 .agenda-del:hover { color: var(--red-tx); }
@@ -178,6 +181,7 @@ nav {
     <div class="legend-item"><span class="legend-dot" style="background:var(--review-dot)"></span>Review</div>
     <div class="legend-item"><span class="legend-dot" style="background:var(--opening-dot)"></span>Opening</div>
     <div class="legend-item"><span class="legend-dot" style="background:var(--closing-dot)"></span>Closing</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--coaching-dot)"></span>Coaching (booked)</div>
   </div>
 
   <div class="cal-toolbar">
@@ -377,7 +381,7 @@ const today = new Date();
 viewYear = today.getFullYear();
 viewMonth = today.getMonth();
 
-const TYPE_CLASS = { Review: 'review', Opening: 'opening', Closing: 'closing' };
+const TYPE_CLASS = { Review: 'review', Opening: 'opening', Closing: 'closing', Coaching: 'coaching' };
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -411,11 +415,21 @@ async function loadAppointments() {
   renderAgenda();
 }
 
+function bookedSlotsAsEntries() {
+  return allSlots
+    .filter(s => s.status === 'booked' && s.bookedBy)
+    .map(s => ({
+      id: s.id, date: s.date, time: s.time, type: 'Coaching',
+      agentName: s.bookedBy.name, accent: s.bookedBy.accent || '#9B6FCE',
+      clientName: '', notes: s.notes || '', isCoachingSlot: true,
+    }));
+}
+
 function renderCalendar() {
   monthLabel.textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
 
   const byDate = {};
-  allAppointments.forEach(a => { (byDate[a.date] = byDate[a.date] || []).push(a); });
+  [...allAppointments, ...bookedSlotsAsEntries()].forEach(a => { (byDate[a.date] = byDate[a.date] || []).push(a); });
 
   const firstOfMonth = new Date(viewYear, viewMonth, 1);
   const startOffset = firstOfMonth.getDay();
@@ -451,7 +465,7 @@ function fmtDateShort(dateStr) {
 }
 
 function renderAgenda() {
-  const upcoming = allAppointments
+  const upcoming = [...allAppointments, ...bookedSlotsAsEntries()]
     .filter(a => a.date >= todayStr())
     .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
 
@@ -460,15 +474,20 @@ function renderAgenda() {
     return;
   }
 
-  agendaWrap.innerHTML = upcoming.map(a => `
+  agendaWrap.innerHTML = upcoming.map(a => {
+    const delBtn = a.isCoachingSlot
+      ? (coachMode ? `<button class="agenda-del" title="Cancel" onclick="coachCancelSlot('${a.id}')">✕</button>` : '')
+      : (coachMode ? `<button class="agenda-del" title="Delete" onclick="deleteAppointment('${a.id}')">✕</button>` : '');
+    return `
     <div class="agenda-item">
       <div class="agenda-date">${fmtDateShort(a.date)}${a.time ? ' · ' + a.time : ''}</div>
       <div class="agenda-agent"><span class="agenda-dot" style="background:${a.accent || '#B8975A'}"></span>${a.agentName}</div>
       <span class="type-pill ${TYPE_CLASS[a.type]}">${a.type}</span>
       <div class="agenda-client">${a.clientName ? a.clientName : ''}${a.notes ? (a.clientName ? ' — ' : '') + a.notes : (!a.clientName ? '—' : '')}</div>
-      ${coachMode ? `<button class="agenda-del" title="Delete" onclick="deleteAppointment('${a.id}')">✕</button>` : ''}
+      ${delBtn}
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 window.deleteAppointment = async function (id) {
@@ -496,6 +515,8 @@ async function loadCoachingSlots() {
     allSlots = [];
   }
   renderCoachingSlots();
+  renderCalendar();
+  renderAgenda();
 }
 
 function fmtSlotDateTime(date, time) {

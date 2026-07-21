@@ -116,7 +116,7 @@ export default async function handler(req, res) {
     if (slot.status !== 'open') return res.status(409).json({ error: 'This slot has already been booked — please pick another.' });
 
     slot.status = 'booked';
-    slot.bookedBy = { subdomain, name: member.name, bookedAt: new Date().toISOString() };
+    slot.bookedBy = { subdomain, name: member.name, accent: member.accent || '#B8975A', bookedAt: new Date().toISOString() };
 
     // Save the booking first — only sync to Google Calendar once it's committed,
     // so a race-lost booking never creates a phantom calendar event.
