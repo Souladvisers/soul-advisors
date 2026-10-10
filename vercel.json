@@ -34,6 +34,7 @@
     { "source": "/islamic-finance","destination": "/islamic-finance.html" },
     { "source": "/client-care",    "destination": "/client-care.html" },
     { "source": "/wasiat",         "destination": "/wasiat.html" },
+    { "source": "/memorandum",     "destination": "/memorandum.html" },
     { "source": "/(.*)",           "destination": "/index.html" }
   ]
 }
