@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wasiat Generator — SOUL Advisors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:wght@500;600&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<!-- Word export library (runs in the visitor's browser) -->
+<script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js"></script>
+<style>
+:root{
+  --ink:#1d1a16; --muted:#6b645a; --line:#e6e0d4; --bg:#FAF8F3; --card:#ffffff;
+  --brand:#0D1117; --brand-2:#8A6E3A; --gold:#B8975A; --warn-bg:#fff6e5; --warn:#8a5a00;
+  --err-bg:#fdecec; --err:#9b1c1c; --ok-bg:#e9f5ef; --ok:#1d6b45; --ph:#fff1b8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.5}
+header.top{background:var(--brand);border-bottom:1px solid rgba(184,151,90,.25);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header.top .mark{width:34px;height:34px;border-radius:8px;background:var(--gold);display:grid;place-items:center;font-weight:700}
+header.top h1{font-size:18px;margin:0;font-weight:600;font-family:Lora,serif}
+header.top a.back{color:var(--gold);text-decoration:none;font-size:13px;border:1px solid rgba(184,151,90,.4);border-radius:8px;padding:6px 10px}
+.card h2{font-family:Lora,serif}
+body.embed header.top{display:none}
+header.top p{margin:0;opacity:.8;font-size:13px}
+header.top .sp{flex:1}
+.wrap{display:grid;grid-template-columns:minmax(360px,520px) 1fr;gap:24px;max-width:1440px;margin:0 auto;padding:24px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.steps button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:500 13px 'DM Sans',sans-serif;color:var(--muted);cursor:pointer}
+.steps button.on{background:var(--brand);border-color:var(--brand);color:var(--gold)}
+.steps button.done{border-color:var(--brand-2);color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h2{margin:0 0 4px;font-size:20px}
+.card .lead{margin:0 0 18px;color:var(--muted);font-size:14px}
+.step{display:none}.step.on{display:block}
+label{display:block;font-weight:500;font-size:13px;margin:12px 0 4px}
+.hint{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],input[type=number],select,textarea{width:100%;padding:9px 11px;border:1px solid #cfd5d1;border-radius:8px;font:14px 'DM Sans',sans-serif;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #E8D5A3;border-color:var(--brand-2)}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.seg{display:flex;border:1px solid #cfd5d1;border-radius:8px;overflow:hidden}
+.seg label{flex:1;margin:0;text-align:center;padding:8px 6px;cursor:pointer;font-weight:500;border-right:1px solid #cfd5d1;font-size:13px}
+.seg label:last-child{border-right:0}
+.seg input{display:none}
+.seg label:has(input:checked){background:var(--brand);color:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-weight:400;font-size:14px;cursor:pointer}
+.check input{margin-top:3px;accent-color:var(--brand);width:16px;height:16px;flex:none}
+.item{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;background:#fafbfa;position:relative}
+.item .ttl{font-weight:600;font-size:13px;color:var(--brand)}
+.item .x{position:absolute;top:8px;right:8px;border:0;background:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
+.add{border:1px dashed var(--brand-2);background:#fff;color:var(--brand);border-radius:8px;padding:8px 12px;font:600 13px 'DM Sans',sans-serif;cursor:pointer;margin-top:4px}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}
+.btn{border:0;border-radius:9px;padding:10px 18px;font:600 14px 'DM Sans',sans-serif;cursor:pointer}
+.btn.pri{background:var(--brand);color:#E8D5A3}.btn.pri:hover{background:#1E2530}
+.btn.sec{background:#fff;border:1px solid #cfd5d1;color:var(--ink)}
+.btn.gold{background:var(--gold);color:#fff}
+.note{border-radius:10px;padding:10px 12px;font-size:13px;margin:10px 0}
+.note.warn{background:var(--warn-bg);color:var(--warn)}
+.note.err{background:var(--err-bg);color:var(--err)}
+.note.ok{background:var(--ok-bg);color:var(--ok)}
+.note.info{background:#eef4f8;color:#234e6b}
+.hidden{display:none!important}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* preview */
+.pv{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;border-radius:14px;background:#d9d6cd;padding:22px}
+.pvbar{display:flex;justify-content:space-between;align-items:center;margin:-6px 0 14px;font-size:12px;color:#4b524e}
+.paper{background:#fff;max-width:794px;margin:0 auto 18px;padding:72px 80px;font-family:Tinos,'Times New Roman',serif;font-size:15px;line-height:1.6;color:#000;box-shadow:0 2px 10px rgba(0,0,0,.12);text-align:justify}
+.paper .cov{min-height:900px;display:flex;flex-direction:column}
+.paper .cov .dt{text-align:left}
+.paper .rule{border-bottom:2px dotted #000;margin:18px 0}
+.paper .ctr{text-align:center}
+.paper .big{font-size:21px;font-weight:700}
+.paper .logo{color:#888;font-size:13px;text-align:center;margin:40px 0}
+.paper .had{margin-top:auto;font-size:14px;line-height:1.45}
+.paper h3{font-size:15px;margin:22px 0 8px;display:flex;gap:0}
+.paper h3 .n{width:48px;flex:none}
+.paper h3 .t{text-decoration:underline;text-transform:uppercase}
+.paper .c{display:flex;margin:0 0 10px}
+.paper .c .n{width:48px;flex:none}
+.paper .s{display:flex;margin:0 0 8px 48px}
+.paper .s .n{width:40px;flex:none}
+.paper p{margin:0 0 12px}
+.paper mark{background:var(--ph);padding:0 2px}
+.paper table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;text-align:left}
+.paper td,.paper th{border:1px solid #000;padding:5px 7px;vertical-align:top}
+.paper th{background:#eee}
+.paper .sig{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:26px;text-align:left}
+.paper .sig div p{margin:0 0 8px}
+.paper .pb{border-top:1px dashed #bbb;margin:34px -80px;position:relative}
+.paper .pb::after{content:'page break';position:absolute;right:12px;top:-9px;background:#fff;color:#aaa;font:11px 'DM Sans',sans-serif;padding:0 6px}
+.mtoggle{display:none}
+@media (max-width:960px){
+  .wrap{grid-template-columns:1fr;padding:16px}
+  .pv{position:static;max-height:none;padding:12px}
+  .paper{padding:36px 22px;font-size:14px}
+  .paper .pb{margin:30px -22px}
+  .paper .cov{min-height:auto}
+  .mtoggle{display:flex;gap:8px;margin-bottom:12px}
+  .mtoggle button{flex:1}
+  body.m-form .pv{display:none} body.m-prev .formcol .steps,body.m-prev .formcol .card{display:none}
+  .row,.row3{grid-template-columns:1fr}
+}
+@media print{
+  header.top,.formcol,.pvbar,.mtoggle{display:none!important}
+  body{background:#fff}.wrap{display:block;padding:0}.pv{position:static;max-height:none;overflow:visible;background:#fff;padding:0}
+  .paper{box-shadow:none;padding:0;margin:0;max-width:none}
+  .paper .pb{border:0;margin:0;page-break-after:always}.paper .pb::after{display:none}
+  .paper mark{background:none}
+}
+</style>
+</head>
+<body class="m-form">
+<header class="top">
+  <div class="mark" style="color:#0D1117">S</div>
+  <div><h1><span style="color:var(--gold)">SOUL</span> Advisors · Wasiat Generator</h1><p>Fill in each step. Your will updates on the right as you type.</p></div>
+  <div class="sp"></div>
+  <p>🔒 Details stay in this browser. Nothing is uploaded.</p><a class="back" href="/agents">← Agent Hub</a>
+</header>
+
+<div class="wrap">
+<div class="formcol">
+  <div class="mtoggle"><button class="btn pri" id="mvForm" onclick="mview('form')">Form</button><button class="btn sec" id="mvPrev" onclick="mview('prev')">Preview will</button></div>
+  <div class="steps" id="steps"></div>
+  <div class="card">
+
+  <!-- STEP 1 -->
+  <section class="step" data-title="About you">
+    <h2>About you</h2><p class="lead">Your details as they appear on your NRIC.</p>
+    <label>Full name (as per NRIC)</label><input type="text" data-k="t.name" placeholder="e.g. Ahmad Bin Ismail">
+    <div class="row">
+      <div><label>ID type</label><select data-k="t.idType"><option>NRIC</option><option>FIN</option><option>Passport</option></select></div>
+      <div><label>ID number</label><input type="text" data-k="t.nric" placeholder="S1234567A"></div>
+    </div>
+    <label>Residential address</label><input type="text" data-k="t.address" placeholder="Block, street, #unit, Singapore postal code">
+    <div class="row">
+      <div><label>Gender</label><div class="seg"><label><input type="radio" name="g" data-k="t.gender" value="M">Male</label><label><input type="radio" name="g" data-k="t.gender" value="F">Female</label></div></div>
+      <div><label>Mazhab</label><select data-k="t.mazhab"><option>Shafi'i</option><option>Hanafi</option><option>Maliki</option><option>Hanbali</option></select></div>
+    </div>
+    <label>Citizenship</label><select data-k="t.citizen"><option>Singaporean</option><option>Singapore Permanent Resident</option><option>Other</option></select>
+    <label>Can you read and understand English?</label>
+    <div class="seg"><label><input type="radio" name="en" data-k="t.english" value="yes">Yes</label><label><input type="radio" name="en" data-k="t.english" value="no">No, I need an interpreter</label></div>
+    <div data-show="t.english=no"><label>Language the will is explained in</label><select data-k="t.lang"><option>Malay</option><option>Tamil</option><option>Mandarin</option><option>Arabic</option><option>Other</option></select></div>
+    <label>How will you sign?</label>
+    <div class="seg"><label><input type="radio" name="sg" data-k="t.sign" value="sign">Signature</label><label><input type="radio" name="sg" data-k="t.sign" value="thumb">Thumbprint</label></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" data-title="Family">
+    <h2>Your family</h2><p class="lead">Used to identify your heirs. Faraid decides their shares, not this list.</p>
+    <label>Marital status</label>
+    <div class="seg"><label><input type="radio" name="ms" data-k="marital" value="married">Married</label><label><input type="radio" name="ms" data-k="marital" value="single">Single</label><label><input type="radio" name="ms" data-k="marital" value="widowed">Widowed</label><label><input type="radio" name="ms" data-k="marital" value="divorced">Divorced</label></div>
+    <div data-show="marital=married">
+      <div class="row"><div><label><span data-sp>Spouse</span>'s full name</label><input type="text" data-k="spouse.name"></div><div><label>NRIC</label><input type="text" data-k="spouse.nric"></div></div>
+    </div>
+    <label style="margin-top:18px">Children</label>
+    <div id="l-children"></div>
+    <button class="add" onclick="addItem('children')">+ Add child</button>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" data-title="Executors">
+    <h2>Executors and trustees</h2><p class="lead">The person who will carry out your will. Add replacements in order, in case the first cannot act.</p>
+    <div id="l-executors"></div>
+    <button class="add" id="addExec" onclick="addItem('executors')">+ Add replacement executor</button>
+    <div class="note info">An executor can also be one of your heirs. Choose someone you trust, who is organised and likely to outlive you.</div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" data-title="Guardian">
+    <h2>Guardian for young children</h2>
+    <div id="noMinor" class="note ok">You have not marked any child as under 21, so no guardian clause is needed. You can skip this step.</div>
+    <div id="hasMinor">
+      <p class="lead">Who should look after your children under 21 if both parents pass away?</p>
+      <div class="item"><div class="ttl">Guardian</div>
+        <div class="row3"><div><label>Full name</label><input type="text" data-k="guardian.name"></div><div><label>NRIC</label><input type="text" data-k="guardian.nric"></div><div><label>Relationship</label><input type="text" data-k="guardian.rel" placeholder="e.g. sister"></div></div></div>
+      <div class="item"><div class="ttl">Alternate guardian (optional)</div>
+        <div class="row3"><div><label>Full name</label><input type="text" data-k="guardian2.name"></div><div><label>NRIC</label><input type="text" data-k="guardian2.nric"></div><div><label>Relationship</label><input type="text" data-k="guardian2.rel"></div></div></div>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step" data-title="Wasiyyah">
+    <h2>Wasiyyah (bequest of up to 1/3)</h2>
+    <p class="lead">Optional gifts from your estate to people who are <b>not</b> your Faraid heirs, or to charities and mosques. The total cannot exceed one-third.</p>
+    <label class="check"><input type="checkbox" data-k="hasW"> I want to make a wasiyyah</label>
+    <div data-show="hasW=true">
+      <div id="l-wasiyyah"></div>
+      <button class="add" onclick="addItem('wasiyyah')">+ Add beneficiary</button>
+      <div id="wTotal"></div>
+    </div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section class="step" data-title="Assets">
+    <h2>Nominations and joint assets</h2><p class="lead">These decide which assets pass outside your will.</p>
+    <label>Have you made a CPF nomination?</label>
+    <div class="seg"><label><input type="radio" name="cpf" data-k="cpfNom" value="yes">Yes</label><label><input type="radio" name="cpf" data-k="cpfNom" value="no">No</label><label><input type="radio" name="cpf" data-k="cpfNom" value="unsure">Not sure</label></div>
+    <label>Do you have insurance policies with a nomination?</label>
+    <div class="seg"><label><input type="radio" name="ins" data-k="insNom" value="yes">Yes</label><label><input type="radio" name="ins" data-k="insNom" value="no">No / no policies</label></div>
+    <label>Do you hold any joint bank accounts?</label>
+    <div class="seg"><label><input type="radio" name="ja" data-k="jointAcc" value="yes">Yes</label><label><input type="radio" name="ja" data-k="jointAcc" value="no">No</label></div>
+    <div data-show="jointAcc=yes"><label class="check"><input type="checkbox" data-k="jaHibah"> I intend my share of joint accounts to go to the surviving account holder as a gift (hibah)</label></div>
+    <label>Do you own property as joint tenants (e.g. HDB flat with your spouse)?</label>
+    <div class="seg"><label><input type="radio" name="jp" data-k="jointProp" value="yes">Yes</label><label><input type="radio" name="jp" data-k="jointProp" value="no">No</label></div>
+    <div data-show="jointProp=yes"><label class="check"><input type="checkbox" data-k="jtHibah"> I intend my share to pass to the surviving joint owner as a gift (hibah ruqba), not by Faraid</label>
+      <div class="note warn" data-show="jtHibah=false">Without this declaration, your share of the property may be treated as part of your estate and divided by Faraid.</div></div>
+    <label class="check"><input type="checkbox" data-k="lifetime"> I have made lifetime gifts (hibah), trusts or waqf that should be honoured</label>
+
+    <h2 style="margin-top:26px;font-size:17px">Schedule of assets <span class="hint">(optional)</span></h2>
+    <p class="lead">Listing assets helps your executor find them. Show account numbers by the last 4 digits only.</p>
+    <div id="l-assets"></div>
+    <button class="add" onclick="addItem('assets')">+ Add asset</button>
+  </section>
+
+  <!-- STEP 7 -->
+  <section class="step" data-title="Wishes">
+    <h2>Wishes and obligations</h2><p class="lead">Choose what to include.</p>
+    <label class="check"><input type="checkbox" data-k="funeral"> Include funeral wishes (Islamic burial; no autopsy, embalming or cremation unless required by law)</label>
+    <label>Have you performed Hajj?</label>
+    <div class="seg"><label><input type="radio" name="hj" data-k="hajj" value="done">Yes</label><label><input type="radio" name="hj" data-k="hajj" value="not">Not yet</label></div>
+    <div class="note info" data-show="hajj=not">Your will directs the executor to pay for <i>Badal Haji</i> on your behalf if you pass away before performing Hajj.</div>
+    <label class="check"><input type="checkbox" data-k="nasihat"> Include nasihat (advice) to my heirs, with Surah Al-Baqarah verses 181–182</label>
+    <label>Other directions <span class="hint">(optional, e.g. a specific debt to repay; your planner will review this wording)</span></label>
+    <textarea data-k="extra" placeholder="e.g. I direct my Executor to repay the sum of S$2,000 owed to my brother, Yusof Bin Ismail."></textarea>
+    <h2 style="margin-top:26px;font-size:17px">Witnesses <span class="hint">(optional, can be filled in by hand)</span></h2>
+    <div id="l-witnesses"></div>
+  </section>
+
+  <!-- STEP 8 -->
+  <section class="step" data-title="Review">
+    <h2>Review and download</h2><p class="lead">Please fix anything in red. Items highlighted yellow in the preview are still blank.</p>
+    <div id="checks"></div>
+    <div class="tools">
+      <button class="btn pri" onclick="downloadDocx()">Download Word (.docx)</button>
+      <button class="btn sec" onclick="window.print()">Print / Save as PDF</button>
+    </div>
+    <div class="tools">
+      <button class="btn sec" onclick="saveDraft()">Save draft file</button>
+      <label class="btn sec" style="margin:0">Load draft file<input type="file" accept=".json" onchange="loadDraft(this)" hidden></label>
+      <button class="btn sec" onclick="if(confirmReset())resetAll()">Clear form</button>
+    </div>
+    <div class="note warn" style="margin-top:16px">This generates a draft will. Have it reviewed by a qualified estate planner or lawyer, and sign it before two independent witnesses who are not heirs or beneficiaries.</div>
+  </section>
+
+  <div class="nav"><button class="btn sec" id="prev" onclick="go(cur-1)">Back</button><button class="btn pri" id="next" onclick="go(cur+1)">Next</button></div>
+  </div>
+</div>
+
+<div class="pv">
+  <div class="pvbar"><span>Live preview</span><span id="pvStat"></span></div>
+  <div class="paper" id="paper"></div>
+</div>
+</div>
+
+<script>
+/* ================= CONFIG: edit for your firm ================= */
+const CONFIG = {
+  firmLine1: 'SOUL Advisors',
+  firmLine2: '[Adviser name] · [Phone] · [Email]',
+  fileName: 'Wasiat',
+};
+
+/* ================= STATE ================= */
+const blankP = () => ({ name:'', nric:'', rel:'' });
+const DEFAULT = () => ({
+  t:{ name:'', idType:'NRIC', nric:'', address:'', gender:'M', mazhab:"Shafi'i", citizen:'Singaporean', english:'yes', lang:'Malay', sign:'sign' },
+  marital:'married', spouse:{ name:'', nric:'' },
+  children:[],
+  executors:[blankP()],
+  guardian:blankP(), guardian2:blankP(),
+  hasW:false, wasiyyah:[],
+  cpfNom:'yes', insNom:'yes', jointAcc:'no', jaHibah:true, jointProp:'no', jtHibah:true, lifetime:false,
+  assets:[],
+  funeral:true, hajj:'not', nasihat:true, extra:'',
+  witnesses:[{name:'',nric:''},{name:'',nric:''}],
+});
+let S = DEFAULT();
+let cur = 0;
+
+const get = (o,p) => p.split('.').reduce((a,k)=>a==null?a:a[k], o);
+const set = (o,p,v) => { const ks=p.split('.'); const last=ks.pop(); ks.reduce((a,k)=>a[k],o)[last]=v; };
+
+/* ================= LISTS ================= */
+const LISTS = {
+  children:{ max:20, item:()=>({name:'',nric:'',minor:false}), title:i=>`Child ${i+1}`, fields:(it)=>`
+    <div class="row"><div><label>Full name</label><input type="text" data-f="name"></div><div><label>NRIC / Birth Cert No.</label><input type="text" data-f="nric"></div></div>
+    <label class="check"><input type="checkbox" data-f="minor"> Under 21 years old</label>` },
+  executors:{ max:4, min:1, item:blankP, title:i=>EXEC_TITLES[i], fields:()=>`
+    <div class="row3"><div><label>Full name</label><input type="text" data-f="name"></div><div><label>NRIC</label><input type="text" data-f="nric"></div><div><label>Relationship</label><input type="text" data-f="rel" placeholder="e.g. wife"></div></div>` },
+  wasiyyah:{ max:10, item:()=>({name:'',id:'',kind:'pct',value:'',purpose:'',heir:false}), title:i=>`Beneficiary ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Name of person / organisation</label><input type="text" data-f="name" placeholder="e.g. Masjid Al-Falah"></div><div><label>NRIC or UEN</label><input type="text" data-f="id"></div></div>
+    <div class="row"><div><label>Gift type</label><select data-f="kind"><option value="pct">% of net estate</option><option value="amt">Fixed amount (S$)</option></select></div><div><label>Value</label><input type="number" min="0" step="any" data-f="value"></div></div>
+    <label>Purpose <span class="hint">(optional)</span></label><input type="text" data-f="purpose" placeholder="e.g. its general charitable purposes">
+    <label class="check"><input type="checkbox" data-f="heir"> This person is one of my Faraid heirs</label>` },
+  assets:{ max:30, item:()=>({type:'Bank account',desc:'',hold:'Sole name',withWhom:''}), title:i=>`Asset ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Asset type</label><select data-f="type">${ASSET_TYPES.map(a=>`<option>${a}</option>`).join('')}</select></div>
+    <div><label>How it is held</label><select data-f="hold">${HOLDS.map(a=>`<option>${a}</option>`).join('')}</select></div></div>
+    <label>Particulars</label><input type="text" data-f="desc" placeholder="e.g. DBS savings, account ending 1234">
+    <div data-fshow="joint"><label>Joint holder</label><input type="text" data-f="withWhom" placeholder="Name of co-owner"></div>` },
+  witnesses:{ max:2, fixed:true, item:()=>({name:'',nric:''}), title:i=>`Witness ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Full name</label><input type="text" data-f="name"></div><div><label>NRIC</label><input type="text" data-f="nric"></div></div>` },
+};
+const EXEC_TITLES = ['Sole Executor and Trustee','Replacement Executor and Trustee','Second Replacement Executor and Trustee','Third Replacement Executor and Trustee'];
+const ASSET_TYPES = ['HDB flat','Private property','Bank account','CPF monies','Insurance policy','Investments / shares','Motor vehicle','Gold and jewellery','Business interest','Digital assets','Other'];
+const HOLDS = ['Sole name','Joint tenancy','Tenancy-in-common','Joint account','Nominated','Not nominated'];
+
+function renderList(name){
+  const L = LISTS[name], box = document.getElementById('l-'+name); if(!box) return;
+  box.innerHTML = S[name].map((it,i)=>`<div class="item" data-list="${name}" data-i="${i}">
+    <div class="ttl">${L.title(i)}</div>${(!L.fixed && !(L.min && S[name].length<=L.min)) ? `<button class="x" title="Remove" onclick="delItem('${name}',${i})">×</button>`:''}
+    ${L.fields(it)}</div>`).join('');
+  box.querySelectorAll('[data-list]').forEach(el=>{
+    const it = S[name][+el.dataset.i];
+    el.querySelectorAll('[data-f]').forEach(f=>{ const v=it[f.dataset.f]; if(f.type==='checkbox') f.checked=!!v; else f.value=v??''; });
+    const js = el.querySelector('[data-fshow]'); if(js) js.classList.toggle('hidden', !/Joint/.test(it.hold));
+  });
+  if(name==='executors') document.getElementById('addExec').classList.toggle('hidden', S.executors.length>=4);
+}
+function addItem(n){ if(S[n].length<LISTS[n].max){ S[n].push(LISTS[n].item()); renderList(n); update(); } }
+function delItem(n,i){ S[n].splice(i,1); renderList(n); update(); }
+
+/* ================= BINDING ================= */
+document.addEventListener('input', onField); document.addEventListener('change', onField);
+function onField(e){
+  const el = e.target;
+  if(el.dataset.k){
+    const v = el.type==='checkbox' ? el.checked : el.value;
+    if(el.type==='radio' && !el.checked) return;
+    set(S, el.dataset.k, v); update();
+  } else if(el.dataset.f){
+    const box = el.closest('[data-list]'); const it = S[box.dataset.list][+box.dataset.i];
+    it[el.dataset.f] = el.type==='checkbox' ? el.checked : el.value;
+    if(el.dataset.f==='hold'){ const js=box.querySelector('[data-fshow]'); if(js) js.classList.toggle('hidden', !/Joint/.test(el.value)); }
+    update();
+  }
+}
+function fillForm(){
+  document.querySelectorAll('[data-k]').forEach(el=>{
+    const v = get(S, el.dataset.k);
+    if(el.type==='radio') el.checked = (el.value===v);
+    else if(el.type==='checkbox') el.checked = !!v;
+    else el.value = v ?? '';
+  });
+  Object.keys(LISTS).forEach(renderList);
+}
+function applyShows(){
+  document.querySelectorAll('[data-show]').forEach(el=>{
+    const [k,v] = el.dataset.show.split('='); const val = String(get(S,k));
+    el.classList.toggle('hidden', val!==v);
+  });
+  document.querySelectorAll('[data-sp]').forEach(e=>e.textContent = S.t.gender==='F'?'Husband':'Wife');
+  const minor = S.children.some(c=>c.minor);
+  document.getElementById('noMinor').classList.toggle('hidden', minor);
+  document.getElementById('hasMinor').classList.toggle('hidden', !minor);
+}
+
+/* ================= STEPS ================= */
+const steps = [...document.querySelectorAll('.step')];
+function go(i){
+  cur = Math.max(0, Math.min(steps.length-1, i));
+  steps.forEach((s,j)=>s.classList.toggle('on', j===cur));
+  document.getElementById('steps').innerHTML = steps.map((s,j)=>`<button class="${j===cur?'on':j<cur?'done':''}" onclick="go(${j})">${j+1}. ${s.dataset.title}</button>`).join('');
+  document.getElementById('prev').style.visibility = cur ? 'visible':'hidden';
+  document.getElementById('next').classList.toggle('hidden', cur===steps.length-1);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function mview(v){ document.body.classList.remove('m-form','m-prev'); document.body.classList.add('m-'+v); document.getElementById('mvForm').className='btn '+(v==='form'?'pri':'sec'); document.getElementById('mvPrev').className='btn '+(v==='prev'?'pri':'sec'); }
+
+/* ================= WILL ENGINE ================= */
+const ph = (v, label) => (v && String(v).trim()) ? String(v).trim() : `[[${label}]]`;
+const UP = s => s.replace(/^(?!\[\[)(.*)$/, m=>m.toUpperCase());
+const ORD = ['','Second ','Third '];
+const pct = n => { const x = Math.round(n*100)/100; return x; };
+const money = n => Number(n).toLocaleString('en-SG',{minimumFractionDigits:2, maximumFractionDigits:2});
+const words = n => { // number to words for small integers (percentages)
+  const a=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const b=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  if(!Number.isInteger(n) || n<0 || n>100) return null;
+  if(n===100) return 'one hundred'; if(n<20) return a[n];
+  return b[Math.floor(n/10)] + (n%10 ? '-'+a[n%10] : '');
+};
+
+function analyse(s){
+  const g = s.t.gender==='F';
+  const P = { his:g?'her':'his', he:g?'she':'he', him:g?'her':'him', spouse:g?'husband':'wife', Spouse:g?'Husband':'Wife' };
+  const married = s.marital==='married';
+  const minors = s.children.filter(c=>c.minor);
+  const execs = s.executors.filter((e,i)=>i===0 || e.name.trim());
+  const W = s.hasW ? s.wasiyyah.filter(w=>w.name.trim()||w.value) : [];
+  const out = [];
+  if(s.cpfNom==='yes') out.push('cpf');
+  if(s.insNom==='yes') out.push('ins');
+  if(s.jointAcc==='yes' && s.jaHibah) out.push('ja');
+  if(s.jointProp==='yes' && s.jtHibah) out.push('jt');
+  if(s.lifetime) out.push('life');
+  const assets = s.assets.filter(a=>a.desc.trim()||a.type);
+  return { g, P, married, minors, execs, W, out, assets, hasGuard: minors.length>0 };
+}
+
+function passesUnder(a, s, num){
+  const outRef = num.out ? `Outside Will – Clause ${num.out}` : 'Outside Will';
+  const res = `Residuary – Clause ${num.res}`;
+  if(a.hold==='Nominated') return outRef;
+  if(a.hold==='Joint tenancy') return (s.jointProp==='yes'&&s.jtHibah) ? outRef : res + ' (see note)';
+  if(a.hold==='Joint account') return (s.jointAcc==='yes'&&s.jaHibah) ? outRef : res;
+  if(a.hold==='Tenancy-in-common') return res + ' (my share)';
+  return res;
+}
+
+function buildWill(s){
+  const A = analyse(s), P = A.P;
+  const TN = ph(s.t.name,'Full name'), TNU = UP(TN);
+  const idL = s.t.idType==='NRIC' ? 'Singapore NRIC No.' : s.t.idType==='FIN' ? 'FIN No.' : 'Passport No.';
+  const TID = ph(s.t.nric,'ID number');
+  // plan sections
+  const plan = [
+    ['def',true],['fam', A.married || s.children.length>0],['exec',true],['pow',true],['fun',s.funeral],['pay',true],
+    ['was',A.W.length>0],['guard',A.hasGuard],['out',A.out.length>0],['res',true],['sim',A.married],
+    ['extra',!!s.extra.trim()],['sev',true],['nas',s.nasihat]
+  ].filter(x=>x[1]).map(x=>x[0]);
+  const num = {}; plan.forEach((id,i)=>num[id]=i+1);
+  const B = []; let n=0, m=0;
+  const H = t => { n++; m=0; B.push({t:'h', n:n+'.', title:t}); };
+  const C = t => { m++; B.push({t:'c', n:`${n}.${m}`, text:t}); };
+  const L = (items) => items.forEach((t,i)=>B.push({t:'s', n:`(${String.fromCharCode(97+i)})`, text:t}));
+  const person = (p, rel) => `${rel?`my ${rel}, `:''}**${UP(ph(p.name,'Full name'))}**, holder of Singapore NRIC No. ${ph(p.nric,'NRIC')}`;
+
+  B.push({t:'p', center:true, text:'*Bismillahirrahmanirrahim*'});
+  B.push({t:'p', text:'In the name of Allah, the Most Gracious, the Most Merciful. All praise is due to Allah S.W.T., Lord of the Worlds. I bear witness that there is no god but Allah, and I bear witness that Muhammad S.A.W. is His servant and Final Messenger.'});
+  B.push({t:'p', text:`I, **${TNU}**, holder of ${idL} ${TID}, currently residing at ${ph(s.t.address,'Address')}, being of sound mind, memory and understanding, and acting of my own free will, declare that I am a Muslim of the ${s.t.mazhab} school of thought (Mazhab ${s.t.mazhab}). I hereby **REVOKE** all former wills, codicils and testamentary dispositions made by me, and **DECLARE** this to be my Last Will and Testament (“this Will”), which I intend to take effect in accordance with Islamic law as applied in Singapore under section 111 of the Administration of Muslim Law Act 1966.`});
+
+  for(const id of plan){
+    if(id==='def'){
+      H('Definitions and Interpretation');
+      C('In this Will, unless the context otherwise requires:');
+      const d = [
+        `“**Executor**” means the person or persons for the time being acting as executor and trustee under Clause ${num.exec}, whether original or substitute;`,
+        '“**Faraid**” means the Islamic law of inheritance as applied by the Syariah Court of Singapore;',
+        '“**Inheritance Certificate**” means the certificate issued by the Syariah Court of Singapore setting out my lawful heirs and their respective shares;',
+        `“**Net Estate**” means my estate remaining after payment of the items set out in Clause ${num.pay};`,
+        `“**Residuary Estate**” means my Net Estate remaining${num.was?` after giving effect to the Wasiyyah under Clause ${num.was}`:''};`,
+      ];
+      if(A.out.length) d.push('“**Hibah**” means a gift made during my lifetime that is valid under Islamic law;');
+      if(A.assets.length) d.push('“**Schedule A**” means the Schedule of Assets annexed to and forming part of this Will;');
+      d[d.length-1] = d[d.length-1].replace(/;$/,'.');
+      if(d.length>1) d[d.length-2] = d[d.length-2].replace(/;$/,'; and');
+      L(d);
+      C('Clause headings are for convenience only and shall not affect interpretation. Words importing the singular include the plural, and words importing any gender include every gender.');
+    }
+    if(id==='fam'){
+      H('My Family');
+      if(A.married) C(`At the date of this Will, I am married to ${person(s.spouse)} (“my ${P.Spouse}”).`);
+      if(s.children.length){
+        C(`At the date of this Will, I have ${s.children.length===1?'the following child':'the following children'}:`);
+        L(s.children.map((c,i)=>`**${UP(ph(c.name,'Child name'))}**, holder of NRIC / Birth Certificate No. ${ph(c.nric,'ID number')}${i===s.children.length-1?'.':';'}`));
+      }
+      C('The listing of my family members in this Clause is for identification only and shall not affect the shares of my heirs under Faraid.');
+    }
+    if(id==='exec'){
+      H('Appointment of Executor and Trustee');
+      A.execs.forEach((e,i)=>{
+        if(i===0) C(`I hereby appoint ${person(e, e.rel)}, to be the Sole Executor and Trustee of this Will.`);
+        else { const prev = ph(A.execs[i-1].name,'previous executor');
+          C(`In the event that ${prev} predeceases me or is unable or unwilling to act or to continue to act, I hereby appoint ${person(e, e.rel)}, to be the ${EXEC_TITLES[i].replace(' and Trustee','')} and Trustee of this Will.`); }
+      });
+    }
+    if(id==='pow'){
+      H('Powers of Executor');
+      C('In addition to all powers conferred by law, my Executor shall have full power to:');
+      L(['apply for the Grant of Probate and the Inheritance Certificate, and do all things necessary to obtain them;',
+         'collect, call in and take possession of my assets, and give valid receipts for them;',
+         'sell, call in, convert into money or otherwise realise any part of my estate, with full discretion to postpone such sale or conversion for so long as my Executor thinks fit, without being liable for any loss;',
+         'open and operate bank accounts in the name of my estate;',
+         'deal with the Housing & Development Board, the Central Provident Fund Board, banks, insurers and all other institutions on behalf of my estate;',
+         'engage lawyers, accountants, valuers and other professionals, and pay their fees out of my estate;',
+         'distribute any asset in kind to a beneficiary at a fair value agreed with that beneficiary, provided that each beneficiary receives no less than the share due to him or her; and',
+         'pay out of my estate all costs and expenses of administering my estate, including the reasonable out-of-pocket expenses of my Executor.']);
+      C('My Executor shall not be liable for any loss to my estate unless such loss arises from his or her own fraud or wilful default.');
+    }
+    if(id==='fun'){
+      H('Funeral Wishes');
+      C('I direct that my funeral be conducted strictly in accordance with Islamic law, including *ghusl* (washing), *kafan* (shrouding), *solat jenazah* (funeral prayer) and burial in a Muslim cemetery, as soon as practicable after my death.');
+      C('I do not consent to any autopsy, post-mortem, embalming or cremation of my body, unless required under the laws of Singapore.');
+    }
+    if(id==='pay'){
+      H('Payment of Debts and Obligations');
+      C('I direct my Executor, as soon as practicable after my death, to pay out of my estate, in the following order of priority:');
+      L(['my funeral and burial expenses;',
+         'all debts owed by me to any person, including any outstanding loans, rental, bills and taxes;',
+         `all debts owed by me to Allah S.W.T. that remain outstanding, including unpaid *zakat*, *fidyah* or *kaffarah*${s.hajj==='not'?', and the cost of a representative to perform *Badal Haji* on my behalf should I die without having performed Hajj':''}; and`,
+         `all costs and expenses of administering my estate, including those referred to in Clause ${num.pow}.`]);
+      C('All such payments shall be made in a manner pleasing to Allah S.W.T.');
+    }
+    if(id==='was'){
+      H('Wasiyyah (Bequest of up to One-Third)');
+      const gifts = A.W.map(w=>{
+        const v = parseFloat(w.value);
+        let amt;
+        if(w.kind==='pct'){ const wd = words(v); amt = isNaN(v) ? '[[__]] per cent ([[__]]%) of my Net Estate' : `${wd?wd+' per cent ':''}(${pct(v)}%) of my Net Estate`; }
+        else amt = isNaN(v) ? 'the sum of Singapore Dollars [[amount]]' : `the sum of Singapore Dollars ${money(v)} (S$${money(v)})`;
+        const idt = w.id.trim() ? ` (${/^[STFGM]\d{7}[A-Z]$/i.test(w.id.trim())?'NRIC':'UEN'} No. ${w.id.trim()})` : ' ([[NRIC / UEN]])';
+        return `${amt} to **${UP(ph(w.name,'Beneficiary'))}**${idt}${w.purpose.trim()?`, to be applied for ${w.purpose.trim()}`:''}`;
+      });
+      if(gifts.length===1) C(`I GIVE ${gifts[0]}.`);
+      else { C('I GIVE the following out of my estate:'); L(gifts.map((g,i)=>g+(i===gifts.length-1?'.':';'))); }
+      C('The aggregate of all bequests under this Clause shall not exceed one-third (1/3) of my Net Estate. Should it do so, each bequest shall abate proportionately so that the aggregate equals one-third (1/3).');
+      C('No bequest under this Clause is intended for any person who is my lawful heir under Faraid. Should any such bequest be found to have been made, it shall take effect only with the consent of all my other lawful heirs given after my death.');
+      C('If any beneficiary under this Clause has ceased to exist or is unable to accept the gift at the date of my death, my Executor shall pay that share to a registered Muslim charity in Singapore with similar objects.');
+    }
+    if(id==='guard'){
+      H('Guardianship of Minor Children');
+      C(`If any of my children is below the age of twenty-one (21) years at the date of my death${A.married?` and my ${P.spouse} has also predeceased me or is unable to act`:''}, I appoint ${person(s.guardian, s.guardian.rel)}, to be the guardian of such child.`);
+      if(s.guardian2.name.trim()) C(`If ${ph(s.guardian.name,'Guardian')} predeceases me or is unable or unwilling to act, I appoint ${person(s.guardian2, s.guardian2.rel)}, to be the guardian of such child.`);
+      C('I request that my children be brought up in the Islamic faith, and that the share of any minor child be held on trust and applied towards that child’s maintenance, education and welfare until he or she attains full age.');
+    }
+    if(id==='out'){
+      H('Assets Passing Outside this Will');
+      C('The following assets shall not form part of my estate under this Will and shall pass as stated below:');
+      const map = {
+        cpf:'**CPF monies** subject to a valid nomination made by me shall pass to the nominee(s) in accordance with the Central Provident Fund Act 1953. MUIS recognises CPF nominations as a valid form of Hibah',
+        ins:'**Insurance policies** subject to a valid revocable or trust nomination made by me shall pass to the nominee(s) in accordance with the Insurance Act 1966. MUIS recognises such nominations as a valid form of Hibah',
+        ja:'**Joint bank accounts:** I intend that my share of the monies in any joint bank account shall pass to the surviving account holder(s) as a gift (Hibah) and shall not form part of my estate',
+        jt:'**Property held as joint tenants:** I declare that my intention in holding any property as a joint tenant is that, upon my death, my interest shall pass to the surviving joint tenant(s) as a gift (*Hibah Ruqba*) and shall not form part of my estate',
+        life:'any asset which I have, during my lifetime, given by way of Hibah, placed in trust or dedicated as *waqf*, in a manner valid under Islamic law and recognised under the laws of Singapore',
+      };
+      L(A.out.map((k,i)=>map[k] + (i===A.out.length-1?'.':i===A.out.length-2?'; and':';')));
+    }
+    if(id==='res'){
+      H('Residuary Estate');
+      C(`I GIVE all my Residuary Estate, of whatsoever nature and wheresoever situate${A.assets.length?', including every asset listed in Schedule A and every asset not so listed':''}, unto my Executor upon trust to distribute the same to my lawful heirs in accordance with Faraid, in the shares set out in the Inheritance Certificate.`);
+    }
+    if(id==='sim'){
+      H('Simultaneous Death');
+      C(`If my ${P.spouse} and I die in circumstances where it cannot be determined which of us died first, neither of us shall be treated as an heir of the other, and my estate shall be distributed under this Will as if my ${P.spouse} had predeceased me.`);
+    }
+    if(id==='extra'){
+      H('Further Directions');
+      s.extra.trim().split(/\n+/).forEach(t=>C(t.trim()));
+    }
+    if(id==='sev'){
+      H('Severability and Governing Law');
+      C('If any provision of this Will is held to be invalid or unenforceable, such provision shall be severed and the remaining provisions shall continue in full force and effect.');
+      C('This Will shall be governed by the laws of the Republic of Singapore, including the Islamic law of inheritance as applied in Singapore.');
+    }
+    if(id==='nas'){
+      H('Nasihat (Advice) to my Heirs');
+      C('This Clause is by way of advice only and shall not affect the distribution of my estate.');
+      L(['I request that my family increase their *taqwa*, obey the commandments of Allah S.W.T. and refrain from all that He has forbidden.',
+         'I remind my heirs of Surah Al-Baqarah, verse 181: *“Then whoever alters the bequest after he has heard it – the sin is only upon those who altered it. Indeed, Allah is Hearing and Knowing.”*',
+         'I remind my heirs of Surah Al-Baqarah, verse 182: *“But if one fears from the bequeather some error or sin and corrects that which is between them, there is no sin upon him. Indeed, Allah is Forgiving and Merciful.”*',
+         'I ask my heirs to settle my debts promptly, to protect and support the weaker members of my family, and to preserve the ties of kinship (*silaturahim*) in the name of Allah S.W.T.',
+         'I ask my heirs to keep their obligatory prayers, fast in the month of Ramadan, perform *qurban*, Hajj and Umrah where able, give *sadaqah*, and make *du’a* for me.']);
+    }
+  }
+
+  // schedule + annex
+  const sched = A.assets.map((a,i)=>[String(i+1), a.type, ph(a.desc,'Particulars'), a.hold + (/Joint/.test(a.hold)&&a.withWhom.trim()?` with ${a.withWhom.trim()}`:''), passesUnder(a,s,num)]);
+  const annex = [
+    ['Testator', `${TN} (${s.t.idType} ${TID})`],
+    ['Citizenship / Mazhab', `${s.t.citizen} / ${s.t.mazhab}`],
+    ['Address', ph(s.t.address,'Address')],
+    ...A.execs.map((e,i)=>[EXEC_TITLES[i].replace(' and Trustee','').replace('Sole ',''), `${ph(e.name,'Name')}${e.rel?` (${e.rel})`:''}, NRIC ${ph(e.nric,'NRIC')}`]),
+  ];
+  if(A.hasGuard) annex.push(['Guardian of minor children', ph(s.guardian.name,'Guardian') + (s.guardian2.name.trim()?`; alternate ${s.guardian2.name.trim()}`:'')]);
+  annex.push(['Wasiyyah', A.W.length ? A.W.map(w=>`${w.kind==='pct'?(w.value||'__')+'%':'S$'+(w.value?money(w.value):'__')} to ${ph(w.name,'Beneficiary')}`).join('; ') : 'None']);
+  annex.push(['Residuary Estate','Lawful heirs according to Faraid, per the Inheritance Certificate']);
+  const outLbl = {cpf:'CPF nomination',ins:'Insurance nominations',ja:'Joint bank accounts',jt:'Joint-tenancy property',life:'Lifetime hibah, trusts and waqf'};
+  annex.push(['Passing outside the Will', A.out.length ? A.out.map(k=>outLbl[k]).join('; ') : 'None declared']);
+  annex.push(['Witnesses', s.witnesses.map((w,i)=>`${i+1}. ${w.name.trim()||'________'}`).join('   ')]);
+  annex.push(['Original Will kept at','[[Location / custodian]]']);
+  annex.push(['Date of Will','________________']);
+
+  return { A, P, TN, TNU, TID, idL, blocks:B, sched, annex, num };
+}
+
+/* ================= CHECKS ================= */
+function checks(s, W){
+  const A = W.A, out = [];
+  const req = [[s.t.name,'Your full name'],[s.t.nric,'Your ID number'],[s.t.address,'Your address'],[s.executors[0].name,'First executor’s name'],[s.executors[0].nric,'First executor’s NRIC']];
+  req.forEach(([v,l])=>{ if(!String(v).trim()) out.push(['err',`${l} is missing.`]); });
+  if(A.married && !s.spouse.name.trim()) out.push(['warn',`Your ${A.P.spouse}’s name is missing.`]);
+  if(A.hasGuard && !s.guardian.name.trim()) out.push(['err','You have a child under 21 but have not named a guardian.']);
+  const pctTotal = A.W.filter(w=>w.kind==='pct').reduce((a,w)=>a+(parseFloat(w.value)||0),0);
+  if(pctTotal>33.3334) out.push(['err',`Your wasiyyah totals ${pct(pctTotal)}%, above the one-third limit. It will be reduced proportionately unless your heirs consent.`]);
+  if(A.W.some(w=>w.kind==='amt')) out.push(['warn','A fixed-amount wasiyyah must still not exceed one-third of your net estate at death. Your planner should check this against your asset values.']);
+  if(A.W.some(w=>w.heir)) out.push(['err','A wasiyyah to a Faraid heir only takes effect if all other heirs consent after your death. Consider a lifetime hibah or nomination instead.']);
+  if(A.execs.length<2) out.push(['warn','Consider adding a replacement executor in case your first executor cannot act.']);
+  if(s.cpfNom!=='yes') out.push(['warn','Without a CPF nomination, your CPF monies go to the Public Trustee and are distributed by Faraid, which takes longer. Consider making a nomination.']);
+  if(s.jointProp==='yes' && !s.jtHibah) out.push(['warn','Joint-tenancy property: no hibah declaration made. Your share may be divided by Faraid.']);
+  const names = [s.t.name,s.spouse.name,...s.children.map(c=>c.name),...A.execs.map(e=>e.name),...A.W.map(w=>w.name)].map(x=>x.trim().toLowerCase()).filter(Boolean);
+  s.witnesses.forEach((w,i)=>{ if(w.name.trim() && names.includes(w.name.trim().toLowerCase())) out.push(['err',`Witness ${i+1} is named elsewhere in your will. Witnesses must be independent.`]); });
+  if(s.t.english==='no') out.push(['ok',`An Interpreter’s Certificate (${s.t.lang}) has been added to the signing page.`]);
+  if(!out.some(o=>o[0]==='err')) out.unshift(['ok','No blocking issues found. Download your draft for review.']);
+  return out;
+}
+
+/* ================= HTML PREVIEW ================= */
+const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function md(t){
+  return esc(t).replace(/\[\[([^\]]+)\]\]/g,'<mark>[$1]</mark>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\*([^*]+)\*/g,'<i>$1</i>');
+}
+function renderPreview(W){
+  const s = S, A = W.A, P = W.P;
+  let h = `<div class="cov"><p class="dt">Dated this ______ day of ____________ 20____</p><div style="height:120px"></div>
+    <div class="rule"></div><p class="ctr big">LAST WILL AND TESTAMENT</p><p class="ctr">(WASIAT)</p><p class="ctr">OF</p>
+    <p class="ctr big">${md(W.TNU)}</p><p class="ctr" style="font-size:13px">(${W.idL} ${md(W.TID)})</p><div class="rule"></div>
+    <div class="logo">${esc(CONFIG.firmLine1)}<br>${esc(CONFIG.firmLine2)}</div>
+    <p class="had">Allah's Messenger (ﷺ) said, "It is not permissible for any Muslim who has something to will to stay for two nights without having his last will and testament written and kept ready with him." <i>Sahih al-Bukhari 2738</i></p></div><div class="pb"></div>`;
+  h += `<p class="ctr" style="font-weight:700;font-size:17px">LAST WILL AND TESTAMENT</p>`;
+  for(const b of W.blocks){
+    if(b.t==='p') h += `<p${b.center?' class="ctr"':''}>${md(b.text)}</p>`;
+    if(b.t==='h') h += `<h3><span class="n">${b.n}</span><span class="t">${esc(b.title)}</span></h3>`;
+    if(b.t==='c') h += `<div class="c"><span class="n">${b.n}</span><span>${md(b.text)}</span></div>`;
+    if(b.t==='s') h += `<div class="s"><span class="n">${b.n}</span><span>${md(b.text)}</span></div>`;
+  }
+  h += `<div class="pb"></div>`;
+  const signed = s.t.sign==='thumb' ? 'SIGNED/THUMBPRINT' : 'SIGNED';
+  h += `<p><b>IN WITNESS WHEREOF</b> I have hereunto voluntarily set my hand to this Will on the ______ day of ____________ 20____ in Singapore.</p>
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;text-align:left;margin-top:20px"><div><b>${signed}</b> by the abovenamed Testator<br><b>${md(W.TN)}</b><br>as ${P.his} Last Will and Testament, in the presence of us both present at the same time who at ${P.his} request, in ${P.his} presence and in the presence of each other have hereunto set our names as witnesses:</div>
+    <div style="text-align:center;padding-top:60px">) ……………………………<br><small>${s.t.sign==='thumb'?'Right Thumbprint':'Signature'} of Testator</small></div></div>
+    <div class="sig">${s.witnesses.map((w,i)=>`<div><p>${i?'2nd':'1st'} Witness:</p><p style="margin-top:46px">……………………………</p><p>(Signature)</p><p>Full Name : ${w.name.trim()?esc(w.name):'____________________'}</p><p>NRIC No. : ${w.nric.trim()?esc(w.nric):'____________________'}</p><p>Address : ____________________</p></div>`).join('')}</div>
+    <p style="font-size:12px;margin-top:20px"><i>Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act 1838).</i></p>`;
+  if(s.t.english==='no') h += `<p style="margin-top:24px"><b>INTERPRETER’S CERTIFICATE</b></p><p>I, ______________________ (NRIC No. __________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${esc(s.t.lang)} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.</p><p style="margin-top:40px">……………………………&nbsp;&nbsp;&nbsp;&nbsp;Date: __________<br>Signature of Interpreter</p>`;
+  if(W.sched.length){
+    h += `<div class="pb"></div><p class="ctr"><b>SCHEDULE A</b><br><b>SCHEDULE OF ASSETS OF ${md(W.TNU)}</b></p>
+      <p style="font-size:13px">This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.</p>
+      <table><tr><th>No.</th><th>Asset</th><th>Particulars</th><th>Mode of holding</th><th>Passes under</th></tr>${W.sched.map(r=>`<tr>${r.map(c=>`<td>${md(c)}</td>`).join('')}</tr>`).join('')}</table>`;
+    if(W.sched.some(r=>/see note/.test(r[4]))) h += `<p style="font-size:12px"><i>Note: no Hibah Ruqba declaration has been made for jointly-held property; the Testator’s share may be distributed by Faraid.</i></p>`;
+  }
+  h += `<div class="pb"></div><p class="ctr"><b>ANNEX: SUMMARY OF WILL</b></p><table><tr><th style="width:36%">Item</th><th>Particulars</th></tr>${W.annex.map(r=>`<tr><td>${md(r[0])}</td><td>${md(r[1])}</td></tr>`).join('')}</table>`;
+  document.getElementById('paper').innerHTML = h;
+  const blanks = (h.match(/<mark>/g)||[]).length;
+  document.getElementById('pvStat').textContent = `${W.blocks.filter(b=>b.t==='h').length} clauses · ${blanks ? blanks+(blanks>1?' blanks':' blank')+' left' : 'all fields filled'}`;
+}
+
+function renderWTotal(W){
+  const box = document.getElementById('wTotal'); if(!box) return;
+  const t = W.A.W.filter(w=>w.kind==='pct').reduce((a,w)=>a+(parseFloat(w.value)||0),0);
+  box.innerHTML = W.A.W.length ? `<div class="note ${t>33.3334?'err':'ok'}">Percentage gifts total ${pct(t)}% of your net estate (limit 33.33%).</div>` : '';
+}
+
+function update(){
+  applyShows();
+  const W = buildWill(S);
+  renderPreview(W);
+  renderWTotal(W);
+  document.getElementById('checks').innerHTML = checks(S,W).map(([k,t])=>`<div class="note ${k}">${esc(t)}</div>`).join('');
+}
+
+/* ================= WORD EXPORT ================= */
+async function downloadDocx(){
+  if(!window.docx){ alert('The Word export library did not load. Check your internet connection and reload the page.'); return; }
+  const { Document, Packer, Paragraph, TextRun, AlignmentType, Header, Footer, PageNumber, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, PageBreak, TabStopType } = docx;
+  const W = buildWill(S), s = S, P = W.P;
+  const FONT='Times New Roman', SZ=24, LINE=360;
+  const r = (text,o={}) => new TextRun({ text, font:FONT, size:SZ, ...o });
+  const runs = (str, base={}) => {
+    str = str.replace(/\[\[([^\]]+)\]\]/g,'[$1]');
+    const out=[], re=/(\*\*[^*]+\*\*|\*[^*]+\*)/g; let last=0, mm;
+    while((mm=re.exec(str))){ if(mm.index>last) out.push(r(str.slice(last,mm.index),base)); const t=mm[0];
+      out.push(t.startsWith('**') ? r(t.slice(2,-2),{...base,bold:true}) : r(t.slice(1,-1),{...base,italics:true})); last=mm.index+t.length; }
+    if(last<str.length) out.push(r(str.slice(last),base)); return out;
+  };
+  const p = (text,o={}) => new Paragraph({ alignment:o.align??AlignmentType.JUSTIFIED, spacing:{line:o.line??LINE, after:o.after??160}, children: runs(text,o.run||{}) });
+  const center = (t,o={}) => p(t,{align:AlignmentType.CENTER,...o});
+  const blank = (k=1) => Array.from({length:k},()=>new Paragraph({children:[]}));
+  const brk = () => new Paragraph({children:[new PageBreak()]});
+  const dotted = () => new Paragraph({ spacing:{before:120,after:240}, border:{bottom:{style:BorderStyle.DOTTED,size:12,color:'000000',space:1}}, children:[] });
+  const hang = (num, text, left, bold=false, title=false) => new Paragraph({
+    alignment:AlignmentType.JUSTIFIED, spacing:{line:LINE, after:160, before:title?280:0}, keepNext:title,
+    indent:{left, hanging:720}, tabStops:[{type:TabStopType.LEFT, position:left}],
+    children: title ? [r(num,{bold:true}), r('\t'), r(text.toUpperCase(),{bold:true, underline:{}})] : [r(num), r('\t'), ...runs(text)] });
+  const none = {style:BorderStyle.NONE,size:0,color:'FFFFFF'}, nb = {top:none,bottom:none,left:none,right:none};
+  const thin = {style:BorderStyle.SINGLE,size:4,color:'000000'}, tb = {top:thin,bottom:thin,left:thin,right:thin};
+  const grid = (widths, rows) => new Table({ width:{size:widths.reduce((a,b)=>a+b,0),type:WidthType.DXA}, columnWidths:widths,
+    rows: rows.map((row,i)=>new TableRow({ tableHeader:i===0, children: row.map((t,j)=>new TableCell({ width:{size:widths[j],type:WidthType.DXA}, borders:tb,
+      margins:{top:80,bottom:80,left:100,right:100}, shading: i===0?{fill:'E7E6E6',type:ShadingType.CLEAR,color:'auto'}:undefined,
+      children:[new Paragraph({spacing:{after:40}, children: runs(t,{size:21,bold:i===0})})] })) })) });
+
+  const cover = [
+    p('Dated this ______ day of ____________________ 20____',{align:AlignmentType.LEFT}), ...blank(5), dotted(),
+    center('LAST WILL AND TESTAMENT',{run:{size:32,bold:true},after:120}), center('(WASIAT)',{run:{size:26},after:120}),
+    center('OF',{run:{size:28},after:120}), center(W.TNU,{run:{size:32,bold:true},after:60}), center(`(${W.idL} ${W.TID})`,{run:{size:22}}),
+    dotted(), ...blank(3), center(CONFIG.firmLine1,{run:{size:20,color:'808080'},after:0}), center(CONFIG.firmLine2,{run:{size:20,color:'808080'}}), ...blank(6),
+    p('Allah\'s Messenger (ﷺ) said, "It is not permissible for any Muslim who has something to will to stay for two nights without having his last will and testament written and kept ready with him." *Sahih al-Bukhari 2738*',{line:276,run:{size:22}}),
+    brk(),
+  ];
+  const body = [center('LAST WILL AND TESTAMENT',{run:{bold:true,size:28},after:240})];
+  W.blocks.forEach(b=>{
+    if(b.t==='p') body.push(b.center ? center(b.text,{after:120}) : p(b.text));
+    if(b.t==='h') body.push(hang(b.n, b.title, 720, true, true));
+    if(b.t==='c') body.push(hang(b.n, b.text, 720));
+    if(b.t==='s') body.push(hang(b.n, b.text, 1440));
+  });
+  body.push(brk());
+
+  const signed = s.t.sign==='thumb' ? 'SIGNED/THUMBPRINT' : 'SIGNED';
+  const cellP = t => new Paragraph({spacing:{after:0}, children: runs(t)});
+  const att = [
+    p('**IN WITNESS WHEREOF** I have hereunto voluntarily set my hand to this Will on the ______ day of ____________________ 20____ in Singapore.'), ...blank(1),
+    new Table({ width:{size:9026,type:WidthType.DXA}, columnWidths:[5200,3826], borders:{...nb,insideHorizontal:none,insideVertical:none},
+      rows:[new TableRow({children:[
+        new TableCell({width:{size:5200,type:WidthType.DXA}, borders:nb, children:[cellP(`**${signed}** by the abovenamed Testator`), cellP(`**${W.TN.replace(/\[\[|\]\]/g,'')}**`),
+          ...[`as ${P.his} Last Will and Testament,`,'in the presence of us both present at the',`same time who at ${P.his} request, in ${P.his}`,'presence and in the presence of each other','have hereunto set our names as witnesses:'].map(cellP)]}),
+        new TableCell({width:{size:3826,type:WidthType.DXA}, borders:nb, children:[...blank(3),
+          new Paragraph({alignment:AlignmentType.CENTER, children:[r(')  …………………………')]}),
+          new Paragraph({alignment:AlignmentType.CENTER, children:[r(`${s.t.sign==='thumb'?'Right Thumbprint':'Signature'} of Testator`,{size:20})]})]}),
+      ]})] }),
+    ...blank(2),
+    new Table({ width:{size:9026,type:WidthType.DXA}, columnWidths:[4513,4513], borders:{...nb,insideHorizontal:none,insideVertical:none},
+      rows:[new TableRow({children: s.witnesses.map((w,i)=>new TableCell({width:{size:4513,type:WidthType.DXA}, borders:nb,
+        children:[i?'2nd Witness:':'1st Witness:','','','…………………………','(Signature)',
+          `Full Name : ${w.name.trim()||'______________________'}`, `NRIC No.  : ${w.nric.trim()||'______________________'}`,
+          'Address   : ______________________','Occupation: ______________________'].map(t=>new Paragraph({spacing:{after:120}, children:[r(t)]}))}))})] }),
+    ...blank(1),
+    p('*Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act 1838).*',{run:{size:20},line:276}),
+  ];
+  if(s.t.english==='no') att.push(...blank(1), p('**INTERPRETER’S CERTIFICATE**',{align:AlignmentType.LEFT}),
+    p(`I, ________________________________ (NRIC No. ______________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${s.t.lang} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.`),
+    ...blank(1), p('………………………………          Date: ______________',{align:AlignmentType.LEFT,after:0}), p('Signature of Interpreter',{align:AlignmentType.LEFT}));
+
+  const tail = [];
+  if(W.sched.length){
+    tail.push(brk(), center('**SCHEDULE A**',{after:60}), center(`**SCHEDULE OF ASSETS OF ${W.TNU}**`,{after:200}),
+      p('This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.',{line:276}),
+      grid([500,1700,2626,2100,2100], [['No.','Asset','Particulars','Mode of holding','Passes under'], ...W.sched]));
+    if(W.sched.some(r=>/see note/.test(r[4]))) tail.push(p('*Note: no Hibah Ruqba declaration has been made for jointly-held property; the Testator’s share may be distributed by Faraid.*',{run:{size:20},line:276}));
+  }
+  tail.push(brk(), center('**ANNEX: SUMMARY OF WILL**',{after:200}), grid([3000,6026], [['Item','Particulars'], ...W.annex]));
+
+  const header = new Header({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({children:[PageNumber.CURRENT], font:FONT, size:SZ})]})]});
+  const footer = new Footer({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({text:'Testator’s initials: __________', font:FONT, size:18})]})]});
+  const margin = {top:1440,bottom:1440,left:1440,right:1440};
+  const doc = new Document({ creator:CONFIG.firmLine1, title:`Last Will and Testament of ${W.TN}`,
+    styles:{default:{document:{run:{font:FONT,size:SZ}}}},
+    sections:[ {properties:{page:{margin}}, children:cover},
+               {properties:{page:{margin, pageNumbers:{start:1}}}, headers:{default:header}, footers:{default:footer}, children:[...body, ...att, ...tail]} ] });
+  const blob = await Packer.toBlob(doc);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `${CONFIG.fileName}_${(s.t.name.trim()||'Draft').replace(/[^\w]+/g,'_')}.docx`; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+
+/* ================= DRAFTS ================= */
+function saveDraft(){
+  const blob = new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `${CONFIG.fileName}_draft_${(S.t.name.trim()||'unnamed').replace(/[^\w]+/g,'_')}.json`; a.click();
+}
+function loadDraft(input){
+  const f = input.files[0]; if(!f) return;
+  f.text().then(t=>{ try{ S = Object.assign(DEFAULT(), JSON.parse(t)); fillForm(); update(); }catch(e){ alert('That file is not a valid draft.'); } });
+  input.value='';
+}
+function confirmReset(){ return window.confirm('Clear all fields? Unsaved details will be lost.'); }
+function resetAll(){ S = DEFAULT(); fillForm(); update(); go(0); }
+
+/* ================= INIT ================= */
+if (window.self !== window.top || new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
+fillForm(); go(0); update();
+</script>
+</body>
+</html>
