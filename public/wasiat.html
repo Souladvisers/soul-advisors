@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:wght@500;600&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <!-- Word export library (runs in the visitor's browser) -->
 <script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
   --ink:#1d1a16; --muted:#6b645a; --line:#e6e0d4; --bg:#FAF8F3; --card:#ffffff;
@@ -234,7 +235,8 @@ textarea{min-height:80px;resize:vertical}
     <div id="checks"></div>
     <div class="tools">
       <button class="btn pri" onclick="downloadDocx()">Download Word (.docx)</button>
-      <button class="btn sec" onclick="window.print()">Print / Save as PDF</button>
+      <button class="btn gold" onclick="downloadPdf()">Download PDF</button>
+      <button class="btn sec" onclick="window.print()">Print</button>
     </div>
     <div class="tools">
       <button class="btn sec" onclick="saveDraft()">Save draft file</button>
@@ -741,6 +743,176 @@ async function downloadDocx(){
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = `${CONFIG.fileName}_${(s.t.name.trim()||'Draft').replace(/[^\w]+/g,'_')}.docx`; a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+
+/* ================= PDF EXPORT (real PDF file, built in the browser) ================= */
+async function downloadPdf(){
+  if(!window.jspdf){ alert('The PDF library did not load. Check your internet connection and reload the page.'); return; }
+  const { jsPDF } = window.jspdf;
+  const W = buildWill(S), s = S, P = W.P;
+  const doc = new jsPDF({ unit:'pt', format:'a4' });
+  const PW = 595.28, PH = 841.89, M = 72, X0 = M, X1 = PW - M, TOP = M, BOT = PH - M;
+  const FS = 12, LH = 18;
+  let y = TOP, pageNo = 0; // pageNo 0 = cover (unnumbered)
+
+  // WinAnsi-safe text (standard PDF fonts)
+  const clean = t => t.replace(/ﷺ/g,'(S.A.W.)').replace(/\[\[([^\]]+)\]\]/g,'[$1]').replace(/[  ]/g,' ');
+  // **bold** / *italic* -> runs
+  const toRuns = (str, base={}) => {
+    str = clean(str); const out=[], re=/(\*\*[^*]+\*\*|\*[^*]+\*)/g; let last=0, m;
+    while((m=re.exec(str))){ if(m.index>last) out.push({t:str.slice(last,m.index),...base}); const t=m[0];
+      out.push(t.startsWith('**') ? {t:t.slice(2,-2),...base,b:true} : {t:t.slice(1,-1),...base,i:true}); last=m.index+t.length; }
+    if(last<str.length) out.push({t:str.slice(last),...base}); return out;
+  };
+  const font = (r,size) => { doc.setFont('times', r.b&&r.i?'bolditalic':r.b?'bold':r.i?'italic':'normal'); doc.setFontSize(size); };
+  const wW = (w,size) => { font(w,size); return doc.getTextWidth(w.t); };
+
+  function decorate(){
+    if(pageNo>0){
+      doc.setFont('times','normal'); doc.setFontSize(12); doc.text(String(pageNo), X1, 46, {align:'right'});
+      doc.setFontSize(9); doc.text('Testator’s initials: __________', X1, PH-40, {align:'right'});
+    }
+  }
+  function newPage(){ doc.addPage(); pageNo++; y = TOP; decorate(); }
+  function ensure(h){ if(y + h > BOT) newPage(); }
+
+  // Rich paragraph: words laid out across [x, x+width], justified by default
+  function rich(runs, x, width, o={}){
+    const size = o.size||FS, lh = o.lh||LH, align = o.align||'justify';
+    const words = [];
+    runs.forEach(r => r.t.split(/(\s+)/).forEach(part => { if(part==='') return;
+      if(/^\s+$/.test(part)) { if(words.length) words[words.length-1].sp = true; } else words.push({...r, t:part, sp:false}); }));
+    const lines = []; let line = [], lw = 0;
+    const spW = (w) => { font(w,size); return doc.getTextWidth(' '); };
+    // a gap follows word w only when the source text had whitespace after it
+    const gapAfter = w => w.sp ? spW(w) + (w.u ? 1.5 : 0) : 0;
+    words.forEach(w => {
+      const ww = wW(w,size); const prev = line[line.length-1];
+      const add = prev ? gapAfter(prev) : 0;
+      if(prev && prev.sp && lw + add + ww > width){ lines.push(line); line=[]; lw=0; }
+      w.w = ww; lw += (line.length ? gapAfter(line[line.length-1]) : 0) + ww; line.push(w);
+    });
+    if(line.length) lines.push(line);
+    // keep short paragraphs together; avoid leaving a single line at the top of a page
+    const room = Math.floor((BOT - y)/lh);
+    if(lines.length > room && (lines.length <= 4 || lines.length - room === 1) && room < 30) newPage();
+    lines.forEach((ln, li) => {
+      ensure(lh); const base = y + size*0.8;
+      if(li===0 && o.label){ font({b:o.labelBold},size); doc.text(o.label, o.labelX, base); }
+      const gaps = ln.slice(0,-1).filter(w=>w.sp).length;
+      const natural = ln.reduce((a,w,i)=>a+w.w+(i<ln.length-1?gapAfter(w):0),0);
+      const last = li === lines.length-1;
+      let gapExtra = 0, cx = x;
+      if(align==='justify' && !last && gaps>0) gapExtra = (width - natural)/gaps;
+      if(align==='center') cx = x + (width-natural)/2;
+      if(align==='right') cx = x + width - natural;
+      ln.forEach((w,i) => { font(w,size); doc.text(w.t, cx, base);
+        const step = i<ln.length-1 ? gapAfter(w) + (w.sp?gapExtra:0) : 0;
+        const ulen = (w.u && ln[i+1] && ln[i+1].u) ? w.w + step : w.w;
+        if(w.u){ doc.setLineWidth(0.6); doc.line(cx, base+1.5, cx+ulen, base+1.5); }
+        cx += w.w + step; });
+      y += lh;
+    });
+    y += (o.after ?? 8);
+    return lines.length;
+  }
+  const para = (text, o={}) => rich(toRuns(text, o.base||{}), X0, X1-X0, o);
+  // numbered clause with hanging indent
+  function numbered(num, text, indent, o={}){
+    ensure(LH*2);
+    rich(o.runs || toRuns(text), X0 + indent, X1 - X0 - indent, {...o, label:num, labelX:X0 + indent - 36, labelBold:o.bold});
+  }
+  function dottedRule(){ doc.setLineWidth(1.2); doc.setLineDashPattern([1,2.5],0); doc.line(X0, y, X1, y); doc.setLineDashPattern([],0); y += 18; }
+
+  // tables
+  function table(widths, rows, size=10.5){
+    const pad = 4, lh = size*1.25;
+    const wrap = (txt, w, bold) => { doc.setFont('times', bold?'bold':'normal'); doc.setFontSize(size); return doc.splitTextToSize(clean(txt).replace(/\*\*/g,''), w - pad*2); };
+    const drawRow = (row, head) => {
+      const cells = row.map((c,j)=>wrap(c, widths[j], head));
+      const h = Math.max(...cells.map(c=>c.length))*lh + pad*2;
+      if(y + h > BOT){ newPage(); if(!head) drawRow(rows[0], true); }
+      let x = X0;
+      cells.forEach((c,j) => {
+        if(head){ doc.setFillColor(231,230,230); doc.rect(x, y, widths[j], h, 'F'); }
+        doc.setLineWidth(0.5); doc.setDrawColor(0); doc.rect(x, y, widths[j], h);
+        doc.setFont('times', head?'bold':'normal'); doc.setFontSize(size);
+        c.forEach((ln,k)=>doc.text(ln, x+pad, y+pad+size*0.85+k*lh));
+        x += widths[j];
+      });
+      y += h;
+    };
+    rows.forEach((r,i)=>drawRow(r, i===0));
+    y += 10;
+  }
+
+  /* ---- cover ---- */
+  y = TOP; para('Dated this ______ day of ____________________ 20____', {align:'left'});
+  y = 250; dottedRule();
+  const cTxt = (t, size, b, after=6) => rich(toRuns(t, {b}), X0, X1-X0, {align:'center', size, lh:size*1.4, after});
+  cTxt('LAST WILL AND TESTAMENT', 16, true); cTxt('(WASIAT)', 13, false); cTxt('OF', 14, false);
+  cTxt(W.TNU, 16, true, 2); cTxt(`(${W.idL} ${W.TID})`, 11, false, 10);
+  dottedRule();
+  y += 50; doc.setTextColor(128); cTxt(CONFIG.firmLine1, 10, false, 0); cTxt(CONFIG.firmLine2, 10, false); doc.setTextColor(0);
+  y = BOT - 60;
+  para('Allah\'s Messenger (ﷺ) said, "It is not permissible for any Muslim who has something to will to stay for two nights without having his last will and testament written and kept ready with him." *Sahih al-Bukhari 2738*', {size:11, lh:15});
+
+  /* ---- body ---- */
+  newPage();
+  cTxt('LAST WILL AND TESTAMENT', 14, true, 14);
+  W.blocks.forEach(b => {
+    if(b.t==='p') rich(toRuns(b.text), X0, X1-X0, {align: b.center?'center':'justify'});
+    if(b.t==='h'){ ensure(LH*3); y += 8; numbered(b.n, '', 36, {bold:true, runs:[{t:b.title.toUpperCase(), b:true, u:true}], align:'left'}); }
+    if(b.t==='c') numbered(b.n, b.text, 36);
+    if(b.t==='s') numbered(b.n, b.text, 72);
+  });
+
+  /* ---- attestation: new page unless there is plenty of room left ---- */
+  if(BOT - y < 420) newPage(); else y += 24;
+  para('**IN WITNESS WHEREOF** I have hereunto voluntarily set my hand to this Will on the ______ day of ____________________ 20____ in Singapore.');
+  y += 12;
+  const signed = s.t.sign==='thumb' ? 'SIGNED/THUMBPRINT' : 'SIGNED';
+  const yA = y;
+  const leftLines = [[`**${signed}** by the abovenamed Testator`],[`**${W.TN.replace(/\[\[|\]\]/g,'')}**`],
+    [`as ${P.his} Last Will and Testament,`],['in the presence of us both present at the'],[`same time who at ${P.his} request, in ${P.his}`],
+    ['presence and in the presence of each other'],['have hereunto set our names as witnesses:']];
+  leftLines.forEach(([t]) => rich(toRuns(t), X0, 280, {align:'left', lh:15, after:0}));
+  const yB = y; y = yA + 50;
+  doc.setFont('times','normal'); doc.setFontSize(12);
+  doc.text(')   …………………………', X0 + 300, y); y += 14;
+  doc.setFontSize(10); doc.text(`${s.t.sign==='thumb'?'Right Thumbprint':'Signature'} of Testator`, X0 + 360, y);
+  y = Math.max(yB, y) + 36;
+  const colX = [X0, X0 + 240];
+  const yW = y;
+  s.witnesses.forEach((w,i) => {
+    let yy = yW; const x = colX[i];
+    const L = (t, gap=20) => { doc.setFont('times','normal'); doc.setFontSize(12); doc.text(t, x, yy); yy += gap; };
+    L(i? '2nd Witness:':'1st Witness:', 56); L('…………………………'); L('(Signature)');
+    L(`Full Name : ${clean(w.name.trim()) || '______________________'}`); L(`NRIC No.  : ${clean(w.nric.trim()) || '______________________'}`);
+    L('Address   : ______________________'); L('Occupation: ______________________'); y = Math.max(y, yy);
+  });
+  y += 10;
+  para('*Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act 1838).*', {size:10, lh:13});
+  if(s.t.english==='no'){
+    y += 10; ensure(140);
+    para('**INTERPRETER’S CERTIFICATE**', {align:'left'});
+    para(`I, ________________________________ (NRIC No. ______________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${s.t.lang} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.`);
+    y += 24; para('………………………………          Date: ______________', {align:'left', after:0});
+    para('Signature of Interpreter', {align:'left'});
+  }
+
+  /* ---- schedule + annex ---- */
+  if(W.sched.length){
+    newPage(); cTxt('SCHEDULE A', 12, true, 0); cTxt(`SCHEDULE OF ASSETS OF ${W.TNU}`, 12, true, 10);
+    para('This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.', {size:11, lh:15});
+    table([28, 86, 140, 103, 94], [['No.','Asset','Particulars','Mode of holding','Passes under'], ...W.sched]);
+    if(W.sched.some(r=>/see note/.test(r[4]))) para('*Note: no Hibah Ruqba declaration has been made for jointly-held property; the Testator’s share may be distributed by Faraid.*', {size:10, lh:13});
+  }
+  newPage(); cTxt('ANNEX: SUMMARY OF WILL', 12, true, 10);
+  table([160, 291.28], [['Item','Particulars'], ...W.annex]);
+
+  doc.setProperties({ title:`Last Will and Testament of ${clean(W.TN)}`, creator: CONFIG.firmLine1 });
+  doc.save(`${CONFIG.fileName}_${(s.t.name.trim()||'Draft').replace(/[^\w]+/g,'_')}.pdf`);
 }
 
 /* ================= DRAFTS ================= */
