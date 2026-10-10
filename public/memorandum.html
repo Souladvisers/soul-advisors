@@ -9,6 +9,7 @@
 <!-- Word export library (runs in the visitor's browser) -->
 <script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="/coverpack.js"></script>
 <style>
 :root{
   --ink:#1d1a16; --muted:#6b645a; --line:#e6e0d4; --bg:#FAF8F3; --card:#ffffff;
@@ -257,6 +258,7 @@ textarea{min-height:80px;resize:vertical}
       <button class="btn pri" onclick="downloadDocx()">Download Word (.docx)</button>
       <button class="btn gold" onclick="downloadPdf()">Download PDF</button>
     </div>
+    <div id="coverpack"></div>
     <div class="tools">
       <button class="btn sec" onclick="saveDraft()">Save draft file</button>
       <label class="btn sec" style="margin:0">Load draft file<input type="file" accept=".json" onchange="loadDraft(this)" hidden></label>
@@ -499,6 +501,7 @@ function update(){
   document.querySelectorAll('[data-sp]').forEach(e=>e.textContent = S.t.gender==='F'?'husband':'wife');
   document.querySelectorAll('[data-spp]').forEach(e=>e.textContent = S.t.gender==='F'?'he':'she');
   const dl = document.getElementById('people'); dl.innerHTML = S.family.map(n=>`<option value="${esc(n)}">`).join('');
+  try{ sessionStorage.setItem('soul_memo', JSON.stringify(S)); }catch(e){}
   const D = buildMemo(S); renderPreview(D);
   // inline flags + review list
   document.querySelectorAll('.flag.inline').forEach(x=>x.remove());
@@ -631,6 +634,7 @@ function loadDraft(input){ const f=input.files[0]; if(!f) return; f.text().then(
 function resetAll(){ S=DEFAULT(); fillForm(); update(); go(0); }
 
 /* ================= INIT ================= */
+if(window.CoverPack) CoverPack.mount('coverpack');
 if (window.self !== window.top || new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
 fillForm(); go(0); update();
 if(readWasiat()) document.getElementById('importBox').classList.remove('hidden');
