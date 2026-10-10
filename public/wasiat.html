@@ -243,6 +243,7 @@ textarea{min-height:80px;resize:vertical}
       <label class="btn sec" style="margin:0">Load draft file<input type="file" accept=".json" onchange="loadDraft(this)" hidden></label>
       <button class="btn sec" onclick="if(confirmReset())resetAll()">Clear form</button>
     </div>
+    <div class="note info" style="margin-top:16px"><b>Next step:</b> prepare a <a href="/memorandum" onclick="return openMemo()">Memorandum of Wishes</a> to guide your executor and family. Your details carry over.</div>
     <div class="note warn" style="margin-top:16px">This generates a draft will. Have it reviewed by a qualified estate planner or lawyer, and sign it before two independent witnesses who are not heirs or beneficiaries.</div>
   </section>
 
@@ -645,6 +646,7 @@ function renderWTotal(W){
 
 function update(){
   applyShows();
+  try{ sessionStorage.setItem('soul_wasiat', JSON.stringify(S)); }catch(e){}
   const W = buildWill(S);
   renderPreview(W);
   renderWTotal(W);
@@ -929,6 +931,7 @@ function loadDraft(input){
 function confirmReset(){ return window.confirm('Clear all fields? Unsaved details will be lost.'); }
 function resetAll(){ S = DEFAULT(); fillForm(); update(); go(0); }
 
+function openMemo(){ try{ const P=window.parent; if(P!==window && P.switchAgentTab){ const b=[...P.document.querySelectorAll('.ag-navitem')].find(x=>x.textContent.includes('Memorandum')); if(b){ P.switchAgentTab('memo',b); return false; } } }catch(e){} return true; }
 /* ================= INIT ================= */
 if (window.self !== window.top || new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
 fillForm(); go(0); update();

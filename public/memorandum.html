@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorandum of Wishes — SOUL Advisors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:wght@500;600&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<!-- Word export library (runs in the visitor's browser) -->
+<script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --ink:#1d1a16; --muted:#6b645a; --line:#e6e0d4; --bg:#FAF8F3; --card:#ffffff;
+  --brand:#0D1117; --brand-2:#8A6E3A; --gold:#B8975A; --warn-bg:#fff6e5; --warn:#8a5a00;
+  --err-bg:#fdecec; --err:#9b1c1c; --ok-bg:#e9f5ef; --ok:#1d6b45; --ph:#fff1b8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.5}
+header.top{background:var(--brand);border-bottom:1px solid rgba(184,151,90,.25);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header.top .mark{width:34px;height:34px;border-radius:8px;background:var(--gold);display:grid;place-items:center;font-weight:700}
+header.top h1{font-size:18px;margin:0;font-weight:600;font-family:Lora,serif}
+header.top a.back{color:var(--gold);text-decoration:none;font-size:13px;border:1px solid rgba(184,151,90,.4);border-radius:8px;padding:6px 10px}
+.card h2{font-family:Lora,serif}
+body.embed header.top{display:none}
+header.top p{margin:0;opacity:.8;font-size:13px}
+header.top .sp{flex:1}
+.wrap{display:grid;grid-template-columns:minmax(360px,520px) 1fr;gap:24px;max-width:1440px;margin:0 auto;padding:24px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.steps button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:500 13px 'DM Sans',sans-serif;color:var(--muted);cursor:pointer}
+.steps button.on{background:var(--brand);border-color:var(--brand);color:var(--gold)}
+.steps button.done{border-color:var(--brand-2);color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h2{margin:0 0 4px;font-size:20px}
+.card .lead{margin:0 0 18px;color:var(--muted);font-size:14px}
+.step{display:none}.step.on{display:block}
+label{display:block;font-weight:500;font-size:13px;margin:12px 0 4px}
+.hint{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],input[type=number],select,textarea{width:100%;padding:9px 11px;border:1px solid #cfd5d1;border-radius:8px;font:14px 'DM Sans',sans-serif;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #E8D5A3;border-color:var(--brand-2)}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.seg{display:flex;border:1px solid #cfd5d1;border-radius:8px;overflow:hidden}
+.seg label{flex:1;margin:0;text-align:center;padding:8px 6px;cursor:pointer;font-weight:500;border-right:1px solid #cfd5d1;font-size:13px}
+.seg label:last-child{border-right:0}
+.seg input{display:none}
+.seg label:has(input:checked){background:var(--brand);color:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-weight:400;font-size:14px;cursor:pointer}
+.check input{margin-top:3px;accent-color:var(--brand);width:16px;height:16px;flex:none}
+.item{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;background:#fafbfa;position:relative}
+.item .ttl{font-weight:600;font-size:13px;color:var(--brand)}
+.item .x{position:absolute;top:8px;right:8px;border:0;background:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
+.add{border:1px dashed var(--brand-2);background:#fff;color:var(--brand);border-radius:8px;padding:8px 12px;font:600 13px 'DM Sans',sans-serif;cursor:pointer;margin-top:4px}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}
+.btn{border:0;border-radius:9px;padding:10px 18px;font:600 14px 'DM Sans',sans-serif;cursor:pointer}
+.btn.pri{background:var(--brand);color:#E8D5A3}.btn.pri:hover{background:#1E2530}
+.btn.sec{background:#fff;border:1px solid #cfd5d1;color:var(--ink)}
+.btn.gold{background:var(--gold);color:#fff}
+.note{border-radius:10px;padding:10px 12px;font-size:13px;margin:10px 0}
+.note.warn{background:var(--warn-bg);color:var(--warn)}
+.note.err{background:var(--err-bg);color:var(--err)}
+.note.ok{background:var(--ok-bg);color:var(--ok)}
+.note.info{background:#eef4f8;color:#234e6b}
+.hidden{display:none!important}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* preview */
+.pv{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;border-radius:14px;background:#d9d6cd;padding:22px}
+.pvbar{display:flex;justify-content:space-between;align-items:center;margin:-6px 0 14px;font-size:12px;color:#4b524e}
+.paper{background:#fff;max-width:794px;margin:0 auto 18px;padding:72px 80px;font-family:Tinos,'Times New Roman',serif;font-size:15px;line-height:1.6;color:#000;box-shadow:0 2px 10px rgba(0,0,0,.12);text-align:justify}
+.paper .cov{min-height:900px;display:flex;flex-direction:column}
+.paper .cov .dt{text-align:left}
+.paper .rule{border-bottom:2px dotted #000;margin:18px 0}
+.paper .ctr{text-align:center}
+.paper .big{font-size:21px;font-weight:700}
+.paper .logo{color:#888;font-size:13px;text-align:center;margin:40px 0}
+.paper .had{margin-top:auto;font-size:14px;line-height:1.45}
+.paper h3{font-size:15px;margin:22px 0 8px;display:flex;gap:0}
+.paper h3 .n{width:48px;flex:none}
+.paper h3 .t{text-decoration:underline;text-transform:uppercase}
+.paper .c{display:flex;margin:0 0 10px}
+.paper .c .n{width:48px;flex:none}
+.paper .s{display:flex;margin:0 0 8px 48px}
+.paper .s .n{width:40px;flex:none}
+.paper p{margin:0 0 12px}
+.paper mark{background:var(--ph);padding:0 2px}
+.paper table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;text-align:left}
+.paper td,.paper th{border:1px solid #000;padding:5px 7px;vertical-align:top}
+.paper th{background:#eee}
+.paper .sig{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:26px;text-align:left}
+.paper .sig div p{margin:0 0 8px}
+.paper .pb{border-top:1px dashed #bbb;margin:34px -80px;position:relative}
+.paper .pb::after{content:'page break';position:absolute;right:12px;top:-9px;background:#fff;color:#aaa;font:11px 'DM Sans',sans-serif;padding:0 6px}
+.mtoggle{display:none}
+@media (max-width:960px){
+  .wrap{grid-template-columns:1fr;padding:16px}
+  .pv{position:static;max-height:none;padding:12px}
+  .paper{padding:36px 22px;font-size:14px}
+  .paper .pb{margin:30px -22px}
+  .paper .cov{min-height:auto}
+  .mtoggle{display:flex;gap:8px;margin-bottom:12px}
+  .mtoggle button{flex:1}
+  body.m-form .pv{display:none} body.m-prev .formcol .steps,body.m-prev .formcol .card{display:none}
+  .row,.row3{grid-template-columns:1fr}
+}
+@media print{
+  header.top,.formcol,.pvbar,.mtoggle{display:none!important}
+  body{background:#fff}.wrap{display:block;padding:0}.pv{position:static;max-height:none;overflow:visible;background:#fff;padding:0}
+  .paper{box-shadow:none;padding:0;margin:0;max-width:none}
+  .paper .pb{border:0;margin:0;page-break-after:always}.paper .pb::after{display:none}
+  .paper mark{background:none}
+}
+</style>
+<style>
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}
+.chips button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;font:12px 'DM Sans',sans-serif;color:var(--muted);cursor:pointer}
+.chips button:hover{border-color:var(--gold);color:var(--ink)}
+.flag{font-size:12px;margin-top:4px;color:var(--warn)}
+.paper h2.title{font-size:20px;text-align:center;margin:0 0 4px;letter-spacing:.02em}
+.paper .sub{text-align:center;margin:0 0 18px}
+.paper .notice{border:1px solid #000;padding:10px 14px;font-size:13px;line-height:1.5;margin:0 0 18px}
+</style>
+</head>
+<body class="m-form">
+<header class="top">
+  <div class="mark" style="color:#0D1117">S</div>
+  <div><h1><span style="color:var(--gold)">SOUL</span> Advisors · Memorandum of Wishes</h1><p>Guidance for your executor and family, read alongside your will. Not legally binding.</p></div>
+  <div class="sp"></div>
+  <p>🔒 Details stay in this browser. Nothing is uploaded.</p><a class="back" href="/agents">← Agent Hub</a>
+</header>
+
+<div class="wrap">
+<div class="formcol">
+  <div class="mtoggle"><button class="btn pri" id="mvForm" onclick="mview('form')">Form</button><button class="btn sec" id="mvPrev" onclick="mview('prev')">Preview</button></div>
+  <div class="steps" id="steps"></div>
+  <div class="card">
+
+  <!-- 1 -->
+  <section class="step" data-title="About you">
+    <h2>About you and your will</h2>
+    <p class="lead">A memorandum of wishes sits beside your will. It explains your wishes to your executor and family, but it does not change your will or Faraid.</p>
+    <div id="importBox" class="note info hidden"><b>Wasiat details found.</b> <button class="btn sec" style="padding:4px 10px;margin-left:6px" onclick="importWasiat()">Use details from my Wasiat</button></div>
+    <label>Full name (as per NRIC)</label><input type="text" data-k="t.name">
+    <div class="row">
+      <div><label>ID type</label><select data-k="t.idType"><option>NRIC</option><option>FIN</option><option>Passport</option></select></div>
+      <div><label>ID number</label><input type="text" data-k="t.nric"></div>
+    </div>
+    <label>Gender</label><div class="seg"><label><input type="radio" name="g" data-k="t.gender" value="M">Male</label><label><input type="radio" name="g" data-k="t.gender" value="F">Female</label></div>
+    <div class="row">
+      <div><label>Date of my will <span class="hint">(if signed)</span></label><input type="text" data-k="willDate" placeholder="e.g. 12 October 2026"></div>
+      <div><label>Original will is kept at</label><input type="text" data-k="willAt" placeholder="e.g. safe at home, lawyer's office"></div>
+    </div>
+    <label style="margin-top:18px">My executor(s)</label>
+    <div id="l-executors"></div>
+    <button class="add" onclick="addItem('executors')">+ Add executor</button>
+    <label>Also share files with: <span class="hint">(load a Wasiat draft file to import)</span></label>
+    <label class="btn sec" style="display:inline-block;margin:0">Load Wasiat draft file<input type="file" accept=".json" onchange="importWasiatFile(this)" hidden></label>
+  </section>
+
+  <!-- 2 -->
+  <section class="step" data-title="Family & care">
+    <h2>Care of my family</h2><p class="lead">Your hopes for the people who depend on you. Leave anything blank that doesn't apply.</p>
+    <label class="check"><input type="checkbox" data-k="care.spouseHome"> I hope my heirs will allow my <span data-sp>spouse</span> to continue living in our home for as long as <span data-spp>she</span> wishes</label>
+    <label>Care of my parents or other dependants</label>
+    <textarea data-k="care.dependants" placeholder="e.g. I hope my children will take turns to visit and support my mother, Hajjah Aminah, each week."></textarea>
+    <label>Upbringing of my children</label>
+    <div class="chips" data-target="care.upbringing"><button>Islamic education</button><button>Stay with their mother</button><button>Keep siblings together</button><button>Continue in current school</button></div>
+    <textarea data-k="care.upbringing" placeholder="e.g. I hope my children continue their Quran classes and stay close to their grandparents."></textarea>
+    <label>Children's shares while they are young</label>
+    <div class="row">
+      <div><label class="hint" style="margin-top:0">Age I hope they receive their share</label><select data-k="care.age"><option value="">No preference</option><option>21</option><option>23</option><option>25</option><option>in stages (21, 25 and 30)</option></select></div>
+      <div></div>
+    </div>
+    <textarea data-k="care.trust" placeholder="e.g. Until then, I hope my Executor uses the money only for their education, medical needs and daily living."></textarea>
+    <label>Notes for the guardian</label>
+    <textarea data-k="care.guardian" placeholder="e.g. Please keep my children in touch with both sides of the family."></textarea>
+  </section>
+
+  <!-- 3 -->
+  <section class="step" data-title="Inheritance">
+    <h2>How I hope my heirs use their inheritance</h2>
+    <p class="lead">Faraid decides each heir's share. Here you can only express hopes about how they use it. Use words like "I hope" or "I request", not "give" or "must".</p>
+    <label>My general hopes</label>
+    <div class="chips" data-target="hopes.general"><button>Pay off family debts first</button><button>Set aside for sadaqah jariah</button><button>Avoid riba-based investments</button><button>Keep the family home</button></div>
+    <textarea data-k="hopes.general" placeholder="e.g. I hope my heirs will use part of their inheritance for sadaqah jariah in my name."></textarea>
+    <label style="margin-top:18px">Help for specific people</label>
+    <div id="l-support"></div>
+    <button class="add" onclick="addItem('support')">+ Add a person</button>
+    <label>Family business or property</label>
+    <textarea data-k="hopes.business" placeholder="e.g. I hope my heirs keep the shophouse and share the rent, rather than sell it quickly."></textarea>
+  </section>
+
+  <!-- 4 -->
+  <section class="step" data-title="Personal items">
+    <h2>Personal and sentimental items</h2>
+    <p class="lead">Who you hope receives items of personal meaning. Under Faraid these still count towards an heir's share, unless all heirs agree after your death.</p>
+    <div id="l-items"></div>
+    <button class="add" onclick="addItem('items')">+ Add item</button>
+    <datalist id="people"></datalist>
+  </section>
+
+  <!-- 5 -->
+  <section class="step" data-title="Funeral & ibadah">
+    <h2>Funeral and religious wishes</h2>
+    <div class="row">
+      <div><label>Mosque for solat jenazah</label><input type="text" data-k="fun.mosque" placeholder="e.g. Masjid Al-Istighfar"></div>
+      <div><label>Burial preference</label><input type="text" data-k="fun.burial" placeholder="e.g. Pusara Abadi, near my parents"></div>
+    </div>
+    <div class="row">
+      <div><label>Who I'd like to perform ghusl</label><input type="text" data-k="fun.ghusl"></div>
+      <div><label>Who I'd like to lead the prayer</label><input type="text" data-k="fun.imam"></div>
+    </div>
+    <label>Khairat / funeral scheme membership</label><input type="text" data-k="fun.khairat" placeholder="e.g. Khairat Kematian Masjid Al-Istighfar, member no. 1234">
+    <label>Tahlil, doa and gatherings</label><input type="text" data-k="fun.tahlil" placeholder="e.g. Simple tahlil for 3 nights; please keep costs modest.">
+    <label>Outstanding ibadah</label>
+    <textarea data-k="fun.ibadah" placeholder="e.g. About 20 days of qadha fasts outstanding (fidyah may be needed). I have not performed Hajj."></textarea>
+    <label>Sadaqah jariah or waqf I hope for</label>
+    <textarea data-k="fun.jariah" placeholder="e.g. Contribute to the Quran class at Masjid Al-Falah in my name."></textarea>
+    <label>Other wishes</label><textarea data-k="fun.other"></textarea>
+  </section>
+
+  <!-- 6 -->
+  <section class="step" data-title="Documents">
+    <h2>Documents, accounts and contacts</h2>
+    <p class="lead">Help your executor find everything. Do not write passwords or full account numbers here.</p>
+    <label>Where my important documents are kept</label>
+    <input type="text" data-k="docs.where" placeholder="e.g. Blue file in the bedroom cabinet: NRIC copy, policies, HDB papers">
+    <label style="margin-top:18px">Accounts and policies</label>
+    <div id="l-accounts"></div>
+    <button class="add" onclick="addItem('accounts')">+ Add account or policy</button>
+    <label style="margin-top:18px">Digital accounts</label>
+    <div id="l-digital"></div>
+    <button class="add" onclick="addItem('digital')">+ Add digital account</button>
+    <label>How my executor can access my devices</label>
+    <input type="text" data-k="docs.access" placeholder="e.g. My wife knows the phone PIN; password manager recovery sheet is in the safe">
+    <label style="margin-top:18px">People to contact</label>
+    <div id="l-contacts"></div>
+    <button class="add" onclick="addItem('contacts')">+ Add contact</button>
+  </section>
+
+  <!-- 7 -->
+  <section class="step" data-title="Debts">
+    <h2>Debts and informal arrangements</h2>
+    <p class="lead">Debts must be settled before Faraid. Listing informal ones helps your executor; they may still need proof.</p>
+    <label>Money I owe</label><div id="l-owe"></div><button class="add" onclick="addItem('owe')">+ Add</button>
+    <label style="margin-top:18px">Money owed to me</label><div id="l-owed"></div><button class="add" onclick="addItem('owed')">+ Add</button>
+  </section>
+
+  <!-- 8 -->
+  <section class="step" data-title="Message & review">
+    <h2>A personal message</h2>
+    <p class="lead">Optional. Some people use this to share advice, forgive and ask forgiveness, or explain their choices.</p>
+    <textarea data-k="message" style="min-height:140px" placeholder="e.g. To my dear family, please forgive me for any shortcomings..."></textarea>
+    <h2 style="margin-top:24px">Review and download</h2>
+    <div id="checks"></div>
+    <div class="tools">
+      <button class="btn pri" onclick="downloadDocx()">Download Word (.docx)</button>
+      <button class="btn gold" onclick="downloadPdf()">Download PDF</button>
+    </div>
+    <div class="tools">
+      <button class="btn sec" onclick="saveDraft()">Save draft file</button>
+      <label class="btn sec" style="margin:0">Load draft file<input type="file" accept=".json" onchange="loadDraft(this)" hidden></label>
+      <button class="btn sec" onclick="if(confirm('Clear all fields?'))resetAll()">Clear form</button>
+    </div>
+    <div class="note warn" style="margin-top:16px">Keep this memorandum with your will and tell your executor where it is. Review it every few years or after major life events. It does not need witnesses.</div>
+  </section>
+
+  <div class="nav"><button class="btn sec" id="prev" onclick="go(cur-1)">Back</button><button class="btn pri" id="next" onclick="go(cur+1)">Next</button></div>
+  </div>
+</div>
+
+<div class="pv">
+  <div class="pvbar"><span>Live preview</span><span id="pvStat"></span></div>
+  <div class="paper" id="paper"></div>
+</div>
+</div>
+
+<script>
+const CONFIG = { firmLine1:'SOUL Advisors', fileName:'Memorandum_of_Wishes' };
+
+/* ================= STATE ================= */
+const DEFAULT = () => ({
+  t:{ name:'', idType:'NRIC', nric:'', gender:'M' }, willDate:'', willAt:'',
+  executors:[{name:'',rel:'',phone:''}],
+  spouse:'', family:[],
+  care:{ spouseHome:false, dependants:'', upbringing:'', age:'', trust:'', guardian:'' },
+  hopes:{ general:'', business:'' }, support:[],
+  items:[],
+  fun:{ mosque:'', burial:'', ghusl:'', imam:'', khairat:'', tahlil:'', ibadah:'', jariah:'', other:'' },
+  docs:{ where:'', access:'' }, accounts:[], digital:[], contacts:[],
+  owe:[], owed:[],
+  message:'',
+});
+let S = DEFAULT(), cur = 0;
+const get = (o,p) => p.split('.').reduce((a,k)=>a==null?a:a[k], o);
+const set = (o,p,v) => { const ks=p.split('.'); const last=ks.pop(); ks.reduce((a,k)=>a[k],o)[last]=v; };
+
+/* ================= LISTS ================= */
+const ACC_TYPES = ['Bank account','CPF','Insurance policy','Investment / CDP','Property','Loan / mortgage','Credit card','Other'];
+const LISTS = {
+  executors:{ max:4, min:1, item:()=>({name:'',rel:'',phone:''}), title:i=>i?`Replacement executor ${i}`:'Executor', fields:()=>`
+    <div class="row3"><div><label>Full name</label><input type="text" data-f="name"></div><div><label>Relationship</label><input type="text" data-f="rel"></div><div><label>Phone</label><input type="text" data-f="phone"></div></div>` },
+  support:{ max:10, item:()=>({who:'',how:''}), title:i=>`Person ${i+1}`, fields:()=>`
+    <label>Name</label><input type="text" data-f="who" list="people">
+    <label>How I hope they will be helped</label><textarea data-f="how" placeholder="e.g. I hope my sons will help pay for my youngest daughter's university fees."></textarea>` },
+  items:{ max:30, item:()=>({item:'',to:'',reason:''}), title:i=>`Item ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Item</label><input type="text" data-f="item" placeholder="e.g. My late father's Quran"></div><div><label>I hope it goes to</label><input type="text" data-f="to" list="people"></div></div>
+    <label>Why <span class="hint">(optional)</span></label><input type="text" data-f="reason">` },
+  accounts:{ max:40, item:()=>({inst:'',type:'Bank account',last4:'',note:''}), title:i=>`Account ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Institution</label><input type="text" data-f="inst" placeholder="e.g. DBS, Prudential, CPF Board"></div><div><label>Type</label><select data-f="type">${ACC_TYPES.map(a=>`<option>${a}</option>`).join('')}</select></div></div>
+    <div class="row"><div><label>Last 4 digits</label><input type="text" data-f="last4" maxlength="4"></div><div><label>Note</label><input type="text" data-f="note" placeholder="e.g. joint with wife; nominated"></div></div>` },
+  digital:{ max:30, item:()=>({svc:'',wish:'Close the account'}), title:i=>`Digital account ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Service</label><input type="text" data-f="svc" placeholder="e.g. Facebook, Gmail, Google Photos"></div>
+    <div><label>My wish</label><select data-f="wish"><option>Close the account</option><option>Memorialise the account</option><option>Download photos for my family, then close</option><option>Transfer to a family member</option><option>No preference</option></select></div></div>` },
+  contacts:{ max:20, item:()=>({role:'Financial consultant',name:'',contact:''}), title:i=>`Contact ${i+1}`, fields:()=>`
+    <div class="row3"><div><label>Role</label><select data-f="role"><option>Financial consultant</option><option>Lawyer</option><option>Accountant</option><option>Employer / HR</option><option>Business partner</option><option>Family / friend to notify</option><option>Other</option></select></div>
+    <div><label>Name</label><input type="text" data-f="name"></div><div><label>Phone / email</label><input type="text" data-f="contact"></div></div>` },
+  owe:{ max:20, item:()=>({who:'',amt:'',note:''}), title:i=>`Debt ${i+1}`, fields:()=>`
+    <div class="row3"><div><label>Owed to</label><input type="text" data-f="who"></div><div><label>Amount (S$)</label><input type="text" data-f="amt"></div><div><label>Note</label><input type="text" data-f="note" placeholder="e.g. no written record"></div></div>` },
+  owed:{ max:20, item:()=>({who:'',amt:'',note:''}), title:i=>`Owed ${i+1}`, fields:()=>`
+    <div class="row3"><div><label>Owed by</label><input type="text" data-f="who"></div><div><label>Amount (S$)</label><input type="text" data-f="amt"></div><div><label>Note</label><input type="text" data-f="note" placeholder="e.g. may be forgiven"></div></div>` },
+};
+function renderList(name){
+  const L = LISTS[name], box = document.getElementById('l-'+name); if(!box) return;
+  box.innerHTML = S[name].map((it,i)=>`<div class="item" data-list="${name}" data-i="${i}"><div class="ttl">${L.title(i)}</div>
+    ${!(L.min && S[name].length<=L.min) ? `<button class="x" title="Remove" onclick="delItem('${name}',${i})">×</button>`:''}${L.fields(it)}<div class="flag" data-flag></div></div>`).join('');
+  box.querySelectorAll('[data-list]').forEach(el=>{ const it=S[name][+el.dataset.i];
+    el.querySelectorAll('[data-f]').forEach(f=>{ f.value = it[f.dataset.f] ?? ''; }); });
+}
+function addItem(n){ if(S[n].length<LISTS[n].max){ S[n].push(LISTS[n].item()); renderList(n); update(); } }
+function delItem(n,i){ S[n].splice(i,1); renderList(n); update(); }
+
+/* ================= BINDING ================= */
+document.addEventListener('input', onField); document.addEventListener('change', onField);
+function onField(e){
+  const el = e.target;
+  if(el.dataset.k){ if(el.type==='radio' && !el.checked) return; set(S, el.dataset.k, el.type==='checkbox'?el.checked:el.value); update(); }
+  else if(el.dataset.f){ const box=el.closest('[data-list]'); S[box.dataset.list][+box.dataset.i][el.dataset.f]=el.value; update(); }
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('.chips button'); if(!b) return;
+  const k = b.parentElement.dataset.target, ta = document.querySelector(`[data-k="${k}"]`);
+  const add = { 'Islamic education':'I hope my children receive a good Islamic education alongside their schooling.',
+    'Stay with their mother':'I hope my children continue to live with their mother.',
+    'Keep siblings together':'I hope my children are kept together and grow up close to one another.',
+    'Continue in current school':'I hope my children can continue at their current schools where possible.',
+    'Pay off family debts first':'I hope my heirs will first help settle any family debts.',
+    'Set aside for sadaqah jariah':'I hope my heirs will set aside part of their inheritance for sadaqah jariah in my name.',
+    'Avoid riba-based investments':'I hope my heirs will invest their inheritance in Shariah-compliant ways and avoid riba.',
+    'Keep the family home':'I hope my heirs will keep the family home rather than sell it quickly.' }[b.textContent];
+  ta.value = (ta.value.trim() ? ta.value.trim()+' ' : '') + add; set(S,k,ta.value); update();
+});
+function fillForm(){
+  document.querySelectorAll('[data-k]').forEach(el=>{ const v=get(S,el.dataset.k);
+    if(el.type==='radio') el.checked=(el.value===v); else if(el.type==='checkbox') el.checked=!!v; else el.value=v??''; });
+  Object.keys(LISTS).forEach(renderList);
+}
+
+/* ================= WASIAT IMPORT ================= */
+function readWasiat(){ try{ const t = sessionStorage.getItem('soul_wasiat'); return t ? JSON.parse(t) : null; }catch(e){ return null; } }
+function applyWasiat(w){
+  if(!w || !w.t) return;
+  S.t.name = w.t.name||S.t.name; S.t.nric = w.t.nric||S.t.nric; S.t.idType = w.t.idType||S.t.idType; S.t.gender = w.t.gender||S.t.gender;
+  const ex = (w.executors||[]).filter(e=>e.name && e.name.trim());
+  if(ex.length) S.executors = ex.map(e=>({name:e.name, rel:e.rel||'', phone:''}));
+  S.spouse = w.marital==='married' ? (w.spouse&&w.spouse.name||'') : '';
+  S.family = [S.spouse, ...(w.children||[]).map(c=>c.name)].filter(Boolean);
+  if(S.spouse) S.care.spouseHome = true;
+  fillForm(); update();
+}
+function importWasiat(){ applyWasiat(readWasiat()); document.getElementById('importBox').classList.add('hidden'); }
+function importWasiatFile(input){ const f=input.files[0]; if(!f) return; f.text().then(t=>{ try{ applyWasiat(JSON.parse(t)); }catch(e){ alert('That file is not a valid Wasiat draft.'); } }); input.value=''; }
+
+/* ================= STEPS ================= */
+const steps = [...document.querySelectorAll('.step')];
+function go(i){
+  cur = Math.max(0, Math.min(steps.length-1, i));
+  steps.forEach((s,j)=>s.classList.toggle('on', j===cur));
+  document.getElementById('steps').innerHTML = steps.map((s,j)=>`<button class="${j===cur?'on':j<cur?'done':''}" onclick="go(${j})">${j+1}. ${s.dataset.title}</button>`).join('');
+  document.getElementById('prev').style.visibility = cur ? 'visible':'hidden';
+  document.getElementById('next').classList.toggle('hidden', cur===steps.length-1);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function mview(v){ document.body.classList.remove('m-form','m-prev'); document.body.classList.add('m-'+v);
+  document.getElementById('mvForm').className='btn '+(v==='form'?'pri':'sec'); document.getElementById('mvPrev').className='btn '+(v==='prev'?'pri':'sec'); }
+
+/* ================= FARAID-CONFLICT CHECK ================= */
+const RISK = [
+  [/\b(instead of|not (according to|by|under)|outside( of)?|override|ignore)\b[^.]{0,30}\bfaraid\b/i, 'seems to set Faraid aside. A memorandum cannot change Faraid shares.'],
+  [/\b(disinherit|exclude|cut (him|her|them) out|should not (get|receive|inherit))\b/i, 'seems to exclude an heir. Heirs keep their Faraid share whatever this memorandum says.'],
+  [/\b(equal(ly)?|same) shares?\b|\bshare(d)? equally\b/i, 'asks for equal shares, which differs from Faraid. Heirs may agree to this after your death, but cannot be required to.'],
+  [/\b(i (give|bequeath|leave|devise)|is to (go|be given) to|shall (go|be given|receive|inherit))\b/i, 'reads like a gift in a will. Use "I hope" or "I request" instead, so it is not mistaken for a bequest.'],
+  [/\b(must|shall)\b/i, 'uses "must" or "shall". Softer words such as "I hope" or "I request" keep the memorandum clearly non-binding.'],
+];
+function scan(text){ const out=[]; if(!text) return out; for(const [re,msg] of RISK){ if(re.test(text)){ out.push(msg); break; } } return out; }
+function allTexts(){
+  const t = [];
+  [['care.dependants','Care of dependants'],['care.upbringing','Upbringing'],['care.trust',"Children's shares"],['care.guardian','Guardian notes'],
+   ['hopes.general','General hopes'],['hopes.business','Business or property'],['fun.jariah','Sadaqah jariah'],['fun.other','Other funeral wishes'],['message','Personal message']]
+    .forEach(([k,l])=>t.push({where:l, text:get(S,k), el:document.querySelector(`[data-k="${k}"]`)}));
+  S.support.forEach((s,i)=>t.push({where:`Help for ${s.who||'person '+(i+1)}`, text:s.how, list:['support',i]}));
+  S.items.forEach((s,i)=>t.push({where:`Item: ${s.item||i+1}`, text:s.reason, list:['items',i]}));
+  return t;
+}
+
+/* ================= DOCUMENT MODEL ================= */
+const ph = (v,l) => (v && String(v).trim()) ? String(v).trim() : `[[${l}]]`;
+const UP = s => /^\[\[/.test(s) ? s : s.toUpperCase();
+const sentences = t => t.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean);
+function buildMemo(s){
+  const g = s.t.gender==='F', P = { his:g?'her':'his', spouse:g?'husband':'wife', she:g?'he':'she' };
+  const TN = ph(s.t.name,'Full name'), idL = s.t.idType==='NRIC'?'Singapore NRIC No.':s.t.idType==='FIN'?'FIN No.':'Passport No.';
+  const B = []; let n=0, m=0;
+  const H = t => { n++; m=0; B.push({t:'h', n:n+'.', title:t}); };
+  const C = t => { m++; B.push({t:'c', n:`${n}.${m}`, text:t}); };
+  const T = (widths, rows) => B.push({t:'table', widths, rows});
+  const exs = s.executors.filter(e=>e.name.trim());
+
+  B.push({t:'notice', text:`This Memorandum is **not a will or codicil** and is not intended to have testamentary effect. It does not revoke, vary or add to my Last Will and Testament${s.willDate.trim()?` dated ${s.willDate.trim()}`:''}, or the distribution of my estate according to Faraid. It records my wishes for the guidance of my Executor, my heirs and my family. They are not legally bound by it, and I ask that it be read with love and goodwill. Where anything here differs from my Will or from Islamic law, my Will and Islamic law prevail.`});
+
+  H('My Will and Executor');
+  C(`My original Will ${s.willAt.trim()?`is kept at ${s.willAt.trim()}`:'is kept at [[location]]'}.`);
+  if(exs.length) C(`My Executor is ${exs.map((e,i)=>`**${e.name.trim()}**${e.rel?` (my ${e.rel})`:''}${e.phone?`, contactable at ${e.phone}`:''}`).join(', with replacement(s) ')}. I ask my family to support my Executor and to give ${exs.length>1?'them':'him or her'} the information and documents needed to administer my estate.`);
+  else C('My Executor is named in my Will.');
+
+  const care = [];
+  if(s.care.spouseHome) care.push(`I hope my heirs will allow my ${P.spouse}${s.spouse?`, ${s.spouse}`:''}, to continue living in our home for as long as ${P.she} wishes, and will not press for its sale during that time.`);
+  if(s.care.dependants.trim()) care.push(...sentences(s.care.dependants));
+  if(s.care.upbringing.trim()) care.push(...sentences(s.care.upbringing));
+  if(s.care.age) care.push(`I hope that any share due to a child of mine is held and managed for that child until ${/stages/.test(s.care.age)?`he or she reaches the ages of 21, 25 and 30, with part released at each age`:`he or she reaches the age of ${s.care.age}`}.`);
+  if(s.care.trust.trim()) care.push(...sentences(s.care.trust));
+  if(s.care.guardian.trim()) care.push(...sentences(s.care.guardian).map(x=>`To the guardian of my children: ${x}`));
+  if(care.length){ H('Care of my Family'); care.forEach(C); }
+
+  const hopes = [...sentences(s.hopes.general)];
+  s.support.filter(x=>x.who.trim()||x.how.trim()).forEach(x=>hopes.push(`${x.who.trim()?`**${x.who.trim()}:** `:''}${x.how.trim()}`));
+  if(s.hopes.business.trim()) hopes.push(...sentences(s.hopes.business));
+  if(hopes.length){ H('My Hopes for the Use of my Estate'); C('I understand that each heir is entitled to his or her share under Faraid. The following are my hopes only.'); hopes.forEach(C); }
+
+  const items = s.items.filter(x=>x.item.trim());
+  if(items.length){
+    H('Personal and Sentimental Items');
+    C('I hope the following items will go to the people named. I understand that their value will count towards that person’s share under Faraid, unless all my heirs agree otherwise after my death.');
+    T([30,140,120,161], [['No.','Item','I hope it goes to','Reason'], ...items.map((x,i)=>[String(i+1), x.item.trim(), ph(x.to,'Name'), x.reason.trim()||'–'])]);
+  }
+
+  const f = s.fun, fun = [];
+  if(f.mosque.trim()) fun.push(`I would like my *solat jenazah* to be held at ${f.mosque.trim()}.`);
+  if(f.burial.trim()) fun.push(`My burial preference: ${f.burial.trim()}.`);
+  if(f.ghusl.trim()) fun.push(`I would like ${f.ghusl.trim()} to perform or assist with my *ghusl*, if able.`);
+  if(f.imam.trim()) fun.push(`I would like ${f.imam.trim()} to lead my funeral prayer, if able.`);
+  if(f.khairat.trim()) fun.push(`Khairat / funeral scheme: ${f.khairat.trim()}.`);
+  if(f.tahlil.trim()) fun.push(...sentences(f.tahlil));
+  if(f.ibadah.trim()) fun.push(...sentences(f.ibadah).map(x=>`Outstanding ibadah: ${x}`));
+  if(f.jariah.trim()) fun.push(...sentences(f.jariah));
+  if(f.other.trim()) fun.push(...sentences(f.other));
+  if(fun.length){ H('Funeral and Religious Wishes'); fun.forEach(x=>C(x.replace(/\.\.$/,'.'))); }
+
+  const acc = s.accounts.filter(a=>a.inst.trim()), dig = s.digital.filter(d=>d.svc.trim()), con = s.contacts.filter(c=>c.name.trim());
+  if(s.docs.where.trim()||acc.length||dig.length||s.docs.access.trim()||con.length){
+    H('Documents, Accounts and Contacts');
+    if(s.docs.where.trim()) C(`My important documents are kept at: ${s.docs.where.trim()}.`.replace(/\.\.$/,'.'));
+    if(acc.length){ C('My accounts and policies (last four digits only):'); T([30,150,120,60,91], [['No.','Institution','Type','Last 4','Note'], ...acc.map((a,i)=>[String(i+1), a.inst.trim(), a.type, a.last4.trim()||'–', a.note.trim()||'–'])]); }
+    if(dig.length){ C('My wishes for my digital accounts:'); T([30,200,221], [['No.','Service','My wish'], ...dig.map((d,i)=>[String(i+1), d.svc.trim(), d.wish])]); }
+    if(s.docs.access.trim()) C(`Access to my devices: ${s.docs.access.trim()}.`.replace(/\.\.$/,'.'));
+    if(con.length){ C('People my Executor may contact:'); T([30,140,140,141], [['No.','Role','Name','Contact'], ...con.map((c,i)=>[String(i+1), c.role, c.name.trim(), c.contact.trim()||'–'])]); }
+  }
+
+  const owe = s.owe.filter(x=>x.who.trim()), owed = s.owed.filter(x=>x.who.trim());
+  if(owe.length||owed.length){
+    H('Debts and Informal Arrangements');
+    if(owe.length){ C('To the best of my knowledge, I owe the following, which I ask my Executor to settle before my estate is distributed:'); T([30,190,90,141], [['No.','Owed to','Amount (S$)','Note'], ...owe.map((x,i)=>[String(i+1), x.who.trim(), x.amt.trim()||'–', x.note.trim()||'–'])]); }
+    if(owed.length){ C('The following owe money to me:'); T([30,190,90,141], [['No.','Owed by','Amount (S$)','Note'], ...owed.map((x,i)=>[String(i+1), x.who.trim(), x.amt.trim()||'–', x.note.trim()||'–'])]); }
+  }
+
+  if(s.message.trim()){ H('A Personal Message'); sentences(s.message).forEach(x=>B.push({t:'p', text:x})); }
+  return { TN, TNU:UP(TN), idL, TID:ph(s.t.nric,'ID number'), blocks:B };
+}
+
+/* ================= PREVIEW ================= */
+const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const md = t => esc(t).replace(/\[\[([^\]]+)\]\]/g,'<mark>[$1]</mark>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\*([^*]+)\*/g,'<i>$1</i>');
+function renderPreview(D){
+  let h = `<h2 class="title">MEMORANDUM OF WISHES</h2><p class="sub">of <b>${md(D.TNU)}</b> (${D.idL} ${md(D.TID)})</p>`;
+  for(const b of D.blocks){
+    if(b.t==='notice') h += `<div class="notice">${md(b.text)}</div>`;
+    if(b.t==='p') h += `<p>${md(b.text)}</p>`;
+    if(b.t==='h') h += `<h3><span class="n">${b.n}</span><span class="t">${esc(b.title)}</span></h3>`;
+    if(b.t==='c') h += `<div class="c"><span class="n">${b.n}</span><span>${md(b.text)}</span></div>`;
+    if(b.t==='table') h += `<table style="margin-left:48px;width:calc(100% - 48px)">${b.rows.map((r,i)=>`<tr>${r.map(c=>i?`<td>${md(c)}</td>`:`<th>${esc(c)}</th>`).join('')}</tr>`).join('')}</table>`;
+  }
+  h += `<p style="margin-top:36px">Signed by me on ______________________</p><p style="margin-top:46px">……………………………<br>${md(D.TN)}</p>
+    <p style="font-size:12px;margin-top:20px"><i>Review history: ____________ &nbsp; ____________ &nbsp; ____________</i></p>`;
+  document.getElementById('paper').innerHTML = h;
+  const blanks = (h.match(/<mark>/g)||[]).length;
+  document.getElementById('pvStat').textContent = `${D.blocks.filter(b=>b.t==='h').length} sections · ${blanks ? blanks+(blanks>1?' blanks':' blank')+' left' : 'all fields filled'}`;
+}
+function update(){
+  document.querySelectorAll('[data-sp]').forEach(e=>e.textContent = S.t.gender==='F'?'husband':'wife');
+  document.querySelectorAll('[data-spp]').forEach(e=>e.textContent = S.t.gender==='F'?'he':'she');
+  const dl = document.getElementById('people'); dl.innerHTML = S.family.map(n=>`<option value="${esc(n)}">`).join('');
+  const D = buildMemo(S); renderPreview(D);
+  // inline flags + review list
+  document.querySelectorAll('.flag.inline').forEach(x=>x.remove());
+  document.querySelectorAll('[data-flag]').forEach(x=>x.textContent='');
+  const issues = [];
+  allTexts().forEach(x=>{ const r = scan(x.text); if(!r.length) return; issues.push(`${x.where}: this wording ${r[0]}`);
+    if(x.el){ const d=document.createElement('div'); d.className='flag inline'; d.textContent='⚠ This wording '+r[0]; x.el.after(d); }
+    if(x.list){ const box=document.querySelector(`#l-${x.list[0]} [data-i="${x.list[1]}"] [data-flag]`); if(box) box.textContent='⚠ This wording '+r[0]; } });
+  const out = [];
+  if(!S.t.name.trim()) out.push(['err','Your full name is missing.']);
+  issues.forEach(t=>out.push(['warn',t]));
+  if(!S.executors.some(e=>e.name.trim())) out.push(['warn','Add your executor so your family knows who to give this memorandum to.']);
+  if(!out.some(o=>o[0]!=='ok')) out.push(['ok','No issues found. Your memorandum reads as guidance and does not conflict with Faraid.']);
+  document.getElementById('checks').innerHTML = out.map(([k,t])=>`<div class="note ${k}">${esc(t)}</div>`).join('');
+}
+
+/* ================= SHARED EXPORT HELPERS ================= */
+const fileBase = () => `${CONFIG.fileName}_${(S.t.name.trim()||'Draft').replace(/[^\w]+/g,'_')}`;
+
+/* ---- Word ---- */
+async function downloadDocx(){
+  if(!window.docx){ alert('The Word export library did not load. Check your connection and reload.'); return; }
+  const { Document, Packer, Paragraph, TextRun, AlignmentType, Header, Footer, PageNumber, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, TabStopType } = docx;
+  const D = buildMemo(S), FONT='Times New Roman', SZ=24, LINE=360;
+  const r = (text,o={}) => new TextRun({ text, font:FONT, size:SZ, ...o });
+  const runs = (str, base={}) => { str = str.replace(/\[\[([^\]]+)\]\]/g,'[$1]'); const out=[], re=/(\*\*[^*]+\*\*|\*[^*]+\*)/g; let last=0, mm;
+    while((mm=re.exec(str))){ if(mm.index>last) out.push(r(str.slice(last,mm.index),base)); const t=mm[0];
+      out.push(t.startsWith('**') ? r(t.slice(2,-2),{...base,bold:true}) : r(t.slice(1,-1),{...base,italics:true})); last=mm.index+t.length; }
+    if(last<str.length) out.push(r(str.slice(last),base)); return out; };
+  const p = (t,o={}) => new Paragraph({ alignment:o.align??AlignmentType.JUSTIFIED, spacing:{line:o.line??LINE, after:o.after??160, before:o.before??0}, indent:o.indent, children:runs(t,o.run||{}) });
+  const hang = (num, text, title=false) => new Paragraph({ alignment:AlignmentType.JUSTIFIED, spacing:{line:LINE, after:160, before:title?280:0}, keepNext:title,
+    indent:{left:720, hanging:720}, tabStops:[{type:TabStopType.LEFT, position:720}],
+    children: title ? [r(num,{bold:true}), r('\t'), r(text.toUpperCase(),{bold:true, underline:{}})] : [r(num), r('\t'), ...runs(text)] });
+  const thin = {style:BorderStyle.SINGLE,size:4,color:'000000'}, tb={top:thin,bottom:thin,left:thin,right:thin};
+  const table = (wPt, rows) => { const scale = 8306/wPt.reduce((a,b)=>a+b,0); const widths = wPt.map(w=>Math.round(w*scale)); widths[widths.length-1] += 8306 - widths.reduce((a,b)=>a+b,0);
+    return new Table({ width:{size:8306,type:WidthType.DXA}, columnWidths:widths, indent:{size:720,type:WidthType.DXA},
+      rows: rows.map((row,i)=>new TableRow({ tableHeader:i===0, children: row.map((t,j)=>new TableCell({ width:{size:widths[j],type:WidthType.DXA}, borders:tb,
+        margins:{top:60,bottom:60,left:90,right:90}, shading:i===0?{fill:'E7E6E6',type:ShadingType.CLEAR,color:'auto'}:undefined,
+        children:[new Paragraph({spacing:{after:20}, children:runs(t,{size:20,bold:i===0})})] })) })) }); };
+  const kids = [
+    p('MEMORANDUM OF WISHES',{align:AlignmentType.CENTER, run:{bold:true,size:30}, after:60}),
+    p(`of **${D.TNU}** (${D.idL} ${D.TID})`,{align:AlignmentType.CENTER, after:240}),
+  ];
+  D.blocks.forEach(b=>{
+    if(b.t==='notice') kids.push(new Paragraph({ alignment:AlignmentType.JUSTIFIED, spacing:{line:300, after:240}, border:{top:thin,bottom:thin,left:thin,right:thin},
+      children:runs(b.text,{size:21}) }));
+    if(b.t==='p') kids.push(p(b.text));
+    if(b.t==='h') kids.push(hang(b.n, b.title, true));
+    if(b.t==='c') kids.push(hang(b.n, b.text));
+    if(b.t==='table'){ kids.push(table(b.widths, b.rows)); kids.push(new Paragraph({spacing:{after:120}, children:[]})); }
+  });
+  kids.push(p('Signed by me on ______________________',{before:480, align:AlignmentType.LEFT}));
+  kids.push(p('…………………………',{before:600, after:0, align:AlignmentType.LEFT}));
+  kids.push(p(D.TN,{align:AlignmentType.LEFT}));
+  kids.push(p('*Review history: ____________   ____________   ____________*',{run:{size:20}, before:240, align:AlignmentType.LEFT}));
+  const doc = new Document({ creator:CONFIG.firmLine1, title:`Memorandum of Wishes of ${D.TN}`, styles:{default:{document:{run:{font:FONT,size:SZ}}}},
+    sections:[{ properties:{page:{margin:{top:1440,bottom:1440,left:1440,right:1440}}},
+      headers:{default:new Header({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({children:[PageNumber.CURRENT], font:FONT, size:SZ})]})]})},
+      footers:{default:new Footer({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({text:'Memorandum of Wishes – not a testamentary document', font:FONT, size:16, italics:true})]})]})},
+      children:kids }] });
+  const blob = await Packer.toBlob(doc); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fileBase()+'.docx'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+
+/* ---- PDF ---- */
+function downloadPdf(){
+  if(!window.jspdf){ alert('The PDF library did not load. Check your connection and reload.'); return; }
+  const { jsPDF } = window.jspdf; const D = buildMemo(S);
+  const doc = new jsPDF({unit:'pt', format:'a4'}); const PW=595.28, PH=841.89, M=72, X0=M, X1=PW-M, TOP=M, BOT=PH-M, FS=12, LH=18;
+  let y = TOP, page = 1;
+  const clean = t => String(t).replace(/\[\[([^\]]+)\]\]/g,'[$1]');
+  const toRuns = (str, base={}) => { str=clean(str); const out=[], re=/(\*\*[^*]+\*\*|\*[^*]+\*)/g; let last=0, m;
+    while((m=re.exec(str))){ if(m.index>last) out.push({t:str.slice(last,m.index),...base}); const t=m[0];
+      out.push(t.startsWith('**')?{t:t.slice(2,-2),...base,b:true}:{t:t.slice(1,-1),...base,i:true}); last=m.index+t.length; }
+    if(last<str.length) out.push({t:str.slice(last),...base}); return out; };
+  const font = (r,size) => { doc.setFont('times', r.b&&r.i?'bolditalic':r.b?'bold':r.i?'italic':'normal'); doc.setFontSize(size); };
+  const deco = () => { doc.setFont('times','normal'); doc.setFontSize(12); doc.text(String(page), X1, 46, {align:'right'});
+    doc.setFont('times','italic'); doc.setFontSize(8); doc.text('Memorandum of Wishes – not a testamentary document', X1, PH-40, {align:'right'}); };
+  const newPage = () => { doc.addPage(); page++; y = TOP; deco(); };
+  const ensure = h => { if(y+h > BOT) newPage(); };
+  function rich(runs, x, width, o={}){
+    const size=o.size||FS, lh=o.lh||LH, align=o.align||'justify', words=[];
+    runs.forEach(r=>r.t.split(/(\s+)/).forEach(part=>{ if(part==='') return; if(/^\s+$/.test(part)){ if(words.length) words[words.length-1].sp=true; } else words.push({...r,t:part,sp:false}); }));
+    const spW = w => { font(w,size); return doc.getTextWidth(' ') + (w.u?1.5:0); }, gapAfter = w => w.sp ? spW(w) : 0;
+    const lines=[]; let line=[], lw=0;
+    words.forEach(w=>{ font(w,size); w.w=doc.getTextWidth(w.t); const prev=line[line.length-1];
+      if(prev && prev.sp && lw+gapAfter(prev)+w.w > width){ lines.push(line); line=[]; lw=0; }
+      lw += (line.length?gapAfter(line[line.length-1]):0) + w.w; line.push(w); });
+    if(line.length) lines.push(line);
+    const room = Math.floor((BOT-y)/lh); if(lines.length>room && (lines.length<=4 || lines.length-room===1) && room<30) newPage();
+    lines.forEach((ln,li)=>{ ensure(lh); const base=y+size*0.8;
+      if(li===0 && o.label){ font({b:o.labelBold},size); doc.text(o.label, o.labelX, base); }
+      const gaps=ln.slice(0,-1).filter(w=>w.sp).length, natural=ln.reduce((a,w,i)=>a+w.w+(i<ln.length-1?gapAfter(w):0),0);
+      let extra=0, cx=x; if(align==='justify' && li<lines.length-1 && gaps) extra=(width-natural)/gaps; if(align==='center') cx=x+(width-natural)/2;
+      ln.forEach((w,i)=>{ font(w,size); doc.text(w.t,cx,base); const step=i<ln.length-1?gapAfter(w)+(w.sp?extra:0):0;
+        if(w.u){ doc.setLineWidth(0.6); doc.line(cx,base+1.5,cx+((ln[i+1]&&ln[i+1].u)?w.w+step:w.w),base+1.5); } cx+=w.w+step; });
+      y+=lh; });
+    y += (o.after ?? 8); return lines.length;
+  }
+  function table(wPt, rows){
+    const tw = X1-X0-36, scale = tw/wPt.reduce((a,b)=>a+b,0), widths = wPt.map(w=>w*scale), pad=4, size=10, lh=12.5;
+    const wrap=(t,w,b)=>{ doc.setFont('times',b?'bold':'normal'); doc.setFontSize(size); return doc.splitTextToSize(clean(t).replace(/\*\*/g,''), w-pad*2); };
+    const row=(r,head)=>{ const cells=r.map((c,j)=>wrap(c,widths[j],head)); const h=Math.max(...cells.map(c=>c.length))*lh+pad*2;
+      if(y+h>BOT){ newPage(); if(!head) row(rows[0],true); } let x=X0+36;
+      cells.forEach((c,j)=>{ if(head){ doc.setFillColor(231,230,230); doc.rect(x,y,widths[j],h,'F'); } doc.setLineWidth(0.5); doc.rect(x,y,widths[j],h);
+        doc.setFont('times',head?'bold':'normal'); doc.setFontSize(size); c.forEach((ln,k)=>doc.text(ln,x+pad,y+pad+size*0.85+k*lh)); x+=widths[j]; });
+      y+=h; };
+    rows.forEach((r,i)=>row(r,i===0)); y+=12;
+  }
+  deco();
+  rich([{t:'MEMORANDUM OF WISHES', b:true}], X0, X1-X0, {align:'center', size:15, lh:20, after:4});
+  rich(toRuns(`of **${D.TNU}** (${D.idL} ${D.TID})`), X0, X1-X0, {align:'center', after:16});
+  D.blocks.forEach(b=>{
+    if(b.t==='notice'){ const y0=y; y+=8; rich(toRuns(b.text), X0+10, X1-X0-20, {size:10.5, lh:14, after:6}); doc.setLineWidth(0.6); doc.rect(X0, y0, X1-X0, y-y0); y+=14; }
+    if(b.t==='p') rich(toRuns(b.text), X0, X1-X0);
+    if(b.t==='h'){ ensure(LH*3); y+=8; rich([{t:b.title.toUpperCase(), b:true, u:true}], X0+36, X1-X0-36, {align:'left', label:b.n, labelX:X0, labelBold:true}); }
+    if(b.t==='c'){ ensure(LH*2); rich(toRuns(b.text), X0+36, X1-X0-36, {label:b.n, labelX:X0}); }
+    if(b.t==='table') table(b.widths, b.rows);
+  });
+  ensure(140); y+=24;
+  doc.setFont('times','normal'); doc.setFontSize(12); doc.text('Signed by me on ______________________', X0, y); y+=60;
+  doc.text('…………………………', X0, y); y+=16; doc.text(clean(D.TN), X0, y); y+=30;
+  doc.setFont('times','italic'); doc.setFontSize(10); doc.text('Review history: ____________   ____________   ____________', X0, y);
+  doc.setProperties({ title:`Memorandum of Wishes of ${clean(D.TN)}`, creator:CONFIG.firmLine1 });
+  doc.save(fileBase()+'.pdf');
+}
+
+/* ================= DRAFTS ================= */
+function saveDraft(){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})); a.download=fileBase()+'_draft.json'; a.click(); }
+function loadDraft(input){ const f=input.files[0]; if(!f) return; f.text().then(t=>{ try{ const d=JSON.parse(t); if(d.marital!==undefined && d.wasiyyah!==undefined){ applyWasiat(d); } else { S=Object.assign(DEFAULT(), d); fillForm(); update(); } }catch(e){ alert('That file is not a valid draft.'); } }); input.value=''; }
+function resetAll(){ S=DEFAULT(); fillForm(); update(); go(0); }
+
+/* ================= INIT ================= */
+if (window.self !== window.top || new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
+fillForm(); go(0); update();
+if(readWasiat()) document.getElementById('importBox').classList.remove('hidden');
+</script>
+</body>
+</html>

@@ -1010,6 +1010,11 @@ body.csb-session-on .csb-hide-field { display: none !important; }
         Wasiat Generator
       </button>
 
+      <button class="ag-navitem" onclick="switchAgentTab('memo',this)">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v12H5.17L4 17.17V4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>
+        Memorandum of Wishes
+      </button>
+
       <hr class="ag-nav-sep">
       <div class="ag-nav-section">Agent Zone</div>
 
@@ -2042,6 +2047,17 @@ body.csb-session-on .csb-hide-field { display: none !important; }
     <iframe id="wasiat-frame" title="Wasiat Generator" style="width:100%;height:calc(100vh - 150px);border:0;border-top:1px solid var(--border-gold);background:#FAF8F3;display:block"></iframe>
   </div>
 
+  <div class="ag-panel" id="p-memo">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem 0.75rem;flex-wrap:wrap">
+      <div>
+        <div style="font-family:'Lora',serif;font-size:1.2rem;font-weight:600">Memorandum of Wishes</div>
+        <div style="font-size:0.78rem;color:var(--muted)">Non-binding guidance for the executor and family, read alongside the will. Client details carry over from the Wasiat Generator.</div>
+      </div>
+      <a href="/memorandum" target="_blank" class="btn-signout" style="text-decoration:none;color:var(--accent);border-color:var(--border-gold)">Open full screen ↗</a>
+    </div>
+    <iframe id="memo-frame" title="Memorandum of Wishes" style="width:100%;height:calc(100vh - 150px);border:0;border-top:1px solid var(--border-gold);background:#FAF8F3;display:block"></iframe>
+  </div>
+
   <div class="ag-panel" id="p-care">
     <div class="tools-wrap">
       <div class="tools-title">Client Care</div>
@@ -2229,6 +2245,11 @@ function switchAgentTab(tab, btn) {
   if (tab === 'wasiat') {
     const wf = document.getElementById('wasiat-frame');
     if (!wf.src) wf.src = '/wasiat?embed=1';
+  }
+  if (tab === 'memo') {
+    const mf = document.getElementById('memo-frame');
+    if (!mf.src) mf.src = '/memorandum?embed=1';
+    else { try { if (mf.contentWindow.readWasiat && mf.contentWindow.readWasiat()) mf.contentWindow.document.getElementById('importBox').classList.remove('hidden'); } catch(e){} }
   }
   // scripts now lives inside elearning sub-tab — init on first reveal
   if ((tab === 'elearning') && !document.getElementById('scr-filters').dataset.built) {
