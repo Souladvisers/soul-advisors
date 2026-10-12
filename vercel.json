@@ -35,6 +35,7 @@
     { "source": "/client-care",    "destination": "/client-care.html" },
     { "source": "/wasiat",         "destination": "/wasiat.html" },
     { "source": "/memorandum",     "destination": "/memorandum.html" },
+    { "source": "/will",           "destination": "/will.html" },
     { "source": "/(.*)",           "destination": "/index.html" }
   ]
 }

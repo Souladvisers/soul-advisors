@@ -139,8 +139,10 @@ textarea{min-height:80px;resize:vertical}
   <!-- 1 -->
   <section class="step" data-title="About you">
     <h2>About you and your will</h2>
-    <p class="lead">A memorandum of wishes sits beside your will. It explains your wishes to your executor and family, but it does not change your will or Faraid.</p>
-    <div id="importBox" class="note info hidden"><b>Wasiat details found.</b> <button class="btn sec" style="padding:4px 10px;margin-left:6px" onclick="importWasiat()">Use details from my Wasiat</button></div>
+    <p class="lead" data-tx="lead1">A memorandum of wishes sits beside your will. It explains your wishes to your executor and family, but it does not change your will or Faraid.</p>
+    <label style="margin-top:0">Type of will</label>
+    <div class="seg" style="margin-bottom:12px"><label><input type="radio" name="md" data-k="mode" value="islamic">Islamic (Wasiat / Faraid)</label><label><input type="radio" name="md" data-k="mode" value="general">General (non-Muslim)</label></div>
+    <div id="importBox" class="note info hidden"><b data-tx="found">Wasiat details found.</b> <button class="btn sec" style="padding:4px 10px;margin-left:6px" onclick="importWasiat()"><span data-tx="usebtn">Use details from my Wasiat</span></button></div>
     <label>Full name (as per NRIC)</label><input type="text" data-k="t.name">
     <div class="row">
       <div><label>ID type</label><select data-k="t.idType"><option>NRIC</option><option>FIN</option><option>Passport</option></select></div>
@@ -154,8 +156,8 @@ textarea{min-height:80px;resize:vertical}
     <label style="margin-top:18px">My executor(s)</label>
     <div id="l-executors"></div>
     <button class="add" onclick="addItem('executors')">+ Add executor</button>
-    <label>Also share files with: <span class="hint">(load a Wasiat draft file to import)</span></label>
-    <label class="btn sec" style="display:inline-block;margin:0">Load Wasiat draft file<input type="file" accept=".json" onchange="importWasiatFile(this)" hidden></label>
+    <label>Or import from a saved draft <span class="hint">(Wasiat or Will draft file)</span></label>
+    <label class="btn sec" style="display:inline-block;margin:0">Load will draft file<input type="file" accept=".json" onchange="importWasiatFile(this)" hidden></label>
   </section>
 
   <!-- 2 -->
@@ -180,10 +182,10 @@ textarea{min-height:80px;resize:vertical}
   <!-- 3 -->
   <section class="step" data-title="Inheritance">
     <h2>How I hope my heirs use their inheritance</h2>
-    <p class="lead">Faraid decides each heir's share. Here you can only express hopes about how they use it. Use words like "I hope" or "I request", not "give" or "must".</p>
+    <p class="lead" data-tx="lead3">Faraid decides each heir's share. Here you can only express hopes about how they use it. Use words like "I hope" or "I request", not "give" or "must".</p>
     <label>My general hopes</label>
-    <div class="chips" data-target="hopes.general"><button>Pay off family debts first</button><button>Set aside for sadaqah jariah</button><button>Avoid riba-based investments</button><button>Keep the family home</button></div>
-    <textarea data-k="hopes.general" placeholder="e.g. I hope my heirs will use part of their inheritance for sadaqah jariah in my name."></textarea>
+    <div class="chips" data-target="hopes.general"><button>Pay off family debts first</button><button data-tx="chipA">Set aside for sadaqah jariah</button><button data-tx="chipB">Avoid riba-based investments</button><button>Keep the family home</button></div>
+    <textarea data-k="hopes.general" data-txp="ph3" placeholder="e.g. I hope my heirs will use part of their inheritance for sadaqah jariah in my name."></textarea>
     <label style="margin-top:18px">Help for specific people</label>
     <div id="l-support"></div>
     <button class="add" onclick="addItem('support')">+ Add a person</button>
@@ -194,29 +196,29 @@ textarea{min-height:80px;resize:vertical}
   <!-- 4 -->
   <section class="step" data-title="Personal items">
     <h2>Personal and sentimental items</h2>
-    <p class="lead">Who you hope receives items of personal meaning. Under Faraid these still count towards an heir's share, unless all heirs agree after your death.</p>
+    <p class="lead" data-tx="lead4">Who you hope receives items of personal meaning. Under Faraid these still count towards an heir's share, unless all heirs agree after your death.</p>
     <div id="l-items"></div>
     <button class="add" onclick="addItem('items')">+ Add item</button>
     <datalist id="people"></datalist>
   </section>
 
   <!-- 5 -->
-  <section class="step" data-title="Funeral & ibadah">
+  <section class="step" data-title="Funeral & ibadah" data-gtitle="Funeral wishes">
     <h2>Funeral and religious wishes</h2>
     <div class="row">
-      <div><label>Mosque for solat jenazah</label><input type="text" data-k="fun.mosque" placeholder="e.g. Masjid Al-Istighfar"></div>
-      <div><label>Burial preference</label><input type="text" data-k="fun.burial" placeholder="e.g. Pusara Abadi, near my parents"></div>
+      <div><label data-tx="lMosque">Mosque for solat jenazah</label><input type="text" data-k="fun.mosque" data-txp="pMosque" placeholder="e.g. Masjid Al-Istighfar"></div>
+      <div><label data-tx="lBurial">Burial preference</label><input type="text" data-k="fun.burial" data-txp="pBurial" placeholder="e.g. Pusara Abadi, near my parents"></div>
     </div>
     <div class="row">
-      <div><label>Who I'd like to perform ghusl</label><input type="text" data-k="fun.ghusl"></div>
-      <div><label>Who I'd like to lead the prayer</label><input type="text" data-k="fun.imam"></div>
+      <div><label data-tx="lGhusl">Who I'd like to perform ghusl</label><input type="text" data-k="fun.ghusl"></div>
+      <div><label data-tx="lImam">Who I'd like to lead the prayer</label><input type="text" data-k="fun.imam"></div>
     </div>
-    <label>Khairat / funeral scheme membership</label><input type="text" data-k="fun.khairat" placeholder="e.g. Khairat Kematian Masjid Al-Istighfar, member no. 1234">
-    <label>Tahlil, doa and gatherings</label><input type="text" data-k="fun.tahlil" placeholder="e.g. Simple tahlil for 3 nights; please keep costs modest.">
-    <label>Outstanding ibadah</label>
-    <textarea data-k="fun.ibadah" placeholder="e.g. About 20 days of qadha fasts outstanding (fidyah may be needed). I have not performed Hajj."></textarea>
-    <label>Sadaqah jariah or waqf I hope for</label>
-    <textarea data-k="fun.jariah" placeholder="e.g. Contribute to the Quran class at Masjid Al-Falah in my name."></textarea>
+    <label data-tx="lKhairat">Khairat / funeral scheme membership</label><input type="text" data-k="fun.khairat" data-txp="pKhairat" placeholder="e.g. Khairat Kematian Masjid Al-Istighfar, member no. 1234">
+    <label data-tx="lTahlil">Tahlil, doa and gatherings</label><input type="text" data-k="fun.tahlil" data-txp="pTahlil" placeholder="e.g. Simple tahlil for 3 nights; please keep costs modest.">
+    <div data-only="islamic"><label>Outstanding ibadah</label>
+    <textarea data-k="fun.ibadah" placeholder="e.g. About 20 days of qadha fasts outstanding (fidyah may be needed). I have not performed Hajj."></textarea></div>
+    <label data-tx="lJariah">Sadaqah jariah or waqf I hope for</label>
+    <textarea data-k="fun.jariah" data-txp="pJariah" placeholder="e.g. Contribute to the Quran class at Masjid Al-Falah in my name."></textarea>
     <label>Other wishes</label><textarea data-k="fun.other"></textarea>
   </section>
 
@@ -242,7 +244,7 @@ textarea{min-height:80px;resize:vertical}
   <!-- 7 -->
   <section class="step" data-title="Debts">
     <h2>Debts and informal arrangements</h2>
-    <p class="lead">Debts must be settled before Faraid. Listing informal ones helps your executor; they may still need proof.</p>
+    <p class="lead" data-tx="lead7">Debts must be settled before Faraid. Listing informal ones helps your executor; they may still need proof.</p>
     <label>Money I owe</label><div id="l-owe"></div><button class="add" onclick="addItem('owe')">+ Add</button>
     <label style="margin-top:18px">Money owed to me</label><div id="l-owed"></div><button class="add" onclick="addItem('owed')">+ Add</button>
   </section>
@@ -282,6 +284,7 @@ const CONFIG = { firmLine1:'SOUL Advisors', fileName:'Memorandum_of_Wishes' };
 
 /* ================= STATE ================= */
 const DEFAULT = () => ({
+  mode:'islamic',
   t:{ name:'', idType:'NRIC', nric:'', gender:'M' }, willDate:'', willAt:'',
   executors:[{name:'',rel:'',phone:''}],
   spouse:'', family:[],
@@ -349,7 +352,10 @@ document.addEventListener('click', e=>{
     'Pay off family debts first':'I hope my heirs will first help settle any family debts.',
     'Set aside for sadaqah jariah':'I hope my heirs will set aside part of their inheritance for sadaqah jariah in my name.',
     'Avoid riba-based investments':'I hope my heirs will invest their inheritance in Shariah-compliant ways and avoid riba.',
-    'Keep the family home':'I hope my heirs will keep the family home rather than sell it quickly.' }[b.textContent];
+    'Keep the family home':'I hope my heirs will keep the family home rather than sell it quickly.',
+    'Give to charity in my memory':'I hope my family will make a gift to charity in my memory.',
+    'Invest prudently':'I hope my beneficiaries will invest their inheritance prudently and not spend it all at once.',
+    'Values-based upbringing':'I hope my children are brought up with the values and faith we share as a family.' }[b.textContent];
   ta.value = (ta.value.trim() ? ta.value.trim()+' ' : '') + add; set(S,k,ta.value); update();
 });
 function fillForm(){
@@ -359,9 +365,47 @@ function fillForm(){
 }
 
 /* ================= WASIAT IMPORT ================= */
-function readWasiat(){ try{ const t = sessionStorage.getItem('soul_wasiat'); return t ? JSON.parse(t) : null; }catch(e){ return null; } }
+function readKey(k){ try{ const t = sessionStorage.getItem(k); return t ? JSON.parse(t) : null; }catch(e){ return null; } }
+function readWasiat(){ return readKey(S.mode==='general' ? 'soul_will' : 'soul_wasiat'); }
+const TX = {
+  lead1:['A memorandum of wishes sits beside your will. It explains your wishes to your executor and family, but it does not change your will or Faraid.','A memorandum of wishes sits beside your will. It explains your wishes to your executor and family, but it does not change your will.'],
+  found:['Wasiat details found.','Will details found.'],
+  usebtn:['Use details from my Wasiat','Use details from my Will'],
+  lead3:["Faraid decides each heir's share. Here you can only express hopes about how they use it. Use words like \u201cI hope\u201d or \u201cI request\u201d, not \u201cgive\u201d or \u201cmust\u201d.","Your will decides who receives what. Here you can only express hopes about how they use it. Use words like \u201cI hope\u201d or \u201cI request\u201d, not \u201cgive\u201d or \u201cmust\u201d."],
+  chipA:['Set aside for sadaqah jariah','Give to charity in my memory'],
+  chipB:['Avoid riba-based investments','Invest prudently'],
+  lead4:["Who you hope receives items of personal meaning. Under Faraid these still count towards an heir's share, unless all heirs agree after your death.","Who you hope receives items of personal meaning. These are wishes only; if your will gives an item to someone, your will prevails."],
+  lMosque:['Mosque for solat jenazah','Place of funeral service or wake'],
+  lBurial:['Burial preference','Burial, cremation or resting place'],
+  lGhusl:["Who I'd like to perform ghusl",'Religious rites or customs'],
+  lImam:["Who I'd like to lead the prayer","Who I'd like to officiate or give the eulogy"],
+  lKhairat:['Khairat / funeral scheme membership','Funeral director or pre-paid funeral plan'],
+  lTahlil:['Tahlil, doa and gatherings','Wake, prayers and memorial gatherings'],
+  lJariah:['Sadaqah jariah or waqf I hope for','Charitable giving in my memory'],
+  lead7:['Debts must be settled before Faraid. Listing informal ones helps your executor; they may still need proof.','Debts must be settled before your estate is distributed. Listing informal ones helps your executor; they may still need proof.'],
+};
+const TXP = {
+  ph3:['e.g. I hope my heirs will use part of their inheritance for sadaqah jariah in my name.','e.g. I hope my children will use part of their inheritance to further their education.'],
+  pMosque:['e.g. Masjid Al-Istighfar','e.g. the funeral parlour, or St Andrew\u2019s Cathedral'],
+  pBurial:['e.g. Pusara Abadi, near my parents','e.g. cremation; niche at Mandai Columbarium'],
+  pKhairat:['e.g. Khairat Kematian Masjid Al-Istighfar, member no. 1234','e.g. pre-paid plan with [funeral director], plan no. 1234'],
+  pTahlil:['e.g. Simple tahlil for 3 nights; please keep costs modest.','e.g. A simple 3-day wake; please keep costs modest.'],
+  pJariah:['e.g. Contribute to the Quran class at Masjid Al-Falah in my name.','e.g. A donation to the Children\u2019s Cancer Foundation in my name.'],
+};
+function applyMode(){
+  const g = S.mode==='general' ? 1 : 0;
+  document.querySelectorAll('[data-tx]').forEach(el=>{ const t=TX[el.dataset.tx]; if(t) el.textContent=t[g]; });
+  document.querySelectorAll('[data-txp]').forEach(el=>{ const t=TXP[el.dataset.txp]; if(t) el.placeholder=t[g]; });
+  document.querySelectorAll('[data-only]').forEach(el=>el.classList.toggle('hidden', el.dataset.only!==S.mode));
+  document.querySelectorAll('[data-gtitle]').forEach(el=>{ if(!el.dataset.ititle) el.dataset.ititle=el.dataset.title; el.dataset.title = g ? el.dataset.gtitle : el.dataset.ititle; });
+  const chips = document.querySelector('.chips[data-target="care.upbringing"] button'); if(chips) chips.textContent = g ? 'Values-based upbringing' : 'Islamic education';
+  const box = document.getElementById('importBox'); if(box) box.classList.toggle('hidden', !readWasiat());
+  if(typeof go==='function' && document.getElementById('steps').children.length) go(cur);
+}
+function onShown(){ let m=null; try{ m=sessionStorage.getItem('soul_mode'); }catch(e){} if(m && m!==S.mode && !S.t.name.trim()){ S.mode=m; fillForm(); update(); } applyMode(); }
 function applyWasiat(w){
   if(!w || !w.t) return;
+  if(w.resMode!==undefined) S.mode='general'; else if(w.wasiyyah!==undefined) S.mode='islamic';
   S.t.name = w.t.name||S.t.name; S.t.nric = w.t.nric||S.t.nric; S.t.idType = w.t.idType||S.t.idType; S.t.gender = w.t.gender||S.t.gender;
   const ex = (w.executors||[]).filter(e=>e.name && e.name.trim());
   if(ex.length) S.executors = ex.map(e=>({name:e.name, rel:e.rel||'', phone:''}));
@@ -371,7 +415,7 @@ function applyWasiat(w){
   fillForm(); update();
 }
 function importWasiat(){ applyWasiat(readWasiat()); document.getElementById('importBox').classList.add('hidden'); }
-function importWasiatFile(input){ const f=input.files[0]; if(!f) return; f.text().then(t=>{ try{ applyWasiat(JSON.parse(t)); }catch(e){ alert('That file is not a valid Wasiat draft.'); } }); input.value=''; }
+function importWasiatFile(input){ const f=input.files[0]; if(!f) return; f.text().then(t=>{ try{ applyWasiat(JSON.parse(t)); }catch(e){ alert('That file is not a valid will draft.'); } }); input.value=''; }
 
 /* ================= STEPS ================= */
 const steps = [...document.querySelectorAll('.step')];
@@ -394,7 +438,11 @@ const RISK = [
   [/\b(i (give|bequeath|leave|devise)|is to (go|be given) to|shall (go|be given|receive|inherit))\b/i, 'reads like a gift in a will. Use "I hope" or "I request" instead, so it is not mistaken for a bequest.'],
   [/\b(must|shall)\b/i, 'uses "must" or "shall". Softer words such as "I hope" or "I request" keep the memorandum clearly non-binding.'],
 ];
-function scan(text){ const out=[]; if(!text) return out; for(const [re,msg] of RISK){ if(re.test(text)){ out.push(msg); break; } } return out; }
+const RISK_G = [
+  [/\b(disinherit|exclude|cut (him|her|them) out|should not (get|receive|inherit))\b/i, 'seems to exclude someone. Only your will decides who inherits, so make sure your will says this too.'],
+  RISK[3], RISK[4],
+];
+function scan(text){ const out=[]; if(!text) return out; for(const [re,msg] of (S.mode==='general'?RISK_G:RISK)){ if(re.test(text)){ out.push(msg); break; } } return out; }
 function allTexts(){
   const t = [];
   [['care.dependants','Care of dependants'],['care.upbringing','Upbringing'],['care.trust',"Children's shares"],['care.guardian','Guardian notes'],
@@ -418,7 +466,8 @@ function buildMemo(s){
   const T = (widths, rows) => B.push({t:'table', widths, rows});
   const exs = s.executors.filter(e=>e.name.trim());
 
-  B.push({t:'notice', text:`This Memorandum is **not a will or codicil** and is not intended to have testamentary effect. It does not revoke, vary or add to my Last Will and Testament${s.willDate.trim()?` dated ${s.willDate.trim()}`:''}, or the distribution of my estate according to Faraid. It records my wishes for the guidance of my Executor, my heirs and my family. They are not legally bound by it, and I ask that it be read with love and goodwill. Where anything here differs from my Will or from Islamic law, my Will and Islamic law prevail.`});
+  const GEN = s.mode==='general';
+  B.push({t:'notice', text: GEN ? `This Memorandum is **not a will or codicil** and is not intended to have testamentary effect. It does not revoke, vary or add to my Last Will and Testament${s.willDate.trim()?` dated ${s.willDate.trim()}`:''}. It records my wishes for the guidance of my Executor, my beneficiaries and my family. They are not legally bound by it, and I ask that it be read with love and goodwill. Where anything here differs from my Will, my Will prevails.` : `This Memorandum is **not a will or codicil** and is not intended to have testamentary effect. It does not revoke, vary or add to my Last Will and Testament${s.willDate.trim()?` dated ${s.willDate.trim()}`:''}, or the distribution of my estate according to Faraid. It records my wishes for the guidance of my Executor, my heirs and my family. They are not legally bound by it, and I ask that it be read with love and goodwill. Where anything here differs from my Will or from Islamic law, my Will and Islamic law prevail.`});
 
   H('My Will and Executor');
   C(`My original Will ${s.willAt.trim()?`is kept at ${s.willAt.trim()}`:'is kept at [[location]]'}.`);
@@ -437,23 +486,23 @@ function buildMemo(s){
   const hopes = [...sentences(s.hopes.general)];
   s.support.filter(x=>x.who.trim()||x.how.trim()).forEach(x=>hopes.push(`${x.who.trim()?`**${x.who.trim()}:** `:''}${x.how.trim()}`));
   if(s.hopes.business.trim()) hopes.push(...sentences(s.hopes.business));
-  if(hopes.length){ H('My Hopes for the Use of my Estate'); C('I understand that each heir is entitled to his or her share under Faraid. The following are my hopes only.'); hopes.forEach(C); }
+  if(hopes.length){ H('My Hopes for the Use of my Estate'); C(GEN ? 'My Will decides who receives my estate. The following are my hopes only.' : 'I understand that each heir is entitled to his or her share under Faraid. The following are my hopes only.'); hopes.forEach(C); }
 
   const items = s.items.filter(x=>x.item.trim());
   if(items.length){
     H('Personal and Sentimental Items');
-    C('I hope the following items will go to the people named. I understand that their value will count towards that person’s share under Faraid, unless all my heirs agree otherwise after my death.');
+    C(GEN ? 'I hope the following items will go to the people named. Where my Will deals with an item, my Will prevails.' : 'I hope the following items will go to the people named. I understand that their value will count towards that person\u2019s share under Faraid, unless all my heirs agree otherwise after my death.');
     T([30,140,120,161], [['No.','Item','I hope it goes to','Reason'], ...items.map((x,i)=>[String(i+1), x.item.trim(), ph(x.to,'Name'), x.reason.trim()||'–'])]);
   }
 
   const f = s.fun, fun = [];
-  if(f.mosque.trim()) fun.push(`I would like my *solat jenazah* to be held at ${f.mosque.trim()}.`);
-  if(f.burial.trim()) fun.push(`My burial preference: ${f.burial.trim()}.`);
-  if(f.ghusl.trim()) fun.push(`I would like ${f.ghusl.trim()} to perform or assist with my *ghusl*, if able.`);
-  if(f.imam.trim()) fun.push(`I would like ${f.imam.trim()} to lead my funeral prayer, if able.`);
-  if(f.khairat.trim()) fun.push(`Khairat / funeral scheme: ${f.khairat.trim()}.`);
+  if(f.mosque.trim()) fun.push(GEN ? `I would like my funeral service or wake to be held at ${f.mosque.trim()}.` : `I would like my *solat jenazah* to be held at ${f.mosque.trim()}.`);
+  if(f.burial.trim()) fun.push(GEN ? `My wishes for burial or cremation: ${f.burial.trim()}.` : `My burial preference: ${f.burial.trim()}.`);
+  if(f.ghusl.trim()) fun.push(GEN ? `Religious rites or customs: ${f.ghusl.trim()}.` : `I would like ${f.ghusl.trim()} to perform or assist with my *ghusl*, if able.`);
+  if(f.imam.trim()) fun.push(GEN ? `I would like ${f.imam.trim()} to officiate or give the eulogy, if able.` : `I would like ${f.imam.trim()} to lead my funeral prayer, if able.`);
+  if(f.khairat.trim()) fun.push(GEN ? `Funeral director / pre-paid plan: ${f.khairat.trim()}.` : `Khairat / funeral scheme: ${f.khairat.trim()}.`);
   if(f.tahlil.trim()) fun.push(...sentences(f.tahlil));
-  if(f.ibadah.trim()) fun.push(...sentences(f.ibadah).map(x=>`Outstanding ibadah: ${x}`));
+  if(!GEN && f.ibadah.trim()) fun.push(...sentences(f.ibadah).map(x=>`Outstanding ibadah: ${x}`));
   if(f.jariah.trim()) fun.push(...sentences(f.jariah));
   if(f.other.trim()) fun.push(...sentences(f.other));
   if(fun.length){ H('Funeral and Religious Wishes'); fun.forEach(x=>C(x.replace(/\.\.$/,'.'))); }
@@ -501,7 +550,8 @@ function update(){
   document.querySelectorAll('[data-sp]').forEach(e=>e.textContent = S.t.gender==='F'?'husband':'wife');
   document.querySelectorAll('[data-spp]').forEach(e=>e.textContent = S.t.gender==='F'?'he':'she');
   const dl = document.getElementById('people'); dl.innerHTML = S.family.map(n=>`<option value="${esc(n)}">`).join('');
-  try{ sessionStorage.setItem('soul_memo', JSON.stringify(S)); }catch(e){}
+  try{ sessionStorage.setItem('soul_memo', JSON.stringify(S)); sessionStorage.setItem('soul_mode', S.mode); }catch(e){}
+  if(update._m!==S.mode){ update._m=S.mode; applyMode(); }
   const D = buildMemo(S); renderPreview(D);
   // inline flags + review list
   document.querySelectorAll('.flag.inline').forEach(x=>x.remove());
@@ -514,7 +564,7 @@ function update(){
   if(!S.t.name.trim()) out.push(['err','Your full name is missing.']);
   issues.forEach(t=>out.push(['warn',t]));
   if(!S.executors.some(e=>e.name.trim())) out.push(['warn','Add your executor so your family knows who to give this memorandum to.']);
-  if(!out.some(o=>o[0]!=='ok')) out.push(['ok','No issues found. Your memorandum reads as guidance and does not conflict with Faraid.']);
+  if(!out.some(o=>o[0]!=='ok')) out.push(['ok','No issues found. Your memorandum reads as guidance' + (S.mode==='general' ? ' and does not conflict with your will.' : ' and does not conflict with Faraid.')]);
   document.getElementById('checks').innerHTML = out.map(([k,t])=>`<div class="note ${k}">${esc(t)}</div>`).join('');
 }
 
@@ -630,14 +680,14 @@ function downloadPdf(){
 
 /* ================= DRAFTS ================= */
 function saveDraft(){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})); a.download=fileBase()+'_draft.json'; a.click(); }
-function loadDraft(input){ const f=input.files[0]; if(!f) return; f.text().then(t=>{ try{ const d=JSON.parse(t); if(d.marital!==undefined && d.wasiyyah!==undefined){ applyWasiat(d); } else { S=Object.assign(DEFAULT(), d); fillForm(); update(); } }catch(e){ alert('That file is not a valid draft.'); } }); input.value=''; }
+function loadDraft(input){ const f=input.files[0]; if(!f) return; f.text().then(t=>{ try{ const d=JSON.parse(t); if(d.marital!==undefined && (d.wasiyyah!==undefined || d.resMode!==undefined)){ applyWasiat(d); } else { S=Object.assign(DEFAULT(), d); fillForm(); update(); } }catch(e){ alert('That file is not a valid draft.'); } }); input.value=''; }
 function resetAll(){ S=DEFAULT(); fillForm(); update(); go(0); }
 
 /* ================= INIT ================= */
 if(window.CoverPack) CoverPack.mount('coverpack');
 if (window.self !== window.top || new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
-fillForm(); go(0); update();
-if(readWasiat()) document.getElementById('importBox').classList.remove('hidden');
+(function(){ const q=new URLSearchParams(location.search).get('mode'); let m=null; try{ m=sessionStorage.getItem('soul_mode'); }catch(e){} S.mode = q || m || 'islamic'; })();
+fillForm(); go(0); update(); applyMode();
 </script>
 </body>
 </html>

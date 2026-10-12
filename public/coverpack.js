@@ -35,12 +35,19 @@
 
   /* ---------- gather data from both tools ---------- */
   function gather(){
-    const w = read('sessionStorage', 'soul_wasiat'), m = read('sessionStorage', 'soul_memo');
+    const mode = (()=>{ try { return sessionStorage.getItem('soul_mode') || 'islamic'; } catch(e){ return 'islamic'; } })();
+    const GEN = mode === 'general';
+    const w = read('sessionStorage', GEN ? 'soul_will' : 'soul_wasiat');
+    let m = read('sessionStorage', 'soul_memo');
     const adv = read('localStorage', ADV_KEY) || {};
+    const norm = x => (x || '').trim().toLowerCase();
+    // Only use the memorandum if it belongs to the same client and the same will type
+    if (m && w && w.t && norm(w.t.name) && (norm(m.t && m.t.name) !== norm(w.t.name) || (m.mode || 'islamic') !== mode)) m = null;
     const t = (w && w.t && w.t.name) ? w.t : (m && m.t) || {};
     const ex = ((m && m.executors) || []).concat((w && w.executors) || []).find(e => e && e.name && e.name.trim()) || {};
     const exPhone = ((m && m.executors) || []).find(e => e.name && ex.name && e.name.trim() === ex.name.trim() && e.phone);
     return {
+      GEN,
       name: (t.name || '').trim(),
       hasWill: !!(w && w.t && w.t.name && w.t.name.trim()),
       hasMemo: !!(m && m.t && m.t.name && m.t.name.trim()),
@@ -58,13 +65,24 @@
   const blank = (v, n=22) => v || '_'.repeat(n);
 
   const CONTENTS = d => [
-    [d.hasWill, 'Last Will and Testament (Wasiat)', d.willDate],
+    [d.hasWill, d.GEN ? 'Last Will and Testament' : 'Last Will and Testament (Wasiat)', d.willDate],
     [d.hasMemo, 'Memorandum of Wishes', d.hasMemo ? today() : ''],
     [d.nominations, 'Summary of CPF and insurance nominations', ''],
-    [d.lifetime, 'Hibah, trust or waqf documents', ''],
+    d.GEN ? [false, 'Lasting Power of Attorney (LPA)', ''] : [d.lifetime, 'Hibah, trust or waqf documents', ''],
+    ...(d.GEN && d.lifetime ? [[true, 'Trust deeds and lifetime gift documents', '']] : []),
     [false, 'Copies of key documents (property, policies, accounts)', ''],
   ];
-  const STEPS = d => [
+  const STEPS_G = d => [
+    ['Certify and register the death', 'Call a doctor to certify the death, or 995 if it is sudden or unexpected. The death is registered and a digital death certificate is issued. The MyLegacy portal (mylegacy.life.gov.sg) guides you through the next steps.'],
+    ['Arrange the funeral', `Contact ${d.mosque ? d.mosque : 'a funeral director'}${d.khairat ? ` (pre-paid plan: ${d.khairat})` : ''}. See the Will and the Memorandum of Wishes for funeral, burial or cremation wishes.`],
+    ['Inform the Executor', `Contact ${d.ex.name ? d.ex.name + (d.ex.phone ? ` (${d.ex.phone})` : '') : 'the Executor named in the Will'} and hand over this file. The original Will must not be unstapled, marked or altered.`],
+    ['Do not distribute any assets yet', 'Do not sell, withdraw or share out any money or property until the Executor has obtained the Grant of Probate.'],
+    ['Apply for the Grant of Probate', 'The Executor applies to the Family Justice Courts for the Grant of Probate, usually through a lawyer. This confirms the Executor\u2019s authority to deal with the estate.'],
+    ['Contact CPF, banks and insurers', `CPF monies are paid directly to nominees. For insurance claims and policy matters, contact the adviser below${d.adv.name ? `, ${d.adv.name}` : ''}, who can help the family.`],
+    ['Settle debts, then distribute', 'Funeral costs, debts and any taxes are paid first. The Executor then distributes the estate according to the Will.'],
+  ];
+  const STEPS = d => d.GEN ? STEPS_G(d) : STEPS_I(d);
+  const STEPS_I = d => [
     ['Certify and register the death', 'Call a doctor to certify the death, or 995 if it is sudden or unexpected. The death is registered and a digital death certificate is issued. The MyLegacy portal (mylegacy.life.gov.sg) guides you through the next steps.'],
     ['Arrange the funeral promptly', `Contact ${d.mosque ? d.mosque : 'the mosque'}${d.khairat ? ` and the khairat scheme (${d.khairat})` : ' and any khairat scheme'}. Burial should take place as soon as practicable. See the Memorandum of Wishes for funeral wishes.`],
     ['Inform the Executor', `Contact ${d.ex.name ? d.ex.name + (d.ex.phone ? ` (${d.ex.phone})` : '') : 'the Executor named in the Will'} and hand over this file. The original Will must not be unstapled, marked or altered.`],
@@ -73,6 +91,7 @@
     ['Contact CPF, banks and insurers', `CPF monies are paid directly to nominees. For insurance claims and policy matters, contact the adviser below${d.adv.name ? `, ${d.adv.name}` : ''}, who can help the family.`],
     ['Settle debts before distribution', 'Funeral costs, debts owed to others, and outstanding zakat, fidyah or badal haji are settled first. The balance is then distributed according to the Will and Faraid.'],
   ];
+  const QUOTE_G = 'Prepared with care, so that the people you love know exactly what to do.';
   const VERSE = '“O you who have believed, fear Allah. And let every soul look to what it has put forth for tomorrow.” (Surah Al-Hashr, 59:18)';
   const fname = d => `Cover_Pack_${(d.name || 'Draft').replace(/[^\w]+/g,'_')}`;
 
@@ -96,9 +115,9 @@
     /* page 1 — cover */
     frame();
     let y = 92;
-    T('Bismillahirrahmanirrahim', PW/2, y, {i:true, s:12, align:'center'}); y += 36;
+    if(!d.GEN) T('Bismillahirrahmanirrahim', PW/2, y, {i:true, s:12, align:'center'}); y += 36;
     T('ESTATE PLANNING FILE', PW/2, y, {b:true, s:24, align:'center'}); y += 22;
-    T('Dokumen Wasiat & Pesanan', PW/2, y, {i:true, s:13, align:'center', c:gold}); y += 24;
+    T(d.GEN ? 'Will, Wishes & Important Documents' : 'Dokumen Wasiat & Pesanan', PW/2, y, {i:true, s:13, align:'center', c:gold}); y += 24;
     doc.setDrawColor(...gold); doc.setLineWidth(0.8); doc.line(PW/2-90, y, PW/2+90, y); doc.setDrawColor(0); y += 26;
     T(d.name.toUpperCase(), PW/2, y, {b:true, s:17, align:'center'}); y += 18;
     T(`Prepared on ${today()}`, PW/2, y, {s:10.5, align:'center', c:[90,90,90]}); y += 28;
@@ -130,13 +149,13 @@
     y = grid(y, [100, 140, W-240], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', ''], ['', '', '']], 10);
 
     y = Math.max(y + 28, PH - 78);
-    const vl = wrap(VERSE, W-40, 10); vl.forEach((ln,i)=>T(ln, PW/2, y + i*13, {i:true, s:10, align:'center', c:[90,90,90]}));
+    const vl = wrap(d.GEN ? QUOTE_G : VERSE, W-40, 10); vl.forEach((ln,i)=>T(ln, PW/2, y + i*13, {i:true, s:10, align:'center', c:[90,90,90]}));
 
     /* page 2 — family checklist */
     doc.addPage(); frame(); y = 92;
     T('WHEN I PASS AWAY', PW/2, y, {b:true, s:20, align:'center'}); y += 20;
     T(`A checklist for the family of ${d.name}`, PW/2, y, {i:true, s:11.5, align:'center', c:gold}); y += 18;
-    const intro = wrap('Inna lillahi wa inna ilayhi raji’un. Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.', W, 10.5);
+    const intro = wrap((d.GEN ? '' : 'Inna lillahi wa inna ilayhi raji’un. ') + 'Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.', W, 10.5);
     intro.forEach((ln,i)=>T(ln, PW/2, y + 14 + i*14, {s:10.5, align:'center'})); y += 14 + intro.length*14 + 18;
     STEPS(d).forEach(([h, body], i) => {
       const lines = wrap(body, W-46, 10.5);
@@ -152,7 +171,7 @@
     grid(y, [150, 170, W-320], [['Contact', 'Name', 'Phone'],
       ['Executor', d.ex.name || '', d.ex.phone || ''],
       ['Adviser (SOUL Advisors)', d.adv.name || '', d.adv.phone || ''],
-      ['Mosque / khairat', d.mosque || '', ''],
+      [d.GEN ? 'Funeral director' : 'Mosque / khairat', d.mosque || '', ''],
       ['Lawyer', '', '']], 10);
     T('This cover pack is a guide only. It is not part of the Will or the Memorandum of Wishes.', PW/2, PH-50, {i:true, s:8.5, align:'center', c:[110,110,110]});
 
@@ -175,9 +194,9 @@
         children:[P(r(String(c), { s:20, b:i===0 }), { after:0 })] })) })) });
     const C = AlignmentType.CENTER, TW = 9026;
     const page1 = [
-      P(r('Bismillahirrahmanirrahim', { i:true, s:24 }), { a:C, after:480 }),
+      P(r(d.GEN ? ' ' : 'Bismillahirrahmanirrahim', { i:true, s:24 }), { a:C, after:480 }),
       P(r('ESTATE PLANNING FILE', { b:true, s:48 }), { a:C, after:80 }),
-      P(r('Dokumen Wasiat & Pesanan', { i:true, s:26, c:GOLD }), { a:C, after:400 }),
+      P(r(d.GEN ? 'Will, Wishes & Important Documents' : 'Dokumen Wasiat & Pesanan', { i:true, s:26, c:GOLD }), { a:C, after:400 }),
       P(r(d.name.toUpperCase(), { b:true, s:34 }), { a:C, after:60 }),
       P(r(`Prepared on ${today()}`, { s:20, c:'5A5A5A' }), { a:C, after:400 }),
       P(r('CONTENTS OF THIS FILE', { b:true }), { after:80 }),
@@ -191,19 +210,19 @@
       P(r(`Tel: ${blank(d.adv.phone, 12)}   ·   Email: ${blank(d.adv.email, 22)}`, { s:21 }), { after:200 }),
       P([r('REVIEW LOG  ', { b:true }), r('Review every 3–5 years, or after a marriage, divorce, birth or death in the family.', { i:true, s:18, c:'5A5A5A' })], { after:80 }),
       grid([1800, 2500, TW-4300], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', ''], ['', '', '']]),
-      P(r(VERSE, { i:true, s:19, c:'5A5A5A' }), { a:C, before:400 }),
+      P(r(d.GEN ? QUOTE_G : VERSE, { i:true, s:19, c:'5A5A5A' }), { a:C, before:400 }),
       new Paragraph({ children:[ new PageBreak() ] }),
     ];
     const page2 = [
       P(r('WHEN I PASS AWAY', { b:true, s:40 }), { a:C, after:60 }),
       P(r(`A checklist for the family of ${d.name}`, { i:true, s:23, c:GOLD }), { a:C, after:200 }),
-      P(r('Inna lillahi wa inna ilayhi raji’un. Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.', { s:21 }), { a:C, after:280 }),
+      P(r((d.GEN ? '' : 'Inna lillahi wa inna ilayhi raji’un. ') + 'Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.', { s:21 }), { a:C, after:280 }),
       ...STEPS(d).flatMap(([h, body], i) => [
         P([r(`☐  ${i+1}.  `, { b:true, c:GOLD, s:24 }), r(h, { b:true, s:24 })], { after:40 }),
         new Paragraph({ indent:{ left:720 }, spacing:{ after:200 }, children:[ r(body, { s:21 }) ] }),
       ]),
       P(r('Important contacts', { b:true, s:24 }), { before:120, after:80 }),
-      grid([2700, 3200, TW-5900], [['Contact', 'Name', 'Phone'], ['Executor', d.ex.name, d.ex.phone], ['Adviser (SOUL Advisors)', d.adv.name, d.adv.phone], ['Mosque / khairat', d.mosque, ''], ['Lawyer', '', '']]),
+      grid([2700, 3200, TW-5900], [['Contact', 'Name', 'Phone'], ['Executor', d.ex.name, d.ex.phone], ['Adviser (SOUL Advisors)', d.adv.name, d.adv.phone], [d.GEN ? 'Funeral director' : 'Mosque / khairat', d.mosque, ''], ['Lawyer', '', '']]),
       P(r('This cover pack is a guide only. It is not part of the Will or the Memorandum of Wishes.', { i:true, s:17, c:'6E6E6E' }), { a:C, before:300 }),
     ];
     const doc = new Document({ creator:'SOUL Advisors', title:`Estate Planning File – ${d.name}`,
