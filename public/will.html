@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Will Generator — SOUL Advisors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:wght@500;600&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<!-- Word export library (runs in the visitor's browser) -->
+<script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="/coverpack.js"></script>
+<style>
+:root{
+  --ink:#1d1a16; --muted:#6b645a; --line:#e6e0d4; --bg:#FAF8F3; --card:#ffffff;
+  --brand:#0D1117; --brand-2:#8A6E3A; --gold:#B8975A; --warn-bg:#fff6e5; --warn:#8a5a00;
+  --err-bg:#fdecec; --err:#9b1c1c; --ok-bg:#e9f5ef; --ok:#1d6b45; --ph:#fff1b8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.5}
+header.top{background:var(--brand);border-bottom:1px solid rgba(184,151,90,.25);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header.top .mark{width:34px;height:34px;border-radius:8px;background:var(--gold);display:grid;place-items:center;font-weight:700}
+header.top h1{font-size:18px;margin:0;font-weight:600;font-family:Lora,serif}
+header.top a.back{color:var(--gold);text-decoration:none;font-size:13px;border:1px solid rgba(184,151,90,.4);border-radius:8px;padding:6px 10px}
+.card h2{font-family:Lora,serif}
+body.embed header.top{display:none}
+header.top p{margin:0;opacity:.8;font-size:13px}
+header.top .sp{flex:1}
+.wrap{display:grid;grid-template-columns:minmax(360px,520px) 1fr;gap:24px;max-width:1440px;margin:0 auto;padding:24px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.steps button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:500 13px 'DM Sans',sans-serif;color:var(--muted);cursor:pointer}
+.steps button.on{background:var(--brand);border-color:var(--brand);color:var(--gold)}
+.steps button.done{border-color:var(--brand-2);color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h2{margin:0 0 4px;font-size:20px}
+.card .lead{margin:0 0 18px;color:var(--muted);font-size:14px}
+.step{display:none}.step.on{display:block}
+label{display:block;font-weight:500;font-size:13px;margin:12px 0 4px}
+.hint{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],input[type=number],select,textarea{width:100%;padding:9px 11px;border:1px solid #cfd5d1;border-radius:8px;font:14px 'DM Sans',sans-serif;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #E8D5A3;border-color:var(--brand-2)}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.seg{display:flex;border:1px solid #cfd5d1;border-radius:8px;overflow:hidden}
+.seg label{flex:1;margin:0;text-align:center;padding:8px 6px;cursor:pointer;font-weight:500;border-right:1px solid #cfd5d1;font-size:13px}
+.seg label:last-child{border-right:0}
+.seg input{display:none}
+.seg label:has(input:checked){background:var(--brand);color:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-weight:400;font-size:14px;cursor:pointer}
+.check input{margin-top:3px;accent-color:var(--brand);width:16px;height:16px;flex:none}
+.item{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;background:#fafbfa;position:relative}
+.item .ttl{font-weight:600;font-size:13px;color:var(--brand)}
+.item .x{position:absolute;top:8px;right:8px;border:0;background:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
+.add{border:1px dashed var(--brand-2);background:#fff;color:var(--brand);border-radius:8px;padding:8px 12px;font:600 13px 'DM Sans',sans-serif;cursor:pointer;margin-top:4px}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}
+.btn{border:0;border-radius:9px;padding:10px 18px;font:600 14px 'DM Sans',sans-serif;cursor:pointer}
+.btn.pri{background:var(--brand);color:#E8D5A3}.btn.pri:hover{background:#1E2530}
+.btn.sec{background:#fff;border:1px solid #cfd5d1;color:var(--ink)}
+.btn.gold{background:var(--gold);color:#fff}
+.note{border-radius:10px;padding:10px 12px;font-size:13px;margin:10px 0}
+.note.warn{background:var(--warn-bg);color:var(--warn)}
+.note.err{background:var(--err-bg);color:var(--err)}
+.note.ok{background:var(--ok-bg);color:var(--ok)}
+.note.info{background:#eef4f8;color:#234e6b}
+.hidden{display:none!important}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* preview */
+.pv{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;border-radius:14px;background:#d9d6cd;padding:22px}
+.pvbar{display:flex;justify-content:space-between;align-items:center;margin:-6px 0 14px;font-size:12px;color:#4b524e}
+.paper{background:#fff;max-width:794px;margin:0 auto 18px;padding:72px 80px;font-family:Tinos,'Times New Roman',serif;font-size:15px;line-height:1.6;color:#000;box-shadow:0 2px 10px rgba(0,0,0,.12);text-align:justify}
+.paper .cov{min-height:900px;display:flex;flex-direction:column}
+.paper .cov .dt{text-align:left}
+.paper .rule{border-bottom:2px dotted #000;margin:18px 0}
+.paper .ctr{text-align:center}
+.paper .big{font-size:21px;font-weight:700}
+.paper .logo{color:#888;font-size:13px;text-align:center;margin:40px 0}
+.paper .had{margin-top:auto;font-size:14px;line-height:1.45}
+.paper h3{font-size:15px;margin:22px 0 8px;display:flex;gap:0}
+.paper h3 .n{width:48px;flex:none}
+.paper h3 .t{text-decoration:underline;text-transform:uppercase}
+.paper .c{display:flex;margin:0 0 10px}
+.paper .c .n{width:48px;flex:none}
+.paper .s{display:flex;margin:0 0 8px 48px}
+.paper .s .n{width:40px;flex:none}
+.paper p{margin:0 0 12px}
+.paper mark{background:var(--ph);padding:0 2px}
+.paper table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;text-align:left}
+.paper td,.paper th{border:1px solid #000;padding:5px 7px;vertical-align:top}
+.paper th{background:#eee}
+.paper .sig{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:26px;text-align:left}
+.paper .sig div p{margin:0 0 8px}
+.paper .pb{border-top:1px dashed #bbb;margin:34px -80px;position:relative}
+.paper .pb::after{content:'page break';position:absolute;right:12px;top:-9px;background:#fff;color:#aaa;font:11px 'DM Sans',sans-serif;padding:0 6px}
+.mtoggle{display:none}
+@media (max-width:960px){
+  .wrap{grid-template-columns:1fr;padding:16px}
+  .pv{position:static;max-height:none;padding:12px}
+  .paper{padding:36px 22px;font-size:14px}
+  .paper .pb{margin:30px -22px}
+  .paper .cov{min-height:auto}
+  .mtoggle{display:flex;gap:8px;margin-bottom:12px}
+  .mtoggle button{flex:1}
+  body.m-form .pv{display:none} body.m-prev .formcol .steps,body.m-prev .formcol .card{display:none}
+  .row,.row3{grid-template-columns:1fr}
+}
+@media print{
+  header.top,.formcol,.pvbar,.mtoggle{display:none!important}
+  body{background:#fff}.wrap{display:block;padding:0}.pv{position:static;max-height:none;overflow:visible;background:#fff;padding:0}
+  .paper{box-shadow:none;padding:0;margin:0;max-width:none}
+  .paper .pb{border:0;margin:0;page-break-after:always}.paper .pb::after{display:none}
+  .paper mark{background:none}
+}
+</style>
+</head>
+<body class="m-form">
+<header class="top">
+  <div class="mark" style="color:#0D1117">S</div>
+  <div><h1><span style="color:var(--gold)">SOUL</span> Advisors · Will Generator</h1><p>Fill in each step. Your will updates on the right as you type.</p></div>
+  <div class="sp"></div>
+  <p>🔒 Details stay in this browser. Nothing is uploaded.</p><a class="back" href="/agents">← Agent Hub</a>
+</header>
+
+<div class="wrap">
+<div class="formcol">
+  <div class="mtoggle"><button class="btn pri" id="mvForm" onclick="mview('form')">Form</button><button class="btn sec" id="mvPrev" onclick="mview('prev')">Preview will</button></div>
+  <div class="steps" id="steps"></div>
+  <div class="card">
+
+  <!-- STEP 1 -->
+  <section class="step" data-title="About you">
+    <h2>About you</h2><p class="lead">Your details as they appear on your NRIC. This will is drafted under Singapore's Wills Act for clients who are not Muslim.</p>
+    <label>Full name (as per NRIC)</label><input type="text" data-k="t.name" placeholder="e.g. Tan Wei Ming">
+    <div class="row">
+      <div><label>ID type</label><select data-k="t.idType"><option>NRIC</option><option>FIN</option><option>Passport</option></select></div>
+      <div><label>ID number</label><input type="text" data-k="t.nric" placeholder="S1234567A"></div>
+    </div>
+    <label>Residential address</label><input type="text" data-k="t.address" placeholder="Block, street, #unit, Singapore postal code">
+    <div class="row">
+      <div><label>Gender</label><div class="seg"><label><input type="radio" name="g" data-k="t.gender" value="M">Male</label><label><input type="radio" name="g" data-k="t.gender" value="F">Female</label></div></div>
+      <div><label>Citizenship</label><select data-k="t.citizen"><option>Singaporean</option><option>Singapore Permanent Resident</option><option>Other</option></select></div>
+    </div>
+    <label class="check"><input type="checkbox" data-k="t.adult"> I am at least 21 years old and making this will of my own free will</label>
+    <label>Can you read and understand English?</label>
+    <div class="seg"><label><input type="radio" name="en" data-k="t.english" value="yes">Yes</label><label><input type="radio" name="en" data-k="t.english" value="no">No, I need an interpreter</label></div>
+    <div data-show="t.english=no"><label>Language the will is explained in</label><select data-k="t.lang"><option>Mandarin</option><option>Malay</option><option>Tamil</option><option>Hokkien</option><option>Cantonese</option><option>Teochew</option><option>Other</option></select></div>
+    <label>How will you sign?</label>
+    <div class="seg"><label><input type="radio" name="sg" data-k="t.sign" value="sign">Signature</label><label><input type="radio" name="sg" data-k="t.sign" value="thumb">Thumbprint</label></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" data-title="Family">
+    <h2>Your family</h2><p class="lead">Used to identify the people in your will. Your will, not this list, decides who inherits.</p>
+    <label>Marital status</label>
+    <div class="seg"><label><input type="radio" name="ms" data-k="marital" value="married">Married</label><label><input type="radio" name="ms" data-k="marital" value="engaged">Engaged</label><label><input type="radio" name="ms" data-k="marital" value="single">Single</label><label><input type="radio" name="ms" data-k="marital" value="widowed">Widowed</label><label><input type="radio" name="ms" data-k="marital" value="divorced">Divorced</label></div>
+    <div data-show="marital=married">
+      <div class="row"><div><label><span data-sp>Spouse</span>'s full name</label><input type="text" data-k="spouse.name"></div><div><label>NRIC</label><input type="text" data-k="spouse.nric"></div></div>
+    </div>
+    <div data-show="marital=engaged">
+      <div class="note info">Marriage normally cancels an earlier will. Naming your fianc&eacute;(e) lets this will survive your marriage to them.</div>
+      <div class="row"><div><label>Fianc&eacute;(e)'s full name</label><input type="text" data-k="fiance.name"></div><div><label>NRIC</label><input type="text" data-k="fiance.nric"></div></div>
+    </div>
+    <label style="margin-top:18px">Children</label>
+    <div id="l-children"></div>
+    <button class="add" onclick="addItem('children')">+ Add child</button>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" data-title="Executors">
+    <h2>Executors and trustees</h2><p class="lead">The person who will carry out your will. Add replacements in order, in case the first cannot act.</p>
+    <div id="l-executors"></div>
+    <button class="add" id="addExec" onclick="addItem('executors')">+ Add replacement executor</button>
+    <div class="note info">Your executor can also be a beneficiary. Choose someone you trust, who is organised and likely to outlive you.</div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" data-title="Guardian">
+    <h2>Guardian for young children</h2>
+    <div id="noMinor" class="note ok">You have not marked any child as under 21, so no guardian clause is needed. You can skip this step.</div>
+    <div id="hasMinor">
+      <p class="lead">Who should look after your children under 21 if both parents pass away?</p>
+      <div class="item"><div class="ttl">Guardian</div>
+        <div class="row3"><div><label>Full name</label><input type="text" data-k="guardian.name"></div><div><label>NRIC</label><input type="text" data-k="guardian.nric"></div><div><label>Relationship</label><input type="text" data-k="guardian.rel" placeholder="e.g. sister"></div></div></div>
+      <div class="item"><div class="ttl">Alternate guardian (optional)</div>
+        <div class="row3"><div><label>Full name</label><input type="text" data-k="guardian2.name"></div><div><label>NRIC</label><input type="text" data-k="guardian2.nric"></div><div><label>Relationship</label><input type="text" data-k="guardian2.rel"></div></div></div>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step" data-title="Gifts">
+    <h2>Specific gifts <span class="hint">(optional)</span></h2>
+    <p class="lead">Particular items, sums of money or property you want to go to someone. Everything else goes under your residuary estate in the next step.</p>
+    <div id="l-gifts"></div>
+    <button class="add" onclick="addItem('gifts')">+ Add gift</button>
+    <div class="note info">If a person receiving a specific gift dies before you, that gift falls back into your residuary estate.</div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section class="step" data-title="Residue">
+    <h2>Who receives the rest of your estate</h2>
+    <p class="lead">Your "residuary estate" is everything left after debts, expenses and specific gifts.</p>
+    <label>How should it be shared?</label>
+    <div class="seg"><label><input type="radio" name="rm" data-k="resMode" value="family">Family default</label><label><input type="radio" name="rm" data-k="resMode" value="custom">I'll choose people and %</label></div>
+    <div data-show="resMode=family">
+      <div class="note info" id="familyText"></div>
+    </div>
+    <div data-show="resMode=custom">
+      <div id="l-residue"></div>
+      <button class="add" onclick="addItem('residue')">+ Add beneficiary</button>
+      <div id="resTotal"></div>
+      <label>If a beneficiary dies before me, their share goes to</label>
+      <select data-k="resSub"><option value="issue">their own children, or if none, the other beneficiaries</option><option value="others">the other beneficiaries</option></select>
+    </div>
+    <label>If no one above survives me, the estate goes to</label>
+    <input type="text" data-k="ultimate" placeholder="Leave blank to follow the Intestate Succession Act">
+    <div class="row">
+      <div><label>Beneficiaries under this age have their share held on trust</label><select data-k="trustAge"><option>21</option><option>23</option><option>25</option><option>30</option></select></div>
+      <div><label>Beneficiaries must survive me by</label><select data-k="survive"><option value="0">No requirement</option><option value="14">14 days</option><option value="30">30 days</option><option value="60">60 days</option></select></div>
+    </div>
+  </section>
+
+  <!-- STEP 7 -->
+  <section class="step" data-title="Assets">
+    <h2>Nominations and joint assets</h2><p class="lead">These decide which assets pass outside your will.</p>
+    <label>Have you made a CPF nomination?</label>
+    <div class="seg"><label><input type="radio" name="cpf" data-k="cpfNom" value="yes">Yes</label><label><input type="radio" name="cpf" data-k="cpfNom" value="no">No</label><label><input type="radio" name="cpf" data-k="cpfNom" value="unsure">Not sure</label></div>
+    <label>Do you have insurance policies with a nomination?</label>
+    <div class="seg"><label><input type="radio" name="ins" data-k="insNom" value="yes">Yes</label><label><input type="radio" name="ins" data-k="insNom" value="no">No / no policies</label></div>
+    <label>Do you hold any joint bank accounts?</label>
+    <div class="seg"><label><input type="radio" name="ja" data-k="jointAcc" value="yes">Yes</label><label><input type="radio" name="ja" data-k="jointAcc" value="no">No</label></div>
+    <label>Do you own property as joint tenants (e.g. HDB flat with your spouse)?</label>
+    <div class="seg"><label><input type="radio" name="jp" data-k="jointProp" value="yes">Yes</label><label><input type="radio" name="jp" data-k="jointProp" value="no">No</label></div>
+    <label class="check"><input type="checkbox" data-k="lifetime"> I have set up trusts or made lifetime gifts that should be honoured</label>
+    <h2 style="margin-top:26px;font-size:17px">Schedule of assets <span class="hint">(optional)</span></h2>
+    <p class="lead">Listing assets helps your executor find them. Show account numbers by the last 4 digits only.</p>
+    <div id="l-assets"></div>
+    <button class="add" onclick="addItem('assets')">+ Add asset</button>
+  </section>
+
+  <!-- STEP 8 -->
+  <section class="step" data-title="Wishes">
+    <h2>Funeral wishes and other directions</h2>
+    <label>Funeral arrangement</label>
+    <div class="seg"><label><input type="radio" name="fm" data-k="funeral" value="none">No preference</label><label><input type="radio" name="fm" data-k="funeral" value="burial">Burial</label><label><input type="radio" name="fm" data-k="funeral" value="cremation">Cremation</label><label><input type="radio" name="fm" data-k="funeral" value="sea">Sea burial</label></div>
+    <div data-show="funeral=cremation"><label>Ashes</label><input type="text" data-k="ashes" placeholder="e.g. placed at Mandai Columbarium / scattered at sea"></div>
+    <label>Religious rites <span class="hint">(optional)</span></label>
+    <select data-k="rites"><option value="">None specified</option><option>Christian</option><option>Catholic</option><option>Buddhist</option><option>Taoist</option><option>Hindu</option><option>Sikh</option><option>Free-thinker / non-religious</option></select>
+    <label>Other directions <span class="hint">(optional; your planner will review this wording)</span></label>
+    <textarea data-k="extra" placeholder="e.g. I direct my Executor to forgive the loan of S$5,000 I made to my nephew, Lim Kah Wai."></textarea>
+    <h2 style="margin-top:26px;font-size:17px">Witnesses <span class="hint">(optional, can be filled in by hand)</span></h2>
+    <div id="l-witnesses"></div>
+  </section>
+
+  <!-- STEP 9 -->
+  <section class="step" data-title="Review">
+    <h2>Review and download</h2><p class="lead">Please fix anything in red. Items highlighted yellow in the preview are still blank.</p>
+    <div id="checks"></div>
+    <div class="tools">
+      <button class="btn pri" onclick="downloadDocx()">Download Word (.docx)</button>
+      <button class="btn gold" onclick="downloadPdf()">Download PDF</button>
+      <button class="btn sec" onclick="window.print()">Print</button>
+    </div>
+    <div id="coverpack"></div>
+    <div class="tools">
+      <button class="btn sec" onclick="saveDraft()">Save draft file</button>
+      <label class="btn sec" style="margin:0">Load draft file<input type="file" accept=".json" onchange="loadDraft(this)" hidden></label>
+      <button class="btn sec" onclick="if(confirmReset())resetAll()">Clear form</button>
+    </div>
+    <div class="note info" style="margin-top:16px"><b>Next step:</b> prepare a <a href="/memorandum?mode=general" onclick="return openMemo()">Memorandum of Wishes</a> to guide your executor and family. Your details carry over.</div>
+    <div class="note warn" style="margin-top:16px">This generates a draft will. Have it reviewed by a qualified estate planner or lawyer, and sign it before two witnesses present at the same time. A witness, or a witness's spouse, cannot receive anything under the will.</div>
+  </section>
+
+  <div class="nav"><button class="btn sec" id="prev" onclick="go(cur-1)">Back</button><button class="btn pri" id="next" onclick="go(cur+1)">Next</button></div>
+  </div>
+</div>
+
+<datalist id="people"></datalist>
+<div class="pv">
+  <div class="pvbar"><span>Live preview</span><span id="pvStat"></span></div>
+  <div class="paper" id="paper"></div>
+</div>
+</div>
+
+<script>
+/* ================= CONFIG: edit for your firm ================= */
+const CONFIG = {
+  firmLine1: 'SOUL Advisors',
+  firmLine2: '[Adviser name] · [Phone] · [Email]',
+  fileName: 'Will',
+};
+
+/* ================= STATE ================= */
+const blankP = () => ({ name:'', nric:'', rel:'' });
+const DEFAULT = () => ({
+  t:{ name:'', idType:'NRIC', nric:'', address:'', gender:'M', citizen:'Singaporean', adult:true, english:'yes', lang:'Mandarin', sign:'sign' },
+  marital:'married', spouse:{ name:'', nric:'' }, fiance:{ name:'', nric:'' },
+  children:[],
+  executors:[blankP()],
+  guardian:blankP(), guardian2:blankP(),
+  gifts:[],
+  resMode:'family', residue:[], resSub:'issue', ultimate:'', trustAge:'21', survive:'30',
+  cpfNom:'yes', insNom:'yes', jointAcc:'no', jointProp:'no', lifetime:false,
+  assets:[],
+  funeral:'none', ashes:'', rites:'', extra:'',
+  witnesses:[{name:'',nric:''},{name:'',nric:''}],
+});
+let S = DEFAULT();
+let cur = 0;
+
+const get = (o,p) => p.split('.').reduce((a,k)=>a==null?a:a[k], o);
+const set = (o,p,v) => { const ks=p.split('.'); const last=ks.pop(); ks.reduce((a,k)=>a[k],o)[last]=v; };
+
+/* ================= LISTS ================= */
+const LISTS = {
+  children:{ max:20, item:()=>({name:'',nric:'',minor:false}), title:i=>`Child ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Full name</label><input type="text" data-f="name"></div><div><label>NRIC / Birth Cert No.</label><input type="text" data-f="nric"></div></div>
+    <label class="check"><input type="checkbox" data-f="minor"> Under 21 years old</label>` },
+  executors:{ max:4, min:1, item:blankP, title:i=>EXEC_TITLES[i], fields:()=>`
+    <div class="row3"><div><label>Full name</label><input type="text" data-f="name"></div><div><label>NRIC</label><input type="text" data-f="nric"></div><div><label>Relationship</label><input type="text" data-f="rel" placeholder="e.g. wife"></div></div>` },
+  gifts:{ max:30, item:()=>({kind:'item',desc:'',amount:'',to:'',id:'',rel:''}), title:i=>`Gift ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Type of gift</label><select data-f="kind"><option value="item">Item</option><option value="cash">Sum of money</option><option value="property">Property</option><option value="charity">Gift to a charity</option></select></div>
+      <div data-gshow="cash"><label>Amount (S$)</label><input type="number" min="0" step="any" data-f="amount"></div></div>
+    <div data-gshow="desc"><label>Description</label><input type="text" data-f="desc" placeholder="e.g. my Rolex Submariner watch / my condominium at 1 Example Road #10-01"></div>
+    <div class="row3"><div><label>Given to (name)</label><input type="text" data-f="to" list="people"></div><div><label>NRIC or UEN</label><input type="text" data-f="id"></div><div><label>Relationship</label><input type="text" data-f="rel" placeholder="e.g. son"></div></div>` },
+  residue:{ max:20, item:()=>({name:'',id:'',rel:'',pct:''}), title:i=>`Beneficiary ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Full name</label><input type="text" data-f="name" list="people"></div><div><label>NRIC or UEN</label><input type="text" data-f="id"></div></div>
+    <div class="row"><div><label>Relationship</label><input type="text" data-f="rel" placeholder="e.g. daughter"></div><div><label>Share (%)</label><input type="number" min="0" max="100" step="any" data-f="pct"></div></div>` },
+  assets:{ max:30, item:()=>({type:'Bank account',desc:'',hold:'Sole name',withWhom:''}), title:i=>`Asset ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Asset type</label><select data-f="type">${ASSET_TYPES.map(a=>`<option>${a}</option>`).join('')}</select></div>
+    <div><label>How it is held</label><select data-f="hold">${HOLDS.map(a=>`<option>${a}</option>`).join('')}</select></div></div>
+    <label>Particulars</label><input type="text" data-f="desc" placeholder="e.g. DBS savings, account ending 1234">
+    <div data-fshow="joint"><label>Joint holder</label><input type="text" data-f="withWhom" placeholder="Name of co-owner"></div>` },
+  witnesses:{ max:2, fixed:true, item:()=>({name:'',nric:''}), title:i=>`Witness ${i+1}`, fields:()=>`
+    <div class="row"><div><label>Full name</label><input type="text" data-f="name"></div><div><label>NRIC</label><input type="text" data-f="nric"></div></div>` },
+};
+const EXEC_TITLES = ['Sole Executor and Trustee','Replacement Executor and Trustee','Second Replacement Executor and Trustee','Third Replacement Executor and Trustee'];
+const ASSET_TYPES = ['HDB flat','Private property','Bank account','CPF monies','Insurance policy','Investments / shares','Motor vehicle','Jewellery and valuables','Business interest','Digital assets','Other'];
+const HOLDS = ['Sole name','Joint tenancy','Tenancy-in-common','Joint account','Nominated','Not nominated'];
+
+function giftShows(box, kind){
+  const c = box.querySelector('[data-gshow="cash"]'), d = box.querySelector('[data-gshow="desc"]');
+  if(c) c.classList.toggle('hidden', !(kind==='cash' || kind==='charity'));
+  if(d) d.classList.toggle('hidden', kind==='cash');
+}
+function renderList(name){
+  const L = LISTS[name], box = document.getElementById('l-'+name); if(!box) return;
+  box.innerHTML = S[name].map((it,i)=>`<div class="item" data-list="${name}" data-i="${i}">
+    <div class="ttl">${L.title(i)}</div>${(!L.fixed && !(L.min && S[name].length<=L.min)) ? `<button class="x" title="Remove" onclick="delItem('${name}',${i})">×</button>`:''}
+    ${L.fields(it)}</div>`).join('');
+  box.querySelectorAll('[data-list]').forEach(el=>{
+    const it = S[name][+el.dataset.i];
+    el.querySelectorAll('[data-f]').forEach(f=>{ const v=it[f.dataset.f]; if(f.type==='checkbox') f.checked=!!v; else f.value=v??''; });
+    const js = el.querySelector('[data-fshow]'); if(js) js.classList.toggle('hidden', !/Joint/.test(it.hold));
+    if(name==='gifts') giftShows(el, it.kind);
+  });
+  if(name==='executors') document.getElementById('addExec').classList.toggle('hidden', S.executors.length>=4);
+}
+function addItem(n){ if(S[n].length<LISTS[n].max){ S[n].push(LISTS[n].item()); renderList(n); update(); } }
+function delItem(n,i){ S[n].splice(i,1); renderList(n); update(); }
+
+/* ================= BINDING ================= */
+document.addEventListener('input', onField); document.addEventListener('change', onField);
+function onField(e){
+  const el = e.target;
+  if(el.dataset.k){
+    const v = el.type==='checkbox' ? el.checked : el.value;
+    if(el.type==='radio' && !el.checked) return;
+    set(S, el.dataset.k, v); update();
+  } else if(el.dataset.f){
+    const box = el.closest('[data-list]'); const it = S[box.dataset.list][+box.dataset.i];
+    it[el.dataset.f] = el.type==='checkbox' ? el.checked : el.value;
+    if(el.dataset.f==='hold'){ const js=box.querySelector('[data-fshow]'); if(js) js.classList.toggle('hidden', !/Joint/.test(el.value)); }
+    if(el.dataset.f==='kind') giftShows(box, el.value);
+    update();
+  }
+}
+function fillForm(){
+  document.querySelectorAll('[data-k]').forEach(el=>{
+    const v = get(S, el.dataset.k);
+    if(el.type==='radio') el.checked = (el.value===v);
+    else if(el.type==='checkbox') el.checked = !!v;
+    else el.value = v ?? '';
+  });
+  Object.keys(LISTS).forEach(renderList);
+}
+function applyShows(){
+  document.querySelectorAll('[data-show]').forEach(el=>{
+    const [k,v] = el.dataset.show.split('='); const val = String(get(S,k));
+    el.classList.toggle('hidden', val!==v);
+  });
+  document.querySelectorAll('[data-sp]').forEach(e=>e.textContent = S.t.gender==='F'?'Husband':'Wife');
+  const minor = S.children.some(c=>c.minor);
+  document.getElementById('noMinor').classList.toggle('hidden', minor);
+  document.getElementById('hasMinor').classList.toggle('hidden', !minor);
+  const dl = document.getElementById('people');
+  if(dl) dl.innerHTML = [S.spouse.name, S.fiance.name, ...S.children.map(c=>c.name)].filter(x=>x&&x.trim()).map(n=>`<option value="${n.replace(/"/g,'&quot;')}">`).join('');
+}
+
+/* ================= STEPS ================= */
+const steps = [...document.querySelectorAll('.step')];
+function go(i){
+  cur = Math.max(0, Math.min(steps.length-1, i));
+  steps.forEach((s,j)=>s.classList.toggle('on', j===cur));
+  document.getElementById('steps').innerHTML = steps.map((s,j)=>`<button class="${j===cur?'on':j<cur?'done':''}" onclick="go(${j})">${j+1}. ${s.dataset.title}</button>`).join('');
+  document.getElementById('prev').style.visibility = cur ? 'visible':'hidden';
+  document.getElementById('next').classList.toggle('hidden', cur===steps.length-1);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function mview(v){ document.body.classList.remove('m-form','m-prev'); document.body.classList.add('m-'+v); document.getElementById('mvForm').className='btn '+(v==='form'?'pri':'sec'); document.getElementById('mvPrev').className='btn '+(v==='prev'?'pri':'sec'); }
+
+/* ================= WILL ENGINE ================= */
+const ph = (v, label) => (v && String(v).trim()) ? String(v).trim() : `[[${label}]]`;
+const UP = s => s.replace(/^(?!\[\[)(.*)$/, m=>m.toUpperCase());
+const pct = n => Math.round(n*100)/100;
+const money = n => Number(n).toLocaleString('en-SG',{minimumFractionDigits:2, maximumFractionDigits:2});
+const words = n => {
+  const a=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const b=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  if(!Number.isInteger(n) || n<0 || n>100) return null;
+  if(n===100) return 'one hundred'; if(n<20) return a[n];
+  return b[Math.floor(n/10)] + (n%10 ? '-'+a[n%10] : '');
+};
+const idTag = id => { const v=(id||'').trim(); if(!v) return ' ([[NRIC / UEN]])'; return ` (${/^[STFGM]\d{7}[A-Z]$/i.test(v)?'NRIC':'UEN'} No. ${v})`; };
+
+function analyse(s){
+  const g = s.t.gender==='F';
+  const P = { his:g?'her':'his', he:g?'she':'he', him:g?'her':'him', spouse:g?'husband':'wife', Spouse:g?'Husband':'Wife' };
+  const married = s.marital==='married', engaged = s.marital==='engaged';
+  const minors = s.children.filter(c=>c.minor);
+  const execs = s.executors.filter((e,i)=>i===0 || e.name.trim());
+  const gifts = s.gifts.filter(x=>x.to.trim()||x.desc.trim()||x.amount);
+  const res = s.residue.filter(r=>r.name.trim()||r.pct);
+  const out = [];
+  if(s.cpfNom==='yes') out.push('cpf');
+  if(s.insNom==='yes') out.push('ins');
+  if(s.jointAcc==='yes') out.push('ja');
+  if(s.jointProp==='yes') out.push('jt');
+  if(s.lifetime) out.push('life');
+  const assets = s.assets.filter(a=>a.desc.trim());
+  return { g, P, married, engaged, minors, execs, gifts, res, out, assets, hasGuard: minors.length>0 };
+}
+
+function familyText(s, A){
+  const sp = A.married && s.spouse.name.trim() ? s.spouse.name.trim() : (A.married ? `my ${A.P.spouse}` : '');
+  const kids = s.children.length;
+  if(A.married && kids) return `Everything to your ${A.P.spouse}${s.spouse.name.trim()?' ('+s.spouse.name.trim()+')':''}. If your ${A.P.spouse} does not survive you, it is shared equally among your children, with a child's share passing to their own children if they die before you.`;
+  if(A.married) return `Everything to your ${A.P.spouse}${s.spouse.name.trim()?' ('+s.spouse.name.trim()+')':''}. If your ${A.P.spouse} does not survive you, it goes to the fallback named below.`;
+  if(kids) return 'Everything is shared equally among your children, with a child’s share passing to their own children if they die before you.';
+  return 'You have no spouse or children listed. Choose "I’ll choose people and %" to name your beneficiaries.';
+}
+
+function passesUnder(a, s, num){
+  const outRef = num.out ? `Outside Will – Clause ${num.out}` : 'Outside Will';
+  const res = `Residuary – Clause ${num.res}`;
+  if(a.hold==='Nominated') return outRef;
+  if(a.hold==='Joint tenancy' || a.hold==='Joint account') return outRef + ' (survivorship)';
+  if(a.hold==='Tenancy-in-common') return res + ' (my share)';
+  return res;
+}
+
+function buildWill(s){
+  const A = analyse(s), P = A.P;
+  const TN = ph(s.t.name,'Full name'), TNU = UP(TN);
+  const idL = s.t.idType==='NRIC' ? 'Singapore NRIC No.' : s.t.idType==='FIN' ? 'FIN No.' : 'Passport No.';
+  const TID = ph(s.t.nric,'ID number');
+  const age = parseInt(s.trustAge,10) || 21, days = parseInt(s.survive,10) || 0;
+  const familyOK = s.resMode==='family' && (A.married || s.children.length>0);
+  const plan = [
+    ['def',true],['fam', A.married || A.engaged || s.children.length>0],['exec',true],['pow',true],['guard',A.hasGuard],
+    ['fun', s.funeral!=='none' || !!s.rites],['pay',true],['gift',A.gifts.length>0],['res',true],['trust',true],['surv',days>0],
+    ['out',A.out.length>0],['mar',A.engaged],['extra',!!s.extra.trim()],['sev',true]
+  ].filter(x=>x[1]).map(x=>x[0]);
+  const num = {}; plan.forEach((id,i)=>num[id]=i+1);
+  const B = []; let n=0, m=0;
+  const H = t => { n++; m=0; B.push({t:'h', n:n+'.', title:t}); };
+  const C = t => { m++; B.push({t:'c', n:`${n}.${m}`, text:t}); };
+  const L = items => items.forEach((t,i)=>B.push({t:'s', n:`(${String.fromCharCode(97+i)})`, text:t}));
+  const person = (p, rel) => `${rel?`my ${rel}, `:''}**${UP(ph(p.name,'Full name'))}**, holder of Singapore NRIC No. ${ph(p.nric,'NRIC')}`;
+  const spouseName = () => `my ${P.spouse}, **${UP(ph(s.spouse.name,'Spouse name'))}**`;
+  const ultRaw = s.ultimate.trim()
+    ? `to **${UP(s.ultimate.trim())}** absolutely`
+    : 'to the persons who would have been entitled to my estate under the Intestate Succession Act 1967 had I died intestate, in the shares provided by that Act';
+  const ult = ultRaw.replace(/^to /,'for ');
+
+  B.push({t:'p', text:`I, **${TNU}**, holder of ${idL} ${TID}, currently residing at ${ph(s.t.address,'Address')}, being of sound mind, memory and understanding, and acting of my own free will, hereby **REVOKE** all former wills, codicils and testamentary dispositions made by me, and **DECLARE** this to be my Last Will and Testament (“this Will”).`});
+
+  for(const id of plan){
+    if(id==='def'){
+      H('Definitions and Interpretation');
+      C('In this Will, unless the context otherwise requires:');
+      const d = [
+        `“**Executor**” and “**Trustee**” mean the person or persons for the time being acting as executor and trustee under Clause ${num.exec}, whether original or substitute;`,
+        `“**Residuary Estate**” means all my property of whatever kind and wherever situated, after payment of the items in Clause ${num.pay}${num.gift?` and after giving effect to the gifts in Clause ${num.gift}`:''};`,
+        `“**children**” includes children legally adopted by me, and “**issue**” means children and remoter descendants;`,
+      ];
+      if(A.assets.length) d.push('“**Schedule A**” means the Schedule of Assets annexed to and forming part of this Will;');
+      d[d.length-1] = d[d.length-1].replace(/;$/,'.');
+      if(d.length>1) d[d.length-2] = d[d.length-2].replace(/;$/,'; and');
+      L(d);
+      C('Clause headings are for convenience only and shall not affect interpretation. Words importing the singular include the plural, and words importing any gender include every gender.');
+    }
+    if(id==='fam'){
+      H('My Family');
+      if(A.married) C(`At the date of this Will, I am married to ${person(s.spouse)} (“my ${P.Spouse}”).`);
+      if(A.engaged) C(`At the date of this Will, I am engaged to be married to ${person(s.fiance)}.`);
+      if(s.children.length){
+        C(`At the date of this Will, I have ${s.children.length===1?'the following child':'the following children'}:`);
+        L(s.children.map((c,i)=>`**${UP(ph(c.name,'Child name'))}**, holder of NRIC / Birth Certificate No. ${ph(c.nric,'ID number')}${i===s.children.length-1?'.':';'}`));
+      }
+    }
+    if(id==='exec'){
+      H('Appointment of Executor and Trustee');
+      A.execs.forEach((e,i)=>{
+        if(i===0) C(`I hereby appoint ${person(e, e.rel)}, to be the Sole Executor and Trustee of this Will.`);
+        else C(`In the event that ${ph(A.execs[i-1].name,'previous executor')} predeceases me or is unable or unwilling to act or to continue to act, I hereby appoint ${person(e, e.rel)}, to be the ${EXEC_TITLES[i]} of this Will.`);
+      });
+    }
+    if(id==='pow'){
+      H('Powers of Executor and Trustee');
+      C('In addition to all powers conferred by law, my Trustee shall have full power to:');
+      L(['apply for and obtain the Grant of Probate, and do all things necessary for the administration of my estate;',
+         'sell, call in, convert into money or otherwise realise any part of my estate, with full discretion to postpone such sale or conversion for so long as my Trustee thinks fit, without being liable for any loss;',
+         'invest any money in my estate in any investments my Trustee thinks fit, as if my Trustee were the absolute owner;',
+         'appropriate any asset of my estate in or towards satisfaction of any gift or share, at a value determined by my Trustee, without the consent of any beneficiary;',
+         'open and operate bank accounts, and deal with the Housing & Development Board, the Central Provident Fund Board, banks, insurers and all other institutions on behalf of my estate;',
+         'engage lawyers, accountants, valuers and other professionals, and pay their fees out of my estate; and',
+         'pay out of my estate all costs and expenses of administering my estate, including the reasonable out-of-pocket expenses of my Trustee.']);
+      C('My Trustee shall not be liable for any loss to my estate unless such loss arises from his or her own fraud or wilful default.');
+    }
+    if(id==='guard'){
+      H('Guardianship of Minor Children');
+      C(`If any of my children is below the age of twenty-one (21) years at the date of my death${A.married?` and my ${P.spouse} has also predeceased me or is unable to act`:''}, I appoint ${person(s.guardian, s.guardian.rel)}, to be the guardian of such child.`);
+      if(s.guardian2.name.trim()) C(`If ${ph(s.guardian.name,'Guardian')} predeceases me or is unable or unwilling to act, I appoint ${person(s.guardian2, s.guardian2.rel)}, to be the guardian of such child.`);
+    }
+    if(id==='fun'){
+      H('Funeral Wishes');
+      const how = { burial:'my body be buried', cremation:'my body be cremated', sea:'my ashes be scattered at sea following cremation' }[s.funeral];
+      let t = how ? `I wish that ${how}` : 'I wish that my funeral be conducted';
+      if(s.rites) t += ` in accordance with ${/Free-thinker/.test(s.rites)?'non-religious':s.rites} rites`;
+      t += '.';
+      C(t);
+      if(s.funeral==='cremation' && s.ashes.trim()) C(`I wish that my ashes be ${s.ashes.trim().replace(/\.$/,'')}.`);
+      C('My funeral expenses shall be paid out of my estate. My wishes in this Clause are not binding on my Executor, who may act as he or she considers appropriate in the circumstances.');
+    }
+    if(id==='pay'){
+      H('Payment of Debts and Expenses');
+      C('I direct my Executor, as soon as practicable after my death, to pay out of my estate all my just debts, my funeral expenses, any taxes payable by reason of my death, and the costs and expenses of administering my estate.');
+    }
+    if(id==='gift'){
+      H('Specific Gifts');
+      C(`I GIVE the following gifts, each free of all taxes and administration costs, provided that the recipient survives me${days?` by ${days} days`:''}:`);
+      L(A.gifts.map((g,i)=>{
+        const v = parseFloat(g.amount);
+        const what = g.kind==='cash' || (g.kind==='charity' && !isNaN(v))
+          ? `the sum of Singapore Dollars ${isNaN(v)?'[[amount]]':money(v)+' (S$'+money(v)+')'}`
+          : g.kind==='property' ? `my property known as ${ph(g.desc,'property address')}, subject to any mortgage or charge on it`
+          : g.kind==='charity' ? ph(g.desc,'gift')
+          : ph(g.desc,'item');
+        const who = g.kind==='charity'
+          ? `**${UP(ph(g.to,'Charity name'))}**${idTag(g.id)}${g.kind==='charity'&&g.desc.trim()&&!isNaN(v)?`, to be applied for ${g.desc.trim()}`:''}`
+          : `${g.rel?`my ${g.rel}, `:''}**${UP(ph(g.to,'Recipient'))}**${g.id.trim()?idTag(g.id):''}`;
+        return `${what} to ${who}${i===A.gifts.length-1?'.':';'}`;
+      }));
+      C('If any recipient does not survive me, or if any charity has ceased to exist, the gift to that recipient shall fall into my Residuary Estate, except that a gift to a charity which has ceased to exist shall be paid to another charity with similar objects chosen by my Trustee.');
+      if(A.gifts.some(g=>g.kind==='property')) C('Any gift of property in this Clause is subject to any outstanding mortgage, which shall be borne by the recipient and not by my Residuary Estate.');
+    }
+    if(id==='res'){
+      H('Residuary Estate');
+      C(`I GIVE all my Residuary Estate to my Trustee upon trust to hold it as follows:`);
+      if(familyOK && A.married && s.children.length){
+        L([`for ${spouseName()}, absolutely, if ${P.spouse==='wife'?'she':'he'} survives me;`,
+           `if my ${P.spouse} does not survive me, for such of my children as survive me, in equal shares absolutely, provided that if any child of mine dies before me leaving issue who survive me, such issue shall take, in equal shares per stirpes, the share which their parent would have taken; and`,
+           `if none of the above persons survives me, ${ult}.`]);
+      } else if(familyOK && A.married){
+        L([`for ${spouseName()}, absolutely, if ${P.spouse==='wife'?'she':'he'} survives me; and`, `if my ${P.spouse} does not survive me, ${ult}.`]);
+      } else if(familyOK){
+        L([`for such of my children as survive me, in equal shares absolutely, provided that if any child of mine dies before me leaving issue who survive me, such issue shall take, in equal shares per stirpes, the share which their parent would have taken; and`,
+           `if none of the above persons survives me, ${ult}.`]);
+      } else {
+        const rs = A.res.length ? A.res : [{name:'',id:'',rel:'',pct:''}];
+        L(rs.map((r,i)=>{ const v=parseFloat(r.pct); const wd = Number.isInteger(v)?words(v):null;
+          return `${isNaN(v)?'[[__]] per cent ([[__]]%)':`${wd?wd+' per cent ':''}(${pct(v)}%)`} for ${r.rel.trim()?`my ${r.rel.trim()}, `:''}**${UP(ph(r.name,'Beneficiary'))}**${r.id.trim()?idTag(r.id):''}, absolutely${i===rs.length-1?'.':';'}`; }));
+        C(s.resSub==='issue'
+          ? 'If any beneficiary named in this Clause does not survive me, his or her share shall go to his or her children who survive me, in equal shares; or if there are none, it shall be added proportionately to the shares of the other beneficiaries named in this Clause who survive me.'
+          : 'If any beneficiary named in this Clause does not survive me, his or her share shall be added proportionately to the shares of the other beneficiaries named in this Clause who survive me.');
+        C(`If none of the beneficiaries named in this Clause, nor any substitute, survives me, my Trustee shall hold my Residuary Estate ${ult}.`);
+      }
+    }
+    if(id==='trust'){
+      H(`Beneficiaries Under ${age} Years of Age`);
+      C(`If any beneficiary under this Will has not attained the age of ${words(age)} (${age}) years at the date of my death, his or her share shall be held by my Trustee upon trust until he or she attains that age, and shall then be transferred to him or her absolutely.`);
+      C('Until then, my Trustee may apply all or any part of the income and capital of that share for the maintenance, education, advancement or benefit of that beneficiary, and may pay it to the beneficiary’s parent or guardian, whose receipt shall be a full discharge to my Trustee.');
+      C('If that beneficiary dies before attaining that age, his or her share shall be held as if he or she had died before me.');
+    }
+    if(id==='surv'){
+      H('Survivorship');
+      C(`A beneficiary shall be treated as having survived me only if he or she survives me by ${words(days)} (${days}) days. Any person who does not so survive me shall be treated for all purposes of this Will as having died before me.`);
+    }
+    if(id==='out'){
+      H('Assets Passing Outside this Will');
+      C('I understand that the following assets do not form part of my estate under this Will and will pass as stated below:');
+      const map = {
+        cpf:'**CPF monies** subject to a valid nomination made by me will be paid to the nominee(s) in accordance with the Central Provident Fund Act 1953',
+        ins:'**Insurance policies** subject to a valid revocable or trust nomination made by me will be paid to the nominee(s) in accordance with the Insurance Act 1966',
+        ja:'**Joint bank accounts:** my interest in any joint bank account will pass to the surviving account holder(s) by right of survivorship, where that was my intention when the account was opened',
+        jt:'**Property held as joint tenants:** my interest in any property held by me as a joint tenant will pass to the surviving joint tenant(s) by right of survivorship',
+        life:'any asset which I have, during my lifetime, given away or placed in trust',
+      };
+      L(A.out.map((k,i)=>map[k] + (i===A.out.length-1?'.':i===A.out.length-2?'; and':';')));
+    }
+    if(id==='mar'){
+      H('Contemplation of Marriage');
+      C(`This Will is made in contemplation of my marriage to **${UP(ph(s.fiance.name,'Fiancé(e) name'))}**, and shall not be revoked by my marriage to that person.`);
+    }
+    if(id==='extra'){
+      H('Further Directions');
+      s.extra.trim().split(/\n+/).forEach(t=>C(t.trim()));
+    }
+    if(id==='sev'){
+      H('Severability and Governing Law');
+      C('If any provision of this Will is held to be invalid or unenforceable, such provision shall be severed and the remaining provisions shall continue in full force and effect.');
+      C('This Will shall be governed by the laws of the Republic of Singapore.');
+    }
+  }
+
+  const sched = A.assets.map((a,i)=>[String(i+1), a.type, ph(a.desc,'Particulars'), a.hold + (/Joint/.test(a.hold)&&a.withWhom.trim()?` with ${a.withWhom.trim()}`:''), passesUnder(a,s,num)]);
+  const annex = [
+    ['Testator', `${TN} (${s.t.idType} ${TID})`],
+    ['Citizenship', s.t.citizen],
+    ['Address', ph(s.t.address,'Address')],
+    ...A.execs.map((e,i)=>[EXEC_TITLES[i].replace(' and Trustee','').replace('Sole ',''), `${ph(e.name,'Name')}${e.rel?` (${e.rel})`:''}, NRIC ${ph(e.nric,'NRIC')}`]),
+  ];
+  if(A.hasGuard) annex.push(['Guardian of minor children', ph(s.guardian.name,'Guardian') + (s.guardian2.name.trim()?`; alternate ${s.guardian2.name.trim()}`:'')]);
+  annex.push(['Specific gifts', A.gifts.length ? A.gifts.map(g=>`${(g.kind==='cash'||(g.kind==='charity'&&g.amount))?'S$'+(g.amount?money(g.amount):'__'):(g.desc.trim()||g.kind)} to ${ph(g.to,'Recipient')}`).join('; ') : 'None']);
+  annex.push(['Residuary Estate', familyOK
+    ? (A.married ? `${ph(s.spouse.name,'Spouse')} (${P.spouse})${s.children.length?'; failing whom, children equally':''}` : 'Children equally')
+    : (A.res.length ? A.res.map(r=>`${ph(r.name,'Beneficiary')} ${r.pct||'__'}%`).join('; ') : '[[Beneficiaries]]')]);
+  annex.push(['Fallback beneficiary', s.ultimate.trim() || 'Intestate Succession Act 1967']);
+  annex.push(['Trust age / survivorship', `${age} years / ${days ? days+' days' : 'none'}`]);
+  const outLbl = {cpf:'CPF nomination',ins:'Insurance nominations',ja:'Joint bank accounts',jt:'Joint-tenancy property',life:'Lifetime gifts and trusts'};
+  annex.push(['Passing outside the Will', A.out.length ? A.out.map(k=>outLbl[k]).join('; ') : 'None declared']);
+  annex.push(['Witnesses', s.witnesses.map((w,i)=>`${i+1}. ${w.name.trim()||'________'}`).join('   ')]);
+  annex.push(['Original Will kept at','[[Location / custodian]]']);
+  annex.push(['Date of Will','________________']);
+
+  return { A, P, TN, TNU, TID, idL, blocks:B, sched, annex, num, familyOK };
+}
+
+/* ================= CHECKS ================= */
+function checks(s, W){
+  const A = W.A, out = [];
+  [[s.t.name,'Your full name'],[s.t.nric,'Your ID number'],[s.t.address,'Your address'],[s.executors[0].name,'First executor’s name'],[s.executors[0].nric,'First executor’s NRIC']]
+    .forEach(([v,l])=>{ if(!String(v).trim()) out.push(['err',`${l} is missing.`]); });
+  if(!s.t.adult) out.push(['err','You must be at least 21 years old to make a valid will in Singapore.']);
+  if(A.married && !s.spouse.name.trim()) out.push(['warn',`Your ${A.P.spouse}’s name is missing.`]);
+  if(A.engaged && !s.fiance.name.trim()) out.push(['err','Name your fiancé(e) so this will is not revoked by your marriage.']);
+  if(A.hasGuard && !s.guardian.name.trim()) out.push(['err','You have a child under 21 but have not named a guardian.']);
+  if(!W.familyOK){
+    const t = A.res.reduce((a,r)=>a+(parseFloat(r.pct)||0),0);
+    if(!A.res.length) out.push(['err','Name at least one beneficiary for your residuary estate.']);
+    else if(Math.abs(t-100)>0.01) out.push(['err',`Residuary shares add up to ${pct(t)}%. They must total 100%.`]);
+  }
+  if(A.execs.length<2) out.push(['warn','Consider adding a replacement executor in case your first executor cannot act.']);
+  if(s.cpfNom!=='yes') out.push(['warn','CPF monies are not covered by a will. Without a CPF nomination they go to the Public Trustee and are distributed under the Intestate Succession Act. Consider making a nomination.']);
+  if(s.marital==='divorced') out.push(['warn','Divorce does not cancel gifts to a former spouse in an existing will. Check that no gift is left to your former spouse unless intended.']);
+  const benefit = [s.spouse.name, ...A.gifts.map(g=>g.to), ...(W.familyOK ? s.children.map(c=>c.name) : A.res.map(r=>r.name))].map(x=>(x||'').trim().toLowerCase()).filter(Boolean);
+  s.witnesses.forEach((w,i)=>{ const n=w.name.trim().toLowerCase(); if(n && benefit.includes(n)) out.push(['err',`Witness ${i+1} receives something under this will. A gift to a witness, or a witness’s spouse, is void (section 10, Wills Act). Choose an independent witness.`]); });
+  if(s.t.english==='no') out.push(['ok',`An Interpreter’s Certificate (${s.t.lang}) has been added to the signing page.`]);
+  if(!out.some(o=>o[0]==='err')) out.unshift(['ok','No blocking issues found. Download your draft for review.']);
+  return out;
+}
+
+/* ================= HTML PREVIEW ================= */
+const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function md(t){
+  return esc(t).replace(/\[\[([^\]]+)\]\]/g,'<mark>[$1]</mark>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\*([^*]+)\*/g,'<i>$1</i>');
+}
+function renderPreview(W){
+  const s = S, A = W.A, P = W.P;
+  let h = `<div class="cov"><p class="dt">Dated this ______ day of ____________ 20____</p><div style="height:120px"></div>
+    <div class="rule"></div><p class="ctr big">LAST WILL AND TESTAMENT</p><p class="ctr">OF</p>
+    <p class="ctr big">${md(W.TNU)}</p><p class="ctr" style="font-size:13px">(${W.idL} ${md(W.TID)})</p><div class="rule"></div>
+    <div class="logo">${esc(CONFIG.firmLine1)}<br>${esc(CONFIG.firmLine2)}</div>
+</div><div class="pb"></div>`;
+  h += `<p class="ctr" style="font-weight:700;font-size:17px">LAST WILL AND TESTAMENT</p>`;
+  for(const b of W.blocks){
+    if(b.t==='p') h += `<p${b.center?' class="ctr"':''}>${md(b.text)}</p>`;
+    if(b.t==='h') h += `<h3><span class="n">${b.n}</span><span class="t">${esc(b.title)}</span></h3>`;
+    if(b.t==='c') h += `<div class="c"><span class="n">${b.n}</span><span>${md(b.text)}</span></div>`;
+    if(b.t==='s') h += `<div class="s"><span class="n">${b.n}</span><span>${md(b.text)}</span></div>`;
+  }
+  h += `<div class="pb"></div>`;
+  const signed = s.t.sign==='thumb' ? 'SIGNED/THUMBPRINT' : 'SIGNED';
+  h += `<p><b>IN WITNESS WHEREOF</b> I have hereunto voluntarily set my hand to this Will on the ______ day of ____________ 20____ in Singapore.</p>
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;text-align:left;margin-top:20px"><div><b>${signed}</b> by the abovenamed Testator<br><b>${md(W.TN)}</b><br>as ${P.his} Last Will and Testament, in the presence of us both present at the same time who at ${P.his} request, in ${P.his} presence and in the presence of each other have hereunto set our names as witnesses:</div>
+    <div style="text-align:center;padding-top:60px">) ……………………………<br><small>${s.t.sign==='thumb'?'Right Thumbprint':'Signature'} of Testator</small></div></div>
+    <div class="sig">${s.witnesses.map((w,i)=>`<div><p>${i?'2nd':'1st'} Witness:</p><p style="margin-top:46px">……………………………</p><p>(Signature)</p><p>Full Name : ${w.name.trim()?esc(w.name):'____________________'}</p><p>NRIC No. : ${w.nric.trim()?esc(w.nric):'____________________'}</p><p>Address : ____________________</p></div>`).join('')}</div>
+    <p style="font-size:12px;margin-top:20px"><i>Note: Each witness must be an independent adult of sound mind who is not a beneficiary under this Will, nor the spouse of one (section 10, Wills Act 1838).</i></p>`;
+  if(s.t.english==='no') h += `<p style="margin-top:24px"><b>INTERPRETER’S CERTIFICATE</b></p><p>I, ______________________ (NRIC No. __________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${esc(s.t.lang)} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.</p><p style="margin-top:40px">……………………………&nbsp;&nbsp;&nbsp;&nbsp;Date: __________<br>Signature of Interpreter</p>`;
+  if(W.sched.length){
+    h += `<div class="pb"></div><p class="ctr"><b>SCHEDULE A</b><br><b>SCHEDULE OF ASSETS OF ${md(W.TNU)}</b></p>
+      <p style="font-size:13px">This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.</p>
+      <table><tr><th>No.</th><th>Asset</th><th>Particulars</th><th>Mode of holding</th><th>Passes under</th></tr>${W.sched.map(r=>`<tr>${r.map(c=>`<td>${md(c)}</td>`).join('')}</tr>`).join('')}</table>`;
+    if(W.sched.some(r=>/see note/.test(r[4]))) h += `<p style="font-size:12px"><i>Note: property held as joint tenants passes to the surviving owner; a tenancy-in-common share passes under this Will.</i></p>`;
+  }
+  h += `<div class="pb"></div><p class="ctr"><b>ANNEX: SUMMARY OF WILL</b></p><table><tr><th style="width:36%">Item</th><th>Particulars</th></tr>${W.annex.map(r=>`<tr><td>${md(r[0])}</td><td>${md(r[1])}</td></tr>`).join('')}</table>`;
+  document.getElementById('paper').innerHTML = h;
+  const blanks = (h.match(/<mark>/g)||[]).length;
+  document.getElementById('pvStat').textContent = `${W.blocks.filter(b=>b.t==='h').length} clauses · ${blanks ? blanks+(blanks>1?' blanks':' blank')+' left' : 'all fields filled'}`;
+}
+
+function renderResTotal(W){
+  const box = document.getElementById('resTotal'); if(!box) return;
+  if(W.familyOK || !W.A.res.length){ box.innerHTML=''; return; }
+  const t = W.A.res.reduce((a,r)=>a+(parseFloat(r.pct)||0),0);
+  box.innerHTML = `<div class="note ${Math.abs(t-100)<=0.01?'ok':'err'}">Shares total ${pct(t)}% (must equal 100%).</div>`;
+}
+
+function update(){
+  applyShows();
+  try{ sessionStorage.setItem('soul_will', JSON.stringify(S)); sessionStorage.setItem('soul_mode','general'); }catch(e){}
+  const W = buildWill(S);
+  renderPreview(W);
+  renderResTotal(W);
+  const ft=document.getElementById('familyText'); if(ft) ft.textContent = familyText(S, W.A);
+  document.getElementById('checks').innerHTML = checks(S,W).map(([k,t])=>`<div class="note ${k}">${esc(t)}</div>`).join('');
+}
+
+/* ================= WORD EXPORT ================= */
+async function downloadDocx(){
+  if(!window.docx){ alert('The Word export library did not load. Check your internet connection and reload the page.'); return; }
+  const { Document, Packer, Paragraph, TextRun, AlignmentType, Header, Footer, PageNumber, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, PageBreak, TabStopType } = docx;
+  const W = buildWill(S), s = S, P = W.P;
+  const FONT='Times New Roman', SZ=24, LINE=360;
+  const r = (text,o={}) => new TextRun({ text, font:FONT, size:SZ, ...o });
+  const runs = (str, base={}) => {
+    str = str.replace(/\[\[([^\]]+)\]\]/g,'[$1]');
+    const out=[], re=/(\*\*[^*]+\*\*|\*[^*]+\*)/g; let last=0, mm;
+    while((mm=re.exec(str))){ if(mm.index>last) out.push(r(str.slice(last,mm.index),base)); const t=mm[0];
+      out.push(t.startsWith('**') ? r(t.slice(2,-2),{...base,bold:true}) : r(t.slice(1,-1),{...base,italics:true})); last=mm.index+t.length; }
+    if(last<str.length) out.push(r(str.slice(last),base)); return out;
+  };
+  const p = (text,o={}) => new Paragraph({ alignment:o.align??AlignmentType.JUSTIFIED, spacing:{line:o.line??LINE, after:o.after??160}, children: runs(text,o.run||{}) });
+  const center = (t,o={}) => p(t,{align:AlignmentType.CENTER,...o});
+  const blank = (k=1) => Array.from({length:k},()=>new Paragraph({children:[]}));
+  const brk = () => new Paragraph({children:[new PageBreak()]});
+  const dotted = () => new Paragraph({ spacing:{before:120,after:240}, border:{bottom:{style:BorderStyle.DOTTED,size:12,color:'000000',space:1}}, children:[] });
+  const hang = (num, text, left, bold=false, title=false) => new Paragraph({
+    alignment:AlignmentType.JUSTIFIED, spacing:{line:LINE, after:160, before:title?280:0}, keepNext:title,
+    indent:{left, hanging:720}, tabStops:[{type:TabStopType.LEFT, position:left}],
+    children: title ? [r(num,{bold:true}), r('\t'), r(text.toUpperCase(),{bold:true, underline:{}})] : [r(num), r('\t'), ...runs(text)] });
+  const none = {style:BorderStyle.NONE,size:0,color:'FFFFFF'}, nb = {top:none,bottom:none,left:none,right:none};
+  const thin = {style:BorderStyle.SINGLE,size:4,color:'000000'}, tb = {top:thin,bottom:thin,left:thin,right:thin};
+  const grid = (widths, rows) => new Table({ width:{size:widths.reduce((a,b)=>a+b,0),type:WidthType.DXA}, columnWidths:widths,
+    rows: rows.map((row,i)=>new TableRow({ tableHeader:i===0, children: row.map((t,j)=>new TableCell({ width:{size:widths[j],type:WidthType.DXA}, borders:tb,
+      margins:{top:80,bottom:80,left:100,right:100}, shading: i===0?{fill:'E7E6E6',type:ShadingType.CLEAR,color:'auto'}:undefined,
+      children:[new Paragraph({spacing:{after:40}, children: runs(t,{size:21,bold:i===0})})] })) })) });
+
+  const cover = [
+    p('Dated this ______ day of ____________________ 20____',{align:AlignmentType.LEFT}), ...blank(5), dotted(),
+    center('LAST WILL AND TESTAMENT',{run:{size:32,bold:true},after:120}),
+    center('OF',{run:{size:28},after:120}), center(W.TNU,{run:{size:32,bold:true},after:60}), center(`(${W.idL} ${W.TID})`,{run:{size:22}}),
+    dotted(), ...blank(3), center(CONFIG.firmLine1,{run:{size:20,color:'808080'},after:0}), center(CONFIG.firmLine2,{run:{size:20,color:'808080'}}), ...blank(6),
+    brk(),
+  ];
+  const body = [center('LAST WILL AND TESTAMENT',{run:{bold:true,size:28},after:240})];
+  W.blocks.forEach(b=>{
+    if(b.t==='p') body.push(b.center ? center(b.text,{after:120}) : p(b.text));
+    if(b.t==='h') body.push(hang(b.n, b.title, 720, true, true));
+    if(b.t==='c') body.push(hang(b.n, b.text, 720));
+    if(b.t==='s') body.push(hang(b.n, b.text, 1440));
+  });
+  body.push(brk());
+
+  const signed = s.t.sign==='thumb' ? 'SIGNED/THUMBPRINT' : 'SIGNED';
+  const cellP = t => new Paragraph({spacing:{after:0}, children: runs(t)});
+  const att = [
+    p('**IN WITNESS WHEREOF** I have hereunto voluntarily set my hand to this Will on the ______ day of ____________________ 20____ in Singapore.'), ...blank(1),
+    new Table({ width:{size:9026,type:WidthType.DXA}, columnWidths:[5200,3826], borders:{...nb,insideHorizontal:none,insideVertical:none},
+      rows:[new TableRow({children:[
+        new TableCell({width:{size:5200,type:WidthType.DXA}, borders:nb, children:[cellP(`**${signed}** by the abovenamed Testator`), cellP(`**${W.TN.replace(/\[\[|\]\]/g,'')}**`),
+          ...[`as ${P.his} Last Will and Testament,`,'in the presence of us both present at the',`same time who at ${P.his} request, in ${P.his}`,'presence and in the presence of each other','have hereunto set our names as witnesses:'].map(cellP)]}),
+        new TableCell({width:{size:3826,type:WidthType.DXA}, borders:nb, children:[...blank(3),
+          new Paragraph({alignment:AlignmentType.CENTER, children:[r(')  …………………………')]}),
+          new Paragraph({alignment:AlignmentType.CENTER, children:[r(`${s.t.sign==='thumb'?'Right Thumbprint':'Signature'} of Testator`,{size:20})]})]}),
+      ]})] }),
+    ...blank(2),
+    new Table({ width:{size:9026,type:WidthType.DXA}, columnWidths:[4513,4513], borders:{...nb,insideHorizontal:none,insideVertical:none},
+      rows:[new TableRow({children: s.witnesses.map((w,i)=>new TableCell({width:{size:4513,type:WidthType.DXA}, borders:nb,
+        children:[i?'2nd Witness:':'1st Witness:','','','…………………………','(Signature)',
+          `Full Name : ${w.name.trim()||'______________________'}`, `NRIC No.  : ${w.nric.trim()||'______________________'}`,
+          'Address   : ______________________','Occupation: ______________________'].map(t=>new Paragraph({spacing:{after:120}, children:[r(t)]}))}))})] }),
+    ...blank(1),
+    p('*Note: Each witness must be an independent adult of sound mind who is not a beneficiary under this Will, nor the spouse of one (section 10, Wills Act 1838).*',{run:{size:20},line:276}),
+  ];
+  if(s.t.english==='no') att.push(...blank(1), p('**INTERPRETER’S CERTIFICATE**',{align:AlignmentType.LEFT}),
+    p(`I, ________________________________ (NRIC No. ______________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${s.t.lang} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.`),
+    ...blank(1), p('………………………………          Date: ______________',{align:AlignmentType.LEFT,after:0}), p('Signature of Interpreter',{align:AlignmentType.LEFT}));
+
+  const tail = [];
+  if(W.sched.length){
+    tail.push(brk(), center('**SCHEDULE A**',{after:60}), center(`**SCHEDULE OF ASSETS OF ${W.TNU}**`,{after:200}),
+      p('This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.',{line:276}),
+      grid([500,1700,2626,2100,2100], [['No.','Asset','Particulars','Mode of holding','Passes under'], ...W.sched]));
+    if(W.sched.some(r=>/see note/.test(r[4]))) tail.push(p('*Note: property held as joint tenants passes to the surviving owner; a tenancy-in-common share passes under this Will.*',{run:{size:20},line:276}));
+  }
+  tail.push(brk(), center('**ANNEX: SUMMARY OF WILL**',{after:200}), grid([3000,6026], [['Item','Particulars'], ...W.annex]));
+
+  const header = new Header({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({children:[PageNumber.CURRENT], font:FONT, size:SZ})]})]});
+  const footer = new Footer({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({text:'Testator’s initials: __________', font:FONT, size:18})]})]});
+  const margin = {top:1440,bottom:1440,left:1440,right:1440};
+  const doc = new Document({ creator:CONFIG.firmLine1, title:`Last Will and Testament of ${W.TN}`,
+    styles:{default:{document:{run:{font:FONT,size:SZ}}}},
+    sections:[ {properties:{page:{margin}}, children:cover},
+               {properties:{page:{margin, pageNumbers:{start:1}}}, headers:{default:header}, footers:{default:footer}, children:[...body, ...att, ...tail]} ] });
+  const blob = await Packer.toBlob(doc);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `${CONFIG.fileName}_${(s.t.name.trim()||'Draft').replace(/[^\w]+/g,'_')}.docx`; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+
+/* ================= PDF EXPORT (real PDF file, built in the browser) ================= */
+async function downloadPdf(){
+  if(!window.jspdf){ alert('The PDF library did not load. Check your internet connection and reload the page.'); return; }
+  const { jsPDF } = window.jspdf;
+  const W = buildWill(S), s = S, P = W.P;
+  const doc = new jsPDF({ unit:'pt', format:'a4' });
+  const PW = 595.28, PH = 841.89, M = 72, X0 = M, X1 = PW - M, TOP = M, BOT = PH - M;
+  const FS = 12, LH = 18;
+  let y = TOP, pageNo = 0; // pageNo 0 = cover (unnumbered)
+
+  // WinAnsi-safe text (standard PDF fonts)
+  const clean = t => t.replace(/ﷺ/g,'(S.A.W.)').replace(/\[\[([^\]]+)\]\]/g,'[$1]').replace(/[  ]/g,' ');
+  // **bold** / *italic* -> runs
+  const toRuns = (str, base={}) => {
+    str = clean(str); const out=[], re=/(\*\*[^*]+\*\*|\*[^*]+\*)/g; let last=0, m;
+    while((m=re.exec(str))){ if(m.index>last) out.push({t:str.slice(last,m.index),...base}); const t=m[0];
+      out.push(t.startsWith('**') ? {t:t.slice(2,-2),...base,b:true} : {t:t.slice(1,-1),...base,i:true}); last=m.index+t.length; }
+    if(last<str.length) out.push({t:str.slice(last),...base}); return out;
+  };
+  const font = (r,size) => { doc.setFont('times', r.b&&r.i?'bolditalic':r.b?'bold':r.i?'italic':'normal'); doc.setFontSize(size); };
+  const wW = (w,size) => { font(w,size); return doc.getTextWidth(w.t); };
+
+  function decorate(){
+    if(pageNo>0){
+      doc.setFont('times','normal'); doc.setFontSize(12); doc.text(String(pageNo), X1, 46, {align:'right'});
+      doc.setFontSize(9); doc.text('Testator’s initials: __________', X1, PH-40, {align:'right'});
+    }
+  }
+  function newPage(){ doc.addPage(); pageNo++; y = TOP; decorate(); }
+  function ensure(h){ if(y + h > BOT) newPage(); }
+
+  // Rich paragraph: words laid out across [x, x+width], justified by default
+  function rich(runs, x, width, o={}){
+    const size = o.size||FS, lh = o.lh||LH, align = o.align||'justify';
+    const words = [];
+    runs.forEach(r => r.t.split(/(\s+)/).forEach(part => { if(part==='') return;
+      if(/^\s+$/.test(part)) { if(words.length) words[words.length-1].sp = true; } else words.push({...r, t:part, sp:false}); }));
+    const lines = []; let line = [], lw = 0;
+    const spW = (w) => { font(w,size); return doc.getTextWidth(' '); };
+    // a gap follows word w only when the source text had whitespace after it
+    const gapAfter = w => w.sp ? spW(w) + (w.u ? 1.5 : 0) : 0;
+    words.forEach(w => {
+      const ww = wW(w,size); const prev = line[line.length-1];
+      const add = prev ? gapAfter(prev) : 0;
+      if(prev && prev.sp && lw + add + ww > width){ lines.push(line); line=[]; lw=0; }
+      w.w = ww; lw += (line.length ? gapAfter(line[line.length-1]) : 0) + ww; line.push(w);
+    });
+    if(line.length) lines.push(line);
+    // keep short paragraphs together; avoid leaving a single line at the top of a page
+    const room = Math.floor((BOT - y)/lh);
+    if(lines.length > room && (lines.length <= 4 || lines.length - room === 1) && room < 30) newPage();
+    lines.forEach((ln, li) => {
+      ensure(lh); const base = y + size*0.8;
+      if(li===0 && o.label){ font({b:o.labelBold},size); doc.text(o.label, o.labelX, base); }
+      const gaps = ln.slice(0,-1).filter(w=>w.sp).length;
+      const natural = ln.reduce((a,w,i)=>a+w.w+(i<ln.length-1?gapAfter(w):0),0);
+      const last = li === lines.length-1;
+      let gapExtra = 0, cx = x;
+      if(align==='justify' && !last && gaps>0) gapExtra = (width - natural)/gaps;
+      if(align==='center') cx = x + (width-natural)/2;
+      if(align==='right') cx = x + width - natural;
+      ln.forEach((w,i) => { font(w,size); doc.text(w.t, cx, base);
+        const step = i<ln.length-1 ? gapAfter(w) + (w.sp?gapExtra:0) : 0;
+        const ulen = (w.u && ln[i+1] && ln[i+1].u) ? w.w + step : w.w;
+        if(w.u){ doc.setLineWidth(0.6); doc.line(cx, base+1.5, cx+ulen, base+1.5); }
+        cx += w.w + step; });
+      y += lh;
+    });
+    y += (o.after ?? 8);
+    return lines.length;
+  }
+  const para = (text, o={}) => rich(toRuns(text, o.base||{}), X0, X1-X0, o);
+  // numbered clause with hanging indent
+  function numbered(num, text, indent, o={}){
+    ensure(LH*2);
+    rich(o.runs || toRuns(text), X0 + indent, X1 - X0 - indent, {...o, label:num, labelX:X0 + indent - 36, labelBold:o.bold});
+  }
+  function dottedRule(){ doc.setLineWidth(1.2); doc.setLineDashPattern([1,2.5],0); doc.line(X0, y, X1, y); doc.setLineDashPattern([],0); y += 18; }
+
+  // tables
+  function table(widths, rows, size=10.5){
+    const pad = 4, lh = size*1.25;
+    const wrap = (txt, w, bold) => { doc.setFont('times', bold?'bold':'normal'); doc.setFontSize(size); return doc.splitTextToSize(clean(txt).replace(/\*\*/g,''), w - pad*2); };
+    const drawRow = (row, head) => {
+      const cells = row.map((c,j)=>wrap(c, widths[j], head));
+      const h = Math.max(...cells.map(c=>c.length))*lh + pad*2;
+      if(y + h > BOT){ newPage(); if(!head) drawRow(rows[0], true); }
+      let x = X0;
+      cells.forEach((c,j) => {
+        if(head){ doc.setFillColor(231,230,230); doc.rect(x, y, widths[j], h, 'F'); }
+        doc.setLineWidth(0.5); doc.setDrawColor(0); doc.rect(x, y, widths[j], h);
+        doc.setFont('times', head?'bold':'normal'); doc.setFontSize(size);
+        c.forEach((ln,k)=>doc.text(ln, x+pad, y+pad+size*0.85+k*lh));
+        x += widths[j];
+      });
+      y += h;
+    };
+    rows.forEach((r,i)=>drawRow(r, i===0));
+    y += 10;
+  }
+
+  /* ---- cover ---- */
+  y = TOP; para('Dated this ______ day of ____________________ 20____', {align:'left'});
+  y = 250; dottedRule();
+  const cTxt = (t, size, b, after=6) => rich(toRuns(t, {b}), X0, X1-X0, {align:'center', size, lh:size*1.4, after});
+  cTxt('LAST WILL AND TESTAMENT', 16, true); cTxt('OF', 14, false);
+  cTxt(W.TNU, 16, true, 2); cTxt(`(${W.idL} ${W.TID})`, 11, false, 10);
+  dottedRule();
+  y += 50; doc.setTextColor(128); cTxt(CONFIG.firmLine1, 10, false, 0); cTxt(CONFIG.firmLine2, 10, false); doc.setTextColor(0);
+  y = BOT - 60;
+
+  /* ---- body ---- */
+  newPage();
+  cTxt('LAST WILL AND TESTAMENT', 14, true, 14);
+  W.blocks.forEach(b => {
+    if(b.t==='p') rich(toRuns(b.text), X0, X1-X0, {align: b.center?'center':'justify'});
+    if(b.t==='h'){ ensure(LH*3); y += 8; numbered(b.n, '', 36, {bold:true, runs:[{t:b.title.toUpperCase(), b:true, u:true}], align:'left'}); }
+    if(b.t==='c') numbered(b.n, b.text, 36);
+    if(b.t==='s') numbered(b.n, b.text, 72);
+  });
+
+  /* ---- attestation: new page unless there is plenty of room left ---- */
+  if(BOT - y < 420) newPage(); else y += 24;
+  para('**IN WITNESS WHEREOF** I have hereunto voluntarily set my hand to this Will on the ______ day of ____________________ 20____ in Singapore.');
+  y += 12;
+  const signed = s.t.sign==='thumb' ? 'SIGNED/THUMBPRINT' : 'SIGNED';
+  const yA = y;
+  const leftLines = [[`**${signed}** by the abovenamed Testator`],[`**${W.TN.replace(/\[\[|\]\]/g,'')}**`],
+    [`as ${P.his} Last Will and Testament,`],['in the presence of us both present at the'],[`same time who at ${P.his} request, in ${P.his}`],
+    ['presence and in the presence of each other'],['have hereunto set our names as witnesses:']];
+  leftLines.forEach(([t]) => rich(toRuns(t), X0, 280, {align:'left', lh:15, after:0}));
+  const yB = y; y = yA + 50;
+  doc.setFont('times','normal'); doc.setFontSize(12);
+  doc.text(')   …………………………', X0 + 300, y); y += 14;
+  doc.setFontSize(10); doc.text(`${s.t.sign==='thumb'?'Right Thumbprint':'Signature'} of Testator`, X0 + 360, y);
+  y = Math.max(yB, y) + 36;
+  const colX = [X0, X0 + 240];
+  const yW = y;
+  s.witnesses.forEach((w,i) => {
+    let yy = yW; const x = colX[i];
+    const L = (t, gap=20) => { doc.setFont('times','normal'); doc.setFontSize(12); doc.text(t, x, yy); yy += gap; };
+    L(i? '2nd Witness:':'1st Witness:', 56); L('…………………………'); L('(Signature)');
+    L(`Full Name : ${clean(w.name.trim()) || '______________________'}`); L(`NRIC No.  : ${clean(w.nric.trim()) || '______________________'}`);
+    L('Address   : ______________________'); L('Occupation: ______________________'); y = Math.max(y, yy);
+  });
+  y += 10;
+  para('*Note: Each witness must be an independent adult of sound mind who is not a beneficiary under this Will, nor the spouse of one (section 10, Wills Act 1838).*', {size:10, lh:13});
+  if(s.t.english==='no'){
+    y += 10; ensure(140);
+    para('**INTERPRETER’S CERTIFICATE**', {align:'left'});
+    para(`I, ________________________________ (NRIC No. ______________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${s.t.lang} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.`);
+    y += 24; para('………………………………          Date: ______________', {align:'left', after:0});
+    para('Signature of Interpreter', {align:'left'});
+  }
+
+  /* ---- schedule + annex ---- */
+  if(W.sched.length){
+    newPage(); cTxt('SCHEDULE A', 12, true, 0); cTxt(`SCHEDULE OF ASSETS OF ${W.TNU}`, 12, true, 10);
+    para('This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.', {size:11, lh:15});
+    table([28, 86, 140, 103, 94], [['No.','Asset','Particulars','Mode of holding','Passes under'], ...W.sched]);
+    if(W.sched.some(r=>/see note/.test(r[4]))) para('*Note: property held as joint tenants passes to the surviving owner; a tenancy-in-common share passes under this Will.*', {size:10, lh:13});
+  }
+  newPage(); cTxt('ANNEX: SUMMARY OF WILL', 12, true, 10);
+  table([160, 291.28], [['Item','Particulars'], ...W.annex]);
+
+  doc.setProperties({ title:`Last Will and Testament of ${clean(W.TN)}`, creator: CONFIG.firmLine1 });
+  doc.save(`${CONFIG.fileName}_${(s.t.name.trim()||'Draft').replace(/[^\w]+/g,'_')}.pdf`);
+}
+
+/* ================= DRAFTS ================= */
+function saveDraft(){
+  const blob = new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `${CONFIG.fileName}_draft_${(S.t.name.trim()||'unnamed').replace(/[^\w]+/g,'_')}.json`; a.click();
+}
+function loadDraft(input){
+  const f = input.files[0]; if(!f) return;
+  f.text().then(t=>{ try{ S = Object.assign(DEFAULT(), JSON.parse(t)); fillForm(); update(); }catch(e){ alert('That file is not a valid draft.'); } });
+  input.value='';
+}
+function confirmReset(){ return window.confirm('Clear all fields? Unsaved details will be lost.'); }
+function resetAll(){ S = DEFAULT(); fillForm(); update(); go(0); }
+
+function openMemo(){ try{ const P=window.parent; if(P!==window && P.switchAgentTab){ const b=[...P.document.querySelectorAll('.ag-navitem')].find(x=>x.textContent.includes('Memorandum')); if(b){ P.switchAgentTab('memo',b); return false; } } }catch(e){} return true; }
+/* ================= INIT ================= */
+if(window.CoverPack) CoverPack.mount('coverpack');
+if (window.self !== window.top || new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
+fillForm(); go(0); update();
+</script>
+</body>
+</html>

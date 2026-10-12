@@ -648,7 +648,7 @@ function renderWTotal(W){
 
 function update(){
   applyShows();
-  try{ sessionStorage.setItem('soul_wasiat', JSON.stringify(S)); }catch(e){}
+  try{ sessionStorage.setItem('soul_wasiat', JSON.stringify(S)); sessionStorage.setItem('soul_mode','islamic'); }catch(e){}
   const W = buildWill(S);
   renderPreview(W);
   renderWTotal(W);
