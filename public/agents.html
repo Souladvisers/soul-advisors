@@ -1053,6 +1053,24 @@ body.csb-session-on .csb-hide-field { display: none !important; }
         Client Care
       </button>
 
+      <hr class="ag-nav-sep admin-only-nav" style="display:none">
+      <div class="ag-nav-section admin-only-nav" style="display:none">Estate Planning</div>
+
+      <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('wasiat',this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Wasiat Generator
+      </button>
+
+      <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('willgen',this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><line x1="8" y1="9" x2="10" y2="9"/></svg>
+        Will Generator (Non-Muslim)
+      </button>
+
+      <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('memorandum',this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        Memorandum of Wishes
+      </button>
+
     </nav>
     <!-- Onboarding quick-guide -->
     <div class="ag-guide" id="ag-guide">
@@ -2113,6 +2131,52 @@ body.csb-session-on .csb-hide-field { display: none !important; }
     </div>
   </div>
 
+  <!-- ── ADMIN-ONLY PANELS ───────────────────────────────────────────── -->
+  <div class="ag-panel" id="p-wasiat">
+    <div class="tools-wrap">
+      <div class="tools-title">Wasiat Generator</div>
+      <div class="tools-sub">Draft and manage Islamic wills (Wasiat) for Muslim clients in accordance with Faraid principles.</div>
+      <div class="tools-grid">
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">📜</div>
+          <div class="tool-name">Wasiat Generator <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Generate a compliant Wasiat document covering up to 1/3 of the estate for non-heirs, charitable bequests and specific asset disposals.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ag-panel" id="p-willgen">
+    <div class="tools-wrap">
+      <div class="tools-title">Will Generator (Non-Muslim)</div>
+      <div class="tools-sub">Draft a basic testamentary will for non-Muslim clients under Singapore civil law.</div>
+      <div class="tools-grid">
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">⚖️</div>
+          <div class="tool-name">Will Generator <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Step-by-step guided will drafting — executor appointment, asset distribution, guardian nomination for minors, and residual estate instructions.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ag-panel" id="p-memorandum">
+    <div class="tools-wrap">
+      <div class="tools-title">Memorandum of Wishes</div>
+      <div class="tools-sub">Capture the client's non-binding personal wishes for distribution of assets — used alongside a trust or will.</div>
+      <div class="tools-grid">
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">📝</div>
+          <div class="tool-name">Memorandum of Wishes <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Document personal wishes for specific assets, digital accounts, family messages and funeral preferences — separate from the formal legal will.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <script>
@@ -2200,7 +2264,10 @@ function showLogin() {
   setTimeout(() => document.getElementById('login-pw').focus(), 100);
 }
 
+var CURRENT_MEMBER = null;
+
 function showApp(member) {
+  CURRENT_MEMBER = member;
   if (localStorage.getItem('guideDismissed')) {
     var g = document.getElementById('ag-guide');
     if (g) g.style.display = 'none';
@@ -2209,6 +2276,12 @@ function showApp(member) {
   const app = document.getElementById('app');
   app.style.display = 'flex';
   document.getElementById('ag-user-name').textContent = member.name || member.subdomain || '';
+  // Show admin-only nav items if admin
+  if (member.isAdmin) {
+    document.querySelectorAll('.admin-only-nav').forEach(function(el) {
+      el.style.display = '';
+    });
+  }
   // Load funds data lazily
   loadFunds();
 }
@@ -2248,7 +2321,12 @@ function agentLogout() {
 // ─────────────────────────────────────────────
 // PORTAL TAB SWITCHING
 // ─────────────────────────────────────────────
+var ADMIN_ONLY_TABS = ['wasiat', 'willgen', 'memorandum'];
+
 function switchAgentTab(tab, btn) {
+  if (ADMIN_ONLY_TABS.indexOf(tab) !== -1 && !(CURRENT_MEMBER && CURRENT_MEMBER.isAdmin)) {
+    return; // silently block — button is hidden anyway; this guards direct calls
+  }
   document.querySelectorAll('.ag-navitem').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.ag-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
