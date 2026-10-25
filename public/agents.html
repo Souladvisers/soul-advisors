@@ -908,32 +908,6 @@ body.csb-session-on .csb-hide-field { display: none !important; }
 .edu-remove-btn:hover { color:#f87171; }
 .edu-add-btn { background:rgba(184,151,90,0.08); border:1px solid rgba(184,151,90,0.3); color:var(--accent); font-size:0.75rem; border-radius:6px; padding:0.4rem 0.9rem; cursor:pointer; transition:background 0.15s; }
 .edu-add-btn:hover { background:rgba(184,151,90,0.18); }
-
-/* ── Estate Planning record cards ─────────────────────────────────────────── */
-.est-record-list { display:flex; flex-direction:column; gap:0.6rem; }
-.est-record-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:0.85rem 1rem; }
-.est-record-card:hover { border-color:rgba(184,151,90,0.3); }
-.est-record-header { display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; }
-.est-record-name { font-size:0.9rem; font-weight:600; color:white; }
-.est-record-date { font-size:0.67rem; color:rgba(255,255,255,0.35); white-space:nowrap; margin-top:0.15rem; }
-.est-record-meta { font-size:0.75rem; color:rgba(255,255,255,0.45); margin-top:0.35rem; line-height:1.5; }
-.est-record-actions { display:flex; gap:0.4rem; flex-shrink:0; }
-.est-btn-edit { background:rgba(184,151,90,0.1); border:1px solid rgba(184,151,90,0.35); color:var(--accent); font-size:0.7rem; border-radius:5px; padding:0.2rem 0.6rem; cursor:pointer; transition:background 0.15s; }
-.est-btn-edit:hover { background:rgba(184,151,90,0.22); }
-.est-btn-del { background:none; border:1px solid rgba(248,113,113,0.3); color:#f87171; font-size:0.7rem; border-radius:5px; padding:0.2rem 0.6rem; cursor:pointer; transition:background 0.15s; }
-.est-btn-del:hover { background:rgba(248,113,113,0.1); }
-.est-empty { text-align:center; color:rgba(255,255,255,0.22); font-size:0.8rem; padding:2.5rem 1rem; }
-.est-save-btn { width:100%; padding:0.62rem; background:var(--accent); border:none; border-radius:8px; color:#0D0D0D; font-weight:700; font-size:0.85rem; cursor:pointer; margin-top:0.5rem; transition:opacity 0.15s; }
-.est-save-btn:hover { opacity:0.88; }
-.est-cancel-btn { width:100%; padding:0.55rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:rgba(255,255,255,0.6); font-size:0.82rem; cursor:pointer; margin-top:0.4rem; }
-.est-cancel-btn:hover { background:rgba(255,255,255,0.09); }
-.est-beneficiary-row { display:flex; gap:0.4rem; align-items:flex-end; margin-bottom:0.5rem; }
-.est-beneficiary-row .al-field { margin-bottom:0; }
-.est-rem-ben { background:none; border:none; color:rgba(255,255,255,0.28); font-size:1rem; line-height:1; cursor:pointer; padding:0.3rem; }
-.est-rem-ben:hover { color:#f87171; }
-.est-section-lbl { font-size:0.62rem; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--accent); margin:1rem 0 0.5rem; }
-.est-results-hd { font-size:0.82rem; font-weight:600; color:white; margin-bottom:0.5rem; }
-.est-count-badge { display:inline-flex; align-items:center; justify-content:center; background:var(--accent); color:#0D0D0D; font-size:0.62rem; font-weight:700; border-radius:9px; min-width:18px; height:18px; padding:0 4px; margin-left:0.4rem; vertical-align:middle; }
 </style>
 </head>
 <body>
@@ -1031,6 +1005,21 @@ body.csb-session-on .csb-hide-field { display: none !important; }
         Tax Optimisation
       </button>
 
+      <button class="ag-navitem" onclick="switchAgentTab('wasiat',this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg>
+        Wasiat Generator
+      </button>
+
+      <button class="ag-navitem" onclick="switchAgentTab('will',this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 17c1.5-2 2.5-2 3.5 0s2 2 4.5-1"/></svg>
+        Will Generator (Non-Muslim)
+      </button>
+
+      <button class="ag-navitem" onclick="switchAgentTab('memo',this)">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v12H5.17L4 17.17V4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>
+        Memorandum of Wishes
+      </button>
+
       <hr class="ag-nav-sep">
       <div class="ag-nav-section">Agent Zone</div>
 
@@ -1068,17 +1057,17 @@ body.csb-session-on .csb-hide-field { display: none !important; }
       <div class="ag-nav-section admin-only-nav" style="display:none">Estate Planning</div>
 
       <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('wasiat',this)">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         Wasiat Generator
       </button>
 
-      <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('will',this)">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 17c1.5-2 2.5-2 3.5 0s2 2 4.5-1"/></svg>
+      <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('willgen',this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><line x1="8" y1="9" x2="10" y2="9"/></svg>
         Will Generator (Non-Muslim)
       </button>
 
-      <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('memo',this)">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16v12H5.17L4 17.17V4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>
+      <button class="ag-navitem admin-only-nav" style="display:none" onclick="switchAgentTab('memorandum',this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
         Memorandum of Wishes
       </button>
 
@@ -2069,125 +2058,38 @@ body.csb-session-on .csb-hide-field { display: none !important; }
 
   </div>
 
-  <!-- ── WASIAT GENERATOR ── -->
+  <!-- ── CLIENT CARE PANEL ── -->
   <div class="ag-panel" id="p-wasiat">
-    <div class="sp-wrap"><div class="sp-grid">
-      <div class="sp-form">
-        <div class="sp-form-title">📜 Wasiat Generator</div>
-        <div class="sp-form-sub">Draft a Faraid-compliant bequest (up to 1/3 of estate) for Muslim clients. Saved locally in this browser.</div>
-
-        <div class="al-field">
-          <label class="al-label">Client Name</label>
-          <input class="al-input" id="ws-name" placeholder="e.g. Ahmad bin Abdullah">
-        </div>
-        <div class="al-field-row">
-          <div class="al-field">
-            <label class="al-label">NRIC</label>
-            <input class="al-input" id="ws-nric" placeholder="e.g. S1234567A">
-          </div>
-          <div class="al-field">
-            <label class="al-label">Date of Birth</label>
-            <input class="al-input" type="date" id="ws-dob">
-          </div>
-        </div>
-        <div class="al-field">
-          <label class="al-label">Total Estate Value (SGD)</label>
-          <input class="al-input" id="ws-estate" type="number" placeholder="e.g. 500000">
-        </div>
-        <div class="al-field">
-          <label class="al-label">Executor Name</label>
-          <input class="al-input" id="ws-exec-name" placeholder="e.g. Siti binte Ramli">
-        </div>
-        <div class="al-field">
-          <label class="al-label">Executor NRIC / Relationship</label>
-          <input class="al-input" id="ws-exec-rel" placeholder="e.g. S9876543B · Spouse">
-        </div>
-
-        <div class="est-section-lbl">Beneficiaries (Non-Faraid — max 1/3 of estate)</div>
-        <div id="ws-bens-container"></div>
-        <button class="edu-add-btn" style="margin-bottom:0.75rem" onclick="wsAddBen()">+ Add Beneficiary</button>
-
-        <div class="al-field">
-          <label class="al-label">Special Instructions / Notes</label>
-          <textarea class="al-input" id="ws-notes" rows="3" placeholder="Charitable bequests, specific asset instructions, conditions…" style="resize:vertical"></textarea>
-        </div>
-
-        <button class="est-save-btn" id="ws-save-btn" onclick="wsSave()">Save Wasiat Record</button>
-        <button class="est-cancel-btn" id="ws-cancel-btn" style="display:none" onclick="wsCancelEdit()">Cancel Edit</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem 0.75rem;flex-wrap:wrap">
+      <div>
+        <div style="font-family:'Lora',serif;font-size:1.2rem;font-weight:600">Wasiat Generator</div>
+        <div style="font-size:0.78rem;color:var(--muted)">Fill in the client's details to draft a Faraid-compliant will. Client data stays in this browser and is never uploaded.</div>
       </div>
-
-      <div class="sp-results">
-        <div class="est-results-hd">Saved Records <span class="est-count-badge" id="ws-count">0</span></div>
-        <div id="ws-record-list" class="est-record-list"><div class="est-empty">No Wasiat records yet.<br>Fill in the form and click Save.</div></div>
-      </div>
-    </div></div>
+      <a href="/wasiat" target="_blank" class="btn-signout" style="text-decoration:none;color:var(--accent);border-color:var(--border-gold)">Open full screen ↗</a>
+    </div>
+    <iframe id="wasiat-frame" title="Wasiat Generator" style="width:100%;height:calc(100vh - 150px);border:0;border-top:1px solid var(--border-gold);background:#FAF8F3;display:block"></iframe>
   </div>
 
-  <!-- ── WILL GENERATOR ── -->
   <div class="ag-panel" id="p-will">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem 0.75rem;flex-wrap:wrap">
       <div>
         <div style="font-family:'Lora',serif;font-size:1.2rem;font-weight:600">Will Generator <span style="font-size:0.8rem;color:var(--muted);font-family:'DM Sans',sans-serif">for non-Muslim clients</span></div>
-        <div style="font-size:0.78rem;color:var(--muted)">Drafts a will under Singapore's Wills Act: gifts, residuary shares, trusts for young beneficiaries.</div>
+        <div style="font-size:0.78rem;color:var(--muted)">Drafts a will under Singapore's Wills Act: gifts, residuary shares, trusts for young beneficiaries. Client data stays in this browser.</div>
       </div>
       <a href="/will" target="_blank" class="btn-signout" style="text-decoration:none;color:var(--accent);border-color:var(--border-gold)">Open full screen ↗</a>
     </div>
     <iframe id="will-frame" title="Will Generator" style="width:100%;height:calc(100vh - 150px);border:0;border-top:1px solid var(--border-gold);background:#FAF8F3;display:block"></iframe>
   </div>
 
-  <!-- ── MEMORANDUM OF WISHES ── -->
   <div class="ag-panel" id="p-memo">
-    <div class="sp-wrap"><div class="sp-grid">
-      <div class="sp-form">
-        <div class="sp-form-title">📝 Memorandum of Wishes</div>
-        <div class="sp-form-sub">Non-binding personal wishes for the executor and family, recorded alongside the will or Wasiat. Saved locally in this browser.</div>
-
-        <div class="al-field">
-          <label class="al-label">Client Name</label>
-          <input class="al-input" id="mo-name" placeholder="e.g. Ahmad bin Abdullah">
-        </div>
-        <div class="al-field-row">
-          <div class="al-field">
-            <label class="al-label">NRIC</label>
-            <input class="al-input" id="mo-nric" placeholder="e.g. S1234567A">
-          </div>
-          <div class="al-field">
-            <label class="al-label">Date</label>
-            <input class="al-input" type="date" id="mo-date">
-          </div>
-        </div>
-
-        <div class="al-field">
-          <label class="al-label">Personal Message to Family</label>
-          <textarea class="al-input" id="mo-message" rows="3" placeholder="A personal note or message for loved ones…" style="resize:vertical"></textarea>
-        </div>
-
-        <div class="est-section-lbl">Digital Assets</div>
-        <div id="mo-digital-container"></div>
-        <button class="edu-add-btn" style="margin-bottom:0.75rem" onclick="moAddDigital()">+ Add Digital Asset</button>
-
-        <div class="est-section-lbl">Specific Items / Gifts</div>
-        <div id="mo-items-container"></div>
-        <button class="edu-add-btn" style="margin-bottom:0.75rem" onclick="moAddItem()">+ Add Item</button>
-
-        <div class="al-field">
-          <label class="al-label">Funeral / Burial Wishes</label>
-          <textarea class="al-input" id="mo-funeral" rows="2" placeholder="e.g. Islamic rites, preferred location, simplicity preferences…" style="resize:vertical"></textarea>
-        </div>
-        <div class="al-field">
-          <label class="al-label">Other Instructions</label>
-          <textarea class="al-input" id="mo-other" rows="2" placeholder="Any other guidance for the executor or family…" style="resize:vertical"></textarea>
-        </div>
-
-        <button class="est-save-btn" id="mo-save-btn" onclick="moSave()">Save Memorandum Record</button>
-        <button class="est-cancel-btn" id="mo-cancel-btn" style="display:none" onclick="moCancelEdit()">Cancel Edit</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem 0.75rem;flex-wrap:wrap">
+      <div>
+        <div style="font-family:'Lora',serif;font-size:1.2rem;font-weight:600">Memorandum of Wishes</div>
+        <div style="font-size:0.78rem;color:var(--muted)">Non-binding guidance for the executor and family, read alongside the will. Client details carry over from the Wasiat Generator.</div>
       </div>
-
-      <div class="sp-results">
-        <div class="est-results-hd">Saved Records <span class="est-count-badge" id="mo-count">0</span></div>
-        <div id="mo-record-list" class="est-record-list"><div class="est-empty">No Memorandum records yet.<br>Fill in the form and click Save.</div></div>
-      </div>
-    </div></div>
+      <a href="/memorandum" target="_blank" class="btn-signout" style="text-decoration:none;color:var(--accent);border-color:var(--border-gold)">Open full screen ↗</a>
+    </div>
+    <iframe id="memo-frame" title="Memorandum of Wishes" style="width:100%;height:calc(100vh - 150px);border:0;border-top:1px solid var(--border-gold);background:#FAF8F3;display:block"></iframe>
   </div>
 
   <div class="ag-panel" id="p-care">
@@ -2229,6 +2131,51 @@ body.csb-session-on .csb-hide-field { display: none !important; }
     </div>
   </div>
 
+  <!-- ── ADMIN-ONLY PANELS ───────────────────────────────────────────── -->
+  <div class="ag-panel" id="p-wasiat">
+    <div class="tools-wrap">
+      <div class="tools-title">Wasiat Generator</div>
+      <div class="tools-sub">Draft and manage Islamic wills (Wasiat) for Muslim clients in accordance with Faraid principles.</div>
+      <div class="tools-grid">
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">📜</div>
+          <div class="tool-name">Wasiat Generator <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Generate a compliant Wasiat document covering up to 1/3 of the estate for non-heirs, charitable bequests and specific asset disposals.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ag-panel" id="p-willgen">
+    <div class="tools-wrap">
+      <div class="tools-title">Will Generator (Non-Muslim)</div>
+      <div class="tools-sub">Draft a basic testamentary will for non-Muslim clients under Singapore civil law.</div>
+      <div class="tools-grid">
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">⚖️</div>
+          <div class="tool-name">Will Generator <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Step-by-step guided will drafting — executor appointment, asset distribution, guardian nomination for minors, and residual estate instructions.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ag-panel" id="p-memorandum">
+    <div class="tools-wrap">
+      <div class="tools-title">Memorandum of Wishes</div>
+      <div class="tools-sub">Capture the client's non-binding personal wishes for distribution of assets — used alongside a trust or will.</div>
+      <div class="tools-grid">
+        <div class="tool-card tool-card-soon">
+          <div class="tool-icon">📝</div>
+          <div class="tool-name">Memorandum of Wishes <span class="soon-badge">Coming Soon</span></div>
+          <div class="tool-desc">Document personal wishes for specific assets, digital accounts, family messages and funeral preferences — separate from the formal legal will.</div>
+          <div class="tool-arrow" style="color:rgba(255,255,255,0.2)">In development →</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div><!-- /app -->
 
@@ -2374,7 +2321,7 @@ function agentLogout() {
 // ─────────────────────────────────────────────
 // PORTAL TAB SWITCHING
 // ─────────────────────────────────────────────
-var ADMIN_ONLY_TABS = ['wasiat', 'will', 'memo'];
+var ADMIN_ONLY_TABS = ['wasiat', 'willgen', 'memorandum'];
 
 function switchAgentTab(tab, btn) {
   if (ADMIN_ONLY_TABS.indexOf(tab) !== -1 && !(CURRENT_MEMBER && CURRENT_MEMBER.isAdmin)) {
@@ -2388,10 +2335,19 @@ function switchAgentTab(tab, btn) {
   if (tab === 'rebalancer' && !document.getElementById('rb-holdings-body').children.length && fAllFunds.length) {
     rbAddRow(); rbAddRow();
   }
-  // Will Generator — load the iframe on first open
+  // Wasiat Generator — load the iframe on first open
+  if (tab === 'wasiat') {
+    const wf = document.getElementById('wasiat-frame');
+    if (!wf.src) wf.src = '/wasiat?embed=1';
+  }
   if (tab === 'will') {
     const vf = document.getElementById('will-frame');
-    if (vf && !vf.src) vf.src = '/will?embed=1';
+    if (!vf.src) vf.src = '/will?embed=1';
+  }
+  if (tab === 'memo') {
+    const mf = document.getElementById('memo-frame');
+    if (!mf.src) mf.src = '/memorandum?embed=1';
+    else { try { if (mf.contentWindow.onShown) mf.contentWindow.onShown(); } catch(e){} }
   }
   // scripts now lives inside elearning sub-tab — init on first reveal
   if ((tab === 'elearning') && !document.getElementById('scr-filters').dataset.built) {
@@ -6197,319 +6153,6 @@ function commCalc() {
 
 // Init education panel with one child block on load
 (function(){ if(document.getElementById('edu-children-container')) eduAddChild(); })();
-
-// ─────────────────────────────────────────────────────────────────────────────
-// WASIAT GENERATOR — save / edit / delete
-// ─────────────────────────────────────────────────────────────────────────────
-var wsEditId = null;
-var wsBenCounter = 0;
-
-function wsLoad() { try { return JSON.parse(localStorage.getItem('soul_wasiat') || '[]'); } catch(e){ return []; } }
-function wsPersist(arr) { try { localStorage.setItem('soul_wasiat', JSON.stringify(arr)); } catch(e){} }
-
-function wsAddBen() {
-  var uid = ++wsBenCounter;
-  var c = document.getElementById('ws-bens-container');
-  var row = document.createElement('div');
-  row.className = 'est-beneficiary-row';
-  row.id = 'ws-ben-' + uid;
-  row.innerHTML =
-    '<div class="al-field" style="flex:2"><label class="al-label">Name</label>' +
-    '<input class="al-input ws-ben-name" placeholder="e.g. Siti binte Ahmad"></div>' +
-    '<div class="al-field" style="flex:1.5"><label class="al-label">Relationship</label>' +
-    '<input class="al-input ws-ben-rel" placeholder="e.g. Daughter"></div>' +
-    '<div class="al-field" style="flex:1"><label class="al-label">Share / Amount</label>' +
-    '<input class="al-input ws-ben-share" placeholder="e.g. $5,000"></div>' +
-    '<button class="est-rem-ben" onclick="document.getElementById(\'ws-ben-' + uid + '\').remove()">×</button>';
-  c.appendChild(row);
-}
-
-function wsGetBens() {
-  var rows = document.querySelectorAll('#ws-bens-container .est-beneficiary-row');
-  var out = [];
-  rows.forEach(function(r) {
-    var n = r.querySelector('.ws-ben-name').value.trim();
-    var rel = r.querySelector('.ws-ben-rel').value.trim();
-    var s = r.querySelector('.ws-ben-share').value.trim();
-    if (n || rel || s) out.push({ name: n, rel: rel, share: s });
-  });
-  return out;
-}
-
-function wsClearForm() {
-  ['ws-name','ws-nric','ws-dob','ws-estate','ws-exec-name','ws-exec-rel','ws-notes'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.value = '';
-  });
-  document.getElementById('ws-bens-container').innerHTML = '';
-  wsEditId = null;
-  document.getElementById('ws-save-btn').textContent = 'Save Wasiat Record';
-  document.getElementById('ws-cancel-btn').style.display = 'none';
-}
-
-function wsCancelEdit() { wsClearForm(); }
-
-function wsSave() {
-  var name = document.getElementById('ws-name').value.trim();
-  if (!name) { alert('Client name is required.'); return; }
-  var record = {
-    id: wsEditId || ('ws_' + Date.now()),
-    savedAt: new Date().toISOString(),
-    name: name,
-    nric: document.getElementById('ws-nric').value.trim(),
-    dob: document.getElementById('ws-dob').value,
-    estate: document.getElementById('ws-estate').value,
-    execName: document.getElementById('ws-exec-name').value.trim(),
-    execRel: document.getElementById('ws-exec-rel').value.trim(),
-    beneficiaries: wsGetBens(),
-    notes: document.getElementById('ws-notes').value.trim()
-  };
-  var arr = wsLoad();
-  if (wsEditId) {
-    var idx = arr.findIndex(function(r){ return r.id === wsEditId; });
-    if (idx !== -1) arr[idx] = record; else arr.push(record);
-  } else {
-    arr.unshift(record);
-  }
-  wsPersist(arr);
-  wsClearForm();
-  wsRenderList();
-}
-
-function wsEdit(id) {
-  var arr = wsLoad();
-  var r = arr.find(function(x){ return x.id === id; });
-  if (!r) return;
-  wsEditId = id;
-  document.getElementById('ws-name').value = r.name || '';
-  document.getElementById('ws-nric').value = r.nric || '';
-  document.getElementById('ws-dob').value = r.dob || '';
-  document.getElementById('ws-estate').value = r.estate || '';
-  document.getElementById('ws-exec-name').value = r.execName || '';
-  document.getElementById('ws-exec-rel').value = r.execRel || '';
-  document.getElementById('ws-notes').value = r.notes || '';
-  document.getElementById('ws-bens-container').innerHTML = '';
-  (r.beneficiaries || []).forEach(function(b) {
-    wsAddBen();
-    var rows = document.querySelectorAll('#ws-bens-container .est-beneficiary-row');
-    var row = rows[rows.length - 1];
-    row.querySelector('.ws-ben-name').value = b.name || '';
-    row.querySelector('.ws-ben-rel').value = b.rel || '';
-    row.querySelector('.ws-ben-share').value = b.share || '';
-  });
-  document.getElementById('ws-save-btn').textContent = 'Update Record';
-  document.getElementById('ws-cancel-btn').style.display = '';
-  document.querySelector('#p-wasiat .sp-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function wsDelete(id) {
-  if (!confirm('Delete this Wasiat record? This cannot be undone.')) return;
-  var arr = wsLoad().filter(function(r){ return r.id !== id; });
-  wsPersist(arr);
-  wsRenderList();
-}
-
-function wsFmt(iso) {
-  try { return new Date(iso).toLocaleDateString('en-SG', { day:'2-digit', month:'short', year:'numeric' }); } catch(e){ return iso; }
-}
-
-function wsRenderList() {
-  var arr = wsLoad();
-  var el = document.getElementById('ws-record-list');
-  var ct = document.getElementById('ws-count');
-  if (!el) return;
-  ct.textContent = arr.length;
-  if (!arr.length) { el.innerHTML = '<div class="est-empty">No Wasiat records yet.<br>Fill in the form and click Save.</div>'; return; }
-  el.innerHTML = arr.map(function(r) {
-    var bens = (r.beneficiaries || []).length;
-    var meta = [];
-    if (r.nric) meta.push('NRIC: ' + r.nric);
-    if (r.execName) meta.push('Executor: ' + r.execName);
-    if (r.estate) meta.push('Estate: S$' + Number(r.estate).toLocaleString());
-    if (bens) meta.push(bens + ' beneficiar' + (bens === 1 ? 'y' : 'ies'));
-    return '<div class="est-record-card">' +
-      '<div class="est-record-header">' +
-        '<div><div class="est-record-name">' + r.name + '</div>' +
-        '<div class="est-record-date">Saved ' + wsFmt(r.savedAt) + '</div></div>' +
-        '<div class="est-record-actions">' +
-          '<button class="est-btn-edit" onclick="wsEdit(\'' + r.id + '\')">Edit</button>' +
-          '<button class="est-btn-del" onclick="wsDelete(\'' + r.id + '\')">Remove</button>' +
-        '</div>' +
-      '</div>' +
-      (meta.length ? '<div class="est-record-meta">' + meta.join(' · ') + '</div>' : '') +
-    '</div>';
-  }).join('');
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MEMORANDUM OF WISHES — save / edit / delete
-// ─────────────────────────────────────────────────────────────────────────────
-var moEditId = null;
-var moDigCounter = 0;
-var moItemCounter = 0;
-
-function moLoad() { try { return JSON.parse(localStorage.getItem('soul_memo') || '[]'); } catch(e){ return []; } }
-function moPersist(arr) { try { localStorage.setItem('soul_memo', JSON.stringify(arr)); } catch(e){} }
-
-function moAddDigital() {
-  var uid = ++moDigCounter;
-  var c = document.getElementById('mo-digital-container');
-  var row = document.createElement('div');
-  row.className = 'est-beneficiary-row';
-  row.id = 'mo-dig-' + uid;
-  row.innerHTML =
-    '<div class="al-field" style="flex:1.5"><label class="al-label">Platform / Account</label>' +
-    '<input class="al-input mo-dig-platform" placeholder="e.g. Gmail, Singpass"></div>' +
-    '<div class="al-field" style="flex:2"><label class="al-label">Access / Instructions</label>' +
-    '<input class="al-input mo-dig-access" placeholder="e.g. password in safe, contact IT dept"></div>' +
-    '<button class="est-rem-ben" onclick="document.getElementById(\'mo-dig-' + uid + '\').remove()">×</button>';
-  c.appendChild(row);
-}
-
-function moAddItem() {
-  var uid = ++moItemCounter;
-  var c = document.getElementById('mo-items-container');
-  var row = document.createElement('div');
-  row.className = 'est-beneficiary-row';
-  row.id = 'mo-item-' + uid;
-  row.innerHTML =
-    '<div class="al-field" style="flex:2"><label class="al-label">Item</label>' +
-    '<input class="al-input mo-item-desc" placeholder="e.g. Gold watch, Quran"></div>' +
-    '<div class="al-field" style="flex:1.5"><label class="al-label">Intended Recipient</label>' +
-    '<input class="al-input mo-item-recip" placeholder="e.g. Eldest son"></div>' +
-    '<button class="est-rem-ben" onclick="document.getElementById(\'mo-item-' + uid + '\').remove()">×</button>';
-  c.appendChild(row);
-}
-
-function moGetDigital() {
-  var rows = document.querySelectorAll('#mo-digital-container .est-beneficiary-row');
-  var out = [];
-  rows.forEach(function(r) {
-    var p = r.querySelector('.mo-dig-platform').value.trim();
-    var a = r.querySelector('.mo-dig-access').value.trim();
-    if (p || a) out.push({ platform: p, access: a });
-  });
-  return out;
-}
-
-function moGetItems() {
-  var rows = document.querySelectorAll('#mo-items-container .est-beneficiary-row');
-  var out = [];
-  rows.forEach(function(r) {
-    var d = r.querySelector('.mo-item-desc').value.trim();
-    var rec = r.querySelector('.mo-item-recip').value.trim();
-    if (d || rec) out.push({ desc: d, recipient: rec });
-  });
-  return out;
-}
-
-function moClearForm() {
-  ['mo-name','mo-nric','mo-date','mo-message','mo-funeral','mo-other'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.value = '';
-  });
-  document.getElementById('mo-digital-container').innerHTML = '';
-  document.getElementById('mo-items-container').innerHTML = '';
-  moEditId = null;
-  document.getElementById('mo-save-btn').textContent = 'Save Memorandum Record';
-  document.getElementById('mo-cancel-btn').style.display = 'none';
-}
-
-function moCancelEdit() { moClearForm(); }
-
-function moSave() {
-  var name = document.getElementById('mo-name').value.trim();
-  if (!name) { alert('Client name is required.'); return; }
-  var record = {
-    id: moEditId || ('mo_' + Date.now()),
-    savedAt: new Date().toISOString(),
-    name: name,
-    nric: document.getElementById('mo-nric').value.trim(),
-    date: document.getElementById('mo-date').value,
-    message: document.getElementById('mo-message').value.trim(),
-    digitalAssets: moGetDigital(),
-    items: moGetItems(),
-    funeral: document.getElementById('mo-funeral').value.trim(),
-    other: document.getElementById('mo-other').value.trim()
-  };
-  var arr = moLoad();
-  if (moEditId) {
-    var idx = arr.findIndex(function(r){ return r.id === moEditId; });
-    if (idx !== -1) arr[idx] = record; else arr.push(record);
-  } else {
-    arr.unshift(record);
-  }
-  moPersist(arr);
-  moClearForm();
-  moRenderList();
-}
-
-function moEdit(id) {
-  var arr = moLoad();
-  var r = arr.find(function(x){ return x.id === id; });
-  if (!r) return;
-  moEditId = id;
-  document.getElementById('mo-name').value = r.name || '';
-  document.getElementById('mo-nric').value = r.nric || '';
-  document.getElementById('mo-date').value = r.date || '';
-  document.getElementById('mo-message').value = r.message || '';
-  document.getElementById('mo-funeral').value = r.funeral || '';
-  document.getElementById('mo-other').value = r.other || '';
-  document.getElementById('mo-digital-container').innerHTML = '';
-  (r.digitalAssets || []).forEach(function(d) {
-    moAddDigital();
-    var rows = document.querySelectorAll('#mo-digital-container .est-beneficiary-row');
-    var row = rows[rows.length - 1];
-    row.querySelector('.mo-dig-platform').value = d.platform || '';
-    row.querySelector('.mo-dig-access').value = d.access || '';
-  });
-  document.getElementById('mo-items-container').innerHTML = '';
-  (r.items || []).forEach(function(it) {
-    moAddItem();
-    var rows = document.querySelectorAll('#mo-items-container .est-beneficiary-row');
-    var row = rows[rows.length - 1];
-    row.querySelector('.mo-item-desc').value = it.desc || '';
-    row.querySelector('.mo-item-recip').value = it.recipient || '';
-  });
-  document.getElementById('mo-save-btn').textContent = 'Update Record';
-  document.getElementById('mo-cancel-btn').style.display = '';
-  document.querySelector('#p-memo .sp-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function moDelete(id) {
-  if (!confirm('Delete this Memorandum record? This cannot be undone.')) return;
-  var arr = moLoad().filter(function(r){ return r.id !== id; });
-  moPersist(arr);
-  moRenderList();
-}
-
-function moRenderList() {
-  var arr = moLoad();
-  var el = document.getElementById('mo-record-list');
-  var ct = document.getElementById('mo-count');
-  if (!el) return;
-  ct.textContent = arr.length;
-  if (!arr.length) { el.innerHTML = '<div class="est-empty">No Memorandum records yet.<br>Fill in the form and click Save.</div>'; return; }
-  el.innerHTML = arr.map(function(r) {
-    var meta = [];
-    if (r.nric) meta.push('NRIC: ' + r.nric);
-    if ((r.digitalAssets||[]).length) meta.push((r.digitalAssets.length) + ' digital asset' + (r.digitalAssets.length > 1 ? 's' : ''));
-    if ((r.items||[]).length) meta.push((r.items.length) + ' specific item' + (r.items.length > 1 ? 's' : ''));
-    if (r.funeral) meta.push('Funeral wishes recorded');
-    return '<div class="est-record-card">' +
-      '<div class="est-record-header">' +
-        '<div><div class="est-record-name">' + r.name + '</div>' +
-        '<div class="est-record-date">Saved ' + wsFmt(r.savedAt) + '</div></div>' +
-        '<div class="est-record-actions">' +
-          '<button class="est-btn-edit" onclick="moEdit(\'' + r.id + '\')">Edit</button>' +
-          '<button class="est-btn-del" onclick="moDelete(\'' + r.id + '\')">Remove</button>' +
-        '</div>' +
-      '</div>' +
-      (meta.length ? '<div class="est-record-meta">' + meta.join(' · ') + '</div>' : '') +
-    '</div>';
-  }).join('');
-}
-
-// Init both lists on page load
-(function(){ wsRenderList(); moRenderList(); })();
 
 </script>
 </body>
