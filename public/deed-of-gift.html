@@ -116,6 +116,7 @@ textarea{min-height:72px;resize:vertical}
   <p>Fill in each step. The deed updates live on the right as you type.</p></div>
   <div class="sp"></div>
   <p>🔒 Details stay in this browser.</p>
+  <button onclick="loadSample()" style="padding:6px 14px;font-size:13px;font-weight:600;background:var(--gold);color:#0D1117;border:none;border-radius:8px;cursor:pointer;flex-shrink:0">Load Sample →</button>
   <a class="back" href="/agents">← Agent Hub</a>
 </header>
 
@@ -869,6 +870,69 @@ async function downloadPdf(){
 function saveDraft(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=CONFIG.fileName+'_draft.json';a.click();}
 function loadDraft(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{S=Object.assign(DEFAULT(),JSON.parse(e.target.result));fillForm();update();}catch(e){alert('Invalid draft file.');}};r.readAsText(f);}
 function resetAll(){S=DEFAULT();fillForm();update();}
+
+/* ─── SAMPLE DATA ─── */
+function loadSample(){
+  S = {
+    donor: {
+      name: 'Ahmad bin Abdullah',
+      idType: 'NRIC',
+      nric: 'S6012345A',
+      age: '62',
+      occupation: 'Businessman',
+      nationality: 'Singaporean',
+      address: '123 Bukit Timah Road, #04-05, Singapore 269720',
+    },
+    donee: {
+      name: 'Nurul Izzah binte Ahmad',
+      idType: 'NRIC',
+      nric: 'T9012345B',
+      age: '32',
+      relationship: 'Daughter',
+      nationality: 'Singaporean',
+      address: '456 Clementi Avenue 2, #10-88, Singapore 120456',
+      isMinor: false,
+      guardianName: '',
+      guardianNric: '',
+      guardianRel: '',
+      ownsProperty: false,
+    },
+    gift: {
+      type: 'hdb',
+      date: '2025-11-01',
+      conditional: 'no',
+      conditions: '',
+      stampAck: true,
+      propAddress: 'Block 456 Ang Mo Kio Avenue 3, #08-123, Singapore 560456',
+      propLot: 'Lot 1234A Mukim 18',
+      propShare: '100%',
+      propValue: '420,000',
+      hdbApproval: true,
+      cpfFunded: true,
+      cpfFundedPriv: false,
+      hasMortgage: false,
+      mortgagee: '',
+      cashAmount: '', cashWords: '', cashMethod: 'Bank transfer', cashBank: '',
+      sharesCompany: '', sharesUEN: '', sharesClass: '', sharesNum: '', sharesCerts: '', sharesValue: '',
+      vehicleReg: '', vehicleModel: '', vehicleYear: '', vehicleValue: '',
+      physicalDesc: '', physicalValue: '', physicalDelivery: 'Physical delivery on date of this Deed',
+    },
+    witnesses: [
+      { name: 'Tan Ah Kow', nric: 'S7012345C', address: '789 Yishun Ring Road, #02-34, Singapore 760789' },
+      { name: 'Lim Bee Hoon', nric: 'S8012345D', address: '321 Bedok North Street 1, #05-67, Singapore 460321' },
+    ],
+    extra: 'Sample / guide document — not for execution. Replace all highlighted fields with actual client details before signing.',
+  };
+  fillForm();
+  go(0);
+  update();
+  // Show a brief banner
+  const banner = document.createElement('div');
+  banner.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#1d6b45;color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25)';
+  banner.textContent='✓ Sample loaded — scroll right to see the deed preview';
+  document.body.appendChild(banner);
+  setTimeout(()=>banner.remove(), 3500);
+}
 
 /* ─── INIT ─── */
 try{const saved=sessionStorage.getItem('soul_deed');if(saved){const p=JSON.parse(saved);S=Object.assign(DEFAULT(),p);}}catch(e){}
