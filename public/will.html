@@ -119,6 +119,7 @@ textarea{min-height:80px;resize:vertical}
   <div><h1><span style="color:var(--gold)">SOUL</span> Advisors · Will Generator</h1><p>Fill in each step. Your will updates on the right as you type.</p></div>
   <div class="sp"></div>
   <p>🔒 Details stay in this browser. Nothing is uploaded.</p><a class="back" href="/agents">← Agent Hub</a>
+  <button onclick="loadSample()" style="padding:6px 14px;font-size:13px;font-weight:600;background:var(--gold);color:#0D1117;border:none;border-radius:8px;cursor:pointer;flex-shrink:0">Load Sample →</button>
 </header>
 
 <div class="wrap">
@@ -1001,6 +1002,39 @@ function loadDraft(input){
 }
 function confirmReset(){ return window.confirm('Clear all fields? Unsaved details will be lost.'); }
 function resetAll(){ S = DEFAULT(); fillForm(); update(); go(0); }
+
+function loadSample(){
+  S = DEFAULT();
+  S.t = { name:'David Lim Wei Ming', idType:'NRIC', nric:'S6078901E', address:'78 Holland Road #03-12 Singapore 278997', gender:'M', citizen:'Singaporean', adult:true, english:'yes', lang:'Mandarin', sign:'sign' };
+  S.marital = 'married';
+  S.spouse = { name:'Susan Tan Bee Ling', nric:'S6289012F' };
+  S.fiance = { name:'', nric:'' };
+  S.children = [
+    { name:'Jason Lim Wei Jie', nric:'S9001234G', dob:'1990-03-08', alive:true, special:false },
+    { name:'Emma Lim Wei Ling', nric:'T0012345H', dob:'2003-07-19', alive:true, special:false }
+  ];
+  S.executors = [{ name:'Susan Tan Bee Ling', nric:'S6289012F', address:'78 Holland Road #03-12 Singapore 278997', rel:'Wife' }];
+  S.guardian = { name:'Susan Tan Bee Ling', nric:'S6289012F', address:'78 Holland Road #03-12 Singapore 278997', rel:'Mother' };
+  S.guardian2 = { name:'Michael Lim Wei Kang', nric:'S6389012J', address:'15 Coronation Road Singapore 269233', rel:'Brother' };
+  S.gifts = [{ desc:'Rolex Submariner watch (Ref. 116610LN)', to:'Jason Lim Wei Jie', nric:'S9001234G', rel:'Son' }];
+  S.resMode = 'family';
+  S.residue = [{ name:'Susan Tan Bee Ling', nric:'S6289012F', rel:'Wife', share:'1' }];
+  S.resSub = 'issue'; S.ultimate = ''; S.trustAge = '21'; S.survive = '30';
+  S.cpfNom = 'yes'; S.insNom = 'yes'; S.jointAcc = 'no'; S.jointProp = 'no';
+  S.assets = [
+    { desc:'78 Holland Road #03-12 Singapore 278997 (private property)', type:'property' },
+    { desc:'DBS Treasures account ending 8821', type:'bank' },
+    { desc:'Prudential PRUlife Premier policy no. 12345678', type:'insurance' }
+  ];
+  S.funeral = 'cremation'; S.ashes = 'Scatter at sea (Changi Point ferry terminal)'; S.rites = 'Buddhist'; S.extra = 'I wish for my family to remember me with joy, not sorrow.';
+  S.witnesses = [{ name:'Ahmad bin Abdullah', nric:'S6012345A' }, { name:'Tan Ah Kow', nric:'S7012345C' }];
+  fillForm(); go(0); update();
+  const t = document.createElement('div');
+  t.textContent = 'Sample loaded — review and customise before use.';
+  Object.assign(t.style, { position:'fixed', bottom:'24px', left:'50%', transform:'translateX(-50%)', background:'#2a2a2a', color:'#fff', padding:'10px 20px', borderRadius:'8px', fontSize:'13px', zIndex:9999, opacity:'1', transition:'opacity 0.5s' });
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 3000);
+}
 
 function openMemo(){ try{ const P=window.parent; if(P!==window && P.switchAgentTab){ const b=[...P.document.querySelectorAll('.ag-navitem')].find(x=>x.textContent.includes('Memorandum')); if(b){ P.switchAgentTab('memo',b); return false; } } }catch(e){} return true; }
 /* ================= INIT ================= */
