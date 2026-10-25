@@ -940,16 +940,20 @@ function loadSample(){
   S.marital = 'married';
   S.spouse = { name:'Zainab binte Ismail', nric:'S6543210B' };
   S.children = [
-    { name:'Muhammad Aqil bin Ahmad', nric:'S8901234C', dob:'1989-05-15', alive:true, special:false },
-    { name:'Nurul Izzah binte Ahmad', nric:'T9012345B', dob:'1990-11-22', alive:true, special:false }
+    { name:'Muhammad Aqil bin Ahmad', nric:'S8901234C', minor:false },
+    { name:'Nurul Izzah binte Ahmad', nric:'T9012345B', minor:false }
   ];
-  S.executors = [{ name:'Nurul Izzah binte Ahmad', nric:'T9012345B', address:'Block 45 Clementi Ave 3 #08-12 Singapore 120045', rel:'Daughter' }];
-  S.guardian = { name:'Zainab binte Ismail', nric:'S6543210B', address:'62 Bukit Timah Road #04-05 Singapore 269720', rel:'Mother' };
+  S.executors = [{ name:'Nurul Izzah binte Ahmad', nric:'T9012345B', rel:'Daughter' }];
+  S.guardian = { name:'Zainab binte Ismail', nric:'S6543210B', rel:'Mother' };
   S.hasW = true;
-  S.wasiyyah = [{ to:'Masjid Al-Falah', purpose:'Sadaqah and general mosque fund', pct:10 }];
+  S.wasiyyah = [{ name:'Masjid Al-Falah', id:'', kind:'pct', value:'10', purpose:'Sadaqah and general mosque fund', heir:false }];
   S.cpfNom = 'yes'; S.insNom = 'yes'; S.jointAcc = 'no'; S.jaHibah = true;
   S.jointProp = 'yes'; S.jtHibah = true;
-  S.assets = [{ desc:'HDB flat at 62 Bukit Timah Road #04-05, Singapore 269720', type:'property' }];
+  S.assets = [
+    { type:'HDB flat', desc:'62 Bukit Timah Road #04-05 Singapore 269720', hold:'Sole name', withWhom:'' },
+    { type:'Bank account', desc:'DBS Savings account ending 8821', hold:'Sole name', withWhom:'' },
+    { type:'Insurance policy', desc:'Prudential PRUlife Premier, policy no. 12345678', hold:'Nominated', withWhom:'' }
+  ];
   S.funeral = true; S.hajj = 'done'; S.nasihat = true;
   S.extra = 'I wish for my children to remain united and to care for their mother. May Allah bless this family.';
   S.witnesses = [{ name:'Tan Ah Kow', nric:'S7012345C' }, { name:'Lim Bee Hoon', nric:'S8012345D' }];

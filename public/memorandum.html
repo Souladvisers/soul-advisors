@@ -691,38 +691,34 @@ function loadSample(){
   S.willDate = '2025-10-01';
   S.willAt = "M/s Al-Barakah Law LLC, 80 Raffles Place #12-01, Singapore 048624";
   S.executors = [{ name:'Nurul Izzah binte Ahmad', rel:'Daughter', phone:'+65 9123 4567' }];
-  S.spouse = 'Zainab binte Ismail (S6543210B)';
-  S.family = [
-    { name:'Zainab binte Ismail', rel:'Wife', nric:'S6543210B', note:'' },
-    { name:'Muhammad Aqil bin Ahmad', rel:'Son', nric:'S8901234C', note:'' },
-    { name:'Nurul Izzah binte Ahmad', rel:'Daughter', nric:'T9012345B', note:'' }
-  ];
+  S.spouse = 'Zainab binte Ismail';
+  S.family = ['Zainab binte Ismail', 'Muhammad Aqil bin Ahmad', 'Nurul Izzah binte Ahmad'];
   S.care = { spouseHome:true, dependants:'Zainab requires monthly medication for hypertension. Budget approx. SGD 200/month.', upbringing:'Raise children with Islamic values; enrol in weekly Quran classes at the nearest mosque.', age:'21', trust:'Nurul Izzah binte Ahmad', guardian:'Nurul Izzah binte Ahmad' };
   S.hopes = { general:'I hope my children remain united, perform Quran khatam for me, and give to charity in my name.', business:'' };
   S.support = [
-    { name:'Masjid Al-Falah', amount:'200', freq:'monthly', note:'Sadaqah jariah' }
+    { who:'Masjid Al-Falah', how:'Monthly donation of SGD 200 as sadaqah jariah' }
   ];
   S.items = [
-    { desc:"Father's Quran (green cover, purchased in Madinah 1995)", to:'Muhammad Aqil bin Ahmad', note:'Please recite from it on Fridays.' },
-    { desc:'Gold prayer beads (tasbih)', to:'Zainab binte Ismail', note:'' }
+    { item:"Father's Quran (green cover, purchased in Madinah 1995)", to:'Muhammad Aqil bin Ahmad', reason:'Please recite from it on Fridays.' },
+    { item:'Gold prayer beads (tasbih)', to:'Zainab binte Ismail', reason:'' }
   ];
   S.fun = { mosque:'Masjid Al-Falah, 50 Jurong West Street 24', burial:'Pusara Aman Cemetery, Choa Chu Kang', ghusl:'To be performed by Masjid Al-Falah volunteers', imam:'Ustaz Abdullah from Masjid Al-Falah', khairat:'PKMS Khairat Kematian membership no. 2345', tahlil:'3 nights tahlil at the family home', ibadah:'Please perform Fidyah for missed fasts (approx. 30 days)', jariah:'Donate SGD 1,000 to Masjid Al-Falah building fund', other:'' };
   S.docs = { where:'Fireproof safe in master bedroom — combination shared with Nurul Izzah', access:'Nurul Izzah has spare key' };
   S.accounts = [
-    { bank:'DBS Bank', type:'Savings', num:'***-8821', note:'Main account; GIRO for utilities' },
-    { bank:'CPF Board', type:'CPF (OA/SA/MA)', num:'S6012345A', note:'Nomination made to Zainab binte Ismail' },
-    { bank:'Prudential Singapore', type:'Life Insurance', num:'Policy 12345678', note:'Nomination made to Zainab binte Ismail' }
+    { inst:'DBS Bank', type:'Bank account', last4:'8821', note:'Main account; GIRO for utilities' },
+    { inst:'CPF Board', type:'CPF (OA/SA/MA/RA)', last4:'', note:'Nomination made to Zainab binte Ismail' },
+    { inst:'Prudential Singapore', type:'Insurance policy', last4:'5678', note:'Nomination made to Zainab binte Ismail' }
   ];
   S.digital = [
-    { platform:'Email (Gmail)', id:'ahmad.abdullah62@gmail.com', note:'Password in green notebook, top drawer' },
-    { platform:'Facebook', id:'AhmadAbdullah62', note:'Please deactivate after 40 days' }
+    { svc:'Gmail (ahmad.abdullah62@gmail.com)', wish:'Close the account' },
+    { svc:'Facebook (AhmadAbdullah62)', wish:'Memorialise the account' }
   ];
   S.contacts = [
-    { name:'Ustaz Abdullah', role:'Imam / religious advisor', phone:'+65 9234 5678' },
-    { name:'Mr Rajan Krishnan', role:'Family lawyer', phone:'+65 6789 0123' }
+    { role:'Imam / religious advisor', name:'Ustaz Abdullah', contact:'+65 9234 5678' },
+    { role:'Family lawyer', name:'Mr Rajan Krishnan', contact:'+65 6789 0123' }
   ];
-  S.owe = [{ to:'OCBC Bank', amount:'15000', note:'Car loan — monthly GIRO from DBS account' }];
-  S.owed = [{ by:'Muhammad Aqil bin Ahmad', amount:'5000', note:'Personal loan given in January 2024 — please forgive this debt' }];
+  S.owe = [{ who:'OCBC Bank', amt:'15000', note:'Car loan — monthly GIRO from DBS account' }];
+  S.owed = [{ who:'Muhammad Aqil bin Ahmad', amt:'5000', note:'Personal loan given January 2024 — please forgive this debt' }];
   S.message = "Bismillahirrahmanirrahim.\n\nMy dearest Zainab, Aqil and Izzah,\n\nIf you are reading this, know that I have left with peace in my heart. My greatest wish is for you to remain close to Allah, to support one another, and to live with integrity.\n\nTo my wife Zainab: you have been my greatest blessing. Please take care of your health.\n\nTo Aqil and Izzah: be kind to your mother, be good to each other, and never forget your prayers.\n\nI love you all. Until we meet again in Jannah.\n\nYour husband and father,\nAhmad bin Abdullah";
   fillForm(); go(0); update(); applyMode();
   const t = document.createElement('div');
