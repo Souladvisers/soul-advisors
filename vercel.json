@@ -36,6 +36,7 @@
     { "source": "/wasiat",         "destination": "/wasiat.html" },
     { "source": "/memorandum",     "destination": "/memorandum.html" },
     { "source": "/will",           "destination": "/will.html" },
+    { "source": "/deed-of-gift",   "destination": "/deed-of-gift.html" },
     { "source": "/(.*)",           "destination": "/index.html" }
   ]
 }

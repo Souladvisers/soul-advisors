@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deed of Gift — SOUL Advisors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:wght@500;600&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --ink:#1d1a16;--muted:#6b645a;--line:#e6e0d4;--bg:#FAF8F3;--card:#ffffff;
+  --brand:#0D1117;--brand-2:#8A6E3A;--gold:#B8975A;
+  --warn-bg:#fff6e5;--warn:#8a5a00;--err-bg:#fdecec;--err:#9b1c1c;
+  --ok-bg:#e9f5ef;--ok:#1d6b45;--ph:#fff1b8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.5}
+header.top{background:var(--brand);border-bottom:1px solid rgba(184,151,90,.25);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header.top .mark{width:34px;height:34px;border-radius:8px;background:var(--gold);display:grid;place-items:center;font-weight:700;color:var(--brand)}
+header.top h1{font-size:18px;margin:0;font-weight:600;font-family:Lora,serif}
+header.top a.back{color:var(--gold);text-decoration:none;font-size:13px;border:1px solid rgba(184,151,90,.4);border-radius:8px;padding:6px 10px}
+body.embed header.top{display:none}
+header.top p{margin:0;opacity:.8;font-size:13px}
+header.top .sp{flex:1}
+.wrap{display:grid;grid-template-columns:minmax(360px,520px) 1fr;gap:24px;max-width:1440px;margin:0 auto;padding:24px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.steps button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:500 13px 'DM Sans',sans-serif;color:var(--muted);cursor:pointer}
+.steps button.on{background:var(--brand);border-color:var(--brand);color:var(--gold)}
+.steps button.done{border-color:var(--brand-2);color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h2{font-family:Lora,serif;margin:0 0 4px;font-size:20px}
+.card .lead{margin:0 0 18px;color:var(--muted);font-size:14px}
+.step{display:none}.step.on{display:block}
+label{display:block;font-weight:500;font-size:13px;margin:12px 0 4px}
+.hint{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],input[type=number],input[type=date],select,textarea{
+  width:100%;padding:9px 11px;border:1px solid #cfd5d1;border-radius:8px;
+  font:14px 'DM Sans',sans-serif;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #E8D5A3;border-color:var(--brand-2)}
+textarea{min-height:72px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.seg{display:flex;border:1px solid #cfd5d1;border-radius:8px;overflow:hidden}
+.seg label{flex:1;margin:0;text-align:center;padding:8px 6px;cursor:pointer;font-weight:500;border-right:1px solid #cfd5d1;font-size:13px}
+.seg label:last-child{border-right:0}
+.seg input{display:none}
+.seg label:has(input:checked){background:var(--brand);color:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-weight:400;font-size:14px;cursor:pointer}
+.check input{margin-top:3px;accent-color:var(--brand);width:16px;height:16px;flex:none}
+.item{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;background:#fafbfa}
+.item .ttl{font-weight:600;font-size:13px;color:var(--brand);margin-bottom:6px}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px}
+.btn{border:0;border-radius:9px;padding:10px 18px;font:600 14px 'DM Sans',sans-serif;cursor:pointer}
+.btn.pri{background:var(--brand);color:#E8D5A3}.btn.pri:hover{background:#1E2530}
+.btn.sec{background:#fff;border:1px solid #cfd5d1;color:var(--ink)}
+.btn.gold{background:var(--gold);color:#fff}
+.note{border-radius:10px;padding:10px 12px;font-size:13px;margin:10px 0}
+.note.warn{background:var(--warn-bg);color:var(--warn)}
+.note.err{background:var(--err-bg);color:var(--err)}
+.note.ok{background:var(--ok-bg);color:var(--ok)}
+.note.info{background:#eef4f8;color:#234e6b}
+.hidden{display:none!important}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sect-hd{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--brand-2);font-weight:600;margin:20px 0 4px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+/* preview */
+.pv{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;border-radius:14px;background:#d9d6cd;padding:22px}
+.pvbar{display:flex;justify-content:space-between;align-items:center;margin:-6px 0 14px;font-size:12px;color:#4b524e}
+.paper{background:#fff;max-width:794px;margin:0 auto 18px;padding:72px 80px;font-family:Tinos,'Times New Roman',serif;font-size:15px;line-height:1.6;color:#000;box-shadow:0 2px 10px rgba(0,0,0,.12);text-align:justify}
+.paper .cov{min-height:900px;display:flex;flex-direction:column}
+.paper .rule{border-bottom:2px dotted #000;margin:18px 0}
+.paper .ctr{text-align:center}
+.paper .big{font-size:22px;font-weight:700}
+.paper .logo{color:#888;font-size:12px;text-align:center;margin-top:auto}
+.paper h3{font-size:15px;margin:20px 0 6px;display:flex;gap:0}
+.paper h3 .n{width:48px;flex:none}
+.paper h3 .t{text-decoration:underline;text-transform:uppercase}
+.paper .c{display:flex;margin:0 0 8px}
+.paper .c .n{width:48px;flex:none}
+.paper .s{display:flex;margin:0 0 6px 48px}
+.paper .s .n{width:40px;flex:none}
+.paper p{margin:0 0 10px}
+.paper mark{background:var(--ph);padding:0 2px}
+.paper table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+.paper td,.paper th{border:1px solid #000;padding:5px 8px;vertical-align:top}
+.paper th{background:#eee;font-weight:700}
+.paper .pb{border-top:1px dashed #bbb;margin:34px -80px;position:relative}
+.paper .pb::after{content:'page break';position:absolute;right:12px;top:-9px;background:#fff;color:#aaa;font:11px 'DM Sans',sans-serif;padding:0 6px}
+.mtoggle{display:none}
+@media (max-width:960px){
+  .wrap{grid-template-columns:1fr;padding:16px}
+  .pv{position:static;max-height:none;padding:12px}
+  .paper{padding:36px 22px;font-size:14px}
+  .paper .pb{margin:30px -22px}
+  .paper .cov{min-height:auto}
+  .mtoggle{display:flex;gap:8px;margin-bottom:12px}
+  .mtoggle button{flex:1}
+  body.m-form .pv{display:none}
+  body.m-prev .formcol .steps,body.m-prev .formcol .card{display:none}
+  .row,.row3{grid-template-columns:1fr}
+}
+@media print{
+  header.top,.formcol,.pvbar,.mtoggle{display:none!important}
+  body{background:#fff}.wrap{display:block;padding:0}.pv{position:static;max-height:none;overflow:visible;background:#fff;padding:0}
+  .paper{box-shadow:none;padding:0;margin:0;max-width:none}
+  .paper .pb{border:0;margin:0;page-break-after:always}.paper .pb::after{display:none}
+  .paper mark{background:none}
+}
+</style>
+</head>
+<body class="m-form">
+<header class="top">
+  <div class="mark">S</div>
+  <div><h1><span style="color:var(--gold)">SOUL</span> Advisors · Deed of Gift During Lifetime</h1>
+  <p>Fill in each step. The deed updates live on the right as you type.</p></div>
+  <div class="sp"></div>
+  <p>🔒 Details stay in this browser.</p>
+  <a class="back" href="/agents">← Agent Hub</a>
+</header>
+
+<div class="wrap">
+<div class="formcol">
+  <div class="mtoggle">
+    <button class="btn pri" id="mvForm" onclick="mview('form')">Form</button>
+    <button class="btn sec" id="mvPrev" onclick="mview('prev')">Preview deed</button>
+  </div>
+  <div class="steps" id="steps"></div>
+  <div class="card">
+
+  <!-- ─── STEP 1: DONOR ─── -->
+  <section class="step" data-title="Donor">
+    <h2>Donor (Giver)</h2>
+    <p class="lead">The person transferring the asset. Must be at least 21 years old and of full mental capacity.</p>
+    <label>Full name <span class="hint">(as per NRIC / passport)</span></label>
+    <input type="text" data-k="donor.name" placeholder="e.g. Ahmad bin Abdullah">
+    <div class="row">
+      <div><label>ID type</label>
+        <select data-k="donor.idType"><option>NRIC</option><option>FIN</option><option>Passport</option></select></div>
+      <div><label>ID number</label>
+        <input type="text" data-k="donor.nric" placeholder="e.g. S1234567A"></div>
+    </div>
+    <label>Age</label>
+    <input type="number" data-k="donor.age" min="21" placeholder="e.g. 55">
+    <label>Occupation</label>
+    <input type="text" data-k="donor.occupation" placeholder="e.g. Businessman">
+    <label>Nationality</label>
+    <select data-k="donor.nationality">
+      <option>Singaporean</option><option>Singapore Permanent Resident</option>
+      <option>Malaysian</option><option>Other</option>
+    </select>
+    <label>Residential address</label>
+    <input type="text" data-k="donor.address" placeholder="Block/street, #unit, Singapore postal code">
+    <div class="note info">The donor must be acting <b>freely and voluntarily</b>. If there is any doubt about undue influence, the deed should be executed before an independent solicitor.</div>
+  </section>
+
+  <!-- ─── STEP 2: DONEE ─── -->
+  <section class="step" data-title="Donee">
+    <h2>Donee (Recipient)</h2>
+    <p class="lead">The person receiving the gift.</p>
+    <label>Full name <span class="hint">(as per NRIC / passport)</span></label>
+    <input type="text" data-k="donee.name" placeholder="e.g. Siti binte Ahmad">
+    <div class="row">
+      <div><label>ID type</label>
+        <select data-k="donee.idType"><option>NRIC</option><option>FIN</option><option>Passport</option><option>Birth Certificate</option></select></div>
+      <div><label>ID number</label>
+        <input type="text" data-k="donee.nric" placeholder="e.g. T0123456B"></div>
+    </div>
+    <label>Age</label>
+    <input type="number" data-k="donee.age" min="0" placeholder="e.g. 30">
+    <label>Relationship to Donor</label>
+    <select data-k="donee.relationship">
+      <option value="">— Select —</option>
+      <option>Spouse</option><option>Son</option><option>Daughter</option>
+      <option>Father</option><option>Mother</option><option>Brother</option>
+      <option>Sister</option><option>Grandson</option><option>Granddaughter</option>
+      <option>Other</option>
+    </select>
+    <label>Nationality</label>
+    <select data-k="donee.nationality">
+      <option>Singaporean</option><option>Singapore Permanent Resident</option>
+      <option>Malaysian</option><option>Other</option>
+    </select>
+    <label>Residential address</label>
+    <input type="text" data-k="donee.address" placeholder="Block/street, #unit, Singapore postal code">
+
+    <label class="check"><input type="checkbox" data-k="donee.isMinor"> Donee is below 21 years old (minor)</label>
+    <div data-show="donee.isMinor=true">
+      <div class="note warn">A minor cannot hold property directly. A parent or guardian must accept and hold the gift on trust until the donee turns 21.</div>
+      <div class="sect-hd">Guardian details</div>
+      <label>Guardian's full name</label>
+      <input type="text" data-k="donee.guardianName" placeholder="Full name">
+      <div class="row">
+        <div><label>Guardian's NRIC</label><input type="text" data-k="donee.guardianNric" placeholder="e.g. S7654321C"></div>
+        <div><label>Guardian's relationship to donee</label><input type="text" data-k="donee.guardianRel" placeholder="e.g. Father"></div>
+      </div>
+    </div>
+
+    <label class="check"><input type="checkbox" data-k="donee.ownsProperty"> Donee already owns a residential property in Singapore</label>
+    <div data-show="donee.ownsProperty=true" class="note warn"><b>ABSD alert:</b> A Singapore Citizen who already owns one residential property pays 20% ABSD on a second. A PR pays 30%. Please verify with a tax adviser.</div>
+  </section>
+
+  <!-- ─── STEP 3: GIFT ─── -->
+  <section class="step" data-title="The Gift">
+    <h2>The Gift</h2>
+    <p class="lead">Select the asset type — relevant fields and clauses will appear automatically.</p>
+
+    <label>Type of asset</label>
+    <select data-k="gift.type">
+      <option value="">— Select asset type —</option>
+      <option value="hdb">HDB Flat</option>
+      <option value="private">Private Residential Property</option>
+      <option value="commercial">Commercial Property</option>
+      <option value="cash">Cash / Monies</option>
+      <option value="shares">Shares / Securities</option>
+      <option value="funds">Unit Trusts / Funds</option>
+      <option value="vehicle">Motor Vehicle</option>
+      <option value="jewellery">Gold / Jewellery / Valuables</option>
+      <option value="business">Business Interest</option>
+      <option value="other">Other Personal Property</option>
+    </select>
+
+    <!-- PROPERTY (HDB + Private + Commercial) -->
+    <div data-show-group="property">
+      <div class="sect-hd">Property details</div>
+      <label>Full property address</label>
+      <input type="text" data-k="gift.propAddress" placeholder="e.g. 123 Ang Mo Kio Avenue 3, #05-678, Singapore 560123">
+      <div class="row">
+        <div><label>Lot / Strata Title No.</label><input type="text" data-k="gift.propLot" placeholder="e.g. Lot 1234A MK18"></div>
+        <div><label>Donor's share fraction</label><input type="text" data-k="gift.propShare" placeholder="e.g. 100% or 1/2 share"></div>
+      </div>
+      <label>Estimated market value (SGD)</label>
+      <input type="text" data-k="gift.propValue" placeholder="e.g. 800,000">
+
+      <!-- HDB-specific -->
+      <div data-show="gift.type=hdb">
+        <div class="note warn"><b>HDB:</b> HDB's prior written approval is required <b>before</b> this deed takes effect. Both parties must satisfy HDB's eligibility criteria. A mortgaged HDB flat <b>cannot</b> be gifted — it must be sold instead.</div>
+        <label class="check"><input type="checkbox" data-k="gift.hdbApproval"> HDB approval has been obtained (or will be obtained as a condition precedent)</label>
+        <label class="check"><input type="checkbox" data-k="gift.cpfFunded"> Property was purchased using CPF funds</label>
+        <div data-show="gift.cpfFunded=true" class="note warn"><b>CPF refund:</b> The Donor must refund the CPF principal <b>plus accrued interest</b> to their CPF account upon transfer. This is mandatory.</div>
+      </div>
+
+      <!-- Private / Commercial -->
+      <div data-show-group="privateprop">
+        <label class="check"><input type="checkbox" data-k="gift.cpfFundedPriv"> Property was (partly) purchased using CPF funds</label>
+        <div data-show="gift.cpfFundedPriv=true" class="note warn"><b>CPF refund required</b> on transfer. Verify the CPF withdrawal amount + accrued interest with CPF Board.</div>
+      </div>
+
+      <label class="check"><input type="checkbox" data-k="gift.hasMortgage"> There is an outstanding mortgage / charge on this property</label>
+      <div data-show="gift.hasMortgage=true">
+        <div class="note err"><b>A mortgaged property generally cannot be gifted</b> without the mortgagee bank's prior written consent. You may need to redeem the mortgage first or restructure the transaction as a partial sale. Please seek legal advice.</div>
+        <label>Mortgagee / bank name</label>
+        <input type="text" data-k="gift.mortgagee" placeholder="e.g. DBS Bank Ltd">
+      </div>
+    </div>
+
+    <!-- CASH -->
+    <div data-show="gift.type=cash">
+      <div class="sect-hd">Cash details</div>
+      <div class="row">
+        <div><label>Amount (SGD)</label><input type="text" data-k="gift.cashAmount" placeholder="e.g. 50,000"></div>
+        <div><label>Amount in words</label><input type="text" data-k="gift.cashWords" placeholder="e.g. Fifty Thousand Dollars"></div>
+      </div>
+      <label>Transfer method</label>
+      <select data-k="gift.cashMethod">
+        <option>Bank transfer</option><option>Cheque</option><option>Cash (physical)</option>
+      </select>
+      <label>Donor's bank &amp; account <span class="hint">(last 4 digits only)</span></label>
+      <input type="text" data-k="gift.cashBank" placeholder="e.g. DBS Bank, account ending 1234">
+      <div class="note info">Cash gifts carry no stamp duty.</div>
+    </div>
+
+    <!-- SHARES -->
+    <div data-show-group="securitiesgroup">
+      <div class="sect-hd">Securities details</div>
+      <label>Company name</label>
+      <input type="text" data-k="gift.sharesCompany" placeholder="e.g. ABC Holdings Pte. Ltd.">
+      <div class="row">
+        <div><label>UEN / Registration No.</label><input type="text" data-k="gift.sharesUEN" placeholder="e.g. 200012345K"></div>
+        <div><label>Share class</label><input type="text" data-k="gift.sharesClass" placeholder="e.g. Ordinary shares"></div>
+      </div>
+      <div class="row">
+        <div><label>Number of shares</label><input type="text" data-k="gift.sharesNum" placeholder="e.g. 10,000"></div>
+        <div><label>Certificate No(s).</label><input type="text" data-k="gift.sharesCerts" placeholder="e.g. Cert No. 001-002"></div>
+      </div>
+      <label>Estimated value (SGD)</label>
+      <input type="text" data-k="gift.sharesValue" placeholder="e.g. 120,000">
+      <div class="note info">Share transfers are subject to stamp duty at <b>0.2%</b> of the higher of consideration or net asset value.</div>
+    </div>
+
+    <!-- VEHICLE -->
+    <div data-show="gift.type=vehicle">
+      <div class="sect-hd">Vehicle details</div>
+      <div class="row">
+        <div><label>Vehicle registration no.</label><input type="text" data-k="gift.vehicleReg" placeholder="e.g. SBA1234A"></div>
+        <div><label>Make &amp; model</label><input type="text" data-k="gift.vehicleModel" placeholder="e.g. Toyota Camry 2.0"></div>
+      </div>
+      <label>Year of manufacture</label>
+      <input type="text" data-k="gift.vehicleYear" placeholder="e.g. 2020">
+      <label>Estimated value (SGD)</label>
+      <input type="text" data-k="gift.vehicleValue" placeholder="e.g. 80,000">
+    </div>
+
+    <!-- JEWELLERY / OTHER -->
+    <div data-show-group="physicalgroup">
+      <div class="sect-hd">Description of asset</div>
+      <label>Full description <span class="hint">(include distinguishing marks, weight, serial numbers if any)</span></label>
+      <textarea data-k="gift.physicalDesc" rows="3" placeholder="e.g. One (1) gold necklace of 22 karat gold, weight approximately 20 grams, with diamond pendant, purchased at Lee Hwa Jewellery in 2015."></textarea>
+      <label>Estimated value (SGD)</label>
+      <input type="text" data-k="gift.physicalValue" placeholder="e.g. 5,000">
+      <label>Method of delivery to donee</label>
+      <select data-k="gift.physicalDelivery">
+        <option>Physical delivery on date of this Deed</option>
+        <option>Physical delivery on a date to be agreed</option>
+        <option>Item already in possession of Donee</option>
+      </select>
+    </div>
+
+    <div class="sect-hd" style="margin-top:20px">Date &amp; Conditions</div>
+    <label>Date of gift / transfer</label>
+    <input type="date" data-k="gift.date">
+
+    <label style="margin-top:14px">Any conditions or restrictions?</label>
+    <div class="seg">
+      <label><input type="radio" name="cond" data-k="gift.conditional" value="no">No — unconditional</label>
+      <label><input type="radio" name="cond" data-k="gift.conditional" value="yes">Yes — specify below</label>
+    </div>
+    <div data-show="gift.conditional=yes">
+      <label>Conditions / restrictions</label>
+      <textarea data-k="gift.conditions" rows="3" placeholder="e.g. The Donee shall not sell, charge or otherwise dispose of the property for a period of five (5) years from the date of this Deed without the prior written consent of the Donor."></textarea>
+    </div>
+
+    <!-- Stamp duty acknowledgement -->
+    <div class="sect-hd" style="margin-top:20px">Stamp Duty</div>
+    <div class="note warn"><b>Stamp duty reminder:</b> Any gift of property or shares must be stamped by IRAS within <b>14 days</b> if executed in Singapore (30 days if overseas). Duty is assessed on <b>open market value</b>, not on zero consideration. Failure to stamp attracts penalties up to 4× the duty.</div>
+    <label class="check"><input type="checkbox" data-k="gift.stampAck"> The Donee acknowledges the stamp duty obligations and agrees to bear all applicable BSD, ABSD and other stamp duties.</label>
+  </section>
+
+  <!-- ─── STEP 4: WITNESSES & REVIEW ─── -->
+  <section class="step" data-title="Witnesses &amp; Review">
+    <h2>Witnesses &amp; Review</h2>
+    <p class="lead">Best practice is to have <b>separate witnesses</b> for the Donor and Donee — each witness present when their respective signatory signs.</p>
+    <div class="note info">Each witness must be an independent adult who is <b>not</b> a party to the deed, not a beneficiary, and not a close relative of any party.</div>
+
+    <div class="sect-hd">Donor's witness</div>
+    <div class="item" id="w-donor-box">
+      <div class="ttl">Witness to Donor's signature</div>
+      <div class="row">
+        <div><label>Full name</label><input type="text" class="wf" data-wi="0" data-wf="name" placeholder="Full name"></div>
+        <div><label>NRIC</label><input type="text" class="wf" data-wi="0" data-wf="nric" placeholder="e.g. S3456789D"></div>
+      </div>
+      <label>Address</label>
+      <input type="text" class="wf" data-wi="0" data-wf="address" placeholder="Residential address">
+    </div>
+
+    <div class="sect-hd">Donee's witness <span class="hint">(may be the same person)</span></div>
+    <div class="item" id="w-donee-box">
+      <div class="ttl">Witness to Donee's signature</div>
+      <div class="row">
+        <div><label>Full name</label><input type="text" class="wf" data-wi="1" data-wf="name" placeholder="Full name"></div>
+        <div><label>NRIC</label><input type="text" class="wf" data-wi="1" data-wf="nric" placeholder="e.g. S9876543E"></div>
+      </div>
+      <label>Address</label>
+      <input type="text" class="wf" data-wi="1" data-wf="address" placeholder="Residential address">
+    </div>
+
+    <label style="margin-top:16px">Additional notes / adviser's file <span class="hint">(optional, not shown in deed)</span></label>
+    <textarea data-k="extra" rows="2" placeholder="Internal notes for the adviser's file…"></textarea>
+
+    <div id="checks" style="margin-top:16px"></div>
+
+    <div class="tools" style="margin-top:20px">
+      <button class="btn pri" onclick="downloadDocx()">Download Word (.docx)</button>
+      <button class="btn gold" onclick="downloadPdf()">Download PDF</button>
+      <button class="btn sec" onclick="window.print()">Print</button>
+    </div>
+    <div class="tools">
+      <button class="btn sec" onclick="saveDraft()">Save draft file</button>
+      <label class="btn sec" style="margin:0">Load draft<input type="file" accept=".json" onchange="loadDraft(this)" hidden></label>
+      <button class="btn sec" onclick="if(confirm('Clear all fields and start over?'))resetAll()">Clear form</button>
+    </div>
+    <div class="note warn" style="margin-top:14px">This generates a draft deed for planning purposes. Have it reviewed by a qualified Singapore lawyer before execution. Property transfers must be stamped by IRAS and lodged with the Singapore Land Authority (SLA).</div>
+  </section>
+
+  <div class="nav">
+    <button class="btn sec" id="prev" onclick="go(cur-1)">Back</button>
+    <button class="btn pri" id="next" onclick="go(cur+1)">Next</button>
+  </div>
+  </div>
+</div><!-- /formcol -->
+
+<div class="pv">
+  <div class="pvbar"><span>Live preview</span><span id="pvStat"></span></div>
+  <div class="paper" id="paper"></div>
+</div>
+</div><!-- /wrap -->
+
+<script>
+/* ─── CONFIG ─── */
+const CONFIG = { firmLine1:'SOUL Advisors', firmLine2:'[Adviser name] · [Phone] · [Email]', fileName:'DeedOfGift' };
+
+/* ─── STATE ─── */
+const DEFAULT = () => ({
+  donor: { name:'', idType:'NRIC', nric:'', age:'', occupation:'', nationality:'Singaporean', address:'' },
+  donee: { name:'', idType:'NRIC', nric:'', age:'', relationship:'', nationality:'Singaporean', address:'',
+           isMinor:false, guardianName:'', guardianNric:'', guardianRel:'', ownsProperty:false },
+  gift:  { type:'', date:'', conditional:'no', conditions:'', stampAck:false,
+           propAddress:'', propLot:'', propShare:'', propValue:'',
+           hdbApproval:false, cpfFunded:false, cpfFundedPriv:false, hasMortgage:false, mortgagee:'',
+           cashAmount:'', cashWords:'', cashMethod:'Bank transfer', cashBank:'',
+           sharesCompany:'', sharesUEN:'', sharesClass:'', sharesNum:'', sharesCerts:'', sharesValue:'',
+           vehicleReg:'', vehicleModel:'', vehicleYear:'', vehicleValue:'',
+           physicalDesc:'', physicalValue:'', physicalDelivery:'Physical delivery on date of this Deed' },
+  witnesses: [{name:'',nric:'',address:''},{name:'',nric:'',address:''}],
+  extra:'',
+});
+let S = DEFAULT();
+let cur = 0;
+
+const get = (o,p) => p.split('.').reduce((a,k)=>a==null?a:a[k], o);
+const set = (o,p,v) => { const ks=p.split('.'); const last=ks.pop(); ks.reduce((a,k)=>a[k],o)[last]=v; };
+
+/* ─── BINDING ─── */
+document.addEventListener('input', onField);
+document.addEventListener('change', onField);
+function onField(e){
+  const el=e.target;
+  if(el.dataset.k){ const v=el.type==='checkbox'?el.checked:el.value; if(el.type==='radio'&&!el.checked) return; set(S,el.dataset.k,v); update(); }
+  else if(el.classList.contains('wf')){ S.witnesses[+el.dataset.wi][el.dataset.wf]=el.value; update(); }
+}
+function fillForm(){
+  document.querySelectorAll('[data-k]').forEach(el=>{ const v=get(S,el.dataset.k); if(el.type==='radio') el.checked=(el.value===v); else if(el.type==='checkbox') el.checked=!!v; else el.value=v??''; });
+  document.querySelectorAll('.wf').forEach(el=>{ el.value=S.witnesses[+el.dataset.wi]?.[el.dataset.wf]??''; });
+}
+
+/* ─── SHOW/HIDE ─── */
+const PROP_TYPES  = ['hdb','private','commercial'];
+const PRIV_TYPES  = ['private','commercial'];
+const SEC_TYPES   = ['shares','funds'];
+const PHYS_TYPES  = ['jewellery','business','other'];
+
+function applyShows(){
+  const t = S.gift.type;
+  // data-show="key=val"
+  document.querySelectorAll('[data-show]').forEach(el=>{
+    const [k,v]=el.dataset.show.split('='); el.classList.toggle('hidden', String(get(S,k))!==v);
+  });
+  // data-show-group="property|privateprop|securitiesgroup|physicalgroup"
+  document.querySelectorAll('[data-show-group]').forEach(el=>{
+    const g=el.dataset.showGroup;
+    let show=false;
+    if(g==='property') show=PROP_TYPES.includes(t);
+    if(g==='privateprop') show=PRIV_TYPES.includes(t);
+    if(g==='securitiesgroup') show=SEC_TYPES.includes(t);
+    if(g==='physicalgroup') show=PHYS_TYPES.includes(t);
+    el.classList.toggle('hidden',!show);
+  });
+}
+
+/* ─── STEPS ─── */
+const steps=[...document.querySelectorAll('.step')];
+function go(i){
+  cur=Math.max(0,Math.min(steps.length-1,i));
+  steps.forEach((s,j)=>s.classList.toggle('on',j===cur));
+  document.getElementById('steps').innerHTML=steps.map((s,j)=>`<button class="${j===cur?'on':j<cur?'done':''}" onclick="go(${j})">${j+1}. ${s.dataset.title}</button>`).join('');
+  document.getElementById('prev').style.visibility=cur?'visible':'hidden';
+  document.getElementById('next').classList.toggle('hidden',cur===steps.length-1);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function mview(v){document.body.classList.remove('m-form','m-prev');document.body.classList.add('m-'+v);document.getElementById('mvForm').className='btn '+(v==='form'?'pri':'sec');document.getElementById('mvPrev').className='btn '+(v==='prev'?'pri':'sec');}
+
+/* ─── HELPERS ─── */
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const ph  = (v,lbl) => (v&&String(v).trim())?`<span>${esc(v.trim())}</span>`:`<mark>[${lbl}]</mark>`;
+const phT = (v,lbl='___') => (v&&String(v).trim())?String(v).trim():lbl;
+const fmtDate = s => { if(!s) return null; try{return new Date(s).toLocaleDateString('en-SG',{day:'numeric',month:'long',year:'numeric'});}catch(e){return s;} };
+const idLabel = t => ({NRIC:'Singapore NRIC No.',FIN:'FIN No.',Passport:'Passport No.','Birth Certificate':'Birth Certificate No.'})[t]||'ID No.';
+const ASSET_LABELS = {hdb:'HDB Flat',private:'Private Residential Property',commercial:'Commercial Property',cash:'Cash / Monies',shares:'Shares',funds:'Unit Trusts / Funds',vehicle:'Motor Vehicle',jewellery:'Gold / Jewellery / Valuables',business:'Business Interest',other:'Personal Property'};
+
+/* ─── BUILD DEED DATA ─── */
+function buildDeed(){
+  const d=S.donor, e=S.donee, g=S.gift;
+  const isProperty = PROP_TYPES.includes(g.type);
+  const isCash     = g.type==='cash';
+  const isShares   = SEC_TYPES.includes(g.type);
+  const isVehicle  = g.type==='vehicle';
+  const isPhysical = PHYS_TYPES.includes(g.type);
+  const isMinor    = e.isMinor;
+  const hasCond    = g.conditional==='yes' && g.conditions.trim();
+  const hasMort    = g.hasMortgage && g.mortgagee.trim();
+  const giftDate   = fmtDate(g.date);
+  const assetLabel = ASSET_LABELS[g.type]||g.type;
+
+  // Assemble gift description for Schedule 1
+  let schedDesc='', schedValue='';
+  if(isProperty){
+    schedDesc = [g.propAddress,g.propLot,g.propShare?`(${g.propShare} share)`:''].filter(Boolean).join(', ');
+    schedValue = g.propValue ? 'SGD '+g.propValue : '';
+  } else if(isCash){
+    schedDesc = [g.cashAmount?(g.cashAmount+(g.cashWords?' ('+g.cashWords+')':'')):'' , g.cashBank].filter(Boolean).join(' — ');
+    schedValue = g.cashAmount ? 'SGD '+g.cashAmount : '';
+  } else if(isShares){
+    schedDesc = [g.sharesNum?(g.sharesNum+' '+g.sharesClass+' shares in '+g.sharesCompany):'', g.sharesCerts?'Cert Nos. '+g.sharesCerts:''].filter(Boolean).join('; ');
+    schedValue = g.sharesValue ? 'SGD '+g.sharesValue : '';
+  } else if(isVehicle){
+    schedDesc = [g.vehicleReg, g.vehicleModel, g.vehicleYear].filter(Boolean).join(', ');
+    schedValue = g.vehicleValue ? 'SGD '+g.vehicleValue : '';
+  } else {
+    schedDesc = g.physicalDesc;
+    schedValue = g.physicalValue ? 'SGD '+g.physicalValue : '';
+  }
+
+  // Clause plan
+  const plan = ['parties','recitals','defn','gift','acceptance','warranty',
+    hasCond?'conditions':null, isProperty?'cpf':null, isProperty?'further':null,
+    'irrevocable','bankruptcy','governing','stamp'].filter(Boolean);
+  const num={}; plan.forEach((id,i)=>num[id]=i+1);
+  return { d,e,g, isProperty,isCash,isShares,isVehicle,isPhysical, isMinor, hasCond, hasMort,
+           giftDate, assetLabel, schedDesc, schedValue, plan, num };
+}
+
+/* ─── RENDER PREVIEW ─── */
+function renderPreview(){
+  const R=buildDeed();
+  const {d,e,g,isProperty,isCash,isShares,isVehicle,isPhysical,isMinor,hasCond,hasMort,giftDate,assetLabel,schedDesc,schedValue,plan,num}=R;
+  const dId=idLabel(d.idType), eId=idLabel(e.idType);
+
+  /* ── Cover page ── */
+  let h=`<div class="cov">
+    <p class="ctr" style="font-size:12px;color:#888;margin-bottom:0">Dated: ${ph(giftDate,'date')}</p>
+    <div style="height:60px"></div>
+    <div class="rule"></div>
+    <p class="ctr big" style="margin:0">DEED OF GIFT</p>
+    <p class="ctr" style="margin:4px 0 0;font-size:14px">(Inter Vivos — Gift During Lifetime)</p>
+    <div class="rule"></div>
+    <p class="ctr" style="margin-top:30px;font-size:13px">BETWEEN</p>
+    <p class="ctr" style="margin:10px 0 4px"><b>${ph(d.name,'Donor name')}</b></p>
+    <p class="ctr" style="font-size:13px;margin:0">(${dId} ${ph(d.nric,'Donor ID')})</p>
+    <p class="ctr" style="font-size:13px;color:#555;margin:2px 0">("the Donor")</p>
+    <p class="ctr" style="margin:14px 0;font-weight:700">AND</p>
+    <p class="ctr" style="margin:0 0 4px"><b>${ph(e.name,'Donee name')}</b></p>
+    <p class="ctr" style="font-size:13px;margin:0">(${eId} ${ph(e.nric,'Donee ID')})</p>
+    <p class="ctr" style="font-size:13px;color:#555;margin:2px 0">("the Donee")</p>
+    <div style="flex:1;min-height:40px"></div>
+    <div class="logo">${esc(CONFIG.firmLine1)}<br>${esc(CONFIG.firmLine2)}</div>
+  </div><div class="pb"></div>`;
+
+  /* ── Document body ── */
+  h+=`<p class="ctr" style="font-weight:700;font-size:17px;margin-bottom:18px">DEED OF GIFT<br><span style="font-size:13px;font-weight:400">(Inter Vivos)</span></p>`;
+  h+=`<p><b>THIS DEED OF GIFT</b> is made on ${ph(giftDate,'date of gift')} between:</p>`;
+
+  // Parties
+  const donorOcc = d.occupation ? `, ${esc(d.occupation)}` : '';
+  h+=`<p style="padding-left:1.8em">(1) <b>${ph(d.name,'Donor name')}</b>${donorOcc?` (${donorOcc.slice(2)})`:''}${d.address?`, of ${esc(d.address)}`:''}, holder of ${dId} ${ph(d.nric,'Donor ID')}, a ${esc(d.nationality||'Singaporean')} ${d.age?`aged ${esc(d.age)}`:''} (hereinafter called <b>"the Donor"</b>); and</p>`;
+  if(isMinor){
+    h+=`<p style="padding-left:1.8em">(2) <b>${ph(e.name,'Donee name')}</b>, a minor${e.address?`, of ${esc(e.address)}`:''}, holder of ${eId} ${ph(e.nric,'Donee ID')}, by ${e.guardianRel?esc(e.guardianRel)+' and ':' '}legal guardian <b>${ph(e.guardianName,'Guardian name')}</b> (holder of Singapore NRIC No. ${ph(e.guardianNric,'Guardian NRIC')}) (hereinafter called <b>"the Donee"</b>).</p>`;
+  } else {
+    h+=`<p style="padding-left:1.8em">(2) <b>${ph(e.name,'Donee name')}</b>${e.address?`, of ${esc(e.address)}`:''}, holder of ${eId} ${ph(e.nric,'Donee ID')}, a ${esc(e.nationality||'Singaporean')} ${e.age?`aged ${esc(e.age)}`:''}${e.relationship?`, ${esc(e.relationship)} of the Donor`:''} (hereinafter called <b>"the Donee"</b>).</p>`;
+  }
+
+  // Recitals
+  h+=`<h3><span class="n">${num.recitals}.</span><span class="t">Background</span></h3>`;
+  h+=`<div class="c"><span class="n">A.</span><span>The Donor is the sole legal and beneficial owner of the ${esc(assetLabel)} described in Schedule 1 to this Deed (the <b>"Gift"</b>), free from all encumbrances${hasMort?' save as disclosed herein':''}.</span></div>`;
+  h+=`<div class="c"><span class="n">B.</span><span>The Donor desires to transfer the Gift to the Donee${e.relationship?`, the Donor's ${esc(e.relationship)},`:''} as an act of love and generosity, without any monetary consideration.</span></div>`;
+  h+=`<div class="c"><span class="n">C.</span><span>The Donee has agreed to accept the Gift on the terms and conditions herein.</span></div>`;
+
+  // Definitions
+  h+=`<h3><span class="n">${num.defn}.</span><span class="t">Definitions</span></h3>`;
+  h+=`<div class="c"><span class="n">${num.defn}.1</span><span>In this Deed:</span></div>`;
+  h+=`<div class="s"><span class="n">(a)</span><span><b>"Deed"</b> means this Deed of Gift and all schedules hereto;</span></div>`;
+  h+=`<div class="s"><span class="n">(b)</span><span><b>"Gift"</b> means the ${esc(assetLabel)} described in Schedule 1 hereto; and</span></div>`;
+  h+=`<div class="s"><span class="n">(c)</span><span><b>"Date of Gift"</b> means ${ph(giftDate,'date of gift')}.</span></div>`;
+
+  // Gift clause — operative
+  h+=`<h3><span class="n">${num.gift}.</span><span class="t">The Gift</span></h3>`;
+  h+=`<div class="c"><span class="n">${num.gift}.1</span><span>In consideration of the natural love and affection which the Donor bears towards the Donee (the receipt and sufficiency of which is hereby acknowledged), the Donor hereby <b>gives, transfers and conveys</b> with full title guarantee unto the Donee all of the Donor's right, title and interest in the Gift described in Schedule 1 hereto, <b>TO HOLD</b> the same to the Donee and the Donee's heirs, executors, administrators and assigns absolutely and forever, freed and discharged from all encumbrances${hasMort?' except as disclosed in Clause '+num.gift+'.3':''}.</span></div>`;
+  h+=`<div class="c"><span class="n">${num.gift}.2</span><span>The Donor declares that the transfer of the Gift shall have immediate effect from the Date of Gift, and the Donee shall from such date be exclusively entitled to all rights, benefits and incidents of ownership in and over the Gift.</span></div>`;
+  if(hasMort){
+    h+=`<div class="c"><span class="n">${num.gift}.3</span><span>The Gift is subject to the following existing encumbrance(s), of which the Donee is fully aware: mortgage in favour of ${ph(g.mortgagee,'mortgagee')}. The Donee accepts the Gift subject to such encumbrance(s) and shall assume all obligations thereunder from the Date of Gift.</span></div>`;
+  }
+  if(isProperty && g.type==='hdb' && g.hdbApproval){
+    h+=`<div class="c"><span class="n">${num.gift}.${hasMort?4:3}</span><span>The transfer of the HDB Flat is conditional upon the prior written approval of the Housing & Development Board, which the parties shall use their best endeavours to obtain.</span></div>`;
+  }
+
+  // Acceptance
+  h+=`<h3><span class="n">${num.acceptance}.</span><span class="t">Acceptance</span></h3>`;
+  if(isMinor){
+    h+=`<div class="c"><span class="n">${num.acceptance}.1</span><span>${ph(e.guardianName,'Guardian name')}, as the ${e.guardianRel||'parent/guardian'} and legal guardian of the Donee, hereby accepts the Gift on behalf of the Donee and undertakes to hold and administer the same on trust for the absolute benefit of the Donee until the Donee attains the age of twenty-one (21) years.</span></div>`;
+  } else {
+    h+=`<div class="c"><span class="n">${num.acceptance}.1</span><span>The Donee hereby accepts the Gift absolutely${e.relationship?', as the Donor\'s '+esc(e.relationship):''}${hasCond?', subject to the conditions set out in Clause '+num.conditions:''}, and acknowledges receipt thereof.</span></div>`;
+  }
+
+  // Warranty
+  h+=`<h3><span class="n">${num.warranty}.</span><span class="t">Donor's Warranties</span></h3>`;
+  h+=`<div class="c"><span class="n">${num.warranty}.1</span><span>The Donor warrants and represents to the Donee that:</span></div>`;
+  h+=`<div class="s"><span class="n">(a)</span><span>the Donor has full legal capacity and authority to make this gift and to enter into and perform this Deed;</span></div>`;
+  h+=`<div class="s"><span class="n">(b)</span><span>the Donor is the sole legal and beneficial owner of the Gift and has good right and full power to give, transfer and convey the same;</span></div>`;
+  h+=`<div class="s"><span class="n">(c)</span><span>the Gift is free from all liens, charges, mortgages, caveats, encumbrances and adverse claims${hasMort?' save as disclosed in Clause '+num.gift+'.3':''} and from any pending litigation or disputes;</span></div>`;
+  h+=`<div class="s"><span class="n">(d)</span><span>the Donor makes this gift freely and voluntarily, without duress, undue influence, fraud or misrepresentation; and</span></div>`;
+  h+=`<div class="s"><span class="n">(e)</span><span>the Donor is not aware of any fact or circumstance that might invalidate or affect this gift.</span></div>`;
+
+  // Conditions
+  if(hasCond && num.conditions){
+    h+=`<h3><span class="n">${num.conditions}.</span><span class="t">Conditions</span></h3>`;
+    h+=`<div class="c"><span class="n">${num.conditions}.1</span><span>The Gift is made subject to the following conditions, which the Donee hereby acknowledges and accepts:</span></div>`;
+    h+=`<div class="c"><span class="n">&nbsp;</span><span style="padding:6px 12px;display:block;border-left:3px solid #ccc;margin:4px 0;font-style:italic">${esc(g.conditions)}</span></div>`;
+  }
+
+  // CPF refund (property)
+  if(isProperty && num.cpf){
+    const hasCPF = g.cpfFunded||g.cpfFundedPriv;
+    h+=`<h3><span class="n">${num.cpf}.</span><span class="t">CPF Refund</span></h3>`;
+    h+=`<div class="c"><span class="n">${num.cpf}.1</span><span>${hasCPF?'As CPF monies were used to purchase the property, the':'The'} Donor shall, upon completion of the transfer, refund to the Donor's CPF account the full CPF principal withdrawn and all accrued interest thereon in accordance with the Central Provident Fund Act 1953 and the CPF Board's requirements.</span></div>`;
+  }
+
+  // Further assurance (property)
+  if(isProperty && num.further){
+    h+=`<h3><span class="n">${num.further}.</span><span class="t">Further Assurance</span></h3>`;
+    h+=`<div class="c"><span class="n">${num.further}.1</span><span>The Donor shall, at the Donee's request and cost, execute and do all such further deeds, instruments, acts and things as may be necessary or desirable to perfect the Donee's title to the Gift, including lodging or procuring the lodgement of all instruments required for registration with the Singapore Land Authority.</span></div>`;
+  }
+
+  // Irrevocability
+  h+=`<h3><span class="n">${num.irrevocable}.</span><span class="t">Irrevocability</span></h3>`;
+  h+=`<div class="c"><span class="n">${num.irrevocable}.1</span><span>This gift is made voluntarily, unconditionally${hasCond?' (subject to the conditions stated above)':''} and irrevocably. The Donor acknowledges that upon execution and delivery of this Deed, the Donor shall have no further legal or beneficial interest in the Gift and shall not seek to revoke, rescind or challenge this Deed except on grounds of fraud, duress or lack of capacity existing at the time of execution.</span></div>`;
+
+  // Bankruptcy
+  h+=`<h3><span class="n">${num.bankruptcy}.</span><span class="t">Insolvency Notice</span></h3>`;
+  h+=`<div class="c"><span class="n">${num.bankruptcy}.1</span><span>The parties acknowledge that under the Insolvency, Restructuring and Dissolution Act 2018 of Singapore, a gift may be set aside as an undervalue transaction if: (a) the Donor is adjudged bankrupt within <b>two (2) years</b> of the date of this Deed; or (b) the Donor is adjudged bankrupt within <b>five (5) years</b> of the date of this Deed and the Donee is an associate of the Donor within the meaning of that Act.</span></div>`;
+
+  // Governing law
+  h+=`<h3><span class="n">${num.governing}.</span><span class="t">Governing Law &amp; Jurisdiction</span></h3>`;
+  h+=`<div class="c"><span class="n">${num.governing}.1</span><span>This Deed shall be governed by and construed in accordance with the laws of the Republic of Singapore. The parties irrevocably submit to the exclusive jurisdiction of the courts of Singapore in respect of any dispute arising out of or in connection with this Deed.</span></div>`;
+
+  // Stamp duty
+  h+=`<h3><span class="n">${num.stamp}.</span><span class="t">Stamp Duty</span></h3>`;
+  let stampText=`Any stamp duty (including Buyer's Stamp Duty and Additional Buyer's Stamp Duty) or other taxes or levies arising from or in connection with this Deed and the transfer of the Gift shall be borne by the Donee and duly paid to the Inland Revenue Authority of Singapore within the prescribed time limits under the Stamp Duties Act 1929.`;
+  if(isCash) stampText=`This Deed involves a transfer of cash, which does not attract stamp duty under the Stamp Duties Act 1929.`;
+  if(isShares) stampText=`Stamp duty at the rate of <b>0.2%</b> on the higher of consideration or net asset value of the shares shall be borne by the Donee and paid to the Inland Revenue Authority of Singapore within the prescribed time limits.`;
+  h+=`<div class="c"><span class="n">${num.stamp}.1</span><span>${stampText}</span></div>`;
+
+  /* ── Testimonium ── */
+  h+=`<div class="pb"></div>`;
+  h+=`<p style="margin-top:22px"><b>IN WITNESS WHEREOF</b> this instrument has been duly executed as a deed and delivered on the date first above written.</p>`;
+
+  // Donor execution block
+  h+=`<div style="margin-top:28px;margin-bottom:24px">
+    <p style="margin-bottom:4px"><b>SIGNED, SEALED AND DELIVERED</b> as a Deed by the Donor:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:12px">
+      <div>
+        <p style="margin-top:60px;border-top:1px solid #000;margin-bottom:4px"></p>
+        <p style="margin:0"><b>Signature of Donor</b></p>
+        <p style="margin:2px 0">Name: ${ph(d.name,'Donor name')}</p>
+        <p style="margin:2px 0">${dId}: ${ph(d.nric,'Donor ID')}</p>
+        <p style="margin:2px 0">Date: ${ph(giftDate,'Date')}</p>
+      </div>
+      <div>
+        <p style="margin:0;font-size:13px"><b>In the presence of (Donor's witness):</b></p>
+        <p style="margin-top:50px;border-top:1px solid #000;margin-bottom:4px"></p>
+        <p style="margin:0">Signature</p>
+        <p style="margin:2px 0">Name: ${S.witnesses[0].name||'______________________'}</p>
+        <p style="margin:2px 0">NRIC: ${S.witnesses[0].nric||'______________________'}</p>
+        <p style="margin:2px 0">Address: ${S.witnesses[0].address||'______________________'}</p>
+        <p style="margin:2px 0">Date: ______________________</p>
+      </div>
+    </div>
+  </div>`;
+
+  // Donee / guardian execution block
+  const doneeSignLabel = isMinor ? `SIGNED, SEALED AND DELIVERED as a Deed by the Guardian on behalf of the Donee:` : `SIGNED, SEALED AND DELIVERED as a Deed by the Donee:`;
+  h+=`<div style="margin-top:10px">
+    <p style="margin-bottom:4px"><b>${doneeSignLabel}</b></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:12px">
+      <div>
+        <p style="margin-top:60px;border-top:1px solid #000;margin-bottom:4px"></p>
+        <p style="margin:0"><b>Signature of ${isMinor?'Guardian (for Donee)':'Donee'}</b></p>
+        ${isMinor
+          ? `<p style="margin:2px 0">Name: ${ph(e.guardianName,'Guardian name')}</p><p style="margin:2px 0">NRIC: ${ph(e.guardianNric,'Guardian NRIC')}</p><p style="margin:2px 0;font-size:13px"><i>(on behalf of Donee: ${ph(e.name,'Donee name')})</i></p>`
+          : `<p style="margin:2px 0">Name: ${ph(e.name,'Donee name')}</p><p style="margin:2px 0">${eId}: ${ph(e.nric,'Donee ID')}</p>`
+        }
+        <p style="margin:2px 0">Date: ${ph(giftDate,'Date')}</p>
+      </div>
+      <div>
+        <p style="margin:0;font-size:13px"><b>In the presence of (Donee's witness):</b></p>
+        <p style="margin-top:50px;border-top:1px solid #000;margin-bottom:4px"></p>
+        <p style="margin:0">Signature</p>
+        <p style="margin:2px 0">Name: ${S.witnesses[1].name||'______________________'}</p>
+        <p style="margin:2px 0">NRIC: ${S.witnesses[1].nric||'______________________'}</p>
+        <p style="margin:2px 0">Address: ${S.witnesses[1].address||'______________________'}</p>
+        <p style="margin:2px 0">Date: ______________________</p>
+      </div>
+    </div>
+  </div>`;
+
+  h+=`<p style="font-size:12px;margin-top:18px;color:#555"><i>Note: Each witness must be an independent adult of sound mind, not a party to this Deed and not related to any party. For transfers of real property, this Deed must be stamped by IRAS and lodged with the Singapore Land Authority (SLA).</i></p>`;
+
+  /* ── Schedule 1 ── */
+  h+=`<div class="pb"></div>`;
+  h+=`<p class="ctr"><b>SCHEDULE 1</b><br><b>DESCRIPTION OF THE GIFT</b></p>`;
+  h+=`<p class="ctr" style="font-size:13px">This Schedule forms part of the Deed of Gift dated ${ph(giftDate,'date')} between the Donor and the Donee.</p>`;
+  h+=`<table>
+    <tr><th style="width:30%">Item</th><th>Details</th></tr>
+    <tr><td><b>Asset Type</b></td><td>${g.type?esc(ASSET_LABELS[g.type]||g.type):'<mark>[Select asset type]</mark>'}</td></tr>
+    <tr><td><b>Description</b></td><td>${schedDesc?esc(schedDesc):'<mark>[Asset description required]</mark>'}</td></tr>
+    <tr><td><b>Estimated Market Value</b></td><td>${schedValue?esc(schedValue):'<mark>[Value]</mark>'}</td></tr>
+    <tr><td><b>Date of Transfer</b></td><td>${ph(giftDate,'date of gift')}</td></tr>
+    ${isProperty&&g.propShare?`<tr><td><b>Donor's Share</b></td><td>${esc(g.propShare)}</td></tr>`:''}
+    ${hasMort?`<tr><td><b>Existing Mortgage</b></td><td>${esc(g.mortgagee)}</td></tr>`:''}
+  </table>`;
+  h+=`<p style="font-size:12px;margin-top:12px;color:#555"><i>Note: A professional valuation certificate should be attached where stamp duty is payable. Attach as Schedule 2.</i></p>`;
+
+  document.getElementById('paper').innerHTML=h;
+  const blanks=(h.match(/<mark>/g)||[]).length;
+  document.getElementById('pvStat').textContent=blanks?`${blanks} field${blanks>1?'s':''} blank`:'All fields filled';
+}
+
+/* ─── CHECKS ─── */
+function runChecks(){
+  const d=S.donor,e=S.donee,g=S.gift;
+  const out=[];
+  if(!d.name.trim()) out.push(['err','Donor name is required.']);
+  if(!d.nric.trim()) out.push(['err','Donor ID number is required.']);
+  if(!d.address.trim()) out.push(['warn','Donor address is missing.']);
+  if(d.age && +d.age<21) out.push(['err','Donor must be at least 21 years old.']);
+  if(!e.name.trim()) out.push(['err','Donee name is required.']);
+  if(!e.nric.trim()) out.push(['err','Donee ID number is required.']);
+  if(!e.relationship) out.push(['warn','Relationship of donee to donor is not specified.']);
+  if(e.isMinor&&!e.guardianName.trim()) out.push(['err','Guardian name is required for a minor donee.']);
+  if(!g.type) out.push(['err','Asset type must be selected.']);
+  if(g.type==='hdb'&&!g.hdbApproval) out.push(['warn','HDB approval must be obtained before execution.']);
+  if(g.hasMortgage&&!g.mortgagee.trim()) out.push(['warn','Mortgagee name is not provided.']);
+  if(!g.date) out.push(['warn','Date of gift is not set.']);
+  if(g.conditional==='yes'&&!g.conditions.trim()) out.push(['warn','Conditions specified but not described.']);
+  if(!g.stampAck) out.push(['warn','Stamp duty acknowledgement not confirmed.']);
+  if(!S.witnesses[0].name.trim()) out.push(['warn','Donor\'s witness name is missing.']);
+  if(!S.witnesses[1].name.trim()) out.push(['warn','Donee\'s witness name is missing.']);
+  if(out.length===0) out.push(['ok','All key fields complete. Review the deed preview before downloading.']);
+  return out;
+}
+
+/* ─── UPDATE ─── */
+function update(){
+  applyShows();
+  try{sessionStorage.setItem('soul_deed',JSON.stringify(S));}catch(e){}
+  renderPreview();
+  document.getElementById('checks').innerHTML=runChecks().map(([k,t])=>`<div class="note ${k}">${esc(t)}</div>`).join('');
+}
+
+/* ─── WORD EXPORT ─── */
+async function downloadDocx(){
+  if(!window.docx){alert('Word library not loaded. Check your connection and reload.');return;}
+  const {Document,Packer,Paragraph,TextRun,AlignmentType,PageBreak}=docx;
+  const R=buildDeed();
+  const {d,e,g,isMinor,hasCond,hasMort,giftDate,assetLabel,schedDesc,schedValue,plan,num}=R;
+  const dId=idLabel(d.idType),eId=idLabel(e.idType);
+  const FONT='Times New Roman',SZ=24,LINE=360;
+  const r=(text,o={})=>new TextRun({text,font:FONT,size:SZ,...o});
+  const p=(text,o={})=>new Paragraph({alignment:o.align??AlignmentType.JUSTIFIED,spacing:{line:o.line??LINE,after:o.after??160},children:[r(text,o.run||{})]});
+  const ctr=(t,o={})=>p(t,{align:AlignmentType.CENTER,...o});
+  const blank=(k=1)=>Array.from({length:k},()=>new Paragraph({children:[]}));
+  const brk=()=>new Paragraph({children:[new PageBreak()]});
+  const T=v=>phT(v,'___');
+
+  const secs=[{properties:{},children:[
+    ctr('DEED OF GIFT',{run:{bold:true,size:30}}),
+    ctr('(Inter Vivos — Gift During Lifetime)',{run:{size:22}}),
+    ...blank(2),
+    ctr('BETWEEN',{run:{bold:true}}),
+    ctr(T(d.name)+' ('+dId+' '+T(d.nric)+')',{run:{bold:true}}),
+    ctr('("the Donor")'),
+    ctr('AND',{run:{bold:true}}),
+    ctr(T(e.name)+' ('+eId+' '+T(e.nric)+')',{run:{bold:true}}),
+    ctr('("the Donee")'),
+    ...blank(3),
+    ctr('Dated: '+(giftDate||'______________')),
+    ctr(CONFIG.firmLine1),
+    brk(),
+    ctr('DEED OF GIFT',{run:{bold:true,size:26}}),
+    p('THIS DEED OF GIFT is made on '+(giftDate||'______________')+'.'),
+    p('BETWEEN:'),
+    p('(1) '+T(d.name)+(d.occupation?', '+d.occupation:'')+', of '+T(d.address)+', holder of '+dId+' '+T(d.nric)+', a '+T(d.nationality)+' ("the Donor"); and'),
+    p(isMinor?'(2) '+T(e.name)+', a minor, by guardian '+T(e.guardianName)+' (NRIC '+T(e.guardianNric)+') ("the Donee").':'(2) '+T(e.name)+', of '+T(e.address)+', holder of '+eId+' '+T(e.nric)+(e.relationship?', '+e.relationship+' of the Donor':'')+' ("the Donee").'),
+    p(num.recitals+'.  BACKGROUND',{run:{bold:true,underline:{}}}),
+    p(num.recitals+'.A  The Donor is the sole legal and beneficial owner of the '+assetLabel+' (the "Gift"), free from all encumbrances'+(hasMort?' save as disclosed':'')+'.'),
+    p(num.recitals+'.B  The Donor desires to gift the same to the Donee'+(e.relationship?', the Donor\'s '+e.relationship:'')+' as an act of love and generosity without monetary consideration.'),
+    p(num.recitals+'.C  The Donee has agreed to accept the Gift on the terms herein.'),
+    p(num.gift+'.  THE GIFT',{run:{bold:true,underline:{}}}),
+    p(num.gift+'.1  In consideration of natural love and affection, the Donor hereby gives, transfers and conveys with full title guarantee unto the Donee all of the Donor\'s right, title and interest in the Gift (as described in Schedule 1), TO HOLD the same to the Donee and assigns absolutely forever, freed and discharged from all encumbrances'+(hasMort?' save as disclosed':'')+'.' ),
+    p(num.gift+'.2  The transfer shall have effect from the Date of Gift and the Donee shall be exclusively entitled to all rights and incidents of ownership from such date.'),
+    p(num.acceptance+'.  ACCEPTANCE',{run:{bold:true,underline:{}}}),
+    p(num.acceptance+'.1  '+(isMinor?T(e.guardianName)+' as guardian hereby accepts the Gift on behalf of the Donee and holds the same on trust until the Donee turns 21.':'The Donee hereby accepts the Gift absolutely and acknowledges receipt thereof.')),
+    p(num.warranty+'.  DONOR\'S WARRANTIES',{run:{bold:true,underline:{}}}),
+    p(num.warranty+'.1  The Donor warrants: (a) full legal capacity; (b) sole ownership of the Gift; (c) Gift free from undisclosed encumbrances; (d) gift made freely and voluntarily.'),
+    ...(hasCond&&num.conditions?[p(num.conditions+'.  CONDITIONS',{run:{bold:true,underline:{}}}),p(num.conditions+'.1  '+T(g.conditions))]:[]),
+    p(num.irrevocable+'.  IRREVOCABILITY',{run:{bold:true,underline:{}}}),
+    p(num.irrevocable+'.1  This gift is irrevocable upon execution and delivery of this Deed. The Donor shall have no further interest in the Gift from the Date of Gift.'),
+    p(num.bankruptcy+'.  INSOLVENCY NOTICE',{run:{bold:true,underline:{}}}),
+    p(num.bankruptcy+'.1  Under the IRDA 2018, this Deed may be set aside if the Donor is adjudged bankrupt within 2 years (or 5 years if Donee is an associate of the Donor).'),
+    p(num.governing+'.  GOVERNING LAW',{run:{bold:true,underline:{}}}),
+    p(num.governing+'.1  This Deed is governed by Singapore law. The parties submit to the exclusive jurisdiction of the Singapore courts.'),
+    p(num.stamp+'.  STAMP DUTY',{run:{bold:true,underline:{}}}),
+    p(num.stamp+'.1  Stamp duty shall be borne by the Donee in accordance with the Stamp Duties Act 1929.'),
+    brk(),
+    p('IN WITNESS WHEREOF this Deed has been executed and delivered on the date first above written.'),
+    ...blank(2),
+    p('SIGNED, SEALED AND DELIVERED by the Donor:',{run:{bold:true}}),
+    ...blank(3),p('_______________________________'),p(T(d.name)+' ('+T(d.nric)+')'),p('Date: '+(giftDate||'___')),
+    ...blank(2),p('In the presence of (Donor\'s witness):'),
+    ...blank(2),p('_______________________________'),p('Name: '+(S.witnesses[0].name||'___')),p('NRIC: '+(S.witnesses[0].nric||'___')),
+    ...blank(2),
+    p('SIGNED, SEALED AND DELIVERED by the '+(isMinor?'Guardian for the Donee':'Donee')+':',{run:{bold:true}}),
+    ...blank(3),p('_______________________________'),p(isMinor?T(e.guardianName)+' — Guardian for '+T(e.name):T(e.name)+' ('+T(e.nric)+')'),p('Date: '+(giftDate||'___')),
+    ...blank(2),p('In the presence of (Donee\'s witness):'),
+    ...blank(2),p('_______________________________'),p('Name: '+(S.witnesses[1].name||'___')),p('NRIC: '+(S.witnesses[1].nric||'___')),
+    brk(),
+    ctr('SCHEDULE 1 — DESCRIPTION OF THE GIFT',{run:{bold:true}}),
+    p('Asset Type: '+assetLabel),
+    p('Description: '+T(schedDesc)),
+    p('Estimated Market Value: '+T(schedValue)),
+    p('Date of Transfer: '+(giftDate||'___')),
+  ]}];
+  const buf=await Packer.toBlob(new Document({sections:secs}));
+  const a=document.createElement('a');a.href=URL.createObjectURL(buf);a.download=CONFIG.fileName+'.docx';a.click();
+}
+
+/* ─── PDF EXPORT ─── */
+async function downloadPdf(){
+  const {jsPDF}=window.jspdf;if(!jsPDF){alert('PDF library not loaded.');return;}
+  const doc=new jsPDF({unit:'pt',format:'a4'});
+  const R=buildDeed();
+  const {d,e,g,isMinor,hasCond,hasMort,giftDate,assetLabel,schedDesc,schedValue,num}=R;
+  const dId=idLabel(d.idType),eId=idLabel(e.idType);
+  const T=v=>phT(v,'___');
+  const W=535,M=40;let y=M;
+  const ln=(txt,o={})=>{doc.setFont('Times',o.bold?'bold':'normal');doc.setFontSize(o.sz||12);
+    const lines=doc.splitTextToSize(txt,W);lines.forEach(l=>{if(y>800){doc.addPage();y=M;}doc.text(l,o.ctr?(595/2):M,y,o.ctr?{align:'center'}:{});y+=16*(o.sz||12)/12;});if(o.sp)y+=o.sp;};
+  ln('DEED OF GIFT (Inter Vivos)',{ctr:true,bold:true,sz:18,sp:6});
+  ln('Dated: '+(giftDate||'______________'),{ctr:true,sp:16});
+  ln(T(d.name)+' ("the Donor")  AND  '+T(e.name)+' ("the Donee")',{ctr:true,sp:20});
+  doc.addPage();y=M;
+  ln('DEED OF GIFT',{ctr:true,bold:true,sz:16,sp:10});
+  ln('This Deed of Gift is made on '+(giftDate||'___')+' between:',{sp:4});
+  ln('(1) '+T(d.name)+(d.occupation?', '+d.occupation:'')+', of '+T(d.address)+', '+dId+' '+T(d.nric)+' ("the Donor"); and',{sp:4});
+  ln(isMinor?'(2) '+T(e.name)+', a minor, by guardian '+T(e.guardianName)+' ("the Donee").':'(2) '+T(e.name)+', of '+T(e.address)+', '+eId+' '+T(e.nric)+(e.relationship?', '+e.relationship+' of the Donor':'')+' ("the Donee").',{sp:10});
+  ln(num.gift+'.  THE GIFT',{bold:true,sp:4});
+  ln(num.gift+'.1  In consideration of natural love and affection, the Donor hereby gives, transfers and conveys with full title guarantee unto the Donee all of the Donor\'s right, title and interest in the Gift described in Schedule 1, TO HOLD the same absolutely forever, freed from all encumbrances'+(hasMort?' save as disclosed':'')+'.', {sp:4});
+  ln(num.gift+'.2  Transfer takes effect from the Date of Gift.',{sp:10});
+  ln(num.acceptance+'.1  '+(isMinor?T(e.guardianName)+' accepts as guardian.':'The Donee accepts the Gift absolutely.'),{sp:10});
+  ln(num.warranty+'.1  Donor warrants full capacity, sole ownership, no undisclosed encumbrances, and free voluntary execution.',{sp:10});
+  if(hasCond&&num.conditions){ln(num.conditions+'.  CONDITIONS:',{bold:true,sp:4});ln(T(g.conditions),{sp:10});}
+  ln(num.irrevocable+'.  This gift is irrevocable upon execution and delivery.',{sp:4});
+  ln(num.bankruptcy+'.  IRDA 2018 clawback period: 2 years (5 years for associates).',{sp:4});
+  ln(num.governing+'.  Governed by Singapore law.',{sp:4});
+  ln(num.stamp+'.  Stamp duty borne by Donee per Stamp Duties Act 1929.',{sp:16});
+  doc.addPage();y=M;
+  ln('IN WITNESS WHEREOF this Deed has been executed and delivered on the date first above written.',{sp:16});
+  ln('SIGNED, SEALED AND DELIVERED by the Donor:',{bold:true,sp:50});
+  ln('_______________________________');ln(T(d.name)+' ('+T(d.nric)+')');ln('Date: '+(giftDate||'___'),{sp:10});
+  ln('In the presence of:',{sp:40});ln('_______________________________');ln('Name: '+(S.witnesses[0].name||'___')),ln('NRIC: '+(S.witnesses[0].nric||'___'),{sp:16});
+  ln('SIGNED, SEALED AND DELIVERED by the '+(isMinor?'Guardian for Donee':'Donee')+':',{bold:true,sp:50});
+  ln('_______________________________');ln(isMinor?T(e.guardianName):T(e.name)+' ('+T(e.nric)+')');ln('Date: '+(giftDate||'___'),{sp:10});
+  ln('In the presence of:',{sp:40});ln('_______________________________');ln('Name: '+(S.witnesses[1].name||'___'));ln('NRIC: '+(S.witnesses[1].nric||'___'),{sp:20});
+  doc.addPage();y=M;
+  ln('SCHEDULE 1 — DESCRIPTION OF THE GIFT',{ctr:true,bold:true,sp:12});
+  ln('Asset Type: '+assetLabel,{sp:4});ln('Description: '+T(schedDesc),{sp:4});ln('Estimated Value: '+T(schedValue),{sp:4});ln('Date: '+(giftDate||'___'),{sp:4});
+  doc.save(CONFIG.fileName+'.pdf');
+}
+
+/* ─── DRAFT ─── */
+function saveDraft(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=CONFIG.fileName+'_draft.json';a.click();}
+function loadDraft(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{S=Object.assign(DEFAULT(),JSON.parse(e.target.result));fillForm();update();}catch(e){alert('Invalid draft file.');}};r.readAsText(f);}
+function resetAll(){S=DEFAULT();fillForm();update();}
+
+/* ─── INIT ─── */
+try{const saved=sessionStorage.getItem('soul_deed');if(saved){const p=JSON.parse(saved);S=Object.assign(DEFAULT(),p);}}catch(e){}
+fillForm();go(0);update();
+</script>
+</body>
+</html>

@@ -2083,143 +2083,16 @@ body.csb-session-on .csb-hide-field { display: none !important; }
   </div>
 
   <!-- ── DEED OF GIFT PANEL ── -->
+  <!-- ── DEED OF GIFT PANEL ── -->
   <div class="ag-panel" id="p-gift">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem 0.75rem;flex-wrap:wrap;border-bottom:1px solid var(--border-gold)">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem 0.75rem;flex-wrap:wrap">
       <div>
         <div style="font-family:'Lora',serif;font-size:1.2rem;font-weight:600">Deed of Gift During Lifetime</div>
-        <div style="font-size:0.78rem;color:var(--muted)">Draft an inter vivos gift deed to transfer assets from donor to recipient while the donor is still living.</div>
+        <div style="font-size:0.78rem;color:var(--muted)">Inter vivos gift deed — transfer an asset to a recipient while the donor is alive. Live deed preview updates as you type.</div>
       </div>
-      <button onclick="giftGenerateDeed()" style="padding:0.45rem 1.1rem;font-size:0.82rem;font-weight:600;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;letter-spacing:0.02em">Generate Deed ↓</button>
+      <a href="/deed-of-gift" target="_blank" class="btn-signout" style="text-decoration:none;color:var(--accent);border-color:var(--border-gold)">Open full screen ↗</a>
     </div>
-
-    <div style="padding:1.25rem 1.5rem;overflow-y:auto;height:calc(100vh - 150px)">
-
-      <!-- DONOR -->
-      <div style="font-family:'Lora',serif;font-size:0.95rem;font-weight:600;color:var(--accent);margin-bottom:0.75rem;padding-bottom:0.35rem;border-bottom:1px solid var(--border-gold)">Donor (Giver)</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem 1.25rem;margin-bottom:1.25rem">
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Full Name (as per NRIC)</label>
-          <input id="gift-donor-name" type="text" placeholder="e.g. Ahmad bin Abdullah" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">NRIC / Passport No.</label>
-          <input id="gift-donor-nric" type="text" placeholder="e.g. S1234567A" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div style="grid-column:1/-1">
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Address</label>
-          <input id="gift-donor-addr" type="text" placeholder="e.g. 123 Orchard Road, #04-05, Singapore 238888" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-      </div>
-
-      <!-- DONEE -->
-      <div style="font-family:'Lora',serif;font-size:0.95rem;font-weight:600;color:var(--accent);margin-bottom:0.75rem;padding-bottom:0.35rem;border-bottom:1px solid var(--border-gold)">Donee (Recipient)</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem 1.25rem;margin-bottom:1.25rem">
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Full Name (as per NRIC)</label>
-          <input id="gift-donee-name" type="text" placeholder="e.g. Siti binte Ahmad" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">NRIC / Passport No.</label>
-          <input id="gift-donee-nric" type="text" placeholder="e.g. S9876543B" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Relationship to Donor</label>
-          <select id="gift-donee-rel" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-            <option value="">Select relationship…</option>
-            <option>Spouse</option>
-            <option>Son</option>
-            <option>Daughter</option>
-            <option>Father</option>
-            <option>Mother</option>
-            <option>Brother</option>
-            <option>Sister</option>
-            <option>Grandchild</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Donee Age</label>
-          <input id="gift-donee-age" type="number" min="0" placeholder="e.g. 35" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div style="grid-column:1/-1">
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Address</label>
-          <input id="gift-donee-addr" type="text" placeholder="e.g. 456 Bukit Timah Road, #10-01, Singapore 259770" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-      </div>
-
-      <!-- GIFT DETAILS -->
-      <div style="font-family:'Lora',serif;font-size:0.95rem;font-weight:600;color:var(--accent);margin-bottom:0.75rem;padding-bottom:0.35rem;border-bottom:1px solid var(--border-gold)">Gift Details</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem 1.25rem;margin-bottom:1.25rem">
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Type of Asset</label>
-          <select id="gift-asset-type" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-            <option value="">Select asset type…</option>
-            <option>Residential Property</option>
-            <option>Commercial Property</option>
-            <option>Cash / Bank Transfer</option>
-            <option>Shares / Unit Trusts</option>
-            <option>Motor Vehicle</option>
-            <option>Jewellery / Valuables</option>
-            <option>Business Interest</option>
-            <option>Other Personal Property</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Estimated Value (SGD)</label>
-          <input id="gift-asset-value" type="text" placeholder="e.g. 500,000" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div style="grid-column:1/-1">
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Description of Asset</label>
-          <textarea id="gift-asset-desc" rows="3" placeholder="e.g. HDB flat at Blk 123 Ang Mo Kio Ave 3, #05-678, Singapore 560123 — Lot No. 1234A MK12" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box;resize:vertical;font-family:inherit"></textarea>
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Date of Gift</label>
-          <input id="gift-date" type="date" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Any Conditions / Restrictions?</label>
-          <select id="gift-conditions-yn" onchange="document.getElementById('gift-conditions-wrap').style.display=this.value==='yes'?'block':'none'" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-            <option value="no">No — unconditional gift</option>
-            <option value="yes">Yes — specify below</option>
-          </select>
-        </div>
-        <div id="gift-conditions-wrap" style="grid-column:1/-1;display:none">
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Conditions / Restrictions</label>
-          <textarea id="gift-conditions" rows="2" placeholder="e.g. The donee shall not sell or encumber the property for a period of 5 years from the date of this deed." style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box;resize:vertical;font-family:inherit"></textarea>
-        </div>
-      </div>
-
-      <!-- WITNESSES -->
-      <div style="font-family:'Lora',serif;font-size:0.95rem;font-weight:600;color:var(--accent);margin-bottom:0.75rem;padding-bottom:0.35rem;border-bottom:1px solid var(--border-gold)">Witnesses</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem 1.25rem;margin-bottom:1.5rem">
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Witness 1 — Full Name</label>
-          <input id="gift-w1-name" type="text" placeholder="e.g. Tan Ah Kow" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Witness 1 — NRIC</label>
-          <input id="gift-w1-nric" type="text" placeholder="e.g. S7654321C" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Witness 2 — Full Name</label>
-          <input id="gift-w2-name" type="text" placeholder="e.g. Lim Bee Hoon" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:0.75rem;color:var(--muted);display:block;margin-bottom:0.3rem">Witness 2 — NRIC</label>
-          <input id="gift-w2-nric" type="text" placeholder="e.g. S3456789D" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border-gold);border-radius:6px;background:var(--card-bg);color:var(--fg);font-size:0.84rem;box-sizing:border-box">
-        </div>
-      </div>
-
-      <!-- DEED PREVIEW -->
-      <div id="gift-deed-preview" style="display:none;margin-top:0.5rem">
-        <div style="font-family:'Lora',serif;font-size:0.95rem;font-weight:600;color:var(--accent);margin-bottom:0.75rem;padding-bottom:0.35rem;border-bottom:1px solid var(--border-gold);display:flex;justify-content:space-between;align-items:center">
-          <span>Deed Preview</span>
-          <button onclick="giftPrintDeed()" style="padding:0.35rem 0.9rem;font-size:0.78rem;background:transparent;color:var(--accent);border:1px solid var(--border-gold);border-radius:5px;cursor:pointer">Print / Save PDF</button>
-        </div>
-        <div id="gift-deed-body" style="background:var(--card-bg);border:1px solid var(--border-gold);border-radius:8px;padding:2rem;font-size:0.84rem;line-height:1.8;white-space:pre-wrap;font-family:'Lora',serif;color:var(--fg)"></div>
-      </div>
-
-    </div>
+    <iframe id="gift-frame" title="Deed of Gift" style="width:100%;height:calc(100vh - 150px);border:0;border-top:1px solid var(--border-gold);background:#FAF8F3;display:block"></iframe>
   </div>
 
   <div class="ag-panel" id="p-care">
@@ -2434,132 +2307,17 @@ function switchAgentTab(tab, btn) {
     if (!mf.src) mf.src = '/memorandum?embed=1';
     else { try { if (mf.contentWindow.onShown) mf.contentWindow.onShown(); } catch(e){} }
   }
+  if (tab === 'gift') {
+    const gf = document.getElementById('gift-frame');
+    if (!gf.src) gf.src = '/deed-of-gift?embed=1';
+  }
   // scripts now lives inside elearning sub-tab — init on first reveal
   if ((tab === 'elearning') && !document.getElementById('scr-filters').dataset.built) {
     scrRender();
   }
 }
 
-// ─────────────────────────────────────────────
-// DEED OF GIFT
-// ─────────────────────────────────────────────
-function giftVal(id) { return (document.getElementById(id)||{}).value || ''; }
 
-function giftGenerateDeed() {
-  var donorName  = giftVal('gift-donor-name').trim();
-  var donorNric  = giftVal('gift-donor-nric').trim();
-  var donorAddr  = giftVal('gift-donor-addr').trim();
-  var doneeName  = giftVal('gift-donee-name').trim();
-  var doneeNric  = giftVal('gift-donee-nric').trim();
-  var doneeRel   = giftVal('gift-donee-rel').trim();
-  var doneeAge   = giftVal('gift-donee-age').trim();
-  var doneeAddr  = giftVal('gift-donee-addr').trim();
-  var assetType  = giftVal('gift-asset-type').trim();
-  var assetDesc  = giftVal('gift-asset-desc').trim();
-  var assetVal   = giftVal('gift-asset-value').trim();
-  var giftDate   = giftVal('gift-date').trim();
-  var condYN     = giftVal('gift-conditions-yn');
-  var conditions = condYN === 'yes' ? giftVal('gift-conditions').trim() : '';
-  var w1Name     = giftVal('gift-w1-name').trim();
-  var w1Nric     = giftVal('gift-w1-nric').trim();
-  var w2Name     = giftVal('gift-w2-name').trim();
-  var w2Nric     = giftVal('gift-w2-nric').trim();
-
-  if (!donorName || !doneeName || !assetDesc) {
-    alert('Please fill in at least Donor name, Donee name, and Asset description.'); return;
-  }
-
-  var dateStr = giftDate ? new Date(giftDate).toLocaleDateString('en-SG', {day:'numeric',month:'long',year:'numeric'}) : '________________';
-  var condClause = conditions
-    ? '\n\n5. CONDITIONS\n\nNotwithstanding the absolute nature of this gift, the Donor and Donee agree that the following conditions shall apply:\n\n' + conditions
-    : '';
-
-  var deed = [
-    'DEED OF GIFT DURING LIFETIME',
-    '(Inter Vivos)',
-    '',
-    '─'.repeat(60),
-    '',
-    'This Deed of Gift is made on ' + dateStr + '.',
-    '',
-    '1. PARTIES',
-    '',
-    'DONOR',
-    'Name   : ' + (donorName || '__________________________'),
-    'NRIC   : ' + (donorNric || '__________________________'),
-    'Address: ' + (donorAddr || '__________________________'),
-    '',
-    'DONEE',
-    'Name         : ' + (doneeName || '__________________________'),
-    'NRIC         : ' + (doneeNric || '__________________________'),
-    'Relationship : ' + (doneeRel  || '__________________________') + (doneeAge ? ' (Age ' + doneeAge + ')' : ''),
-    'Address      : ' + (doneeAddr || '__________________________'),
-    '',
-    '2. RECITALS',
-    '',
-    'The Donor is the legal and beneficial owner of the asset described herein and wishes to transfer the same absolutely and irrevocably to the Donee as a gift during the Donor\'s lifetime, without any monetary consideration.',
-    '',
-    '3. GIFT',
-    '',
-    'Asset Type  : ' + (assetType || '__________________________'),
-    'Description : ' + (assetDesc || '__________________________'),
-    'Est. Value  : SGD ' + (assetVal || '__________________________'),
-    '',
-    'The Donor hereby declares that as from the date of this Deed, the above-described asset is transferred to the Donee absolutely and free from all encumbrances, to hold the same to the Donee and the Donee\'s heirs, executors, administrators and assigns forever.',
-    '',
-    '4. ACCEPTANCE',
-    '',
-    'The Donee hereby accepts the said gift from the Donor.',
-    condClause,
-    '',
-    '6. GOVERNING LAW',
-    '',
-    'This Deed shall be governed by and construed in accordance with the laws of the Republic of Singapore.',
-    '',
-    '─'.repeat(60),
-    '',
-    'SIGNED AND DELIVERED as a Deed',
-    '',
-    'DONOR',
-    'Signature : ______________________',
-    'Name      : ' + (donorName || '__________________________'),
-    'Date      : ' + dateStr,
-    '',
-    'DONEE',
-    'Signature : ______________________',
-    'Name      : ' + (doneeName || '__________________________'),
-    'Date      : ' + dateStr,
-    '',
-    'WITNESS 1',
-    'Signature : ______________________',
-    'Name      : ' + (w1Name || '__________________________'),
-    'NRIC      : ' + (w1Nric || '__________________________'),
-    '',
-    'WITNESS 2',
-    'Signature : ______________________',
-    'Name      : ' + (w2Name || '__________________________'),
-    'NRIC      : ' + (w2Nric || '__________________________'),
-    '',
-    '─'.repeat(60),
-    '',
-    'NOTE: This document is for planning purposes only. All deeds of gift should be reviewed and executed under the guidance of a qualified Singapore lawyer.',
-  ].join('\n');
-
-  document.getElementById('gift-deed-body').textContent = deed;
-  var preview = document.getElementById('gift-deed-preview');
-  preview.style.display = 'block';
-  preview.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function giftPrintDeed() {
-  var body = document.getElementById('gift-deed-body');
-  if (!body) return;
-  var w = window.open('', '_blank');
-  w.document.write('<html><head><title>Deed of Gift</title><style>body{font-family:"Times New Roman",serif;font-size:13pt;line-height:1.9;padding:3cm 2.5cm;white-space:pre-wrap;color:#000}@media print{body{padding:2cm 2cm}}</style></head><body>' + body.textContent.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</body></html>');
-  w.document.close();
-  w.focus();
-  w.print();
-}
 
 // ─────────────────────────────────────────────
 // FUND SUB-TAB SWITCHING
