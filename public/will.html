@@ -285,8 +285,8 @@ textarea{min-height:80px;resize:vertical}
 <script>
 /* ================= CONFIG: edit for your firm ================= */
 const CONFIG = {
-  firmLine1: 'SOUL Advisors',
-  firmLine2: '[Adviser name] · [Phone] · [Email]',
+  firmLine1: '',
+  firmLine2: '',
   fileName: 'Will',
 };
 
@@ -681,7 +681,7 @@ function renderPreview(W){
   let h = `<div class="cov"><p class="dt">Dated this ______ day of ____________ 20____</p><div style="height:120px"></div>
     <div class="rule"></div><p class="ctr big">LAST WILL AND TESTAMENT</p><p class="ctr">OF</p>
     <p class="ctr big">${md(W.TNU)}</p><p class="ctr" style="font-size:13px">(${W.idL} ${md(W.TID)})</p><div class="rule"></div>
-    <div class="logo">${esc(CONFIG.firmLine1)}<br>${esc(CONFIG.firmLine2)}</div>
+    ${CONFIG.firmLine1||CONFIG.firmLine2 ? `<div class="logo">${esc(CONFIG.firmLine1)}<br>${esc(CONFIG.firmLine2)}</div>` : ''}
 </div><div class="pb"></div>`;
   h += `<p class="ctr" style="font-weight:700;font-size:17px">LAST WILL AND TESTAMENT</p>`;
   for(const b of W.blocks){
@@ -761,7 +761,7 @@ async function downloadDocx(){
     p('Dated this ______ day of ____________________ 20____',{align:AlignmentType.LEFT}), ...blank(5), dotted(),
     center('LAST WILL AND TESTAMENT',{run:{size:32,bold:true},after:120}),
     center('OF',{run:{size:28},after:120}), center(W.TNU,{run:{size:32,bold:true},after:60}), center(`(${W.idL} ${W.TID})`,{run:{size:22}}),
-    dotted(), ...blank(3), center(CONFIG.firmLine1,{run:{size:20,color:'808080'},after:0}), center(CONFIG.firmLine2,{run:{size:20,color:'808080'}}), ...blank(6),
+    dotted(), ...blank(3), ...(CONFIG.firmLine1||CONFIG.firmLine2 ? [center(CONFIG.firmLine1,{run:{size:20,color:'808080'},after:0}), center(CONFIG.firmLine2,{run:{size:20,color:'808080'}})] : []), ...blank(6),
     brk(),
   ];
   const body = [center('LAST WILL AND TESTAMENT',{run:{bold:true,size:28},after:240})];
@@ -928,7 +928,7 @@ async function downloadPdf(){
   cTxt('LAST WILL AND TESTAMENT', 16, true); cTxt('OF', 14, false);
   cTxt(W.TNU, 16, true, 2); cTxt(`(${W.idL} ${W.TID})`, 11, false, 10);
   dottedRule();
-  y += 50; doc.setTextColor(128); cTxt(CONFIG.firmLine1, 10, false, 0); cTxt(CONFIG.firmLine2, 10, false); doc.setTextColor(0);
+  if(CONFIG.firmLine1||CONFIG.firmLine2){ y += 50; doc.setTextColor(128); cTxt(CONFIG.firmLine1, 10, false, 0); cTxt(CONFIG.firmLine2, 10, false); doc.setTextColor(0); }
   y = BOT - 60;
 
   /* ---- body ---- */

@@ -398,7 +398,7 @@ textarea{min-height:72px;resize:vertical}
 
 <script>
 /* ─── CONFIG ─── */
-const CONFIG = { firmLine1:'SOUL Advisors', firmLine2:'[Adviser name] · [Phone] · [Email]', fileName:'DeedOfGift' };
+const CONFIG = { firmLine1:'', firmLine2:'', fileName:'DeedOfGift' };
 
 /* ─── STATE ─── */
 const DEFAULT = () => ({
@@ -543,7 +543,7 @@ function renderPreview(){
     <p class="ctr" style="font-size:13px;margin:0">(${eId} ${ph(e.nric,'Donee ID')})</p>
     <p class="ctr" style="font-size:13px;color:#555;margin:2px 0">("the Donee")</p>
     <div style="flex:1;min-height:40px"></div>
-    <div class="logo">${esc(CONFIG.firmLine1)}<br>${esc(CONFIG.firmLine2)}</div>
+    ${CONFIG.firmLine1||CONFIG.firmLine2 ? `<div class="logo">${esc(CONFIG.firmLine1)}<br>${esc(CONFIG.firmLine2)}</div>` : ''}
   </div><div class="pb"></div>`;
 
   /* ── Document body ── */
@@ -773,7 +773,7 @@ async function downloadDocx(){
     ctr('("the Donee")'),
     ...blank(3),
     ctr('Dated: '+(giftDate||'______________')),
-    ctr(CONFIG.firmLine1),
+    ...(CONFIG.firmLine1 ? [ctr(CONFIG.firmLine1)] : []),
     brk(),
     ctr('DEED OF GIFT',{run:{bold:true,size:26}}),
     p('THIS DEED OF GIFT is made on '+(giftDate||'______________')+'.'),
