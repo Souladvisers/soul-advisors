@@ -135,6 +135,9 @@ textarea{min-height:80px;resize:vertical}
 <div class="formcol">
   <div class="mtoggle"><button class="btn pri" id="mvForm" onclick="mview('form')">Form</button><button class="btn sec" id="mvPrev" onclick="mview('prev')">Preview</button></div>
   <div class="steps" id="steps"></div>
+  <div id="xl-drop" style="border:2px dashed var(--gold);border-radius:8px;padding:11px 14px;font-size:12px;text-align:center;color:var(--muted);cursor:pointer;margin:6px 0 10px;transition:background .2s" onclick="xlPick()">
+    📂 Drop client Excel file here to auto-fill &nbsp;·&nbsp; <a href="/Soul_Advisors_Client_Profile.xlsx" onclick="event.stopPropagation()" style="color:var(--gold)">download template</a>
+  </div>
   <div class="card">
 
   <!-- 1 -->
@@ -683,6 +686,27 @@ function downloadPdf(){
 function saveDraft(){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})); a.download=fileBase()+'_draft.json'; a.click(); }
 function loadDraft(input){ const f=input.files[0]; if(!f) return; f.text().then(t=>{ try{ const d=JSON.parse(t); if(d.marital!==undefined && (d.wasiyyah!==undefined || d.resMode!==undefined)){ applyWasiat(d); } else { S=Object.assign(DEFAULT(), d); fillForm(); update(); } }catch(e){ alert('That file is not a valid draft.'); } }); input.value=''; }
 function resetAll(){ S=DEFAULT(); fillForm(); update(); go(0); }
+
+/* ===== EXCEL AUTO-FILL ===== */
+function xlPick(){ const i=document.createElement('input'); i.type='file'; i.accept='.xlsx,.xls'; i.onchange=e=>xlRead(e.target.files[0]); i.click(); }
+function xlRead(file){ if(!file) return; const dz=document.getElementById('xl-drop'); dz.textContent='Reading file…'; ensureXLSX(()=>{ const r=new FileReader(); r.onload=ev=>{ try{ const wb=XLSX.read(ev.target.result,{type:'array'}); applyXL(wb); dz.innerHTML='📂 Drop client Excel file here to auto-fill &nbsp;·&nbsp; <a href="/Soul_Advisors_Client_Profile.xlsx" onclick="event.stopPropagation()" style="color:var(--gold)">download template</a>'; }catch(e){ dz.textContent='Could not read file — use the Soul Advisors template.'; } }; r.readAsArrayBuffer(file); }); }
+function ensureXLSX(cb){ if(window.XLSX) return cb(); const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload=cb; document.head.appendChild(s); }
+function sheetKV(wb,name){ const ws=wb.Sheets[name]; if(!ws) return {}; const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''}); const out={}; rows.slice(1).forEach(r=>{ if(r[0]!=null && String(r[0]).trim() && r[1]!=null && String(r[1]).trim()) out[String(r[0]).trim()]=String(r[1]).trim(); }); return out; }
+function sheetRows(wb,name){ const ws=wb.Sheets[name]; if(!ws) return []; return XLSX.utils.sheet_to_json(ws,{defval:''}); }
+function xlToast(msg){ const t=document.createElement('div'); t.textContent=msg; Object.assign(t.style,{position:'fixed',bottom:'24px',left:'50%',transform:'translateX(-50%)',background:'#2a2a2a',color:'#fff',padding:'10px 20px',borderRadius:'8px',fontSize:'13px',zIndex:9999,opacity:'1',transition:'opacity 0.5s'}); document.body.appendChild(t); setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),500);},3000); }
+function applyXL(wb){
+  const kv=sheetKV(wb,'Personal'), execs=sheetRows(wb,'Executors');
+  if(kv['Full Name']) S.t.name=kv['Full Name'];
+  if(kv['ID Type']) S.t.idType=kv['ID Type'];
+  if(kv['ID Number']) S.t.nric=kv['ID Number'];
+  if(kv['Gender']) S.t.gender=kv['Gender'];
+  if(kv['Spouse Full Name']) S.spouse=kv['Spouse Full Name'];
+  if(kv['Date of Will']) S.willDate=kv['Date of Will'];
+  if(kv['Where Will Was Signed']) S.willAt=kv['Where Will Was Signed'];
+  if(execs.length) S.executors=execs.map(r=>({name:r['Full Name']||'',rel:r['Relationship']||'',phone:r['Phone']||''}));
+  fillForm(); update(); applyMode(); xlToast('Excel loaded — review before saving.');
+}
+(function(){ const dz=document.getElementById('xl-drop'); if(!dz) return; dz.addEventListener('dragover',e=>{e.preventDefault();dz.style.background='rgba(200,160,60,0.1)';}); dz.addEventListener('dragleave',()=>{dz.style.background='';}); dz.addEventListener('drop',e=>{e.preventDefault();dz.style.background='';xlRead(e.dataTransfer.files[0]);}); })();
 
 function loadSample(){
   S = DEFAULT();
