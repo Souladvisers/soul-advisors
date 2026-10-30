@@ -2456,8 +2456,8 @@ function fRenderDist(funds) {
     const freq = f.dividends[0]?.frequency || '—';
     const divs = f.dividends.slice(0,5); const moreDivs = f.dividends.slice(5);
     const key  = encodeURIComponent(f.name).replace(/%/g,'_');
-    // Dividends are oldest-first — use last entry for the most recent rate
-    const latestDiv  = f.dividends[f.dividends.length - 1] || divs[0] || {};
+    // Dividends are newest-first — use first entry for the most recent rate
+    const latestDiv  = f.dividends[0] || {};
     const latestRate  = latestDiv.ratePct  ?? null;
     const latestCents = latestDiv.rateCents ?? null;
     const latestFreq  = latestDiv.frequency || freq;
