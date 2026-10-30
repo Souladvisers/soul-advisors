@@ -1218,9 +1218,15 @@ body.csb-session-on .csb-hide-field { display: none !important; }
           <div class="alloc-form-sub">Enter the client's profile to generate a suggested fund allocation as a starting point for your conversation.</div>
 
           <div class="csb-session-badge" id="al-session-badge"></div>
-          <div class="al-field csb-hide-field">
-            <label class="al-label">Client Age</label>
-            <input class="al-input" type="number" id="al-age" min="18" max="80" placeholder="e.g. 35">
+          <div class="al-field-row csb-hide-field">
+            <div class="al-field">
+              <label class="al-label">Client Age</label>
+              <input class="al-input" type="number" id="al-age" min="18" max="80" placeholder="e.g. 35">
+            </div>
+            <div class="al-field">
+              <label class="al-label">Target Retire Age</label>
+              <input class="al-input" type="number" id="al-retire-age" min="40" max="80" placeholder="e.g. 65">
+            </div>
           </div>
 
           <div class="al-field">
@@ -1344,7 +1350,10 @@ body.csb-session-on .csb-hide-field { display: none !important; }
 
           <!-- 1. Client Profile -->
           <div class="rb-section">
-            <div class="rb-section-title">Client Profile</div>
+            <div class="rb-section-title" style="display:flex;align-items:center;justify-content:space-between">
+              Client Profile
+              <button onclick="rbLoadFromBuilder()" style="font-size:0.62rem;font-weight:600;letter-spacing:0.04em;padding:0.25rem 0.65rem;background:rgba(184,151,90,0.12);color:var(--accent);border:1px solid rgba(184,151,90,0.3);border-radius:4px;cursor:pointer;font-family:inherit">← Load from Portfolio Builder</button>
+            </div>
             <div class="csb-session-badge" id="rb-session-badge"></div>
             <div class="al-field csb-hide-field"><label class="al-label">Age</label><input class="al-input" type="number" id="rb-age" min="18" max="90" placeholder="e.g. 42"></div>
             <div class="al-field"><label class="al-label">Investment Goal</label>
@@ -2854,6 +2863,15 @@ function clientTier(profile) {
   else if ((h >= 10 && r === 'high') || tr === '10+')                    base = 3;
   else if (tr === '4-6' && r !== 'high' && a >= 50)                      base = 1;
   else                                                                     base = 2;
+
+  // Retirement glide path: de-risk as client nears their target retirement age
+  const retireAge = parseInt(profile.retireAge);
+  if (retireAge > a) {
+    const ytr = retireAge - a;
+    if (ytr <= 5)                   base = 1;
+    else if (ytr <= 10 && base > 1) base = Math.min(base, 2);
+  }
+
   return { tier: profile.shariah === 'yes' ? 4 : base, base };
 }
 
@@ -2921,6 +2939,7 @@ function alRisk(btn) {
 
 function runAllocator() {
   const age       = parseInt(document.getElementById('al-age').value);
+  const retireAge = parseInt(document.getElementById('al-retire-age')?.value) || null;
   const goal      = document.getElementById('al-goal').value;
   const horizon   = parseInt(document.getElementById('al-horizon').value);
   const targetRet = document.getElementById('al-ret').value;
@@ -2939,7 +2958,7 @@ function runAllocator() {
   warn.classList.add('hidden');
   if (!fAllFunds.length) { warn.textContent = 'Fund data not loaded yet. Please wait a moment.'; warn.classList.remove('hidden'); return; }
 
-  const profile   = { age, goal, horizon, targetRet, riskTol, monthly, tenure, income, dependants, shariah };
+  const profile   = { age, retireAge, goal, horizon, targetRet, riskTol, monthly, tenure, income, dependants, shariah };
   const score     = alRiskScore(profile);          // 1–5 for risk display label
   const tierObj   = clientTier(profile);            // Module 1: tier 1–4
   const mix       = tierBucketMix(tierObj, goal);   // Module 3: allocation targets
@@ -3111,6 +3130,27 @@ function renderAllocation(portfolio, score, tierObj, profile, expRet) {
 function rbRisk(btn) {
   document.querySelectorAll('#rb-risk-grp .al-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+}
+function rbLoadFromBuilder() {
+  const get = id => document.getElementById(id);
+  const setVal = (rbId, alId) => { const src = get(alId); const dst = get(rbId); if (src && dst && src.value) dst.value = src.value; };
+  setVal('rb-age',        'al-age');
+  setVal('rb-goal',       'al-goal');
+  setVal('rb-ret',        'al-ret');
+  setVal('rb-monthly',    'al-monthly');
+  setVal('rb-tenure',     'al-tenure');
+  setVal('rb-income',     'al-income');
+  setVal('rb-dependants', 'al-dependants');
+  // Copy horizon slider
+  const alH = get('al-horizon'); const rbH = get('rb-horizon');
+  if (alH && rbH && alH.value) { rbH.value = alH.value; get('rb-horizon-lbl').textContent = alH.value + ' year' + (alH.value == 1 ? '' : 's'); }
+  // Copy risk tolerance active button
+  const alRiskActive = document.querySelector('#al-risk-grp .al-btn.active');
+  if (alRiskActive) { const rbBtn = document.querySelector(`#rb-risk-grp .al-btn[data-val="${alRiskActive.dataset.val}"]`); if (rbBtn) rbRisk(rbBtn); }
+  // Copy shariah
+  const alShariah = document.querySelector('#al-shariah-grp .al-shariah-btn.active');
+  if (alShariah) { const rbSBtn = document.querySelector(`#rb-shariah-grp .al-shariah-btn[data-val="${alShariah.dataset.val}"]`); if (rbSBtn) rbShariah(rbSBtn); }
+  rbUpdatePreview();
 }
 function rbType(btn) {
   document.querySelectorAll('.rb-type-btn').forEach(b => b.classList.remove('active'));
@@ -3700,6 +3740,32 @@ function renderAIResult(ai, profile, container) {
   const risksHtml = (ai.risks || [])
     .map(r => `<div class="ai-risk-row">${r}</div>`).join('');
 
+  // Projected portfolio value from AI allocation
+  const aiFvCalc = (r_annual, yrs, pmt) => {
+    if (!pmt || !yrs || !r_annual) return null;
+    const r = r_annual / 12, n = yrs * 12;
+    return pmt * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+  };
+  const aiWithRet = enrich.filter(x => x.fd?.performance?.['3y'] != null);
+  const aiExpRet  = aiWithRet.length
+    ? aiWithRet.reduce((s, x) => s + x.fd.performance['3y'] * x.pct, 0) / 100
+    : null;
+  const aiPmt    = parseFloat(profile.monthly) || 0;
+  const aiTenure = parseInt(profile.tenure)    || 0;
+  const aiFmt    = v => v ? 'S$' + Math.round(v).toLocaleString() : null;
+  const aiProjLow  = aiExpRet != null && aiPmt && aiTenure ? aiFvCalc(Math.max(0.01, aiExpRet - 0.02), aiTenure, aiPmt) : null;
+  const aiProjHigh = aiExpRet != null && aiPmt && aiTenure ? aiFvCalc(aiExpRet + 0.02, aiTenure, aiPmt) : null;
+  const aiProjHtml = aiProjLow && aiProjHigh ? `
+    <div style="margin-top:1rem;padding:0.85rem 1rem;background:rgba(184,151,90,0.07);border:1px solid rgba(184,151,90,0.2);border-radius:6px">
+      <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(184,151,90,0.7);margin-bottom:0.45rem">Projected Portfolio Value (S$${aiPmt}/mo · ${aiTenure} yrs)</div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+        <div><div style="font-size:0.62rem;color:rgba(255,255,255,0.35);margin-bottom:2px">Pessimistic</div><div style="font-size:1rem;font-weight:700;color:#93c5fd">${aiFmt(aiProjLow)}</div></div>
+        <div><div style="font-size:0.62rem;color:rgba(255,255,255,0.35);margin-bottom:2px">Expected</div><div style="font-size:1rem;font-weight:700;color:var(--accent)">${aiFmt(aiFvCalc(aiExpRet, aiTenure, aiPmt))}</div></div>
+        <div><div style="font-size:0.62rem;color:rgba(255,255,255,0.35);margin-bottom:2px">Optimistic</div><div style="font-size:1rem;font-weight:700;color:#6ee7b7">${aiFmt(aiProjHigh)}</div></div>
+      </div>
+      <div style="font-size:0.6rem;color:rgba(255,255,255,0.2);margin-top:0.4rem">Based on ${(aiExpRet*100).toFixed(1)}% ±2% p.a. from AI-selected funds · Not guaranteed · Past performance not indicative of future results</div>
+    </div>` : '';
+
   const totalAlloc = enrich.reduce((s,x) => s + (x.pct||0), 0);
   const barHtml = enrich.map(x =>
     `<div class="al-bar-row">
@@ -3730,6 +3796,7 @@ function renderAIResult(ai, profile, container) {
         <span class="al-info-txt">${GL[profile.goal]||profile.goal} · ${profile.horizon}-year horizon · Age ${profile.age}</span>
         <span class="ai-badge" style="margin-left:auto;font-size:0.59rem">✦ AI-Enhanced</span>
       </div>
+      ${aiProjHtml}
     </div>
 
     <!-- Allocation bar chart -->
