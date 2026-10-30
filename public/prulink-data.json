@@ -38,7 +38,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve balanced capital growth by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 65:35.",
       "managementFee": null,
@@ -92,7 +92,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to provide conservative and stable returns by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 15:85.",
       "managementFee": null,
@@ -146,7 +146,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve high growth by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 85:15.",
       "managementFee": null,
@@ -200,7 +200,7 @@
       "launchDate": "21 October 2021",
       "benchmark": null,
       "manager": "Financial Year End",
-      "underlyingFund": "Limited Dividend Fund  Eastspring Investments  Eastspring Investments",
+      "underlyingFund": "Limited Dividend Fund \uf0b7 Eastspring Investments \uf0b7 Eastspring Investments",
       "factsheet": "View factsheet",
       "strategy": "The Investment objective is to achieve moderate returns by investing in a broad range of underlying funds. The targeted allocation to equities and bonds is in the proportion of approximately 45:55.",
       "managementFee": null,
@@ -472,7 +472,7 @@
       "manager": "Financial Year End",
       "underlyingFund": null,
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Equity Fund aims to maximise long-term total return by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity in the Asia Pacific ex-Japan Region. The Fund may also invest in depository receipts including American Depositary Receipts (“ADRs”) and Global Depositary Receipts (“GDRs”), debt securities convertible into common shares, preference shares and warrants.",
+      "strategy": "The PRULink Asian Equity Fund aims to maximise long-term total return by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity in the Asia Pacific ex-Japan Region. The Fund may also invest in depository receipts including American Depositary Receipts (\u201cADRs\u201d) and Global Depositary Receipts (\u201cGDRs\u201d), debt securities convertible into common shares, preference shares and warrants.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -526,7 +526,7 @@
       "manager": "Financial Year End",
       "underlyingFund": "which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund’s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
+      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund\u2019s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
       "managementFee": "1.00% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -629,7 +629,7 @@
       "manager": "Financial Year End",
       "underlyingFund": "which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund’s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
+      "strategy": "The PRULink Asian Fixed-Income Fund aims to maximise long-term return by investing into the Underlying Fund which then invests in a diversified portfolio consisting primarily of fixed income/ debt securities issued by Asian entities or their subsidiaries. The Underlying Fund\u2019s portfolio primarily consists of securities denominated in the various Asian currencies and aims to maximise total returns through investing in fixed income/ debt securities that are rated as well as unrated.",
       "managementFee": "1.00% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -657,6 +657,30 @@
       "dividends": [
         {
           "frequency": "Quarterly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.25 %",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Quarterly",
           "payoutDate": "Dec 2025",
           "payoutType": "Distribution",
           "rateRaw": "0.92%",
@@ -664,92 +688,164 @@
           "rateCents": null
         },
         {
-          "date": "2021-03-31",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2021-07-01",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2021-12-31",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2022-07-01",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.0093
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0125
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.0125
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.9300%",
+          "ratePct": 0.0093,
+          "rateCents": null
         }
       ],
       "bidPrice": 0.64859,
@@ -912,6 +1008,22 @@
       },
       "dividends": [
         {
+          "frequency": "Semi-Annual",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "2.06 % of the value of the units (based on the bid price)",
+          "ratePct": 0.0206,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0600%",
+          "ratePct": 0.0206,
+          "rateCents": null
+        },
+        {
           "frequency": "Semi-Annually",
           "payoutDate": "Sep 2025",
           "payoutType": "Distribution",
@@ -920,104 +1032,196 @@
           "rateCents": null
         },
         {
-          "date": "2014-03-03",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "2.1800%",
+          "ratePct": 0.0218,
+          "rateCents": null
         },
         {
-          "date": "2014-09-02",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "2.1800%",
+          "ratePct": 0.0218,
+          "rateCents": null
         },
         {
-          "date": "2015-03-03",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2015-09-03",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2016-03-03",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2016-09-02",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2017-03-03",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2017-09-04",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2018-03-05",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2018-09-03",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2019-03-04",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2019-09-02",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2020-03-02",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2020-09-01",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2021-03-04",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2018",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2021-09-01",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2018",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2022-03-04",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2017",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2022-09-01",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2017",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2023-03-01",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2016",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2023-09-15",
-          "ratePct": 0.015
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2016",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2024-03-01",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2015",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2024-09-02",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2015",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2025-03-03",
-          "ratePct": 0.0218
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2014",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         },
         {
-          "date": "2025-09-01",
-          "ratePct": 0.0218
-        },
-        {
-          "date": "2026-03-02",
-          "ratePct": 0.0206
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2014",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5000%",
+          "ratePct": 0.015,
+          "rateCents": null
         }
       ],
       "bidPrice": 1.13531,
@@ -1153,7 +1357,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Charge Income Fund : USD 632.7 M",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Asian Income Fund aims to maximize income by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity, in the Asia Pacific ex-Japan region. The Fund may also invest in depository receipts including American Depositary Receipt (“ADRs”) and Global Depositary Receipt (“GDRs”), debt securities convertible into common shares, preference shares and warrants.",
+      "strategy": "The PRULink Asian Income Fund aims to maximize income by investing primarily in equity and equity-related securities of companies, which are incorporated, listed in or have their areas of primary activity, in the Asia Pacific ex-Japan region. The Fund may also invest in depository receipts including American Depositary Receipt (\u201cADRs\u201d) and Global Depositary Receipt (\u201cGDRs\u201d), debt securities convertible into common shares, preference shares and warrants.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -1180,6 +1384,22 @@
       },
       "dividends": [
         {
+          "frequency": "Semi-Annual",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "2.50 % of the value of the units (based on the bid price)",
+          "ratePct": 0.025,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "2.5000%",
+          "ratePct": 0.025,
+          "rateCents": null
+        },
+        {
           "frequency": "Semi-Annually",
           "payoutDate": "Sep 2025",
           "payoutType": "Distribution",
@@ -1188,140 +1408,268 @@
           "rateCents": null
         },
         {
-          "date": "2009-10-01",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2010-04-01",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2010-10-01",
-          "ratePct": 0.0205
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2011-04-03",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2011-10-03",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2012-04-02",
-          "ratePct": 0.021
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2012-10-01",
-          "ratePct": 0.021
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2013-04-01",
-          "ratePct": 0.021
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2013-10-01",
-          "ratePct": 0.021
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2014-04-01",
-          "ratePct": 0.021
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2014-10-01",
-          "ratePct": 0.025
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2015-04-01",
-          "ratePct": 0.025
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2015-10-01",
-          "ratePct": 0.025
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2016-04-01",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2016-10-03",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2018",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2017-04-03",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2018",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2017-10-02",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2017",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2018-04-02",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2017",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2018-10-01",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2016",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2019-04-01",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2016",
+          "payoutType": "Distribution",
+          "rateRaw": "2.3700%",
+          "ratePct": 0.0237,
+          "rateCents": null
         },
         {
-          "date": "2019-10-01",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2015",
+          "payoutType": "Distribution",
+          "rateRaw": "2.5000%",
+          "ratePct": 0.025,
+          "rateCents": null
         },
         {
-          "date": "2020-04-01",
-          "ratePct": 0.0237
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2015",
+          "payoutType": "Distribution",
+          "rateRaw": "2.5000%",
+          "ratePct": 0.025,
+          "rateCents": null
         },
         {
-          "date": "2020-10-01",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2014",
+          "payoutType": "Distribution",
+          "rateRaw": "2.5000%",
+          "ratePct": 0.025,
+          "rateCents": null
         },
         {
-          "date": "2021-04-05",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2014",
+          "payoutType": "Distribution",
+          "rateRaw": "2.1000%",
+          "ratePct": 0.021,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2013",
+          "payoutType": "Distribution",
+          "rateRaw": "2.1000%",
+          "ratePct": 0.021,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2013",
+          "payoutType": "Distribution",
+          "rateRaw": "2.1000%",
+          "ratePct": 0.021,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2012",
+          "payoutType": "Distribution",
+          "rateRaw": "2.1000%",
+          "ratePct": 0.021,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2012",
+          "payoutType": "Distribution",
+          "rateRaw": "2.1000%",
+          "ratePct": 0.021,
+          "rateCents": null
         },
         {
-          "date": "2023-09-28",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2011",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2011",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2010",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0500%",
+          "ratePct": 0.0205,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.02
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2010",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.02
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.025
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2009",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0000%",
+          "ratePct": 0.02,
+          "rateCents": null
         }
       ],
       "bidPrice": 1.24588,
@@ -1587,6 +1935,30 @@
       "dividends": [
         {
           "frequency": "Quarterly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Decumulation",
+          "rateRaw": "1.72 %",
+          "ratePct": 0.0172,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
+        },
+        {
+          "frequency": "Quarterly",
           "payoutDate": "Dec 2025",
           "payoutType": "Decumulation",
           "rateRaw": "1.25%",
@@ -1594,92 +1966,164 @@
           "rateCents": null
         },
         {
-          "date": "2021-03-31",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2021-07-01",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2021-12-31",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2022-07-01",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0172
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.0172
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.0172
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.7200%",
+          "ratePct": 0.0172,
+          "rateCents": null
         }
       ],
       "bidPrice": 0.72298,
@@ -1740,6 +2184,30 @@
       "dividends": [
         {
           "frequency": "Quarterly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.25 %",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Quarterly",
           "payoutDate": "Dec 2025",
           "payoutType": "Decumulation",
           "rateRaw": "1.25%",
@@ -1747,92 +2215,164 @@
           "rateCents": null
         },
         {
-          "date": "2021-03-31",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2021-07-01",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2021-12-31",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2022-07-01",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0125
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.0125
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         }
       ],
       "bidPrice": 0.7798,
@@ -1865,7 +2405,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Charge Dragon Peacock Fund : SGD 1,065.8 M",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink China India Fund is to maximise long-term total return by investing primarily in equity and equity- related instruments of corporations, which are incorporated in, or listed in, or operating principally from, or carrying on significant business in, or derive substantial revenue from, or whose subsidiaries, related or associated corporations derive substantial revenue from, the People’s Republic of China (PRC) and the Republic of India (India).",
+      "strategy": "The investment objective of the PRULink China India Fund is to maximise long-term total return by investing primarily in equity and equity- related instruments of corporations, which are incorporated in, or listed in, or operating principally from, or carrying on significant business in, or derive substantial revenue from, or whose subsidiaries, related or associated corporations derive substantial revenue from, the People\u2019s Republic of China (PRC) and the Republic of India (India).",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -2081,7 +2621,7 @@
       "manager": "GMO Singapore Pte. Limited",
       "underlyingFund": "seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate",
       "factsheet": "View factsheet",
-      "strategy": "The Underlying Fund seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate change, to address the environment challenges presented by global climate change, or to improve the efficiency of resource consumption. The Fund’s benchmark is the MSCI All Country World Index.",
+      "strategy": "The Underlying Fund seeks to generate high total return by investing primarily in equities of companies the Investment Manager believes are positioned to benefit, directly or indirectly, from efforts to curb or mitigate the long-term effects of global climate change, to address the environment challenges presented by global climate change, or to improve the efficiency of resource consumption. The Fund\u2019s benchmark is the MSCI All Country World Index.",
       "managementFee": "1.50% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -2162,7 +2702,19 @@
       },
       "dividends": [
         {
-          "date": "2025-10-01",
+          "frequency": "Annual",
+          "payoutDate": "Oct 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "5 cents per unit",
+          "ratePct": null,
+          "rateCents": 5.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "5.0 cent per unit",
+          "ratePct": null,
           "rateCents": 5.0
         }
       ],
@@ -2224,6 +2776,78 @@
       "dividends": [
         {
           "frequency": "Monthly",
+          "payoutDate": "Oct 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.45 %",
+          "ratePct": 0.0045000000000000005,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.45 %",
+          "ratePct": 0.0045000000000000005,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.45 %",
+          "ratePct": 0.0045000000000000005,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.45 %",
+          "ratePct": 0.0045000000000000005,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
           "payoutDate": "Jan 2026",
           "payoutType": "Distribution",
           "rateRaw": "0.45%",
@@ -2231,192 +2855,340 @@
           "rateCents": null
         },
         {
-          "date": "2022-08-01",
-          "ratePct": 0.0038
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2022-09-01",
-          "ratePct": 0.0038
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2022-09-30",
-          "ratePct": 0.0038
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2022-10-31",
-          "ratePct": 0.0038
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2022-11-30",
-          "ratePct": 0.0038
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.0038
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2023-02-01",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2023-03-01",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "May 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2023-05-02",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2023-06-01",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4500%",
+          "ratePct": 0.0045,
+          "rateCents": null
         },
         {
-          "date": "2023-08-01",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2023-08-31",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2023-11-01",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2023-12-01",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.004
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2024-01-31",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2024-02-29",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "May 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2024-04-30",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2024-05-31",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4300%",
+          "ratePct": 0.0043,
+          "rateCents": null
         },
         {
-          "date": "2024-07-31",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2024-08-30",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2024-10-30",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2024-11-29",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.0043
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2025-01-31",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2025-02-28",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "May 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2025-04-30",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2025-05-30",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.4000%",
+          "ratePct": 0.004,
+          "rateCents": null
         },
         {
-          "date": "2025-07-31",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.3800%",
+          "ratePct": 0.0038,
+          "rateCents": null
         },
         {
-          "date": "2025-08-29",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.3800%",
+          "ratePct": 0.0038,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.3800%",
+          "ratePct": 0.0038,
+          "rateCents": null
         },
         {
-          "date": "2025-10-31",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.3800%",
+          "ratePct": 0.0038,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.3800%",
+          "ratePct": 0.0038,
+          "rateCents": null
         },
         {
-          "date": "2026-01-30",
-          "ratePct": 0.0045
-        },
-        {
-          "date": "2026-02-27",
-          "ratePct": 0.0045
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.0045
-        },
-        {
-          "date": "2026-04-30",
-          "ratePct": 0.0045
-        },
-        {
-          "date": "2026-05-29",
-          "ratePct": 0.0045
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.0045
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.3800%",
+          "ratePct": 0.0038,
+          "rateCents": null
         }
       ],
       "bidPrice": 0.86348,
@@ -2634,6 +3406,30 @@
       "dividends": [
         {
           "frequency": "Quarterly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.60 % of the value of the units (based on the bid price)",
+          "ratePct": 0.006,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6000%",
+          "ratePct": 0.006,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6000%",
+          "ratePct": 0.006,
+          "rateCents": null
+        },
+        {
+          "frequency": "Quarterly",
           "payoutDate": "Dec 2025",
           "payoutType": "Distribution",
           "rateRaw": "0.67%",
@@ -2641,128 +3437,236 @@
           "rateCents": null
         },
         {
-          "date": "2018-12-31",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6700%",
+          "ratePct": 0.0067,
+          "rateCents": null
         },
         {
-          "date": "2019-04-01",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6700%",
+          "ratePct": 0.0067,
+          "rateCents": null
         },
         {
-          "date": "2019-07-01",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6700%",
+          "ratePct": 0.0067,
+          "rateCents": null
         },
         {
-          "date": "2019-10-01",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6700%",
+          "ratePct": 0.0067,
+          "rateCents": null
         },
         {
-          "date": "2019-12-31",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7300%",
+          "ratePct": 0.0073,
+          "rateCents": null
         },
         {
-          "date": "2020-04-01",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7300%",
+          "ratePct": 0.0073,
+          "rateCents": null
         },
         {
-          "date": "2020-07-01",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7300%",
+          "ratePct": 0.0073,
+          "rateCents": null
         },
         {
-          "date": "2020-10-01",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7300%",
+          "ratePct": 0.0073,
+          "rateCents": null
         },
         {
-          "date": "2020-12-31",
-          "ratePct": 0.0074
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7100%",
+          "ratePct": 0.0071,
+          "rateCents": null
         },
         {
-          "date": "2021-03-31",
-          "ratePct": 0.0077
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7100%",
+          "ratePct": 0.0071,
+          "rateCents": null
         },
         {
-          "date": "2021-07-01",
-          "ratePct": 0.0077
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7100%",
+          "ratePct": 0.0071,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.0077
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7100%",
+          "ratePct": 0.0071,
+          "rateCents": null
         },
         {
-          "date": "2021-12-31",
-          "ratePct": 0.0077
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6500%",
+          "ratePct": 0.0065,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.0065
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6500%",
+          "ratePct": 0.0065,
+          "rateCents": null
         },
         {
-          "date": "2022-07-01",
-          "ratePct": 0.0065
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6500%",
+          "ratePct": 0.0065,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.0065
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6500%",
+          "ratePct": 0.0065,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.0065
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7700%",
+          "ratePct": 0.0077,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.0071
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7700%",
+          "ratePct": 0.0077,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.0071
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7700%",
+          "ratePct": 0.0077,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.0071
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7700%",
+          "ratePct": 0.0077,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.0071
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.0073
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.0073
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.0073
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.0073
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0067
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0067
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0067
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0067
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.006
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.006
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2018",
+          "payoutType": "Distribution",
+          "rateRaw": "0.7400%",
+          "ratePct": 0.0074,
+          "rateCents": null
         }
       ],
       "bidPrice": 1.56367,
@@ -2898,7 +3802,7 @@
       "manager": "Eastspring Investments (Singapore) Ltd",
       "underlyingFund": "Dynamic Growth Equity Fund : Charge",
       "factsheet": "View factsheet",
-      "strategy": "The PRULink Global Equity Growth Fund feeds into the Eastspring Investments – Global Dynamic Growth Equity Fund (the Underlying Fund), which aims to provide superior capital growth by investing primarily in shares of companies with strong growth potential.",
+      "strategy": "The PRULink Global Equity Growth Fund feeds into the Eastspring Investments \u2013 Global Dynamic Growth Equity Fund (the Underlying Fund), which aims to provide superior capital growth by investing primarily in shares of companies with strong growth potential.",
       "managementFee": null,
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -3112,9 +4016,9 @@
       "launchDate": "07 September 2021",
       "benchmark": "MSCI AC World Net (Hedged to SGD)",
       "manager": "Underlying Fund and Size",
-      "underlyingFund": "seeks to understand the world’s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services.",
+      "underlyingFund": "seeks to understand the world\u2019s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services.",
       "factsheet": "View factsheet",
-      "strategy": "The Underlying Fund seeks to understand the world’s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services. Through the Fund’s investments, we seek to improve access to, and the quality of, basic life essentials, reduce inequality and mitigate the effects of climate change. The Fund seeks to deliver long-term total returns in excess of the MSCI All Country World Index.",
+      "strategy": "The Underlying Fund seeks to understand the world\u2019s social and environmental problems and to identify and invest primarily in the equities of companies that we believe are addressing these needs in a differentiated way through their core products and services. Through the Fund\u2019s investments, we seek to improve access to, and the quality of, basic life essentials, reduce inequality and mitigate the effects of climate change. The Fund seeks to deliver long-term total returns in excess of the MSCI All Country World Index.",
       "managementFee": "1.50% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -3407,6 +4311,30 @@
       "dividends": [
         {
           "frequency": "Quarterly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.25 % of the value of the units (based on the bid price)",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
+        },
+        {
+          "frequency": "Quarterly",
           "payoutDate": "Dec 2025",
           "payoutType": "Distribution",
           "rateRaw": "1.25%",
@@ -3414,128 +4342,236 @@
           "rateCents": null
         },
         {
-          "date": "2018-12-31",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2019-04-01",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2019-07-01",
-          "ratePct": 0.005
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2019-10-01",
-          "ratePct": 0.005
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.2500%",
+          "ratePct": 0.0125,
+          "rateCents": null
         },
         {
-          "date": "2019-12-31",
-          "ratePct": 0.005
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2020-04-01",
-          "ratePct": 0.005
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2020-07-01",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2020-10-01",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2020-12-31",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2021-03-31",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2021-07-01",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2021-12-31",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2022-07-01",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "0.5000%",
+          "ratePct": 0.005,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.01
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "0.5000%",
+          "ratePct": 0.005,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "0.5000%",
+          "ratePct": 0.005,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "0.5000%",
+          "ratePct": 0.005,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0125
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.0125
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.0125
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2018",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0000%",
+          "ratePct": 0.01,
+          "rateCents": null
         }
       ],
       "bidPrice": 1.17392,
@@ -3747,6 +4783,30 @@
       "dividends": [
         {
           "frequency": "Quarterly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Decumulation",
+          "rateRaw": "1.57 %",
+          "ratePct": 0.015700000000000002,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
+        },
+        {
+          "frequency": "Quarterly",
           "payoutDate": "Dec 2025",
           "payoutType": "Decumulation",
           "rateRaw": "1.33%",
@@ -3754,92 +4814,164 @@
           "rateCents": null
         },
         {
-          "date": "2021-03-31",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2021-07-01",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2021-12-31",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2022-07-01",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0157
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.0157
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.0157
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.5700%",
+          "ratePct": 0.0157,
+          "rateCents": null
         }
       ],
       "bidPrice": 0.81405,
@@ -3900,6 +5032,30 @@
       "dividends": [
         {
           "frequency": "Quarterly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.12 %",
+          "ratePct": 0.011200000000000002,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
+        },
+        {
+          "frequency": "Quarterly",
           "payoutDate": "Dec 2025",
           "payoutType": "Decumulation",
           "rateRaw": "1.33%",
@@ -3907,92 +5063,164 @@
           "rateCents": null
         },
         {
-          "date": "2021-03-31",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2021-07-01",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2021-10-01",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2021-12-31",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2022-03-31",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2022-07-01",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2022-10-03",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2022-12-30",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2023-03-31",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2023-06-30",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2023-09-29",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2023-12-29",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2024-03-28",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2024-06-28",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2024-09-30",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2024-12-31",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2025-04-01",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2025-06-30",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2025-09-30",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         },
         {
-          "date": "2025-12-31",
-          "ratePct": 0.0112
-        },
-        {
-          "date": "2026-03-31",
-          "ratePct": 0.0112
-        },
-        {
-          "date": "2026-06-30",
-          "ratePct": 0.0112
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.1200%",
+          "ratePct": 0.0112,
+          "rateCents": null
         }
       ],
       "bidPrice": 0.90922,
@@ -4215,6 +5443,78 @@
       "dividends": [
         {
           "frequency": "Monthly",
+          "payoutDate": "Oct 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
           "payoutDate": "Jan 2026",
           "payoutType": "Distribution",
           "rateRaw": "0.43 cent per unit",
@@ -4222,124 +5522,204 @@
           "rateCents": 0.43
         },
         {
-          "date": "2023-12-29",
-          "rateCents": 0.5
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-01-31",
-          "rateCents": 0.5
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-02-29",
-          "rateCents": 0.5
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-03-28",
-          "rateCents": 0.48
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-04-30",
-          "rateCents": 0.48
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-05-31",
-          "rateCents": 0.48
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-06-28",
-          "rateCents": 0.48
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-07-31",
-          "rateCents": 0.48
+          "frequency": "Monthly",
+          "payoutDate": "May 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
         },
         {
-          "date": "2024-08-30",
-          "rateCents": 0.48
-        },
-        {
-          "date": "2024-09-30",
-          "rateCents": 0.48
-        },
-        {
-          "date": "2024-10-30",
-          "rateCents": 0.48
-        },
-        {
-          "date": "2024-11-29",
-          "rateCents": 0.48
-        },
-        {
-          "date": "2024-12-31",
-          "rateCents": 0.48
-        },
-        {
-          "date": "2025-01-31",
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.47 cent per unit",
+          "ratePct": null,
           "rateCents": 0.47
         },
         {
-          "date": "2025-02-28",
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.43 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.43
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.47 cent per unit",
+          "ratePct": null,
           "rateCents": 0.47
         },
         {
-          "date": "2025-04-01",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.47 cent per unit",
+          "ratePct": null,
           "rateCents": 0.47
         },
         {
-          "date": "2025-04-30",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2025-05-30",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2025-06-30",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2025-07-31",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2025-08-29",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2025-09-30",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2025-10-31",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2025-12-31",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "May 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2026-01-30",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2026-02-27",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.48 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.48
         },
         {
-          "date": "2026-03-31",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.5 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.5
         },
         {
-          "date": "2026-04-30",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.5 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.5
         },
         {
-          "date": "2026-05-29",
-          "rateCents": 0.43
-        },
-        {
-          "date": "2026-06-30",
-          "rateCents": 0.43
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.5 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.5
         }
       ],
       "bidPrice": 0.93638,
@@ -4426,7 +5806,7 @@
       "manager": "Eastspring Investments (Singapore) Limited",
       "underlyingFund": "Schroder Investment Management (Hong Kong) Ltd",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People’s Republic of China, Hong Kong SAR and Taiwan companies.",
+      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People\u2019s Republic of China, Hong Kong SAR and Taiwan companies.",
       "managementFee": "1.5% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -4480,7 +5860,7 @@
       "manager": "Eastspring Investments (Singapore) Limited",
       "underlyingFund": "Schroder Investment Management (Hong Kong) Ltd",
       "factsheet": "View factsheet",
-      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People’s Republic of China, Hong Kong SAR and Taiwan companies.",
+      "strategy": "The investment objective of the PRULink Greater China Fund is to provide capital growth primarily through investment in equity securities of the People\u2019s Republic of China, Hong Kong SAR and Taiwan companies.",
       "managementFee": "1.5% p.a.",
       "initialCharge": "Up to 5% ^",
       "calendarReturns": {
@@ -5123,110 +6503,210 @@
       "dividends": [
         {
           "frequency": "Quarterly",
-          "payoutDate": "DEC 2079",
+          "payoutDate": "Sep 2026",
           "payoutType": "Distribution",
-          "rateRaw": "1.3%",
-          "ratePct": 0.013,
-          "rateCents": null
-        },
-        {
-          "date": "2019-04-01",
+          "rateRaw": "1 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2019-07-01",
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2019-10-01",
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2019-12-31",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2020-04-01",
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
+          "rateCents": 1.0
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2021",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0 cent per unit",
+          "ratePct": null,
           "rateCents": 2.0
         },
         {
-          "date": "2020-12-31",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2021-10-01",
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2020",
+          "payoutType": "Distribution",
+          "rateRaw": "2.0 cent per unit",
+          "ratePct": null,
           "rateCents": 2.0
         },
         {
-          "date": "2021-12-31",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2022-07-01",
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2022-10-03",
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         },
         {
-          "date": "2022-12-30",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2023-03-31",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2023-06-30",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2023-09-29",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2023-12-29",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2024-03-28",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2024-06-28",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2024-09-30",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2024-12-31",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2025-04-01",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2025-06-30",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2025-09-30",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2025-12-31",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2026-03-31",
-          "rateCents": 1.0
-        },
-        {
-          "date": "2026-06-30",
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2019",
+          "payoutType": "Distribution",
+          "rateRaw": "1.0 cent per unit",
+          "ratePct": null,
           "rateCents": 1.0
         }
       ],
@@ -5312,7 +6792,7 @@
       "launchDate": "05 August 2025",
       "benchmark": null,
       "manager": "Prudential Assurance Company Singapore (Pte) Limited",
-      "underlyingFund": " Victory Capital Management Inc. Risk Classification of Investment-",
+      "underlyingFund": "\uf0b7 Victory Capital Management Inc. Risk Classification of Investment-",
       "factsheet": "View factsheet",
       "strategy": "The Investment Objective is to provide long term capital growth and income by investing in a diversified portfolio of Underlying Funds.",
       "managementFee": "1.50% p.a.",
@@ -5342,6 +6822,78 @@
       "dividends": [
         {
           "frequency": "Monthly",
+          "payoutDate": "Oct 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.53 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.53
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
           "payoutDate": "Jan 2026",
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
@@ -5349,43 +6901,43 @@
           "rateCents": 0.51
         },
         {
-          "date": "2025-09-15",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
           "rateCents": 0.51
         },
         {
-          "date": "2025-10-15",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
           "rateCents": 0.51
         },
         {
-          "date": "2025-11-14",
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
           "rateCents": 0.51
         },
         {
-          "date": "2025-12-15",
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
           "rateCents": 0.51
         },
         {
-          "date": "2026-01-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-02-16",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-03-16",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-04-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-05-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-06-15",
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
           "rateCents": 0.51
         }
       ],
@@ -5417,7 +6969,7 @@
       "launchDate": "05 August 2025",
       "benchmark": null,
       "manager": "Prudential Assurance Company Singapore (Pte) Limited",
-      "underlyingFund": " Victory Capital Management Inc. Risk Classification of Investment-",
+      "underlyingFund": "\uf0b7 Victory Capital Management Inc. Risk Classification of Investment-",
       "factsheet": "View factsheet",
       "strategy": "The Investment Objective is to provide long term capital growth and income by investing in a diversified portfolio of Underlying Funds.",
       "managementFee": "1.50% p.a.",
@@ -5447,6 +6999,78 @@
       "dividends": [
         {
           "frequency": "Monthly",
+          "payoutDate": "Oct 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.60 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.6
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
           "payoutDate": "Jan 2026",
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
@@ -5454,43 +7078,43 @@
           "rateCents": 0.55
         },
         {
-          "date": "2025-09-15",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-10-15",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-11-14",
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-12-15",
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2026-01-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-02-16",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-03-16",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-04-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-05-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-06-15",
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         }
       ],
@@ -5552,6 +7176,78 @@
       "dividends": [
         {
           "frequency": "Monthly",
+          "payoutDate": "Oct 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.53 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.53
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
           "payoutDate": "Jan 2026",
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
@@ -5559,184 +7255,324 @@
           "rateCents": 0.51
         },
         {
-          "date": "2022-10-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.51 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.51
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2022-11-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2022-12-14",
+          "frequency": "Monthly",
+          "payoutDate": "May 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2023-01-13",
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2023-02-14",
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2023-03-14",
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2023-04-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2023-05-15",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2023-06-14",
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
         },
         {
-          "date": "2023-07-14",
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2022",
+          "payoutType": "Distribution",
+          "rateRaw": "0.6 cent per unit",
+          "ratePct": null,
           "rateCents": 0.6
-        },
-        {
-          "date": "2023-08-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2023-09-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2023-10-16",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2023-11-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2023-12-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-01-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-02-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-03-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-04-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-05-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-06-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-07-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-08-14",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-09-13",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2024-10-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2024-11-14",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2024-12-13",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-01-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-02-14",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-03-14",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-04-14",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-05-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-06-16",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-07-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-08-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-09-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-10-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-11-14",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2025-12-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-01-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-02-16",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-03-16",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-04-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-05-15",
-          "rateCents": 0.51
-        },
-        {
-          "date": "2026-06-15",
-          "rateCents": 0.51
         }
       ],
       "bidPrice": 0.97189,
@@ -5797,6 +7633,78 @@
       "dividends": [
         {
           "frequency": "Monthly",
+          "payoutDate": "Oct 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.60 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.6
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "May 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
+          "rateCents": 0.55
+        },
+        {
+          "frequency": "Monthly",
           "payoutDate": "Jan 2026",
           "payoutType": "Decumulation",
           "rateRaw": "0.55 cent per unit",
@@ -5804,131 +7712,219 @@
           "rateCents": 0.55
         },
         {
-          "date": "2023-11-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2026",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2023-12-14",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-01-15",
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-02-14",
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-03-14",
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-04-15",
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-05-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-06-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-07-15",
+          "frequency": "Monthly",
+          "payoutDate": "May 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-08-14",
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-09-13",
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-10-15",
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-11-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2025",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2024-12-13",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-01-15",
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-02-14",
+          "frequency": "Monthly",
+          "payoutDate": "Oct 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-03-14",
+          "frequency": "Monthly",
+          "payoutDate": "Sep 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-04-14",
+          "frequency": "Monthly",
+          "payoutDate": "Aug 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-05-15",
+          "frequency": "Monthly",
+          "payoutDate": "Jul 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-06-16",
+          "frequency": "Monthly",
+          "payoutDate": "Jun 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-07-15",
+          "frequency": "Monthly",
+          "payoutDate": "May 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-08-15",
+          "frequency": "Monthly",
+          "payoutDate": "Apr 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-09-15",
+          "frequency": "Monthly",
+          "payoutDate": "Mar 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-10-15",
+          "frequency": "Monthly",
+          "payoutDate": "Feb 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-11-14",
+          "frequency": "Monthly",
+          "payoutDate": "Jan 2024",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2025-12-15",
+          "frequency": "Monthly",
+          "payoutDate": "Dec 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         },
         {
-          "date": "2026-01-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-02-16",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-03-16",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-04-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-05-15",
-          "rateCents": 0.55
-        },
-        {
-          "date": "2026-06-15",
+          "frequency": "Monthly",
+          "payoutDate": "Nov 2023",
+          "payoutType": "Distribution",
+          "rateRaw": "0.55 cent per unit",
+          "ratePct": null,
           "rateCents": 0.55
         }
       ],
