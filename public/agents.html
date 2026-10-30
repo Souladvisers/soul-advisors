@@ -2364,6 +2364,16 @@ function fRiskCls(r) {
   if (s.startsWith('higher') || s.startsWith('high risk')) return 'fr-higher';
   return '';
 }
+// Maps Prudential risk class string → indicative volatility & max drawdown ranges (% p.a.)
+function fRiskVolEst(r) {
+  if (!r) return { volLow:10, volHigh:16, ddLow:22, ddHigh:38 };
+  const s = r.toLowerCase();
+  if (s.startsWith('lower risk'))                                    return { volLow:2,  volHigh:5,  ddLow:5,  ddHigh:12 };
+  if (s.startsWith('lower to med') || s.startsWith('low to med'))   return { volLow:5,  volHigh:9,  ddLow:12, ddHigh:22 };
+  if (s.startsWith('medium to'))                                     return { volLow:10, volHigh:16, ddLow:22, ddHigh:38 };
+  if (s.startsWith('higher') || s.startsWith('high risk'))          return { volLow:16, volHigh:26, ddLow:38, ddHigh:58 };
+  return { volLow:10, volHigh:16, ddLow:22, ddHigh:38 };
+}
 function fRiskLbl(r) {
   if (!r) return '—';
   if (r.startsWith('Lower Risk')) return 'Lower';
@@ -3048,6 +3058,42 @@ function renderAllocation(portfolio, score, tierObj, profile, expRet) {
   const projLow  = expRet != null && pmt && tenure ? fvCalc(Math.max(0.01, expRet - 0.02), tenure, pmt) : null;
   const projHigh = expRet != null && pmt && tenure ? fvCalc(expRet + 0.02, tenure, pmt) : null;
   const fmt = v => v ? 'S$' + Math.round(v).toLocaleString() : null;
+
+  // Portfolio-level risk & return metrics
+  const portMetrics = (() => {
+    let wVL=0, wVH=0, wDL=0, wDH=0, tw=0;
+    let r1=0, r1w=0, r3=0, r3w=0, r5=0, r5w=0;
+    portfolio.forEach(x => {
+      const w = x.alloc, p = x.f.performance, ve = fRiskVolEst(x.f.risk);
+      wVL += ve.volLow*w; wVH += ve.volHigh*w; wDL += ve.ddLow*w; wDH += ve.ddHigh*w; tw += w;
+      if (p['1y']!=null){r1+=p['1y']*w; r1w+=w;} if (p['3y']!=null){r3+=p['3y']*w; r3w+=w;} if (p['5y']!=null){r5+=p['5y']*w; r5w+=w;}
+    });
+    const d = tw||1, df = portfolio.length > 3 ? 0.82 : 0.92;
+    const vL = Math.round(wVL/d*df), vH = Math.round(wVH/d*df), dL = Math.round(wDL/d*df), dH = Math.round(wDH/d*df);
+    const rr3 = r3w ? (r3/r3w*100) : null;
+    const rrRatio = rr3 != null && (vL+vH) ? (rr3/((vL+vH)/2)).toFixed(2) : null;
+    const fmtRet = v => v != null ? `${v>=0?'+':''}${v.toFixed(1)}%` : '—';
+    const retColor = v => v != null ? (v>=0?'#6ee7b7':'#f87171') : 'rgba(255,255,255,0.5)';
+    return { vL, vH, dL, dH, rrRatio,
+      r1: r1w ? r1/r1w*100 : null, r3: rr3, r5: r5w ? r5/r5w*100 : null,
+      fmtRet, retColor };
+  })();
+  const metricsHtml = `
+    <div style="margin-top:0.85rem;padding:0.85rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:6px">
+      <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.65rem">Portfolio Analytics</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:0.65rem 1rem">
+        <div><div class="al-stat-l">1Y Return</div><div class="al-stat-v" style="color:${portMetrics.retColor(portMetrics.r1)}">${portMetrics.fmtRet(portMetrics.r1)}</div></div>
+        <div><div class="al-stat-l">3Y p.a.</div><div class="al-stat-v" style="color:${portMetrics.retColor(portMetrics.r3)}">${portMetrics.fmtRet(portMetrics.r3)}</div></div>
+        <div><div class="al-stat-l">5Y p.a.</div><div class="al-stat-v" style="color:${portMetrics.retColor(portMetrics.r5)}">${portMetrics.fmtRet(portMetrics.r5)}</div></div>
+        <div><div class="al-stat-l">Funds</div><div class="al-stat-v">${portfolio.length}</div></div>
+        <div><div class="al-stat-l">Est. Volatility</div><div class="al-stat-v" style="color:#fcd34d">~${portMetrics.vL}–${portMetrics.vH}%</div></div>
+        <div><div class="al-stat-l">Max Drawdown</div><div class="al-stat-v" style="color:#fb923c">~-${portMetrics.dL} to -${portMetrics.dH}%</div></div>
+        ${portMetrics.rrRatio ? `<div><div class="al-stat-l">Return/Risk</div><div class="al-stat-v">${portMetrics.rrRatio}×</div></div>` : ''}
+        <div><div class="al-stat-l">Target p.a.</div><div class="al-stat-v">${profile.targetRet || '—'}%</div></div>
+      </div>
+      <div style="font-size:0.59rem;color:rgba(255,255,255,0.18);margin-top:0.5rem">Volatility & drawdown are indicative estimates based on fund risk classifications, with diversification adjustment. Actual figures may differ.</div>
+    </div>`;
+
   const projHtml = projLow && projHigh ? `
     <div style="margin-top:1rem;padding:0.85rem 1rem;background:rgba(184,151,90,0.07);border:1px solid rgba(184,151,90,0.2);border-radius:6px">
       <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(184,151,90,0.7);margin-bottom:0.45rem">Projected Portfolio Value (S$${pmt}/mo · ${tenure} yrs)</div>
@@ -3068,9 +3114,8 @@ function renderAllocation(portfolio, score, tierObj, profile, expRet) {
       </div>
       <div class="al-summary-stats">
         <div><div class="al-stat-l">Est. Portfolio Return</div><div class="al-stat-v">${retStr}</div></div>
-        <div><div class="al-stat-l">Funds Selected</div><div class="al-stat-v">${portfolio.length}</div></div>
-        <div><div class="al-stat-l">Target p.a.</div><div class="al-stat-v">${profile.targetRet}%</div></div>
       </div>
+      ${metricsHtml}
       ${projHtml}
     </div>
 
@@ -3766,6 +3811,39 @@ function renderAIResult(ai, profile, container) {
       <div style="font-size:0.6rem;color:rgba(255,255,255,0.2);margin-top:0.4rem">Based on ${(aiExpRet*100).toFixed(1)}% ±2% p.a. from AI-selected funds · Not guaranteed · Past performance not indicative of future results</div>
     </div>` : '';
 
+  // Portfolio analytics for AI result
+  const aiPortMetrics = (() => {
+    let wVL=0, wVH=0, wDL=0, wDH=0, tw=0;
+    let r1=0, r1w=0, r3=0, r3w=0, r5=0, r5w=0;
+    enrich.forEach(x => {
+      const w = x.pct || 0, p = x.fd?.performance || {}, ve = fRiskVolEst(x.fd?.risk);
+      wVL += ve.volLow*w; wVH += ve.volHigh*w; wDL += ve.ddLow*w; wDH += ve.ddHigh*w; tw += w;
+      if (p['1y']!=null){r1+=p['1y']*w; r1w+=w;} if (p['3y']!=null){r3+=p['3y']*w; r3w+=w;} if (p['5y']!=null){r5+=p['5y']*w; r5w+=w;}
+    });
+    const d = tw||1, df = enrich.length > 3 ? 0.82 : 0.92;
+    const vL = Math.round(wVL/d*df), vH = Math.round(wVH/d*df), dL = Math.round(wDL/d*df), dH = Math.round(wDH/d*df);
+    const rr3 = r3w ? (r3/r3w*100) : null;
+    const rrRatio = rr3 != null && (vL+vH) ? (rr3/((vL+vH)/2)).toFixed(2) : null;
+    const fmtR = v => v != null ? `${v>=0?'+':''}${v.toFixed(1)}%` : '—';
+    const retC = v => v != null ? (v>=0?'#6ee7b7':'#f87171') : 'rgba(255,255,255,0.5)';
+    return { vL, vH, dL, dH, rrRatio, r1: r1w?r1/r1w*100:null, r3: rr3, r5: r5w?r5/r5w*100:null, fmtR, retC };
+  })();
+  const aiMetricsHtml = `
+    <div style="margin-top:0.85rem;padding:0.85rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:6px">
+      <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.65rem">Portfolio Analytics</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:0.65rem 1rem">
+        <div><div class="al-stat-l">1Y Return</div><div class="al-stat-v" style="color:${aiPortMetrics.retC(aiPortMetrics.r1)}">${aiPortMetrics.fmtR(aiPortMetrics.r1)}</div></div>
+        <div><div class="al-stat-l">3Y p.a.</div><div class="al-stat-v" style="color:${aiPortMetrics.retC(aiPortMetrics.r3)}">${aiPortMetrics.fmtR(aiPortMetrics.r3)}</div></div>
+        <div><div class="al-stat-l">5Y p.a.</div><div class="al-stat-v" style="color:${aiPortMetrics.retC(aiPortMetrics.r5)}">${aiPortMetrics.fmtR(aiPortMetrics.r5)}</div></div>
+        <div><div class="al-stat-l">Funds</div><div class="al-stat-v">${enrich.length}</div></div>
+        <div><div class="al-stat-l">Est. Volatility</div><div class="al-stat-v" style="color:#fcd34d">~${aiPortMetrics.vL}–${aiPortMetrics.vH}%</div></div>
+        <div><div class="al-stat-l">Max Drawdown</div><div class="al-stat-v" style="color:#fb923c">~-${aiPortMetrics.dL} to -${aiPortMetrics.dH}%</div></div>
+        ${aiPortMetrics.rrRatio ? `<div><div class="al-stat-l">Return/Risk</div><div class="al-stat-v">${aiPortMetrics.rrRatio}×</div></div>` : ''}
+        <div><div class="al-stat-l">Risk Score</div><div class="al-stat-v" style="color:${col}">${ai.riskScore||'—'}/5</div></div>
+      </div>
+      <div style="font-size:0.59rem;color:rgba(255,255,255,0.18);margin-top:0.5rem">Volatility & drawdown are indicative estimates based on fund risk classifications, with diversification adjustment. Actual figures may differ.</div>
+    </div>`;
+
   const totalAlloc = enrich.reduce((s,x) => s + (x.pct||0), 0);
   const barHtml = enrich.map(x =>
     `<div class="al-bar-row">
@@ -3796,6 +3874,7 @@ function renderAIResult(ai, profile, container) {
         <span class="al-info-txt">${GL[profile.goal]||profile.goal} · ${profile.horizon}-year horizon · Age ${profile.age}</span>
         <span class="ai-badge" style="margin-left:auto;font-size:0.59rem">✦ AI-Enhanced</span>
       </div>
+      ${aiMetricsHtml}
       ${aiProjHtml}
     </div>
 
