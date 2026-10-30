@@ -2780,6 +2780,17 @@ function alFundScore(f, goal, preferDist, preferCcy) {
   let perf = p['3y'] ?? p['5y'] ?? p['1y'] ?? 0;
   if (p['3y'] != null && p['5y'] != null) perf = (p['3y'] + p['5y']) / 2;
   let s = perf * 100;
+
+  // Track-record quality: prefer funds with established history
+  if (p['3y'] == null) s -= 12;   // no 3Y history — penalise meaningfully
+  if (p['5y'] == null) s -= 4;    // no 5Y history — smaller penalty
+
+  // Return consistency: penalise large divergence between 1Y and 3Y (momentum vs. sustainability)
+  if (p['3y'] != null && p['1y'] != null) {
+    const gap = Math.abs((p['1y'] - p['3y']) * 100); // pp difference
+    s -= Math.min(10, gap * 0.6);
+  }
+
   if (preferDist && f.isDistribution) s += 20;
   if (!preferDist && !f.isDistribution) s += 5;
   if (preferCcy && f.currency === preferCcy) s += 8;
@@ -2837,10 +2848,12 @@ function clientTier(profile) {
   const h = parseInt(profile.horizon) || 10;
   const a = parseInt(profile.age)     || 40;
   const r = (profile.riskTol || 'medium').toLowerCase();
+  const tr = (profile.targetRet || '').toString();
   let base;
-  if      (a >= 60 || h <= 5  || r === 'low' ) base = 1;
-  else if (h >= 10 && r === 'high')             base = 3;
-  else                                          base = 2;
+  if      (a >= 60 || h <= 5  || r === 'low' || tr === '2-4')          base = 1;
+  else if ((h >= 10 && r === 'high') || tr === '10+')                    base = 3;
+  else if (tr === '4-6' && r !== 'high' && a >= 50)                      base = 1;
+  else                                                                     base = 2;
   return { tier: profile.shariah === 'yes' ? 4 : base, base };
 }
 
@@ -2991,8 +3004,11 @@ function runAllocator() {
 
 function renderAllocation(portfolio, score, tierObj, profile, expRet) {
   const tier = tierObj?.tier || 2;
-  const SL = ['','Very Conservative','Conservative','Moderate','Aggressive','Very Aggressive'];
-  const SC = ['','#93c5fd','#6ee7b7','#fcd34d','#fb923c','#f87171'];
+  // Risk pill aligned to portfolio tier (not raw risk score) — avoids "Very Aggressive" pill on a Balanced portfolio
+  const tierPillLabel = { 1:'Conservative', 2:'Balanced', 3:'Aggressive', 4:'Balanced' };
+  const tierPillColor = { 1:'#93c5fd',      2:'#fcd34d',  3:'#fb923c',   4:'#fcd34d'  };
+  const pillLabel = tierPillLabel[tier] || 'Balanced';
+  const pillColor = tierPillColor[tier] || '#fcd34d';
   const GL = {retirement:'Retirement Planning', growth:'Wealth Accumulation', education:'Education Fund', income:'Regular Income', preservation:'Capital Preservation'};
 
   document.getElementById('alloc-empty').style.display = 'none';
@@ -3002,10 +3018,32 @@ function renderAllocation(portfolio, score, tierObj, profile, expRet) {
   const retStr = expRet != null ? `${expRet >= 0 ? '+' : ''}${(expRet*100).toFixed(1)}% p.a. (3Y hist.)` : '—';
   const shortName = n => cleanName(n).replace(/ \((?:SGD|USD)\) \((?:Acc(?:umulation)?|Dis(?:tribution)?)\)$/i,'').replace(/ \((?:Acc(?:umulation)?|Dis(?:tribution)?)\)$/i,'').replace(/ \((?:SGD|USD)\)$/i,'');
 
+  // Projected portfolio value (future value of monthly contributions)
+  const pmt    = parseFloat(profile.monthly) || 0;
+  const tenure = parseInt(profile.tenure)    || 0;
+  const fvCalc = (r_annual, yrs, pmt) => {
+    if (!pmt || !yrs || !r_annual) return null;
+    const r = r_annual / 12, n = yrs * 12;
+    return pmt * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+  };
+  const projLow  = expRet != null && pmt && tenure ? fvCalc(Math.max(0.01, expRet - 0.02), tenure, pmt) : null;
+  const projHigh = expRet != null && pmt && tenure ? fvCalc(expRet + 0.02, tenure, pmt) : null;
+  const fmt = v => v ? 'S$' + Math.round(v).toLocaleString() : null;
+  const projHtml = projLow && projHigh ? `
+    <div style="margin-top:1rem;padding:0.85rem 1rem;background:rgba(184,151,90,0.07);border:1px solid rgba(184,151,90,0.2);border-radius:6px">
+      <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(184,151,90,0.7);margin-bottom:0.45rem">Projected Portfolio Value (S$${pmt}/mo · ${tenure} yrs)</div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+        <div><div style="font-size:0.62rem;color:rgba(255,255,255,0.35);margin-bottom:2px">Pessimistic</div><div style="font-size:1rem;font-weight:700;color:#93c5fd">${fmt(projLow)}</div></div>
+        <div><div style="font-size:0.62rem;color:rgba(255,255,255,0.35);margin-bottom:2px">Expected</div><div style="font-size:1rem;font-weight:700;color:var(--accent)">${fmt(fvCalc(expRet, tenure, pmt))}</div></div>
+        <div><div style="font-size:0.62rem;color:rgba(255,255,255,0.35);margin-bottom:2px">Optimistic</div><div style="font-size:1rem;font-weight:700;color:#6ee7b7">${fmt(projHigh)}</div></div>
+      </div>
+      <div style="font-size:0.6rem;color:rgba(255,255,255,0.2);margin-top:0.4rem">Based on ${(expRet*100).toFixed(1)}% ±2% p.a. · Not guaranteed · Past performance not indicative of future results</div>
+    </div>` : '';
+
   out.innerHTML = `
     <div class="al-result-header">
       <div class="al-profile-row">
-        <span class="al-risk-pill" style="background:${SC[score]}22;color:${SC[score]};border:1px solid ${SC[score]}44">${SL[score]}</span>
+        <span class="al-risk-pill" style="background:${pillColor}22;color:${pillColor};border:1px solid ${pillColor}44">${pillLabel}</span>
         <span class="al-tier-badge t${tier}" title="${TIER_DESC[tier]}">${TIER_LABEL[tier]}</span>
         <span class="al-info-txt" style="margin-left:0.4rem">${GL[profile.goal]||profile.goal} &nbsp;·&nbsp; ${profile.horizon}-year horizon &nbsp;·&nbsp; Age ${profile.age}</span>
       </div>
@@ -3014,6 +3052,7 @@ function renderAllocation(portfolio, score, tierObj, profile, expRet) {
         <div><div class="al-stat-l">Funds Selected</div><div class="al-stat-v">${portfolio.length}</div></div>
         <div><div class="al-stat-l">Target p.a.</div><div class="al-stat-v">${profile.targetRet}%</div></div>
       </div>
+      ${projHtml}
     </div>
 
     <div class="al-chart">
