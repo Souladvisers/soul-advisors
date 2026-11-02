@@ -526,19 +526,19 @@ function buildWill(s){
       if(s.guardian2.name.trim()) C(`If ${ph(s.guardian.name,'Guardian')} predeceases me or is unable or unwilling to act, I appoint ${person(s.guardian2, s.guardian2.rel)}, to be the Guardian of such child.`);
       C('During the period of guardianship, my Guardian shall have authority to act in all matters relating to the welfare of my minor child or children, including:');
       L([
-        '**Personal welfare:** deciding where the child shall reside; making day-to-day care decisions; handling the child's correspondence; determining who the child may have contact with; making healthcare and medical treatment decisions; and making education decisions; and',
-        '**Property and affairs:** buying, selling, renting and mortgaging property held in trust for the child; operating bank accounts held for or on behalf of the child; managing insurance matters; purchasing equipment, vehicles or items required for the child's daily needs; and making investment decisions and managing tax matters on behalf of the child.'
+        '**Personal welfare:** deciding where the child shall reside; making day-to-day care decisions; handling the child\u2019s correspondence; determining who the child may have contact with; making healthcare and medical treatment decisions; and making education decisions; and',
+        '**Property and affairs:** buying, selling, renting and mortgaging property held in trust for the child; operating bank accounts held for or on behalf of the child; managing insurance matters; purchasing equipment, vehicles or items required for the child\u2019s daily needs; and making investment decisions and managing tax matters on behalf of the child.'
       ]);
       C('In discharging his or her fiduciary duties as Guardian, my Guardian shall:');
       L([
-        'preserve and protect the child's welfare and interests, in particular as regards religious guidance in the Islamic faith, healthcare and education;',
-        'become and remain personally acquainted with the child and maintain sufficient contact to be aware of the child's capacities, limitations, needs, opportunities and physical and mental health;',
-        'take reasonable care of the child's personal effects and, where necessary, commence protective proceedings to safeguard any property of the child;',
-        'apply available monies of the child towards the child's current needs for support, care and education;',
-        'conserve any surplus monies for the child's future needs; and',
-        'render an account of the condition of the child and of the child's estate, as and when directed by a court of competent jurisdiction or as required by law.'
+        'preserve and protect the child\u2019s welfare and interests, in particular as regards religious guidance in the Islamic faith, healthcare and education;',
+        'become and remain personally acquainted with the child and maintain sufficient contact to be aware of the child\u2019s capacities, limitations, needs, opportunities and physical and mental health;',
+        'take reasonable care of the child\u2019s personal effects and, where necessary, commence protective proceedings to safeguard any property of the child;',
+        'apply available monies of the child towards the child\u2019s current needs for support, care and education;',
+        'conserve any surplus monies for the child\u2019s future needs; and',
+        'render an account of the condition of the child and of the child\u2019s estate, as and when directed by a court of competent jurisdiction or as required by law.'
       ]);
-      C('I request that my children be brought up in the Islamic faith, and that the share of any minor child be held on trust and applied towards that child's maintenance, education and welfare until he or she attains the age of twenty-one (21) years.');
+      C('I request that my children be brought up in the Islamic faith, and that the share of any minor child be held on trust and applied towards that child\u2019s maintenance, education and welfare until he or she attains the age of twenty-one (21) years.');
     }
     if(id==='out'){
       H('Assets Passing Outside this Will');
@@ -576,7 +576,7 @@ function buildWill(s){
          'I remind my heirs of Surah Al-Baqarah, verse 181: *“Then whoever alters the bequest after he has heard it – the sin is only upon those who altered it. Indeed, Allah is Hearing and Knowing.”*',
          'I remind my heirs of Surah Al-Baqarah, verse 182: *“But if one fears from the bequeather some error or sin and corrects that which is between them, there is no sin upon him. Indeed, Allah is Forgiving and Merciful.”*',
          'I ask my heirs to settle my debts promptly, to protect and support the weaker members of my family, and to preserve the ties of kinship (*silaturahim*) in the name of Allah S.W.T.',
-         'I ask my heirs to keep their obligatory prayers, fast in the month of Ramadan, perform *qurban*, Hajj and Umrah where able, give *sadaqah*, and make *du'a* for me.']);
+         'I ask my heirs to keep their obligatory prayers, fast in the month of Ramadan, perform *qurban*, Hajj and Umrah where able, give *sadaqah*, and make *du\u2019a* for me.']);
     }
   }
 
@@ -603,7 +603,7 @@ function buildWill(s){
 /* ================= CHECKS ================= */
 function checks(s, W){
   const A = W.A, out = [];
-  const req = [[s.t.name,'Your full name'],[s.t.nric,'Your ID number'],[s.t.address,'Your address'],[s.executors[0].name,'First executor's name'],[s.executors[0].nric,'First executor's NRIC']];
+  const req = [[s.t.name,'Your full name'],[s.t.nric,'Your ID number'],[s.t.address,'Your address'],[s.executors[0].name,'First executor\u2019s name'],[s.executors[0].nric,'First executor\u2019s NRIC']];
   req.forEach(([v,l])=>{ if(!String(v).trim()) out.push(['err',`${l} is missing.`]); });
   if(A.married && !s.spouse.name.trim()) out.push(['warn',`Your ${A.P.spouse}'s name is missing.`]);
   if(A.hasGuard && !s.guardian.name.trim()) out.push(['err','You have a child under 21 but have not named a guardian.']);
@@ -743,7 +743,7 @@ async function downloadDocx(){
     ...blank(1),
     p('*Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act (Cap 352)).*',{run:{size:20},line:276}),
   ];
-  if(s.t.english==='no') att.push(...blank(1), p('**INTERPRETER'S CERTIFICATE**',{align:AlignmentType.LEFT}),
+  if(s.t.english==='no') att.push(...blank(1), p('**INTERPRETER\u2019S CERTIFICATE**',{align:AlignmentType.LEFT}),
     p(`I, ________________________________ (NRIC No. ______________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${s.t.lang} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.`),
     ...blank(1), p('………………………………          Date: ______________',{align:AlignmentType.LEFT,after:0}), p('Signature of Interpreter',{align:AlignmentType.LEFT}));
 
@@ -752,12 +752,12 @@ async function downloadDocx(){
     tail.push(brk(), center('**SCHEDULE A**',{after:60}), center(`**SCHEDULE OF ASSETS OF ${W.TNU}**`,{after:200}),
       p('This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.',{line:276}),
       grid([500,1700,2626,2100,2100], [['No.','Asset','Particulars','Mode of holding','Passes under'], ...W.sched]));
-    if(W.sched.some(r=>/see note/.test(r[4]))) tail.push(p('*Note: no Hibah Ruqba declaration has been made for jointly-held property; the Testator's share may be distributed by Faraid.*',{run:{size:20},line:276}));
+    if(W.sched.some(r=>/see note/.test(r[4]))) tail.push(p('*Note: no Hibah Ruqba declaration has been made for jointly-held property; the Testator\u2019s share may be distributed by Faraid.*',{run:{size:20},line:276}));
   }
   tail.push(brk(), center('**ANNEX: SUMMARY OF WILL**',{after:200}), grid([3000,6026], [['Item','Particulars'], ...W.annex]));
 
   const header = new Header({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({children:[PageNumber.CURRENT], font:FONT, size:SZ})]})]});
-  const footer = new Footer({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({text:'Testator's initials: __________', font:FONT, size:18})]})]});
+  const footer = new Footer({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({text:'Testator\u2019s initials: __________', font:FONT, size:18})]})]});
   const margin = {top:1440,bottom:1440,left:1440,right:1440};
   const doc = new Document({ creator:CONFIG.firmLine1, title:`Last Will and Testament of ${W.TN}`,
     styles:{default:{document:{run:{font:FONT,size:SZ}}}},
@@ -794,7 +794,7 @@ async function downloadPdf(){
   function decorate(){
     if(pageNo>0){
       doc.setFont('times','normal'); doc.setFontSize(12); doc.text(String(pageNo), X1, 46, {align:'right'});
-      doc.setFontSize(9); doc.text('Testator's initials: __________', X1, PH-40, {align:'right'});
+      doc.setFontSize(9); doc.text('Testator\u2019s initials: __________', X1, PH-40, {align:'right'});
     }
   }
   function newPage(){ doc.addPage(); pageNo++; y = TOP; decorate(); }
@@ -919,7 +919,7 @@ async function downloadPdf(){
   para('*Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act (Cap 352)).*', {size:10, lh:13});
   if(s.t.english==='no'){
     y += 10; ensure(140);
-    para('**INTERPRETER'S CERTIFICATE**', {align:'left'});
+    para('**INTERPRETER\u2019S CERTIFICATE**', {align:'left'});
     para(`I, ________________________________ (NRIC No. ______________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${s.t.lang} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.`);
     y += 24; para('………………………………          Date: ______________', {align:'left', after:0});
     para('Signature of Interpreter', {align:'left'});
@@ -930,7 +930,7 @@ async function downloadPdf(){
     newPage(); cTxt('SCHEDULE A', 12, true, 0); cTxt(`SCHEDULE OF ASSETS OF ${W.TNU}`, 12, true, 10);
     para('This Schedule forms part of the Will of the abovenamed Testator. Account numbers are shown by their last four digits only.', {size:11, lh:15});
     table([28, 86, 140, 103, 94], [['No.','Asset','Particulars','Mode of holding','Passes under'], ...W.sched]);
-    if(W.sched.some(r=>/see note/.test(r[4]))) para('*Note: no Hibah Ruqba declaration has been made for jointly-held property; the Testator's share may be distributed by Faraid.*', {size:10, lh:13});
+    if(W.sched.some(r=>/see note/.test(r[4]))) para('*Note: no Hibah Ruqba declaration has been made for jointly-held property; the Testator\u2019s share may be distributed by Faraid.*', {size:10, lh:13});
   }
   newPage(); cTxt('ANNEX: SUMMARY OF WILL', 12, true, 10);
   table([160, 291.28], [['Item','Particulars'], ...W.annex]);
