@@ -647,7 +647,7 @@ function renderPreview(W){
     <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;text-align:left;margin-top:20px"><div><b>${signed}</b> by the abovenamed Testator<br><b>${md(W.TN)}</b><br>as ${P.his} Last Will and Testament, in the presence of us both present at the same time who at ${P.his} request, in ${P.his} presence and in the presence of each other have hereunto set our names as witnesses:</div>
     <div style="text-align:center;padding-top:60px">) ……………………………<br><small>${s.t.sign==='thumb'?'Right Thumbprint':'Signature'} of Testator</small></div></div>
     <div class="sig">${s.witnesses.map((w,i)=>`<div><p>${i?'2nd':'1st'} Witness:</p><p style="margin-top:46px">……………………………</p><p>(Signature)</p><p>Full Name : ${w.name.trim()?esc(w.name):'____________________'}</p><p>NRIC No. : ${w.nric.trim()?esc(w.nric):'____________________'}</p><p>Address : ____________________</p></div>`).join('')}</div>
-    <p style="font-size:12px;margin-top:20px"><i>Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act (Cap 352)).</i></p>`;
+    <p style="font-size:12px;margin-top:20px"><i>Note: Each witness must be an adult of sound mind (section 6, Wills Act (Cap 352)). A person who is a beneficiary under this Will, or the spouse of a beneficiary, should not act as a witness — their gift will be void if they do (section 10, Wills Act (Cap 352)). As a precaution, witnesses should be independent of all beneficiaries and lawful heirs.</i></p>`;
   if(s.t.english==='no') h += `<p style="margin-top:24px"><b>INTERPRETER'S CERTIFICATE</b></p><p>I, ______________________ (NRIC No. __________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${esc(s.t.lang)} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.</p><p style="margin-top:40px">……………………………&nbsp;&nbsp;&nbsp;&nbsp;Date: __________<br>Signature of Interpreter</p>`;
   if(W.sched.length){
     h += `<div class="pb"></div><p class="ctr"><b>SCHEDULE A</b><br><b>SCHEDULE OF ASSETS OF ${md(W.TNU)}</b></p>
@@ -742,7 +742,7 @@ async function downloadDocx(){
           `Full Name : ${w.name.trim()||'______________________'}`, `NRIC No.  : ${w.nric.trim()||'______________________'}`,
           'Address   : ______________________','Occupation: ______________________'].map(t=>new Paragraph({spacing:{after:120}, children:[r(t)]}))}))})] }),
     ...blank(1),
-    p('*Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act (Cap 352)).*',{run:{size:20},line:276}),
+    p('*Note: Each witness must be an adult of sound mind (section 6, Wills Act (Cap 352)). A person who is a beneficiary under this Will, or the spouse of a beneficiary, should not act as a witness — their gift will be void if they do (section 10, Wills Act (Cap 352)). As a precaution, witnesses should be independent of all beneficiaries and lawful heirs.*',{run:{size:20},line:276}),
   ];
   if(s.t.english==='no') att.push(...blank(1), p('**INTERPRETER\u2019S CERTIFICATE**',{align:AlignmentType.LEFT}),
     p(`I, ________________________________ (NRIC No. ______________), certify that I truly and audibly read over and explained the contents of this Will to the Testator in the ${s.t.lang} language before ${P.he} ${s.t.sign==='thumb'?'thumbprinted':'signed'} it, and that ${P.he} appeared fully to understand and approve its contents.`),
@@ -917,7 +917,7 @@ async function downloadPdf(){
     L('Address   : ______________________'); L('Occupation: ______________________'); y = Math.max(y, yy);
   });
   y += 10;
-  para('*Note: Each witness must be an independent adult of sound mind who is neither a beneficiary nor a lawful heir of the Testator, nor the spouse of one (section 10, Wills Act (Cap 352)).*', {size:10, lh:13});
+  para('*Note: Each witness must be an adult of sound mind (section 6, Wills Act (Cap 352)). A person who is a beneficiary under this Will, or the spouse of a beneficiary, should not act as a witness — their gift will be void if they do (section 10, Wills Act (Cap 352)). As a precaution, witnesses should be independent of all beneficiaries and lawful heirs.*', {size:10, lh:13});
   if(s.t.english==='no'){
     y += 10; ensure(140);
     para('**INTERPRETER\u2019S CERTIFICATE**', {align:'left'});
