@@ -223,7 +223,7 @@ textarea{min-height:80px;resize:vertical}
   <!-- STEP 7 -->
   <section class="step" data-title="Wishes">
     <h2>Wishes and obligations</h2><p class="lead">Choose what to include.</p>
-    <label class="check"><input type="checkbox" data-k="funeral"> Include funeral wishes (Islamic burial; no autopsy, embalming or cremation unless required by law)</label>
+    <label class="check"><input type="checkbox" data-k="funeral"> Include funeral wishes (Islamic burial rites)</label>
     <label>Have you performed Hajj?</label>
     <div class="seg"><label><input type="radio" name="hj" data-k="hajj" value="done">Yes</label><label><input type="radio" name="hj" data-k="hajj" value="not">Not yet</label></div>
     <div class="note info" data-show="hajj=not">Your will directs the executor to pay for <i>Badal Haji</i> on your behalf if you pass away before performing Hajj.</div>
@@ -491,7 +491,6 @@ function buildWill(s){
     if(id==='fun'){
       H('Funeral Wishes');
       C('I direct that my funeral be conducted strictly in accordance with Islamic law, including *ghusl* (washing), *kafan* (shrouding), *solat jenazah* (funeral prayer) and burial in a Muslim cemetery, as soon as practicable after my death.');
-      C('I do not consent to any autopsy, post-mortem, embalming or cremation of my body, unless required under the laws of Singapore.');
     }
     if(id==='pay'){
       H('Payment of Debts and Obligations');
