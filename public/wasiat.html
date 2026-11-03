@@ -451,8 +451,7 @@ function buildWill(s){
         `“**Net Estate**” means my estate remaining after payment of the items set out in Clause ${num.pay};`,
         `“**Residuary Estate**” means my Net Estate remaining${num.was?` after giving effect to the Wasiyyah under Clause ${num.was}`:''};`,
       ];
-      if(A.out.length) d.push('”**Hibah**” means a gift that is valid under Islamic law, whether taking effect during my lifetime or upon my death (including *Hibah Ruqba*);');
-      if(A.assets.length) d.push('“**Schedule A**” means the Schedule of Assets annexed to and forming part of this Will;');
+      if(A.assets.length) d.push('”**Schedule A**” means the Schedule of Assets annexed to and forming part of this Will;');
       d[d.length-1] = d[d.length-1].replace(/;$/,'.');
       if(d.length>1) d[d.length-2] = d[d.length-2].replace(/;$/,'; and');
       L(d);
