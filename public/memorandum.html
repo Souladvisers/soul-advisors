@@ -160,53 +160,15 @@ textarea{min-height:80px;resize:vertical}
     <label style="margin-top:18px">My executor(s)</label>
     <div id="l-executors"></div>
     <button class="add" onclick="addItem('executors')">+ Add executor</button>
+    <div class="row">
+      <div><label>Date of this memorandum</label><input type="text" data-k="memoDate" placeholder="e.g. 3 November 2026"></div>
+      <div></div>
+    </div>
     <label>Or import from a saved draft <span class="hint">(Wasiat or Will draft file)</span></label>
     <label class="btn sec" style="display:inline-block;margin:0">Load will draft file<input type="file" accept=".json" onchange="importWasiatFile(this)" hidden></label>
   </section>
 
   <!-- 2 -->
-  <section class="step" data-title="Family & care">
-    <h2>Care of my family</h2><p class="lead">Your hopes for the people who depend on you. Leave anything blank that doesn't apply.</p>
-    <label class="check"><input type="checkbox" data-k="care.spouseHome"> I hope my heirs will allow my <span data-sp>spouse</span> to continue living in our home for as long as <span data-spp>she</span> wishes</label>
-    <label>Care of my parents or other dependants</label>
-    <textarea data-k="care.dependants" placeholder="e.g. I hope my children will take turns to visit and support my mother, Hajjah Aminah, each week."></textarea>
-    <label>Upbringing of my children</label>
-    <div class="chips" data-target="care.upbringing"><button>Islamic education</button><button>Stay with their mother</button><button>Keep siblings together</button><button>Continue in current school</button></div>
-    <textarea data-k="care.upbringing" placeholder="e.g. I hope my children continue their Quran classes and stay close to their grandparents."></textarea>
-    <label>Children's shares while they are young</label>
-    <div class="row">
-      <div><label class="hint" style="margin-top:0">Age I hope they receive their share</label><select data-k="care.age"><option value="">No preference</option><option>21</option><option>23</option><option>25</option><option>in stages (21, 25 and 30)</option></select></div>
-      <div></div>
-    </div>
-    <textarea data-k="care.trust" placeholder="e.g. Until then, I hope my Executor uses the money only for their education, medical needs and daily living."></textarea>
-    <label>Notes for the guardian</label>
-    <textarea data-k="care.guardian" placeholder="e.g. Please keep my children in touch with both sides of the family."></textarea>
-  </section>
-
-  <!-- 3 -->
-  <section class="step" data-title="Inheritance">
-    <h2>How I hope my heirs use their inheritance</h2>
-    <p class="lead" data-tx="lead3">Faraid decides each heir's share. Here you can only express hopes about how they use it. Use words like "I hope" or "I request", not "give" or "must".</p>
-    <label>My general hopes</label>
-    <div class="chips" data-target="hopes.general"><button>Pay off family debts first</button><button data-tx="chipA">Set aside for sadaqah jariah</button><button data-tx="chipB">Avoid riba-based investments</button><button>Keep the family home</button></div>
-    <textarea data-k="hopes.general" data-txp="ph3" placeholder="e.g. I hope my heirs will use part of their inheritance for sadaqah jariah in my name."></textarea>
-    <label style="margin-top:18px">Help for specific people</label>
-    <div id="l-support"></div>
-    <button class="add" onclick="addItem('support')">+ Add a person</button>
-    <label>Family business or property</label>
-    <textarea data-k="hopes.business" placeholder="e.g. I hope my heirs keep the shophouse and share the rent, rather than sell it quickly."></textarea>
-  </section>
-
-  <!-- 4 -->
-  <section class="step" data-title="Personal items">
-    <h2>Personal and sentimental items</h2>
-    <p class="lead" data-tx="lead4">Who you hope receives items of personal meaning. Under Faraid these still count towards an heir's share, unless all heirs agree after your death.</p>
-    <div id="l-items"></div>
-    <button class="add" onclick="addItem('items')">+ Add item</button>
-    <datalist id="people"></datalist>
-  </section>
-
-  <!-- 5 -->
   <section class="step" data-title="Funeral & ibadah" data-gtitle="Funeral wishes">
     <h2>Funeral and religious wishes</h2>
     <div class="row">
@@ -226,6 +188,48 @@ textarea{min-height:80px;resize:vertical}
     <label>Other wishes</label><textarea data-k="fun.other"></textarea>
   </section>
 
+  <!-- 3 -->
+  <section class="step" data-title="Family & care">
+    <h2>Care of my family</h2><p class="lead">Your hopes for the people who depend on you. Leave anything blank that doesn't apply.</p>
+    <label class="check"><input type="checkbox" data-k="care.spouseHome"> I hope my heirs will allow my <span data-sp>spouse</span> to continue living in our home for as long as <span data-spp>she</span> wishes</label>
+    <label>Care of my parents or other dependants</label>
+    <textarea data-k="care.dependants" placeholder="e.g. I hope my children will take turns to visit and support my mother, Hajjah Aminah, each week."></textarea>
+    <label>Upbringing of my children</label>
+    <div class="chips" data-target="care.upbringing"><button>Islamic education</button><button>Stay with their mother</button><button>Keep siblings together</button><button>Continue in current school</button></div>
+    <textarea data-k="care.upbringing" placeholder="e.g. I hope my children continue their Quran classes and stay close to their grandparents."></textarea>
+    <label>Children's shares while they are young</label>
+    <div class="row">
+      <div><label class="hint" style="margin-top:0">Age I hope they receive their share</label><select data-k="care.age"><option value="">No preference</option><option>21</option><option>23</option><option>25</option><option>in stages (21, 25 and 30)</option></select></div>
+      <div></div>
+    </div>
+    <textarea data-k="care.trust" placeholder="e.g. Until then, I hope my Executor uses the money only for their education, medical needs and daily living."></textarea>
+    <label>Notes for the guardian</label>
+    <textarea data-k="care.guardian" placeholder="e.g. Please keep my children in touch with both sides of the family."></textarea>
+  </section>
+
+  <!-- 4 -->
+  <section class="step" data-title="Inheritance">
+    <h2>How I hope my heirs use their inheritance</h2>
+    <p class="lead" data-tx="lead3">Faraid decides each heir's share. Here you can only express hopes about how they use it. Use words like "I hope" or "I request", not "give" or "must".</p>
+    <label>My general hopes</label>
+    <div class="chips" data-target="hopes.general"><button>Pay off family debts first</button><button data-tx="chipA">Set aside for sadaqah jariah</button><button data-tx="chipB">Avoid riba-based investments</button><button>Keep the family home</button></div>
+    <textarea data-k="hopes.general" data-txp="ph3" placeholder="e.g. I hope my heirs will use part of their inheritance for sadaqah jariah in my name."></textarea>
+    <label style="margin-top:18px">Help for specific people</label>
+    <div id="l-support"></div>
+    <button class="add" onclick="addItem('support')">+ Add a person</button>
+    <label>Family business or property</label>
+    <textarea data-k="hopes.business" placeholder="e.g. I hope my heirs keep the shophouse and share the rent, rather than sell it quickly."></textarea>
+  </section>
+
+  <!-- 5 -->
+  <section class="step" data-title="Personal items">
+    <h2>Personal and sentimental items</h2>
+    <p class="lead" data-tx="lead4">Who you hope receives items of personal meaning. Under Faraid these still count towards an heir's share, unless all heirs agree after your death.</p>
+    <div id="l-items"></div>
+    <button class="add" onclick="addItem('items')">+ Add item</button>
+    <datalist id="people"></datalist>
+  </section>
+
   <!-- 6 -->
   <section class="step" data-title="Documents">
     <h2>Documents, accounts and contacts</h2>
@@ -238,6 +242,8 @@ textarea{min-height:80px;resize:vertical}
     <label style="margin-top:18px">Digital accounts</label>
     <div id="l-digital"></div>
     <button class="add" onclick="addItem('digital')">+ Add digital account</button>
+    <label>Cryptocurrency and digital assets</label>
+    <textarea data-k="docs.crypto" placeholder="e.g. I hold Bitcoin and Ethereum. My hardware wallet is in the safe. Recovery seed phrase is in a sealed envelope with my lawyer. Do not share the seed phrase until my executor has verified identity."></textarea>
     <label>How my executor can access my devices</label>
     <input type="text" data-k="docs.access" placeholder="e.g. My wife knows the phone PIN; password manager recovery sheet is in the safe">
     <label style="margin-top:18px">People to contact</label>
@@ -289,14 +295,14 @@ const CONFIG = { firmLine1:'', fileName:'Memorandum_of_Wishes' };
 /* ================= STATE ================= */
 const DEFAULT = () => ({
   mode:'islamic',
-  t:{ name:'', idType:'NRIC', nric:'', gender:'M' }, willDate:'', willAt:'',
+  t:{ name:'', idType:'NRIC', nric:'', gender:'M' }, memoDate:'', willDate:'', willAt:'',
   executors:[{name:'',rel:'',phone:''}],
   spouse:'', family:[],
   care:{ spouseHome:false, dependants:'', upbringing:'', age:'', trust:'', guardian:'' },
   hopes:{ general:'', business:'' }, support:[],
   items:[],
   fun:{ mosque:'', burial:'', ghusl:'', imam:'', khairat:'', tahlil:'', ibadah:'', jariah:'', other:'' },
-  docs:{ where:'', access:'' }, accounts:[], digital:[], contacts:[],
+  docs:{ where:'', access:'', crypto:'' }, accounts:[], digital:[], contacts:[],
   owe:[], owed:[],
   message:'',
 });
@@ -473,10 +479,41 @@ function buildMemo(s){
   const GEN = s.mode==='general';
   B.push({t:'notice', text: GEN ? `This Memorandum is **not a will or codicil** and is not intended to have testamentary effect. It does not revoke, vary or add to my Last Will and Testament${s.willDate.trim()?` dated ${s.willDate.trim()}`:''}. It records my wishes for the guidance of my Executor, my beneficiaries and my family. They are not legally bound by it, and I ask that it be read with love and goodwill. Where anything here differs from my Will, my Will prevails.` : `This Memorandum is **not a will or codicil** and is not intended to have testamentary effect. It does not revoke, vary or add to my Last Will and Testament${s.willDate.trim()?` dated ${s.willDate.trim()}`:''}, or the distribution of my estate according to Faraid. It records my wishes for the guidance of my Executor, my heirs and my family. They are not legally bound by it, and I ask that it be read with love and goodwill. Where anything here differs from my Will or from Islamic law, my Will and Islamic law prevail.`});
 
+  const f = s.fun, fun = [];
+  if(f.mosque.trim()) fun.push(GEN ? `I would like my funeral service or wake to be held at ${f.mosque.trim()}.` : `I would like my *solat jenazah* to be held at ${f.mosque.trim()}.`);
+  if(f.burial.trim()) fun.push(GEN ? `My wishes for burial or cremation: ${f.burial.trim()}.` : `My burial preference: ${f.burial.trim()}.`);
+  if(f.ghusl.trim()) fun.push(GEN ? `Religious rites or customs: ${f.ghusl.trim()}.` : `I would like ${f.ghusl.trim()} to perform or assist with my *ghusl*, if able.`);
+  if(f.imam.trim()) fun.push(GEN ? `I would like ${f.imam.trim()} to officiate or give the eulogy, if able.` : `I would like ${f.imam.trim()} to lead my funeral prayer, if able.`);
+  if(f.khairat.trim()) fun.push(GEN ? `Funeral director / pre-paid plan: ${f.khairat.trim()}.` : `Khairat / funeral scheme: ${f.khairat.trim()}.`);
+  if(f.tahlil.trim()) fun.push(...sentences(f.tahlil));
+  if(!GEN && f.ibadah.trim()) fun.push(...sentences(f.ibadah).map(x=>`Outstanding ibadah: ${x}`));
+  if(f.jariah.trim()) fun.push(...sentences(f.jariah));
+  if(f.other.trim()) fun.push(...sentences(f.other));
+
+  if(fun.length){ H('Funeral and Religious Wishes'); fun.forEach(x=>C(x.replace(/\.\.$/,'.'))); }
+
   H('My Will and Executor');
   C(`My original Will ${s.willAt.trim()?`is kept at ${s.willAt.trim()}`:'is kept at [[location]]'}.`);
   if(exs.length) C(`My Executor is ${exs.map((e,i)=>`**${e.name.trim()}**${e.rel?` (my ${e.rel})`:''}${e.phone?`, contactable at ${e.phone}`:''}`).join(', with replacement(s) ')}. I ask my family to support my Executor and to give ${exs.length>1?'them':'him or her'} the information and documents needed to administer my estate.`);
   else C('My Executor is named in my Will.');
+
+  const acc = s.accounts.filter(a=>a.inst.trim()), dig = s.digital.filter(d=>d.svc.trim()), con = s.contacts.filter(c=>c.name.trim());
+  if(s.docs.where.trim()||acc.length||dig.length||s.docs.access.trim()||s.docs.crypto.trim()||con.length){
+    H('Documents, Accounts and Contacts');
+    if(s.docs.where.trim()) C(`My important documents are kept at: ${s.docs.where.trim()}.`.replace(/\.\.$/,'.'));
+    if(acc.length){ C('My accounts and policies (last four digits only):'); T([30,150,120,60,91], [['No.','Institution','Type','Last 4','Note'], ...acc.map((a,i)=>[String(i+1), a.inst.trim(), a.type, a.last4.trim()||'–', a.note.trim()||'–'])]); }
+    if(dig.length){ C('My wishes for my digital accounts:'); T([30,200,221], [['No.','Service','My wish'], ...dig.map((d,i)=>[String(i+1), d.svc.trim(), d.wish])]); }
+    if(s.docs.crypto.trim()) C(`Cryptocurrency and digital assets: ${s.docs.crypto.trim()}.`.replace(/\.\.$/, '.'));
+    if(s.docs.access.trim()) C(`Access to my devices: ${s.docs.access.trim()}.`.replace(/\.\.$/,'.'));
+    if(con.length){ C('People my Executor may contact:'); T([30,140,140,141], [['No.','Role','Name','Contact'], ...con.map((c,i)=>[String(i+1), c.role, c.name.trim(), c.contact.trim()||'–'])]); }
+  }
+
+  const owe = s.owe.filter(x=>x.who.trim()), owed = s.owed.filter(x=>x.who.trim());
+  if(owe.length||owed.length){
+    H('Debts and Informal Arrangements');
+    if(owe.length){ C('To the best of my knowledge, I owe the following, which I ask my Executor to settle before my estate is distributed:'); T([30,190,90,141], [['No.','Owed to','Amount (S$)','Note'], ...owe.map((x,i)=>[String(i+1), x.who.trim(), x.amt.trim()||'–', x.note.trim()||'–'])]); }
+    if(owed.length){ C('The following owe money to me:'); T([30,190,90,141], [['No.','Owed by','Amount (S$)','Note'], ...owed.map((x,i)=>[String(i+1), x.who.trim(), x.amt.trim()||'–', x.note.trim()||'–'])]); }
+  }
 
   const care = [];
   if(s.care.spouseHome) care.push(`I hope my heirs will allow my ${P.spouse}${s.spouse?`, ${s.spouse}`:''}, to continue living in our home for as long as ${P.she} wishes, and will not press for its sale during that time.`);
@@ -499,37 +536,8 @@ function buildMemo(s){
     T([30,140,120,161], [['No.','Item','I hope it goes to','Reason'], ...items.map((x,i)=>[String(i+1), x.item.trim(), ph(x.to,'Name'), x.reason.trim()||'–'])]);
   }
 
-  const f = s.fun, fun = [];
-  if(f.mosque.trim()) fun.push(GEN ? `I would like my funeral service or wake to be held at ${f.mosque.trim()}.` : `I would like my *solat jenazah* to be held at ${f.mosque.trim()}.`);
-  if(f.burial.trim()) fun.push(GEN ? `My wishes for burial or cremation: ${f.burial.trim()}.` : `My burial preference: ${f.burial.trim()}.`);
-  if(f.ghusl.trim()) fun.push(GEN ? `Religious rites or customs: ${f.ghusl.trim()}.` : `I would like ${f.ghusl.trim()} to perform or assist with my *ghusl*, if able.`);
-  if(f.imam.trim()) fun.push(GEN ? `I would like ${f.imam.trim()} to officiate or give the eulogy, if able.` : `I would like ${f.imam.trim()} to lead my funeral prayer, if able.`);
-  if(f.khairat.trim()) fun.push(GEN ? `Funeral director / pre-paid plan: ${f.khairat.trim()}.` : `Khairat / funeral scheme: ${f.khairat.trim()}.`);
-  if(f.tahlil.trim()) fun.push(...sentences(f.tahlil));
-  if(!GEN && f.ibadah.trim()) fun.push(...sentences(f.ibadah).map(x=>`Outstanding ibadah: ${x}`));
-  if(f.jariah.trim()) fun.push(...sentences(f.jariah));
-  if(f.other.trim()) fun.push(...sentences(f.other));
-  if(fun.length){ H('Funeral and Religious Wishes'); fun.forEach(x=>C(x.replace(/\.\.$/,'.'))); }
-
-  const acc = s.accounts.filter(a=>a.inst.trim()), dig = s.digital.filter(d=>d.svc.trim()), con = s.contacts.filter(c=>c.name.trim());
-  if(s.docs.where.trim()||acc.length||dig.length||s.docs.access.trim()||con.length){
-    H('Documents, Accounts and Contacts');
-    if(s.docs.where.trim()) C(`My important documents are kept at: ${s.docs.where.trim()}.`.replace(/\.\.$/,'.'));
-    if(acc.length){ C('My accounts and policies (last four digits only):'); T([30,150,120,60,91], [['No.','Institution','Type','Last 4','Note'], ...acc.map((a,i)=>[String(i+1), a.inst.trim(), a.type, a.last4.trim()||'–', a.note.trim()||'–'])]); }
-    if(dig.length){ C('My wishes for my digital accounts:'); T([30,200,221], [['No.','Service','My wish'], ...dig.map((d,i)=>[String(i+1), d.svc.trim(), d.wish])]); }
-    if(s.docs.access.trim()) C(`Access to my devices: ${s.docs.access.trim()}.`.replace(/\.\.$/,'.'));
-    if(con.length){ C('People my Executor may contact:'); T([30,140,140,141], [['No.','Role','Name','Contact'], ...con.map((c,i)=>[String(i+1), c.role, c.name.trim(), c.contact.trim()||'–'])]); }
-  }
-
-  const owe = s.owe.filter(x=>x.who.trim()), owed = s.owed.filter(x=>x.who.trim());
-  if(owe.length||owed.length){
-    H('Debts and Informal Arrangements');
-    if(owe.length){ C('To the best of my knowledge, I owe the following, which I ask my Executor to settle before my estate is distributed:'); T([30,190,90,141], [['No.','Owed to','Amount (S$)','Note'], ...owe.map((x,i)=>[String(i+1), x.who.trim(), x.amt.trim()||'–', x.note.trim()||'–'])]); }
-    if(owed.length){ C('The following owe money to me:'); T([30,190,90,141], [['No.','Owed by','Amount (S$)','Note'], ...owed.map((x,i)=>[String(i+1), x.who.trim(), x.amt.trim()||'–', x.note.trim()||'–'])]); }
-  }
-
   if(s.message.trim()){ H('A Personal Message'); sentences(s.message).forEach(x=>B.push({t:'p', text:x})); }
-  return { TN, TNU:UP(TN), idL, TID:ph(s.t.nric,'ID number'), blocks:B };
+  return { TN, TNU:UP(TN), idL, TID:ph(s.t.nric,'ID number'), memoDate:s.memoDate.trim(), blocks:B };
 }
 
 /* ================= PREVIEW ================= */
@@ -544,7 +552,7 @@ function renderPreview(D){
     if(b.t==='c') h += `<div class="c"><span class="n">${b.n}</span><span>${md(b.text)}</span></div>`;
     if(b.t==='table') h += `<table style="margin-left:48px;width:calc(100% - 48px)">${b.rows.map((r,i)=>`<tr>${r.map(c=>i?`<td>${md(c)}</td>`:`<th>${esc(c)}</th>`).join('')}</tr>`).join('')}</table>`;
   }
-  h += `<p style="margin-top:36px">Signed by me on ______________________</p><p style="margin-top:46px">……………………………<br>${md(D.TN)}</p>
+  h += `<p style="margin-top:36px">Signed by me on ${D.memoDate ? md(D.memoDate) : '______________________'}</p><p style="margin-top:46px">……………………………<br>${md(D.TN)}</p>
     <p style="font-size:12px;margin-top:20px"><i>Review history: ____________ &nbsp; ____________ &nbsp; ____________</i></p>`;
   document.getElementById('paper').innerHTML = h;
   const blanks = (h.match(/<mark>/g)||[]).length;
@@ -607,7 +615,7 @@ async function downloadDocx(){
     if(b.t==='c') kids.push(hang(b.n, b.text));
     if(b.t==='table'){ kids.push(table(b.widths, b.rows)); kids.push(new Paragraph({spacing:{after:120}, children:[]})); }
   });
-  kids.push(p('Signed by me on ______________________',{before:480, align:AlignmentType.LEFT}));
+  kids.push(p(`Signed by me on ${D.memoDate || '______________________'}`,{before:480, align:AlignmentType.LEFT}));
   kids.push(p('…………………………',{before:600, after:0, align:AlignmentType.LEFT}));
   kids.push(p(D.TN,{align:AlignmentType.LEFT}));
   kids.push(p('*Review history: ____________   ____________   ____________*',{run:{size:20}, before:240, align:AlignmentType.LEFT}));
@@ -675,7 +683,7 @@ function downloadPdf(){
     if(b.t==='table') table(b.widths, b.rows);
   });
   ensure(140); y+=24;
-  doc.setFont('times','normal'); doc.setFontSize(12); doc.text('Signed by me on ______________________', X0, y); y+=60;
+  doc.setFont('times','normal'); doc.setFontSize(12); doc.text(`Signed by me on ${D.memoDate || '______________________'}`, X0, y); y+=60;
   doc.text('…………………………', X0, y); y+=16; doc.text(clean(D.TN), X0, y); y+=30;
   doc.setFont('times','italic'); doc.setFontSize(10); doc.text('Review history: ____________   ____________   ____________', X0, y);
   doc.setProperties({ title:`Memorandum of Wishes of ${clean(D.TN)}`, creator:CONFIG.firmLine1 });
