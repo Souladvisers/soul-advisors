@@ -22,7 +22,6 @@ A free 3-minute lead magnet. Visitors take the Muslim (faraid) or general (Intes
 - Add `?src=` to tag the channel: `ig-bio`, `ig-story`, `wa-status` or `roadshow`.
 - Add `?demo=1` to show a "Fill demo details" button for testing.
 
-## Before going public
+## Status
 
-- Get Prudential compliance sign-off on the questions, the report wording, the consent line and the captions.
-- Replace the placeholder disclosure line in the footer.
+- Compliance approved. Live at /estate-check since 8 Nov 2026.
