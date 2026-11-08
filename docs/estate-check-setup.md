@@ -8,14 +8,12 @@ A free 3-minute lead magnet. Visitors take the Muslim (faraid) or general (Intes
 | `public/estate-check-og.png` | Preview image shown when the link is shared on WhatsApp, Instagram or Facebook |
 | `docs/estate-check-google-sheet.gs` | Apps Script that saves leads into the "Estate Gap Check Leads" Google Sheet |
 
-## Connect the Google Sheet
+## Google Sheet connection (done)
 
-1. Open the **Estate Gap Check Leads** sheet in Google Drive.
-2. Go to **Extensions > Apps Script**, paste in `docs/estate-check-google-sheet.gs`, and save. To get an email for each lead, set `NOTIFY_EMAIL`.
-3. Go to **Deploy > New deployment > Web app**. Set Execute as: **Me** and Who has access: **Anyone**, then deploy and authorise.
-4. Paste the `/exec` URL into `SHEET_URL` in the `CONFIG` block of `public/estate-check.html`, then commit.
-
-Until `SHEET_URL` is set, the page works, but leads are not saved.
+- Leads go to the **Estate Gap Check Leads** Google Sheet in pru.aarief@gmail.com's Drive.
+- They are written by the Apps Script project **Estate Gap Check - Lead Capture** (script.google.com), deployed as a web app with access set to Anyone. Its code is in `docs/estate-check-google-sheet.gs`.
+- New leads and booking clicks also send an email alert to `NOTIFY_EMAIL` in the script.
+- If you edit the script, use **Deploy > Manage deployments > Edit > New version**. That keeps the same URL, which is set in `SHEET_URL` in `public/estate-check.html`.
 
 ## Links
 

@@ -1,10 +1,13 @@
 /**
  * Estate Gap Check: saves leads and booking clicks to this Google Sheet.
- * Paste this into Extensions > Apps Script of your Google Sheet (see README step 1).
+ * Deployed as a web app (Execute as: Me, Who has access: Anyone).
  */
 
 // Optional: an email that gets an alert for every new lead. Leave "" to switch off.
-const NOTIFY_EMAIL = "";
+const NOTIFY_EMAIL = "pru.aarief@gmail.com";
+
+// The "Estate Gap Check Leads" Google Sheet
+const SHEET_ID = "1nP5ey5mgVIUTjJdELsWPUjOZFwkNz8LpHaP9RYzoS_I";
 
 const LEAD_HEADERS = ["Timestamp", "Name", "Mobile", "Email", "PDPA consent", "Path", "Score",
   "Urgent gaps", "Other gaps", "Family", "Estate (S$)", "Property", "Source", "FC", "Page", "Status", "Notes"];
@@ -15,7 +18,7 @@ function doPost(e) {
   lock.waitLock(10000);
   try {
     const d = JSON.parse(e.postData.contents);
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = SpreadsheetApp.openById(SHEET_ID);
 
     if (d.type === "booking") {
       getSheet_(ss, "Bookings", BOOKING_HEADERS).appendRow([
