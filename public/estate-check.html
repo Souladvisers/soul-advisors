@@ -169,6 +169,8 @@ function send(payload){
 /* Team members from the site's data.json: ?fc=<member id or first name> routes bookings to them */
 fetch("/data.json").then(r=>r.json()).then(d=>{
   (d.members||[]).forEach(m=>{
+    [m.id, m.subdomain, ...String(m.name||"").split(/\s+/)].filter(Boolean).map(k=>String(k).toLowerCase())
+      .forEach(k=>{ if (!(k in FC_NAMES)) FC_NAMES[k]=String(m.name||k).trim(); });
     let n = String(m.whatsapp||"").replace(/\D/g,""); if (!n) return;
     if (n.length===8) n = "65"+n;
     const keys = [m.id, m.subdomain, ...String(m.name||"").split(/\s+/)].filter(Boolean).map(k=>String(k).toLowerCase());
@@ -176,6 +178,8 @@ fetch("/data.json").then(r=>r.json()).then(d=>{
   });
   if (state.step===3) render();
 }).catch(()=>{});
+const FC_NAMES = {};
+function fcLabel(){ return FC ? (FC_NAMES[FC] || FC) : ""; }
 function waNumber(){ return CONFIG.FC_WHATSAPP[FC] || CONFIG.WHATSAPP_DEFAULT; }
 const fmt = n => "S$" + Math.round(n).toLocaleString("en-SG");
 const pct = n => (n*100).toFixed(n*100 < 10 && n > 0 ? 1 : 0).replace(/\.0$/,"") + "%";
@@ -442,7 +446,7 @@ app.addEventListener("click", e=>{
 app.addEventListener("click", e=>{
   const b = e.target.closest("#book"); if (!b || state.booked) return;
   state.booked = true;
-  send({type:"booking", name:state.lead.name, mobile:state.lead.mobile, path:state.path, score:score(buildItems()), src:SRC, fc:FC});
+  send({type:"booking", name:state.lead.name, mobile:state.lead.mobile, path:state.path, score:score(buildItems()), src:SRC, fc:fcLabel()});
   setTimeout(()=>{ const ok=document.createElement("p"); ok.className="ok"; ok.textContent=`WhatsApp should open in a new tab. If it doesn't, message us on +${waNumber()}.`; b.after(ok); }, 0);
 });
 app.addEventListener("input", e=>{
@@ -467,7 +471,7 @@ app.addEventListener("submit", e=>{
     other_gaps:items.filter(i=>i.sev==="warn").map(i=>i.title).join(", "),
     family:`${a.married==="married"?"Married":a.married==="single"?"Single":"Divorced/widowed"}, ${a.sons} son(s), ${a.daughters} daughter(s)${kids()>0&&a.minor==="yes"?", has child under 21":""}`,
     estate:a.estate, property:a.property==="none"?"None":`${a.property.toUpperCase()} (${a.holding})`,
-    src:SRC, fc:FC, page:location.href.split("?")[0]});
+    src:SRC, fc:fcLabel(), page:location.href.split("?")[0]});
   go(3);
 });
 render();
