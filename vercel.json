@@ -37,6 +37,8 @@
     { "source": "/memorandum",     "destination": "/memorandum.html" },
     { "source": "/will",           "destination": "/will.html" },
     { "source": "/deed-of-gift",   "destination": "/deed-of-gift.html" },
+    { "source": "/estate-check",   "destination": "/estate-check.html" },
+    { "source": "/estate-check/",  "destination": "/estate-check.html" },
     { "source": "/(.*)",           "destination": "/index.html" }
   ]
 }

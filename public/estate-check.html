@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estate Gap Check | SOUL Guild</title>
+<meta name="description" content="Free 3-minute check: see who would inherit your estate in Singapore, your Estate Readiness Score, and the gaps to close first. Muslim (faraid) and general paths.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SOUL Guild">
+<meta property="og:title" content="Estate Gap Check: free 3-minute check">
+<meta property="og:description" content="See who would inherit your estate, your readiness score, and the gaps to close first.">
+<meta property="og:url" content="https://soul-advisors.vercel.app/estate-check">
+<meta property="og:image" content="https://soul-advisors.vercel.app/estate-check-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a single guided column, four steps, ending in a scannable report (score → distribution → gaps → next step). */
+:root{
+  --bg:#f2f5f4; --surface:#ffffff; --ink:#14201e; --muted:#566864; --line:#dbe3e0;
+  --accent:#1c5a50; --accent-ink:#ffffff; --accent-soft:#e2eeeb; --brass:#9c7028;
+  --crit:#b23a30; --warn:#a86d12; --good:#2d7449;
+  --crit-soft:#f8e7e5; --warn-soft:#f7eedd; --good-soft:#e3f1e8;
+  --c1:#1c5a50; --c2:#4f9a8b; --c3:#9cc9bd; --c4:#9c7028; --c5:#d2ab6a; --c6:#8b9592;
+  --display:"Newsreader", Georgia, "Times New Roman", serif;
+  --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1514; --surface:#162120; --ink:#e6eeec; --muted:#9db0ab; --line:#2a3936;
+    --accent:#62b6a5; --accent-ink:#0e1514; --accent-soft:#1d3330; --brass:#d6a85a;
+    --crit:#ee7d72; --warn:#e5ad4c; --good:#6dc690;
+    --crit-soft:#3a201e; --warn-soft:#382c17; --good-soft:#1b3326;
+    --c1:#62b6a5; --c2:#3f8577; --c3:#a6d6ca; --c4:#d6a85a; --c5:#8c6a30; --c6:#6f7c79;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1514; --surface:#162120; --ink:#e6eeec; --muted:#9db0ab; --line:#2a3936;
+  --accent:#62b6a5; --accent-ink:#0e1514; --accent-soft:#1d3330; --brass:#d6a85a;
+  --crit:#ee7d72; --warn:#e5ad4c; --good:#6dc690;
+  --crit-soft:#3a201e; --warn-soft:#382c17; --good-soft:#1b3326;
+  --c1:#62b6a5; --c2:#3f8577; --c3:#a6d6ca; --c4:#d6a85a; --c5:#8c6a30; --c6:#6f7c79;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+.proto{font-size:13px;color:var(--warn);background:var(--warn-soft);border-radius:8px;padding:8px 12px;margin-bottom:20px}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px;font-size:14px;color:var(--muted)}
+.brand b{color:var(--ink);letter-spacing:.06em;font-weight:700}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(32px,6vw,46px)}
+h2{font-size:28px}
+h3{font-size:21px}
+p{margin:0}
+.lede{font-size:18px;color:var(--muted);max-width:60ch;margin-top:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.stack{display:flex;flex-direction:column;gap:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+@media (max-width:560px){.paths{grid-template-columns:1fr}}
+.path{all:unset;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px;transition:border-color .15s, transform .15s}
+.path:hover{border-color:var(--accent);transform:translateY(-1px)}
+.path:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.path .t{font-family:var(--display);font-size:22px;font-weight:600}
+.path .d{color:var(--muted);font-size:14px}
+.path .go{color:var(--accent);font-weight:600;font-size:14px;margin-top:4px}
+.gets{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+@media (max-width:560px){.gets{grid-template-columns:1fr}}
+.gets div{border-top:2px solid var(--brass);padding-top:10px;font-size:14px;color:var(--muted)}
+.gets b{display:block;color:var(--ink);font-size:15px;margin-bottom:2px}
+.progress{display:flex;gap:8px;margin-bottom:24px}
+.progress span{flex:1;font-size:12px;color:var(--muted);border-top:3px solid var(--line);padding-top:6px}
+.progress span.on{border-color:var(--accent);color:var(--ink);font-weight:600}
+.progress span.done{border-color:var(--accent);opacity:.7}
+.q{display:flex;flex-direction:column;gap:8px}
+.q>label,.q>.lbl{font-weight:600;font-size:15px}
+.hint{font-size:13px;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{font:inherit;font-size:14px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.seg button:focus-visible,.step button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden;width:max-content}
+.step button{font:inherit;width:40px;height:38px;border:0;background:var(--surface);color:var(--ink);cursor:pointer;font-size:18px}
+.step button:disabled{opacity:.35;cursor:default}
+.step output{min-width:36px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.money{font-family:var(--display);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=text],input[type=tel],input[type=email]{font:inherit;width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted)}
+.check input{margin-top:4px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+.err{color:var(--crit);font-size:13px;min-height:1em}
+.sub{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);padding-top:6px;border-top:1px solid var(--line)}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:600;padding:12px 20px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.link{font:inherit;background:none;border:0;color:var(--accent);text-decoration:underline;cursor:pointer;padding:0;font-size:14px}
+/* report */
+.scorebox{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.ring{position:relative;width:132px;height:132px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .n{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .n b{font-family:var(--display);font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.ring .n small{font-size:12px;color:var(--muted)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em}
+.pill.crit{background:var(--crit-soft);color:var(--crit)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.bar{display:flex;height:22px;border-radius:6px;overflow:hidden;margin:16px 0 6px}
+.bar span{display:block;height:100%}
+.bar span+span{border-left:2px solid var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+td.r,th.r{text-align:right}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:baseline}
+.tblwrap{overflow-x:auto}
+.callout{border-left:3px solid var(--brass);padding:4px 0 4px 14px;font-size:15px}
+.gap{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+.gap:first-child{border-top:0;padding-top:4px}
+.gap .stripe{width:4px;border-radius:2px;flex:none}
+.gap.crit .stripe{background:var(--crit)}
+.gap.warn .stripe{background:var(--warn)}
+.gap.good .stripe{background:var(--good)}
+.gap h4{margin:0 0 4px;font-size:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.gap p{font-size:14px;color:var(--muted);max-width:62ch}
+.cta{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:26px}
+.cta h3{font-size:24px}
+.cta p{opacity:.9;margin-top:8px;max-width:58ch}
+.cta .btn{background:var(--accent-ink);color:var(--accent);border-color:var(--accent-ink);margin-top:18px}
+.cta .ok{margin-top:14px;font-size:14px;font-weight:600}
+.fine{font-size:12px;color:var(--muted);line-height:1.5}
+.muted{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><b>SOUL GUILD</b><span>Estate Planning</span></div>
+  <main id="app" aria-live="polite"></main>
+  <p class="fine" style="margin-top:32px">[Agency and representative disclosure line, to be confirmed by compliance.] This check is a simplified educational illustration and is not legal, financial or religious advice.</p>
+</div>
+
+<script>
+/* ===== SETTINGS: fill these in before going live (see README) ===== */
+const CONFIG = {
+  SHEET_URL: "",                 // Google Apps Script web app URL, ends in /exec
+  WHATSAPP_DEFAULT: "6585229299", // number that receives bookings, country code first, no + or spaces
+  FC_WHATSAPP: {                  // optional extra codes; team members in data.json are added automatically
+    // "aisyah": "6591234567",
+  }
+};
+/* ================================================================== */
+const params = new URLSearchParams(location.search);
+const SRC = (params.get("src") || "direct").slice(0,40);
+const FC = (params.get("fc") || "").toLowerCase().slice(0,40);
+const DEMO = params.get("demo") === "1";
+function send(payload){
+  if (!CONFIG.SHEET_URL){ console.warn("SHEET_URL not set; lead not saved", payload); return; }
+  try { fetch(CONFIG.SHEET_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)}); } catch(e){ console.warn(e); }
+}
+/* Team members from the site's data.json: ?fc=<member id or first name> routes bookings to them */
+fetch("/data.json").then(r=>r.json()).then(d=>{
+  (d.members||[]).forEach(m=>{
+    let n = String(m.whatsapp||"").replace(/\D/g,""); if (!n) return;
+    if (n.length===8) n = "65"+n;
+    const keys = [m.id, m.subdomain, ...String(m.name||"").split(/\s+/)].filter(Boolean).map(k=>String(k).toLowerCase());
+    keys.forEach(k=>{ if (!(k in CONFIG.FC_WHATSAPP)) CONFIG.FC_WHATSAPP[k]=n; });
+  });
+  if (state.step===3) render();
+}).catch(()=>{});
+function waNumber(){ return CONFIG.FC_WHATSAPP[FC] || CONFIG.WHATSAPP_DEFAULT; }
+const fmt = n => "S$" + Math.round(n).toLocaleString("en-SG");
+const pct = n => (n*100).toFixed(n*100 < 10 && n > 0 ? 1 : 0).replace(/\.0$/,"") + "%";
+
+const DEFAULTS = {
+  gender:"male", married:"married", wives:1, sons:1, daughters:1, minor:"yes",
+  father:"no", mother:"yes", brothers:2, sisters:1, estate:800000,
+  will:"no", cpf:"notsure", ins:"some", lpa:"no", property:"hdb", holding:"joint",
+  jtdoc:"no", hibah:"no", guardian:"no", overseas:"no", docs:"partly", cash:"notsure"
+};
+const state = { path:null, step:-1, a:{...DEFAULTS}, lead:{name:"",mobile:"",email:"",consent:false}, booked:false };
+const STEPS = ["Your family","Your arrangements","Your details","Your report"];
+const app = document.getElementById("app");
+
+/* ---------- UI helpers ---------- */
+function seg(k, opts){
+  return `<div class="seg" role="group">` + opts.map(([v,l]) =>
+    `<button type="button" data-k="${k}" data-v="${v}" aria-pressed="${state.a[k]===v}">${l}</button>`).join("") + `</div>`;
+}
+function stepper(k, min, max){
+  const v = state.a[k];
+  return `<div class="step"><button type="button" data-step="${k}" data-d="-1" aria-label="Decrease" ${v<=min?"disabled":""}>&minus;</button><output>${v}</output><button type="button" data-step="${k}" data-d="1" aria-label="Increase" ${v>=max?"disabled":""}>+</button></div>`;
+}
+const q = (label, ctrl, hint="") => `<div class="q"><span class="lbl">${label}</span>${hint?`<span class="hint">${hint}</span>`:""}${ctrl}</div>`;
+const YN = [["yes","Yes"],["no","No"]];
+const YNS = [["yes","Yes"],["no","No"],["notsure","Not sure"]];
+const kids = () => state.a.sons + state.a.daughters;
+const isM = () => state.path === "muslim";
+
+/* ---------- Views ---------- */
+function viewIntro(){
+  return `
+  <h1>If something happened to you tomorrow, would your family get what you intend?</h1>
+  <p class="lede">Answer a few questions in about three minutes. You'll see who would inherit under Singapore's rules, your Estate Readiness Score, and the gaps worth closing first.</p>
+  <div class="paths">
+    <button class="path" data-path="muslim"><span class="t">Muslim path</span><span class="d">Faraid, wasiat, hibah, CPF and insurance nominations, and jointly owned property.</span><span class="go">Start the check →</span></button>
+    <button class="path" data-path="general"><span class="t">General path</span><span class="d">Wills, the Intestate Succession Act, guardianship, CPF nominations and LPA.</span><span class="go">Start the check →</span></button>
+  </div>
+  <div class="gets">
+    <div><b>Who inherits</b>A worked split of your estate based on your family.</div>
+    <div><b>Readiness score</b>Out of 100, across nine common gaps.</div>
+    <div><b>What to fix first</b>Ranked by how much it would hurt your family.</div>
+  </div>`;
+}
+function progress(){
+  return `<div class="progress">${STEPS.map((s,i)=>`<span class="${i===state.step?"on":i<state.step?"done":""}">${i+1}. ${s}</span>`).join("")}</div>`;
+}
+function viewFamily(){
+  const a = state.a;
+  let h = `<h2>Your family</h2><p class="muted" style="margin-top:6px">Who's in your family today decides who inherits.</p><div class="card stack" style="margin-top:18px">`;
+  if (isM()) h += q("You are", seg("gender",[["male","Male"],["female","Female"]]), "Needed because faraid shares for a husband and a wife differ.");
+  h += q("Marital status", seg("married",[["married","Married"],["single","Single"],["prev","Divorced or widowed"]]));
+  if (isM() && a.gender==="male" && a.married==="married") h += q("Number of wives", stepper("wives",1,4));
+  h += `<div class="grid2">${q("Sons", stepper("sons",0,10))}${q("Daughters", stepper("daughters",0,10))}</div>`;
+  if (kids()>0) h += q("Is any child under 21?", seg("minor",YN));
+  h += `<div class="grid2">${q("Is your father alive?", seg("father",YN))}${q("Is your mother alive?", seg("mother",YN))}</div>`;
+  h += `<div class="grid2">${q("Brothers", stepper("brothers",0,10), "Same father and mother")}${q("Sisters", stepper("sisters",0,10), "Same father and mother")}</div>`;
+  h += `<div class="q"><label for="estate">Rough value of everything you own</label><span class="hint">Property equity, savings, investments, CPF and insurance payouts. A rough figure is fine.</span><span class="money" id="estateOut">${fmt(a.estate)}</span><input type="range" id="estate" min="100000" max="5000000" step="50000" value="${a.estate}"></div>`;
+  return h + `</div>` + nav();
+}
+function viewArr(){
+  const a = state.a, M = isM();
+  let h = `<h2>Your arrangements</h2><p class="muted" style="margin-top:6px">What's already in place, and what isn't.</p><div class="card stack" style="margin-top:18px">`;
+  h += `<div class="sub">Documents</div>`;
+  h += q(M?"Do you have a wasiat (Islamic will)?":"Do you have a will?", seg("will",YNS));
+  h += q("Have you made a CPF nomination?", seg("cpf",YNS), "CPF savings are not covered by a will.");
+  h += q("Do your insurance policies have nominees?", seg("ins",[["all","All of them"],["some","Some"],["none","None"],["nopol","I have no policies"]]));
+  h += q("Do you have a Lasting Power of Attorney (LPA)?", seg("lpa",YN), "Lets someone you trust act for you if you lose mental capacity.");
+  if (kids()>0 && a.minor==="yes") h += q("Have you named a guardian for your children in your will?", seg("guardian",YN));
+  h += `<div class="sub">Property</div>`;
+  h += q("Do you own property?", seg("property",[["hdb","HDB flat"],["private","Private property"],["none","No"]]));
+  if (a.property!=="none") h += q("How is it held?", seg("holding",[["sole","In my name only"],["joint","Joint tenancy"],["tic","Tenancy-in-common"],["notsure","Not sure"]]), "Most married couples' HDB flats are held as joint tenancy.");
+  if (M && a.property!=="none" && a.holding==="joint") h += q("Have you documented what should happen to the jointly owned property, for example through a hibah or a declaration?", seg("jtdoc",YNS));
+  if (M) { h += `<div class="sub">Islamic arrangements</div>`; h += q("Have you made a hibah (lifetime gift) for anything you want a specific person to receive?", seg("hibah",[["yes","Yes"],["no","No"],["unknown","I'm not sure what that is"]])); }
+  if (!M) h += q("Do you own assets outside Singapore?", seg("overseas",YN));
+  h += `<div class="sub">Your family's readiness</div>`;
+  h += q("Would your family know where to find your policies, accounts and documents?", seg("docs",[["yes","Yes"],["partly","Partly"],["no","No"]]));
+  h += q("If your income stopped, would your family have enough cash to cover 12 months of expenses?", seg("cash",YNS));
+  return h + `</div>` + nav();
+}
+function viewLead(){
+  const s = score(buildItems()), L = state.lead;
+  return `<h2>Your report is ready</h2>
+  <div class="card" style="margin-top:18px;display:flex;gap:20px;align-items:center;flex-wrap:wrap">${ring(s)}<div style="flex:1;min-width:220px"><p style="font-weight:600">Your Estate Readiness Score is ${s} out of 100.</p><p class="muted" style="margin-top:6px">Enter your details to see who would inherit your estate and which gaps to close first.</p></div></div>
+  <form id="leadForm" class="card stack" style="margin-top:16px" novalidate>
+    ${`<div class="q"><label for="lname">Name</label><input id="lname" type="text" autocomplete="name" value="${esc(L.name)}"></div>`}
+    <div class="grid2">
+      <div class="q"><label for="lmobile">Mobile number</label><input id="lmobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="8123 4567" value="${esc(L.mobile)}"></div>
+      <div class="q"><label for="lemail">Email</label><input id="lemail" type="email" autocomplete="email" value="${esc(L.email)}"></div>
+    </div>
+    <label class="check"><input id="lconsent" type="checkbox" ${L.consent?"checked":""}> <span>I agree that SOUL Guild may collect and use my details to send me this report and contact me about estate planning, in line with the Personal Data Protection Act. I can withdraw consent at any time.</span></label>
+    <p class="err" id="lerr"></p>
+    <div class="nav" style="margin-top:0"><button type="button" class="btn ghost" data-nav="-1">Back</button><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">${DEMO?`<button type="button" class="link" id="demoFill">Fill demo details</button>`:""}<button type="submit" class="btn">Show my report</button></div></div>
+  </form>`;
+}
+function viewReport(){
+  const items = buildItems(), s = score(items), M = isM(), a = state.a;
+  const dist = M ? faraid(a) : intestacy(a);
+  const band = s>=80 ? ["good","Well prepared"] : s>=50 ? ["warn","Some gaps to close"] : ["crit","Significant gaps"];
+  const name = state.lead.name ? esc(state.lead.name.split(" ")[0]) + ", here" : "Here";
+  const gaps = items.filter(i=>i.sev!=="good").sort((x,y)=>(x.sev==="crit"?0:1)-(y.sev==="crit"?0:1) || y.max-y.earned-(x.max-x.earned));
+  const goods = items.filter(i=>i.sev==="good");
+  let h = `<div class="stack">
+  <div><p class="muted">${name}'s your Estate Gap Check</p><h1 style="font-size:clamp(28px,5vw,38px);margin-top:6px">${M?"Muslim path":"General path"}</h1></div>
+  <div class="card scorebox">${ring(s)}<div style="flex:1;min-width:220px"><span class="pill ${band[0]}">${band[1]}</span><p style="margin-top:10px">${gaps.filter(g=>g.sev==="crit").length} urgent and ${gaps.filter(g=>g.sev==="warn").length} other gaps found. ${goods.length} item${goods.length===1?" is":"s are"} already in place.</p></div></div>
+  <div class="card"><h3>If you passed away tomorrow</h3><p class="muted" style="margin-top:6px">${M?"How faraid would divide an estate of ":"How the Intestate Succession Act would divide an estate of "}${fmt(a.estate)}${!M && a.will==="yes" ? " if you had no will. Your will replaces this split, except for CPF and nominated policies." : M && a.will==="yes" ? ". A wasiat can direct up to one-third to non-heirs; the rest still follows faraid." : "."}</p>
+  ${distBar(dist.rows)}${distTable(dist.rows, a.estate)}
+  ${dist.notes.map(n=>`<p class="callout" style="margin-top:14px">${n}</p>`).join("")}
+  <p class="fine" style="margin-top:14px">${dist.caveat}</p></div>
+  <div class="card"><h3>Gaps to close, most urgent first</h3><div style="margin-top:12px">${gaps.length?gaps.map(gapRow).join(""):`<p class="muted">No gaps found from your answers.</p>`}</div></div>
+  ${goods.length?`<div class="card"><h3>Already in place</h3><div style="margin-top:12px">${goods.map(gapRow).join("")}</div></div>`:""}
+  <div class="cta"><h3>Close these gaps with a free 30-minute Estate Gap Review</h3><p>A SOUL Guild estate planner will go through this report with you and show you what to fix first${M?", including wasiat, hibah and nomination options":""}. You'll also get our Family Legacy Organiser, a single record of everything your family would need to find.</p>
+  <a class="btn" id="book" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${waNumber()}?text=${encodeURIComponent(`Hi, I've just done the Estate Gap Check (${M?"Muslim":"general"} path, score ${s}/100). I'd like to book my free Estate Gap Review. My name is ${state.lead.name}.`)}">Book my free review on WhatsApp</a>${state.booked?`<p class="ok">WhatsApp should open in a new tab. If it doesn't, message us on +${waNumber()}.</p>`:""}</div>
+  <div style="display:flex;gap:18px;flex-wrap:wrap"><button class="link" data-nav="-2">Change my answers</button><button class="link" id="restart">Start over</button></div>
+  </div>`;
+  return h;
+}
+function nav(){
+  return `<div class="nav">${state.step===0?`<button type="button" class="btn ghost" id="restart">Back</button>`:`<button type="button" class="btn ghost" data-nav="-1">Back</button>`}<button type="button" class="btn" data-nav="1">Continue</button></div>`;
+}
+function ring(s){
+  const r=56, c=2*Math.PI*r, col = s>=80?"var(--good)":s>=50?"var(--warn)":"var(--crit)";
+  return `<div class="ring" role="img" aria-label="Score ${s} out of 100"><svg width="132" height="132" viewBox="0 0 132 132"><circle cx="66" cy="66" r="${r}" fill="none" stroke="var(--line)" stroke-width="12"/><circle cx="66" cy="66" r="${r}" fill="none" stroke="${col}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c*s/100} ${c}"/></svg><div class="n"><b>${s}</b><small>out of 100</small></div></div>`;
+}
+const COL = {spouse:"var(--c1)", son:"var(--c2)", daughter:"var(--c3)", child:"var(--c2)", parent:"var(--c4)", sibling:"var(--c5)", other:"var(--c6)"};
+function distBar(rows){ return `<div class="bar" role="img" aria-label="Estate split">${rows.filter(r=>r.share>0).map(r=>`<span style="width:${r.share*100}%;background:${COL[r.g]}" title="${r.label} ${pct(r.share)}"></span>`).join("")}</div>`; }
+function distTable(rows, est){
+  return `<div class="tblwrap"><table><thead><tr><th>Who</th><th>Basis</th><th class="r">Share</th><th class="r">Amount</th><th class="r">Each</th></tr></thead><tbody>${rows.map(r=>`<tr><td><span class="sw" style="background:${COL[r.g]}"></span>${r.label}</td><td class="muted">${r.basis}</td><td class="r">${pct(r.share)}</td><td class="r">${fmt(r.share*est)}</td><td class="r">${r.count>1?fmt(r.share*est/r.count):"—"}</td></tr>`).join("")}</tbody></table></div>`;
+}
+function gapRow(i){
+  const lab = {crit:"Urgent", warn:"Worth fixing", good:"In place"}[i.sev];
+  return `<div class="gap ${i.sev}"><span class="stripe"></span><div><h4>${i.title} <span class="pill ${i.sev}">${lab}</span></h4><p>${i.sev==="good"?i.okText:i.body}</p></div></div>`;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+/* ---------- Faraid (simplified: spouse, children, parents, full siblings) ---------- */
+function faraid(a){
+  const male=a.gender==="male", married=a.married==="married";
+  const S=a.sons, D=a.daughters, B=a.brothers, Z=a.sisters;
+  const F=a.father==="yes", Mo=a.mother==="yes", K=S+D>0, sib=B+Z;
+  const rows=[]; let sp=0;
+  if (married){
+    sp = male ? (K?1/8:1/4) : (K?1/4:1/2);
+    const n = male ? a.wives : 1;
+    rows.push({g:"spouse", label: male ? (n>1?`Wives (${n})`:"Wife") : "Husband", count:n, share:sp, basis: male?(K?"1/8":"1/4"):(K?"1/4":"1/2")});
+  }
+  if (Mo){
+    let s, b;
+    if (K || sib>=2){ s=1/6; b="1/6"; }
+    else if (married && F){ s=(1-sp)/3; b="1/3 of remainder after spouse"; }
+    else { s=1/3; b="1/3"; }
+    rows.push({g:"parent", label:"Mother", count:1, share:s, basis:b});
+  }
+  let father = null;
+  if (F && K){ father={g:"parent", label:"Father", count:1, share:1/6, basis:"1/6"}; rows.push(father); }
+  if (S===0 && D>0) rows.push({g:"daughter", label: D>1?`Daughters (${D})`:"Daughter", count:D, share: D===1?1/2:2/3, basis: D===1?"1/2":"2/3 shared"});
+  const sibBlocked = S>0 || F;
+  if (!sibBlocked && !K && B===0 && Z>0) rows.push({g:"sibling", label: Z>1?`Sisters (${Z})`:"Sister", count:Z, share: Z===1?1/2:2/3, basis: Z===1?"1/2":"2/3 shared"});
+  let tot = rows.reduce((t,r)=>t+r.share,0), awl=false;
+  if (tot > 1+1e-9){ rows.forEach(r=>r.share/=tot); awl=true; tot=1; }
+  const R = 1-tot, notes=[];
+  if (R > 1e-9){
+    if (S>0){
+      const u=2*S+D;
+      rows.push({g:"son", label: S>1?`Sons (${S})`:"Son", count:S, share:R*2*S/u, basis:"Residue, 2 parts each"});
+      if (D>0) rows.push({g:"daughter", label: D>1?`Daughters (${D})`:"Daughter", count:D, share:R*D/u, basis:"Residue, 1 part each"});
+    } else if (F){
+      if (father){ father.share+=R; father.basis="1/6 + residue"; }
+      else rows.push({g:"parent", label:"Father", count:1, share:R, basis:"Residue"});
+    } else if (B>0){
+      const u=2*B+Z;
+      rows.push({g:"sibling", label: B>1?`Brothers (${B})`:"Brother", count:B, share:R*2*B/u, basis:"Residue, 2 parts each"});
+      if (Z>0) rows.push({g:"sibling", label: Z>1?`Sisters (${Z})`:"Sister", count:Z, share:R*Z/u, basis:"Residue, 1 part each"});
+    } else if (Z>0 && D>0){
+      rows.push({g:"sibling", label: Z>1?`Sisters (${Z})`:"Sister", count:Z, share:R, basis:"Residue (with daughters)"});
+    } else {
+      rows.push({g:"other", label:"Other male relatives, or Baitulmal", count:1, share:R, basis:"Residue"});
+    }
+  }
+  const spRow = rows.find(r=>r.g==="spouse");
+  if (spRow) notes.push(`Your ${male?(a.wives>1?"wives":"wife"):"husband"} would receive ${pct(spRow.share)} (${fmt(spRow.share*a.estate)}). Many couples assume the surviving spouse gets everything.`);
+  const ext = rows.filter(r=>r.g==="sibling"||r.g==="other").reduce((t,r)=>t+r.share,0);
+  if (ext>0) notes.push(`${pct(ext)} would go to ${rows.some(r=>r.g==="other")?"relatives outside your immediate family, or to Baitulmal":"your brothers and sisters"}. This is often the biggest surprise for families with daughters only, or with no children.`);
+  if (awl) notes.push("The fixed shares add up to more than the whole estate, so each is reduced proportionally (al-awl).");
+  return {rows, notes, caveat:"Simplified illustration covering spouse, children, parents and full siblings only. It leaves out grandchildren, half-siblings, debts, funeral costs and any valid wasiat. Actual shares are set out in the inheritance certificate issued by the Syariah Court."};
+}
+
+/* ---------- Intestate Succession Act (non-Muslims) ---------- */
+function intestacy(a){
+  const married=a.married==="married", K=kids(), P=(a.father==="yes")+(a.mother==="yes"), sib=a.brothers+a.sisters;
+  const rows=[], notes=[];
+  const kidRow = sh => ({g:"child", label: K>1?`Children (${K})`:"Child", count:K, share:sh, basis: married?"Half, shared equally":"Whole estate, shared equally"});
+  const parRow = sh => ({g:"parent", label: P>1?"Parents (2)":(a.father==="yes"?"Father":"Mother"), count:P, share:sh, basis: married?"Half, shared equally":"Whole estate"});
+  if (married){
+    if (K){ rows.push({g:"spouse",label:"Spouse",count:1,share:.5,basis:"Half"}); rows.push(kidRow(.5)); notes.push(`Your spouse would receive half (${fmt(a.estate/2)}), not the whole estate. The other half goes to your children${a.minor==="yes"?", and a share for a child under 21 would usually be held for them until they're older":""}.`); }
+    else if (P){ rows.push({g:"spouse",label:"Spouse",count:1,share:.5,basis:"Half"}); rows.push(parRow(.5)); notes.push(`With no children, your parents would take half (${fmt(a.estate/2)}), leaving your spouse with the other half.`); }
+    else rows.push({g:"spouse",label:"Spouse",count:1,share:1,basis:"Whole estate"});
+  } else {
+    if (K) rows.push(kidRow(1));
+    else if (P) rows.push(parRow(1));
+    else if (sib) rows.push({g:"sibling",label:`Brothers and sisters (${sib})`,count:sib,share:1,basis:"Whole estate, shared equally"});
+    else { rows.push({g:"other",label:"Grandparents, then uncles and aunts, then the State",count:1,share:1,basis:"Whole estate"}); notes.push("With no close family, your estate passes to more distant relatives, or to the Government if there are none."); }
+  }
+  if (kids()>0 && a.minor==="yes" && a.guardian!=="yes") notes.push("No guardian is named for your children under 21. If both parents passed away, the court would decide who raises them.");
+  return {rows, notes, caveat:"Simplified illustration of the Intestate Succession Act for spouse, children, parents and siblings. It ignores debts, estate costs and the children of a child who has passed away. CPF savings and nominated insurance follow their nominations, not this split."};
+}
+
+/* ---------- Scoring ---------- */
+function buildItems(){
+  const a=state.a, M=isM(), I=[];
+  const add=(o)=>{ o.sev = o.earned>=o.max ? "good" : o.earned===0 ? (o.zero||"crit") : "warn"; I.push(o); };
+  add({title: M?"Wasiat":"Will", max:20, earned:{yes:20,notsure:5,no:0}[a.will],
+    body: M ? "Without a wasiat, no executor is appointed and you can't direct up to one-third of your estate to people outside faraid, such as an adopted child, stepchildren or a charity. Your family would also need to apply for Letters of Administration." : "Without a will, the Intestate Succession Act decides who inherits and no executor is appointed. Your family would need to apply for Letters of Administration, which usually takes longer.",
+    okText: M ? "You have a wasiat. Check that it names an executor and keeps any bequest to non-heirs within one-third." : "You have a will. In Singapore, getting married revokes an earlier will, so review it after major life events."});
+  add({title:"CPF nomination", max:15, earned:{yes:15,notsure:5,no:0}[a.cpf],
+    body:`Your will doesn't cover CPF savings. Without a nomination, they go to the Public Trustee's Office and are distributed under ${M?"Muslim law":"intestacy rules"}, which takes longer and is charged a fee.`,
+    okText: M ? "CPF nomination in place. For Muslims, how a nomination is treated depends on how it was made, so confirm yours does what you intend." : "CPF nomination in place. Review it whenever your family changes."});
+  add({title:"Insurance nominations", max:15, earned:{all:15,some:7,none:0,nopol:3}[a.ins],
+    body: a.ins==="nopol" ? "With no policies, your family would rely entirely on the estate, which can take months to release." : `Policies without nominees form part of your estate and are only paid out after probate or Letters of Administration, which can take months.${M?" Muslims commonly use a conditional hibah assignment so payouts go directly to the people intended.":""}`,
+    okText:"All your policies have nominees, so payouts can reach your family without waiting for the estate to be settled."});
+  add({title:"Lasting Power of Attorney", max:15, earned:a.lpa==="yes"?15:0,
+    body:"If you lose mental capacity without an LPA, your family must apply to court to be appointed your deputy before they can manage your bank accounts or property. This takes months and costs more.",
+    okText:"You have an LPA, so someone you trust can act for you if you lose mental capacity."});
+  if (kids()>0 && a.minor==="yes") add({title:"Guardian for your children", max:15, earned:a.guardian==="yes"?15:0,
+    body:"Your children are under 21 and no guardian is named. If both parents passed away, the court would decide who raises them.",
+    okText:"You've named a guardian for your children."});
+  if (M && a.property!=="none" && a.holding==="joint") add({title:"Jointly owned property", max:10, earned:{yes:10,notsure:3,no:0}[a.jtdoc], zero:"warn",
+    body:"For Muslims, whether a jointly owned property passes fully to the surviving owner or is divided under faraid depends on what the owners intended and documented. Without that, it can become a dispute among the heirs.",
+    okText:"You've documented what should happen to your jointly owned property."});
+  if (M) add({title:"Hibah", max:10, earned:{yes:10,no:3,unknown:0}[a.hibah], zero:"warn",
+    body:"A hibah is a gift made during your lifetime. Many families use it so a spouse or daughters receive more than their faraid share, such as the family home or an insurance payout.",
+    okText:"You've made a hibah for what you want specific people to receive."});
+  if (!M && a.overseas==="yes") add({title:"Assets outside Singapore", max:5, earned:0, zero:"warn",
+    body:"Overseas assets may need a separate grant in that country, and a Singapore will may not be recognised there. Check whether you need a separate will.", okText:""});
+  add({title:"Your family can find everything", max:10, earned:{yes:10,partly:5,no:0}[a.docs], zero:"warn",
+    body:"Even with everything in place, your family has to find it. One record of your policies, accounts, nominations and contacts can save them weeks.",
+    okText:"Your family knows where to find your documents."});
+  add({title:"Cash for the first 12 months", max:10, earned:{yes:10,notsure:4,no:0}[a.cash], zero:"warn",
+    body:"Accounts in your sole name are frozen once the bank is told of a death, and an estate can take months to settle. Your family still has to pay the mortgage, bills and school fees in the meantime.",
+    okText:"Your family would have enough cash to cover 12 months of expenses."});
+  return I;
+}
+const score = I => Math.round(I.reduce((t,i)=>t+i.earned,0) / I.reduce((t,i)=>t+i.max,0) * 100);
+
+/* ---------- Render & events ---------- */
+function render(focus){
+  let h;
+  if (state.step<0) h = viewIntro();
+  else h = progress() + [viewFamily,viewArr,viewLead,viewReport][state.step]();
+  app.innerHTML = h;
+  if (focus){ const el = app.querySelector(focus); if (el) el.focus(); }
+}
+function go(step){ state.step=step; render(); window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"}); }
+
+app.addEventListener("click", e=>{
+  const t = e.target.closest("button"); if (!t) return;
+  if (t.dataset.path){ state.path=t.dataset.path; go(0); return; }
+  if (t.dataset.k){ state.a[t.dataset.k]=t.dataset.v; render(`[data-k="${t.dataset.k}"][data-v="${t.dataset.v}"]`); return; }
+  if (t.dataset.step){ const k=t.dataset.step; state.a[k]+= +t.dataset.d; render(`[data-step="${k}"][data-d="${t.dataset.d}"]`); return; }
+  if (t.dataset.nav){ readLead(); go(Math.max(0, state.step + +t.dataset.nav)); return; }
+  if (t.id==="restart"){ state.path=null; state.a={...DEFAULTS}; state.booked=false; go(-1); return; }
+  if (t.id==="demoFill"){ state.lead={name:"Nurul Aisyah",mobile:"9123 4567",email:"nurul@example.com",consent:true}; render(); return; }
+});
+app.addEventListener("click", e=>{
+  const b = e.target.closest("#book"); if (!b || state.booked) return;
+  state.booked = true;
+  send({type:"booking", name:state.lead.name, mobile:state.lead.mobile, path:state.path, score:score(buildItems()), src:SRC, fc:FC});
+  setTimeout(()=>{ const ok=document.createElement("p"); ok.className="ok"; ok.textContent=`WhatsApp should open in a new tab. If it doesn't, message us on +${waNumber()}.`; b.after(ok); }, 0);
+});
+app.addEventListener("input", e=>{
+  if (e.target.id==="estate"){ state.a.estate=+e.target.value; document.getElementById("estateOut").textContent=fmt(state.a.estate); }
+});
+function readLead(){
+  const f = document.getElementById("leadForm"); if (!f) return;
+  state.lead = {name:f.lname.value.trim(), mobile:f.lmobile.value.trim(), email:f.lemail.value.trim(), consent:f.lconsent.checked};
+}
+app.addEventListener("submit", e=>{
+  e.preventDefault(); readLead();
+  const L=state.lead, err=document.getElementById("lerr");
+  const mob = L.mobile.replace(/[\s-]/g,"").replace(/^\+?65/,"");
+  if (!L.name) return err.textContent="Enter your name.";
+  if (!/^[689]\d{7}$/.test(mob)) return err.textContent="Enter an 8-digit Singapore number, for example 8123 4567.";
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(L.email)) return err.textContent="Enter a valid email address, for example name@gmail.com.";
+  if (!L.consent) return err.textContent="Tick the consent box so we can send you the report.";
+  const items = buildItems(), a = state.a;
+  send({type:"lead", name:L.name, mobile:mob, email:L.email, consent:"Yes", path:state.path==="muslim"?"Muslim":"General",
+    score:score(items),
+    urgent:items.filter(i=>i.sev==="crit").map(i=>i.title).join(", "),
+    other_gaps:items.filter(i=>i.sev==="warn").map(i=>i.title).join(", "),
+    family:`${a.married==="married"?"Married":a.married==="single"?"Single":"Divorced/widowed"}, ${a.sons} son(s), ${a.daughters} daughter(s)${kids()>0&&a.minor==="yes"?", has child under 21":""}`,
+    estate:a.estate, property:a.property==="none"?"None":`${a.property.toUpperCase()} (${a.holding})`,
+    src:SRC, fc:FC, page:location.href.split("?")[0]});
+  go(3);
+});
+render();
+</script>
+</body>
+</html>
