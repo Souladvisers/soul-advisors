@@ -5,6 +5,8 @@ A free 3-minute lead magnet. Visitors take the Muslim (faraid) or general (Intes
 | File | What it is |
 |---|---|
 | `public/estate-check.html` | The page, served at `/estate-check` (rewrite in `vercel.json`) |
+| `public/estate-check-engine.js` | Inheritance engine: Shafi'i faraid as applied in Singapore, and the Intestate Succession Act |
+| `scripts/test-estate-engine.js` | Worked test cases for the engine. Run `node scripts/test-estate-engine.js` after any change |
 | `public/estate-check-og.png` | Preview image shown when the link is shared on WhatsApp, Instagram or Facebook |
 | `docs/estate-check-google-sheet.gs` | Apps Script that saves leads into the "Estate Gap Check Leads" Google Sheet |
 
@@ -25,3 +27,10 @@ A free 3-minute lead magnet. Visitors take the Muslim (faraid) or general (Intes
 ## Status
 
 - Compliance approved. Live at /estate-check since 8 Nov 2026.
+
+## Faraid coverage (v2)
+
+- **Heirs covered:** spouse (up to 4 wives), sons, daughters, son's sons and son's daughters, father, mother, father's father, both grandmothers, full siblings, half-siblings through the father, half-siblings through the mother, sons of full and paternal brothers, the father's full and paternal brothers, and their sons.
+- **Rules covered:** blocking (hajb), al-awl, Umariyyatain, asabah ma'a al-ghayr (sisters with daughters), al-Musharraka, al-Akdariyya, a grandfather with siblings (Zayd method, shown as an estimate), and residue to Baitulmal (no radd, per Singapore Shafi'i practice).
+- **Exclusions:** relatives who aren't Muslim, adopted children, stepchildren and a daughter's children.
+- **Not covered:** great-grandchildren, the mu'adda refinements beyond the basic method, and missing persons, unborn children or simultaneous deaths. The Syariah Court's Inheritance Certificate is always the binding result.

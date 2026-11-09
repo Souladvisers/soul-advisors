@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Layout idea: a single guided column, four steps, ending in a scannable report (score → distribution → gaps → next step). */
+/* Layout idea: a single guided column, four or five steps, ending in a scannable report (score → distribution → gaps → next step). */
 :root{
   --bg:#f2f5f4; --surface:#ffffff; --ink:#14201e; --muted:#566864; --line:#dbe3e0;
   --accent:#1c5a50; --accent-ink:#ffffff; --accent-soft:#e2eeeb; --brass:#9c7028;
@@ -136,6 +136,11 @@ td.r,th.r{text-align:right}
 .cta p{opacity:.9;margin-top:8px;max-width:58ch}
 .cta .btn{background:var(--accent-ink);color:var(--accent);border-color:var(--accent-ink);margin-top:18px}
 .cta .ok{margin-top:14px;font-size:14px;font-weight:600}
+.gloss{display:grid;grid-template-columns:minmax(140px,190px) 1fr;gap:10px 18px;margin:14px 0 0;font-size:14px}
+.gloss dt{font-weight:700}
+.gloss dd{margin:0;color:var(--muted)}
+@media (max-width:560px){.gloss{grid-template-columns:1fr;gap:2px}.gloss dd{margin-bottom:10px}}
+td.why{min-width:180px;font-size:13px}
 .fine{font-size:12px;color:var(--muted);line-height:1.5}
 .muted{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -148,6 +153,7 @@ td.r,th.r{text-align:right}
   <p class="fine" style="margin-top:32px">This check is a simplified educational illustration and is not legal, financial or religious advice.</p>
 </div>
 
+<script src="/estate-check-engine.js"></script>
 <script>
 /* ===== SETTINGS: fill these in before going live (see README) ===== */
 const CONFIG = {
@@ -182,32 +188,88 @@ const FC_NAMES = {};
 function fcLabel(){ return FC ? (FC_NAMES[FC] || FC) : ""; }
 function waNumber(){ return CONFIG.FC_WHATSAPP[FC] || CONFIG.WHATSAPP_DEFAULT; }
 const fmt = n => "S$" + Math.round(n).toLocaleString("en-SG");
-const pct = n => (n*100).toFixed(n*100 < 10 && n > 0 ? 1 : 0).replace(/\.0$/,"") + "%";
+const pct = n => (Math.round(n*1000)/10).toFixed(1).replace(/\.0$/,"") + "%";
+const E = window.EstateEngine;
 
 const DEFAULTS = {
   gender:"male", married:"married", wives:1, sons:1, daughters:1, minor:"yes",
-  father:"no", mother:"yes", brothers:2, sisters:1, estate:800000,
+  children:2, deceasedChildLines:0, siblings:0,
+  sonsSons:0, sonsDaughters:0, father:"no", mother:"yes", grandfather:"no", gmMaternal:"no", gmPaternal:"no",
+  fullBrothers:2, fullSisters:1, patBrothers:0, patSisters:0, uterine:0,
+  fullNephews:0, patNephews:0, fullUncles:0, patUncles:0, fullCousins:0, patCousins:0,
+  nonMuslim:"no", nmSpouse:"no", nmFather:"no", nmMother:"no",
+  estate:600000,
   will:"no", cpf:"notsure", ins:"some", lpa:"no", property:"hdb", holding:"joint",
-  jtdoc:"no", hibah:"no", guardian:"no", overseas:"no", docs:"partly", cash:"notsure"
+  hibah:"no", guardian:"no", overseas:"no", docs:"partly", cash:"notsure"
 };
-const state = { path:null, step:-1, a:{...DEFAULTS}, lead:{name:"",mobile:"",email:"",consent:false}, booked:false };
-const STEPS = ["Your family","Your arrangements","Your details","Your report"];
+const state = { path:null, stepId:"intro", a:{...DEFAULTS}, lead:{name:"",mobile:"",email:"",consent:false}, booked:false };
+const STEP_LABELS = { family:"Your family", wider:"Wider family", arr:"Your arrangements", lead:"Your details", report:"Your report" };
 const app = document.getElementById("app");
+
+/* ---------- who is alive and counts as an heir ---------- */
+const isM = () => state.path === "muslim";
+const A = () => state.a;
+const yes = k => A()[k] === "yes";
+const married = () => A().married === "married";
+const nm = k => yes("nonMuslim") && yes(k);
+const spouseHeir = () => married() && !(isM() && A().gender === "male" && nm("nmSpouse"));
+const fatherHeir = () => yes("father") && !(isM() && nm("nmFather"));
+const motherHeir = () => yes("mother") && !(isM() && nm("nmMother"));
+const kids = () => isM() ? A().sons + A().daughters : A().children;
+const descM = () => A().sons + (A().sons ? 0 : A().sonsSons) > 0;
+const desc = () => descM() || A().daughters + (A().sons ? 0 : A().sonsDaughters) > 0;
+const gfHeir = () => !fatherHeir() && yes("grandfather");
+const sibTotal = () => A().fullBrothers + A().fullSisters + A().patBrothers + A().patSisters + A().uterine;
+
+const ask = {
+  grandkids: () => A().sons === 0,
+  grandfather: () => !fatherHeir(),
+  grandmothers: () => !motherHeir(),
+  siblings: () => (motherHeir() && !desc()) || (!descM() && !fatherHeir()),
+  extended: () => !descM() && !fatherHeir() && !gfHeir() && A().fullBrothers === 0 && A().patBrothers === 0
+    && !(!descM() && desc() && A().fullSisters + A().patSisters > 0)
+};
+const widerNeeded = () => isM() && (ask.grandkids() || ask.grandfather() || ask.grandmothers() || ask.siblings());
+const steps = () => ["family", widerNeeded() ? "wider" : null, "arr", "lead", "report"].filter(Boolean);
+
+function heirsInput(){
+  const a = A();
+  const g = (k, on) => on ? a[k] : 0;
+  return {
+    gender:a.gender, married:spouseHeir(), wives:a.wives,
+    sons:a.sons, daughters:a.daughters,
+    sonsSons:g("sonsSons", ask.grandkids()), sonsDaughters:g("sonsDaughters", ask.grandkids()),
+    father:fatherHeir(), mother:motherHeir(),
+    grandfather:ask.grandfather() && yes("grandfather"),
+    gmMaternal:ask.grandmothers() && yes("gmMaternal"), gmPaternal:ask.grandmothers() && !fatherHeir() && yes("gmPaternal"),
+    fullBrothers:g("fullBrothers", ask.siblings()), fullSisters:g("fullSisters", ask.siblings()),
+    patBrothers:g("patBrothers", ask.siblings()), patSisters:g("patSisters", ask.siblings()), uterine:g("uterine", ask.siblings()),
+    fullNephews:g("fullNephews", ask.extended()), patNephews:g("patNephews", ask.extended()),
+    fullUncles:g("fullUncles", ask.extended()), patUncles:g("patUncles", ask.extended()),
+    fullCousins:g("fullCousins", ask.extended()), patCousins:g("patCousins", ask.extended())
+  };
+}
+function distribution(){
+  const a = A();
+  if (isM()) return E.faraid(heirsInput());
+  return E.intestacy({ married:married(), children:a.children, deceasedChildLines:a.deceasedChildLines,
+    father:yes("father"), mother:yes("mother"), siblings:a.siblings });
+}
 
 /* ---------- UI helpers ---------- */
 function seg(k, opts){
   return `<div class="seg" role="group">` + opts.map(([v,l]) =>
-    `<button type="button" data-k="${k}" data-v="${v}" aria-pressed="${state.a[k]===v}">${l}</button>`).join("") + `</div>`;
+    `<button type="button" data-k="${k}" data-v="${v}" aria-pressed="${A()[k]===v}">${l}</button>`).join("") + `</div>`;
 }
 function stepper(k, min, max){
-  const v = state.a[k];
+  const v = A()[k];
   return `<div class="step"><button type="button" data-step="${k}" data-d="-1" aria-label="Decrease" ${v<=min?"disabled":""}>&minus;</button><output>${v}</output><button type="button" data-step="${k}" data-d="1" aria-label="Increase" ${v>=max?"disabled":""}>+</button></div>`;
 }
 const q = (label, ctrl, hint="") => `<div class="q"><span class="lbl">${label}</span>${hint?`<span class="hint">${hint}</span>`:""}${ctrl}</div>`;
+const sub = t => `<div class="sub">${t}</div>`;
 const YN = [["yes","Yes"],["no","No"]];
 const YNS = [["yes","Yes"],["no","No"],["notsure","Not sure"]];
-const kids = () => state.a.sons + state.a.daughters;
-const isM = () => state.path === "muslim";
+const ALIVE = [["yes","Alive"],["no","Passed away"]];
 
 /* ---------- Views ---------- */
 function viewIntro(){
@@ -215,47 +277,94 @@ function viewIntro(){
   <h1>If something happened to you tomorrow, would your family get what you intend?</h1>
   <p class="lede">Answer a few questions in about three minutes. You'll see who would inherit under Singapore's rules, your Estate Readiness Score, and the gaps worth closing first.</p>
   <div class="paths">
-    <button class="path" data-path="muslim"><span class="t">Muslim path</span><span class="d">Faraid, wasiat, hibah, CPF and insurance nominations, and jointly owned property.</span><span class="go">Start the check →</span></button>
-    <button class="path" data-path="general"><span class="t">General path</span><span class="d">Wills, the Intestate Succession Act, guardianship, CPF nominations and LPA.</span><span class="go">Start the check →</span></button>
+    <button class="path" data-path="muslim"><span class="t">Muslim path</span><span class="d">Faraid shares for your spouse, children, grandchildren, parents, grandparents, siblings and other relatives, plus wasiat, hibah and nominations.</span><span class="go">Start the check →</span></button>
+    <button class="path" data-path="general"><span class="t">General path</span><span class="d">The Intestate Succession Act, wills, guardianship, CPF nominations and the Lasting Power of Attorney.</span><span class="go">Start the check →</span></button>
   </div>
   <div class="gets">
-    <div><b>Who inherits</b>A worked split of your estate based on your family.</div>
-    <div><b>Readiness score</b>Out of 100, across nine common gaps.</div>
-    <div><b>What to fix first</b>Ranked by how much it would hurt your family.</div>
+    <div><b>Who inherits</b>A worked split of your estate, with the reason for each share.</div>
+    <div><b>Readiness score</b>Out of 100, based on the arrangements you have in place.</div>
+    <div><b>What to fix first</b>Ranked by how much each gap would affect your family.</div>
   </div>`;
 }
 function progress(){
-  return `<div class="progress">${STEPS.map((s,i)=>`<span class="${i===state.step?"on":i<state.step?"done":""}">${i+1}. ${s}</span>`).join("")}</div>`;
+  const ids = steps(), cur = ids.indexOf(state.stepId);
+  return `<div class="progress">${ids.map((id,i)=>`<span class="${i===cur?"on":i<cur?"done":""}">${i+1}. ${STEP_LABELS[id]}</span>`).join("")}</div>`;
 }
 function viewFamily(){
-  const a = state.a;
-  let h = `<h2>Your family</h2><p class="muted" style="margin-top:6px">Who's in your family today decides who inherits.</p><div class="card stack" style="margin-top:18px">`;
-  if (isM()) h += q("You are", seg("gender",[["male","Male"],["female","Female"]]), "Needed because faraid shares for a husband and a wife differ.");
-  h += q("Marital status", seg("married",[["married","Married"],["single","Single"],["prev","Divorced or widowed"]]));
-  if (isM() && a.gender==="male" && a.married==="married") h += q("Number of wives", stepper("wives",1,4));
-  h += `<div class="grid2">${q("Sons", stepper("sons",0,10))}${q("Daughters", stepper("daughters",0,10))}</div>`;
+  const a = A(), M = isM();
+  let h = `<h2>Your family</h2><p class="muted" style="margin-top:6px">${M ? "Faraid shares depend on exactly who survives you. Answer for your family as it is today." : "Who's in your family today decides who inherits if you have no will."}</p><div class="card stack" style="margin-top:18px">`;
+  if (M) h += q("You are", seg("gender",[["male","Male"],["female","Female"]]), "A husband and a wife receive different faraid shares.");
+  h += q("Marital status", seg("married",[["married","Married"],["single","Single"],["prev","Divorced or widowed"]]), "A former spouse doesn't inherit.");
+  if (M && a.gender==="male" && married()) h += q("Number of wives", stepper("wives",1,4));
+  if (M) {
+    h += `<div class="grid2">${q("Sons", stepper("sons",0,12))}${q("Daughters", stepper("daughters",0,12))}</div>`;
+    h += `<p class="hint" style="margin-top:-8px">Count your own living children only. Adopted children and stepchildren aren't faraid heirs, though a wasiat can provide for them.</p>`;
+  } else {
+    h += q("Children", stepper("children",0,12), "Include legally adopted children. Stepchildren don't inherit unless you adopted them.");
+    h += q("Children who have passed away, leaving children of their own", stepper("deceasedChildLines",0,6), "Their children inherit the share their parent would have had.");
+  }
   if (kids()>0) h += q("Is any child under 21?", seg("minor",YN));
-  h += `<div class="grid2">${q("Is your father alive?", seg("father",YN))}${q("Is your mother alive?", seg("mother",YN))}</div>`;
-  h += `<div class="grid2">${q("Brothers", stepper("brothers",0,10), "Same father and mother")}${q("Sisters", stepper("sisters",0,10), "Same father and mother")}</div>`;
-  h += `<div class="q"><label for="estate">Rough value of everything you own</label><span class="hint">Property equity, savings, investments, CPF and insurance payouts. A rough figure is fine.</span><span class="money" id="estateOut">${fmt(a.estate)}</span><input type="range" id="estate" min="100000" max="5000000" step="50000" value="${a.estate}"></div>`;
+  h += `<div class="grid2">${q("Your father", seg("father",ALIVE))}${q("Your mother", seg("mother",ALIVE))}</div>`;
+  if (!M && !married() && a.children + a.deceasedChildLines === 0 && !yes("father") && !yes("mother"))
+    h += q("Brothers and sisters", stepper("siblings",0,12), "They inherit only if you have no spouse, children or parents.");
+  if (M) {
+    h += q("Is anyone in your close family not Muslim?", seg("nonMuslim",YN), "This is common in families with converts. Family members who aren't Muslim don't inherit under faraid.");
+    if (yes("nonMuslim")) {
+      if (a.gender==="male" && married()) h += q("Is your wife not Muslim?", seg("nmSpouse",[["yes","Not Muslim"],["no","Muslim"]]));
+      if (yes("father")) h += q("Is your father not Muslim?", seg("nmFather",[["yes","Not Muslim"],["no","Muslim"]]));
+      if (yes("mother")) h += q("Is your mother not Muslim?", seg("nmMother",[["yes","Not Muslim"],["no","Muslim"]]));
+      h += `<p class="hint">When you count children, siblings and other relatives, include only those who are Muslim.</p>`;
+    }
+  }
+  h += `<div class="q"><label for="estate">Rough value of your estate</label><span class="hint">Savings, investments and property in your name alone, plus any CPF or insurance without a nominee. Leave out CPF and policies that have a nominee and property you own as joint tenants, because those pass outside your estate.</span><span class="money" id="estateOut">${fmt(a.estate)}</span><input type="range" id="estate" min="50000" max="5000000" step="50000" value="${a.estate}"></div>`;
+  return h + `</div>` + nav();
+}
+function viewWider(){
+  let h = `<h2>Wider family</h2><p class="muted" style="margin-top:6px">Based on your answers so far, these relatives could also receive a faraid share. Count only those who are alive and Muslim.</p><div class="card stack" style="margin-top:18px">`;
+  if (ask.grandkids()) {
+    h += sub("Grandchildren through a son");
+    h += `<div class="grid2">${q("Son's sons", stepper("sonsSons",0,12))}${q("Son's daughters", stepper("sonsDaughters",0,12))}</div>`;
+    h += `<p class="hint" style="margin-top:-8px">Children of a son who has passed away. A daughter's children are not faraid heirs.</p>`;
+  }
+  if (ask.grandfather() || ask.grandmothers()) {
+    h += sub("Grandparents");
+    if (ask.grandfather()) h += q("Your father's father", seg("grandfather",ALIVE), "He takes your father's place when your father has passed away.");
+    if (ask.grandmothers()) {
+      h += q("Your mother's mother", seg("gmMaternal",ALIVE));
+      if (!fatherHeir()) h += q("Your father's mother", seg("gmPaternal",ALIVE));
+      h += `<p class="hint" style="margin-top:-8px">Grandmothers share one-sixth when your mother has passed away.</p>`;
+    }
+  }
+  if (ask.siblings()) {
+    h += sub("Brothers and sisters");
+    h += `<div class="grid2">${q("Full brothers", stepper("fullBrothers",0,12), "Same father and mother")}${q("Full sisters", stepper("fullSisters",0,12), "Same father and mother")}</div>`;
+    h += `<div class="grid2">${q("Half-brothers through your father", stepper("patBrothers",0,12), "Same father, different mother")}${q("Half-sisters through your father", stepper("patSisters",0,12), "Same father, different mother")}</div>`;
+    h += q("Half-brothers and half-sisters through your mother", stepper("uterine",0,12), "Same mother, different father. Count brothers and sisters together.");
+  }
+  if (ask.extended()) {
+    h += sub("Other male relatives on your father's side");
+    h += `<p class="hint" style="margin-top:-8px">With no son, father or brother, the remainder of the estate goes to the nearest of these relatives. If there are none, it goes to Baitulmal.</p>`;
+    h += `<div class="grid2">${q("Sons of your full brothers", stepper("fullNephews",0,20))}${q("Sons of your half-brothers through your father", stepper("patNephews",0,20))}</div>`;
+    h += `<div class="grid2">${q("Your father's full brothers", stepper("fullUncles",0,12))}${q("Your father's half-brothers through his father", stepper("patUncles",0,12))}</div>`;
+    h += `<div class="grid2">${q("Sons of your father's full brothers", stepper("fullCousins",0,20))}${q("Sons of your father's half-brothers", stepper("patCousins",0,20))}</div>`;
+  }
   return h + `</div>` + nav();
 }
 function viewArr(){
-  const a = state.a, M = isM();
+  const a = A(), M = isM();
   let h = `<h2>Your arrangements</h2><p class="muted" style="margin-top:6px">What's already in place, and what isn't.</p><div class="card stack" style="margin-top:18px">`;
-  h += `<div class="sub">Documents</div>`;
+  h += sub("Documents");
   h += q(M?"Do you have a wasiat (Islamic will)?":"Do you have a will?", seg("will",YNS));
-  h += q("Have you made a CPF nomination?", seg("cpf",YNS), "CPF savings are not covered by a will.");
+  h += q("Have you made a CPF nomination?", seg("cpf",YNS), "CPF savings aren't covered by a will.");
   h += q("Do your insurance policies have nominees?", seg("ins",[["all","All of them"],["some","Some"],["none","None"],["nopol","I have no policies"]]));
-  h += q("Do you have a Lasting Power of Attorney (LPA)?", seg("lpa",YN), "Lets someone you trust act for you if you lose mental capacity.");
-  if (kids()>0 && a.minor==="yes") h += q("Have you named a guardian for your children in your will?", seg("guardian",YN));
-  h += `<div class="sub">Property</div>`;
+  h += q("Do you have a Lasting Power of Attorney (LPA)?", seg("lpa",YN), "It lets someone you trust act for you if you lose mental capacity.");
+  if (kids()>0 && yes("minor")) h += q("Have you named a guardian for your children in your will?", seg("guardian",YN));
+  h += sub("Property");
   h += q("Do you own property?", seg("property",[["hdb","HDB flat"],["private","Private property"],["none","No"]]));
-  if (a.property!=="none") h += q("How is it held?", seg("holding",[["sole","In my name only"],["joint","Joint tenancy"],["tic","Tenancy-in-common"],["notsure","Not sure"]]), "Most married couples' HDB flats are held as joint tenancy.");
-  if (M && a.property!=="none" && a.holding==="joint") h += q("Have you documented what should happen to the jointly owned property, for example through a hibah or a declaration?", seg("jtdoc",YNS));
-  if (M) { h += `<div class="sub">Islamic arrangements</div>`; h += q("Have you made a hibah (lifetime gift) for anything you want a specific person to receive?", seg("hibah",[["yes","Yes"],["no","No"],["unknown","I'm not sure what that is"]])); }
-  if (!M) h += q("Do you own assets outside Singapore?", seg("overseas",YN));
-  h += `<div class="sub">Your family's readiness</div>`;
+  if (a.property!=="none") h += q("How is it held?", seg("holding",[["sole","In my name only"],["joint","Joint tenancy"],["tic","Tenancy-in-common"],["notsure","Not sure"]]), "Most married couples hold their HDB flat as joint tenants.");
+  h += q("Do you own assets outside Singapore?", seg("overseas",YN));
+  if (M) { h += sub("Islamic arrangements"); h += q("Have you made a hibah (a gift during your lifetime) for anything you want a particular person to receive?", seg("hibah",[["yes","Yes"],["no","No"],["unknown","I'm not sure what that is"]])); }
+  h += sub("Your family's readiness");
   h += q("Would your family know where to find your policies, accounts and documents?", seg("docs",[["yes","Yes"],["partly","Partly"],["no","No"]]));
   h += q("If your income stopped, would your family have enough cash to cover 12 months of expenses?", seg("cash",YNS));
   return h + `</div>` + nav();
@@ -265,7 +374,7 @@ function viewLead(){
   return `<h2>Your report is ready</h2>
   <div class="card" style="margin-top:18px;display:flex;gap:20px;align-items:center;flex-wrap:wrap">${ring(s)}<div style="flex:1;min-width:220px"><p style="font-weight:600">Your Estate Readiness Score is ${s} out of 100.</p><p class="muted" style="margin-top:6px">Enter your details to see who would inherit your estate and which gaps to close first.</p></div></div>
   <form id="leadForm" class="card stack" style="margin-top:16px" novalidate>
-    ${`<div class="q"><label for="lname">Name</label><input id="lname" type="text" autocomplete="name" value="${esc(L.name)}"></div>`}
+    <div class="q"><label for="lname">Name</label><input id="lname" type="text" autocomplete="name" value="${esc(L.name)}"></div>
     <div class="grid2">
       <div class="q"><label for="lmobile">Mobile number</label><input id="lmobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="8123 4567" value="${esc(L.mobile)}"></div>
       <div class="q"><label for="lemail">Email</label><input id="lemail" type="email" autocomplete="email" value="${esc(L.email)}"></div>
@@ -276,38 +385,72 @@ function viewLead(){
   </form>`;
 }
 function viewReport(){
-  const items = buildItems(), s = score(items), M = isM(), a = state.a;
-  const dist = M ? faraid(a) : intestacy(a);
+  const items = buildItems(), s = score(items), M = isM(), a = A();
+  const dist = distribution();
   const band = s>=80 ? ["good","Well prepared"] : s>=50 ? ["warn","Some gaps to close"] : ["crit","Significant gaps"];
   const name = state.lead.name ? esc(state.lead.name.split(" ")[0]) + ", here" : "Here";
-  const gaps = items.filter(i=>i.sev!=="good").sort((x,y)=>(x.sev==="crit"?0:1)-(y.sev==="crit"?0:1) || y.max-y.earned-(x.max-x.earned));
+  const gaps = items.filter(i=>i.sev!=="good").sort((x,y)=>(x.sev==="crit"?0:1)-(y.sev==="crit"?0:1) || (y.max-y.earned)-(x.max-x.earned));
   const goods = items.filter(i=>i.sev==="good");
-  let h = `<div class="stack">
+  const nCrit = gaps.filter(g=>g.sev==="crit").length, nWarn = gaps.length - nCrit;
+  const extraNotes = [];
+  if (M && yes("nonMuslim")) extraNotes.push("Family members who aren't Muslim are not included above, because they can't inherit under faraid. A wasiat of up to one-third, a hibah or a CPF or insurance nomination can provide for them.");
+  if (a.property!=="none" && a.holding==="joint") extraNotes.push(M ? "Your property held as joint tenants is not part of this split. It passes to your co-owner by right of survivorship, which MUIS's 2019 fatwa recognises as valid." : "Your property held as joint tenants is not part of this split. It passes to your co-owner automatically.");
+  const intro = M
+    ? `How faraid would divide an estate of ${fmt(a.estate)}, after funeral costs, debts and any valid wasiat are paid.`
+    : `How the Intestate Succession Act would divide an estate of ${fmt(a.estate)} if you had no will, after funeral costs and debts are paid.${a.will==="yes"?" Your will replaces this split for the assets it covers.":""}`;
+  return `<div class="stack">
   <div><p class="muted">${name}'s your Estate Gap Check</p><h1 style="font-size:clamp(28px,5vw,38px);margin-top:6px">${M?"Muslim path":"General path"}</h1></div>
-  <div class="card scorebox">${ring(s)}<div style="flex:1;min-width:220px"><span class="pill ${band[0]}">${band[1]}</span><p style="margin-top:10px">${gaps.filter(g=>g.sev==="crit").length} urgent and ${gaps.filter(g=>g.sev==="warn").length} other gaps found. ${goods.length} item${goods.length===1?" is":"s are"} already in place.</p></div></div>
-  <div class="card"><h3>If you passed away tomorrow</h3><p class="muted" style="margin-top:6px">${M?"How faraid would divide an estate of ":"How the Intestate Succession Act would divide an estate of "}${fmt(a.estate)}${!M && a.will==="yes" ? " if you had no will. Your will replaces this split, except for CPF and nominated policies." : M && a.will==="yes" ? ". A wasiat can direct up to one-third to non-heirs; the rest still follows faraid." : "."}</p>
+  <div class="card scorebox">${ring(s)}<div style="flex:1;min-width:220px"><span class="pill ${band[0]}">${band[1]}</span><p style="margin-top:10px">We found ${nCrit} urgent gap${nCrit===1?"":"s"} and ${nWarn} other${nWarn===1?"":"s"} worth fixing. ${goods.length} arrangement${goods.length===1?" is":"s are"} already in place.</p><p class="fine" style="margin-top:8px">The score shows how prepared your family is, not how much you own. See "How to read this report" below.</p></div></div>
+  <div class="card"><h3>If you passed away tomorrow</h3><p class="muted" style="margin-top:6px">${intro}</p>
   ${distBar(dist.rows)}${distTable(dist.rows, a.estate)}
-  ${dist.notes.map(n=>`<p class="callout" style="margin-top:14px">${n}</p>`).join("")}
-  <p class="fine" style="margin-top:14px">${dist.caveat}</p></div>
-  <div class="card"><h3>Gaps to close, most urgent first</h3><div style="margin-top:12px">${gaps.length?gaps.map(gapRow).join(""):`<p class="muted">No gaps found from your answers.</p>`}</div></div>
+  ${dist.notes.concat(extraNotes).map(n=>`<p class="callout" style="margin-top:14px">${n}</p>`).join("")}
+  <p class="fine" style="margin-top:14px">${M
+    ? "An illustration using the Shafi'i rules applied in Singapore, where any remainder with no residuary heir goes to Baitulmal. It covers the relatives you entered and leaves out more distant relatives such as great-grandchildren. The binding shares are those in the Inheritance Certificate issued by the Syariah Court."
+    : "An illustration of the Intestate Succession Act. It doesn't account for debts, estate costs or more distant relatives. CPF savings and insurance with a nominee go to the nominees, not by this split."}</p></div>
+  <div class="card"><h3>Gaps to close, most urgent first</h3><div style="margin-top:12px">${gaps.length?gaps.map(gapRow).join(""):`<p class="muted">We didn't find any gaps from your answers.</p>`}</div></div>
   ${goods.length?`<div class="card"><h3>Already in place</h3><div style="margin-top:12px">${goods.map(gapRow).join("")}</div></div>`:""}
   <div class="cta"><h3>Close these gaps with a free 30-minute Estate Gap Review</h3><p>A SOUL Guild estate planner will go through this report with you and show you what to fix first${M?", including wasiat, hibah and nomination options":""}. You'll also get our Family Legacy Organiser, a single record of everything your family would need to find.</p>
   <a class="btn" id="book" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${waNumber()}?text=${encodeURIComponent(`Hi, I've just done the Estate Gap Check (${M?"Muslim":"general"} path, score ${s}/100). I'd like to book my free Estate Gap Review. My name is ${state.lead.name}.`)}">Book my free review on WhatsApp</a>${state.booked?`<p class="ok">WhatsApp should open in a new tab. If it doesn't, message us on +${waNumber()}.</p>`:""}</div>
-  <div style="display:flex;gap:18px;flex-wrap:wrap"><button class="link" data-nav="-2">Change my answers</button><button class="link" id="restart">Start over</button></div>
+  <div class="card"><h3>How to read this report</h3>${glossary(M)}</div>
+  <div style="display:flex;gap:18px;flex-wrap:wrap"><button class="link" id="editAnswers">Change my answers</button><button class="link" id="restart">Start over</button></div>
   </div>`;
-  return h;
+}
+function glossary(M){
+  const rows = [
+    ["Estate Readiness Score", "How many of the key arrangements you have in place, out of 100. Each item is weighted by how much its absence would affect your family. It measures preparation, not wealth."],
+    ["Score bands", "80 to 100: well prepared. 50 to 79: some gaps to close. Below 50: significant gaps."],
+    ["Urgent", "A gap that would leave your family without access to money, without a decision-maker, or with a split you probably don't intend."],
+    ["Worth fixing", "A gap that would slow things down or cause friction, but is less likely to cause hardship."],
+    ["Your estate", "What you own in your name alone when you pass away. CPF and insurance with a nominee, and property held as joint tenants, pass outside it."]
+  ];
+  if (M) rows.push(
+    ["Faraid", "The Islamic law of inheritance. In Singapore it applies to the estate of every Muslim under the Administration of Muslim Law Act."],
+    ["Fixed share", "A share set out in the Quran, such as 1/8 for a wife when there are children."],
+    ["Residue (asabah)", "What is left after the fixed shares. It goes to the nearest male relative on the father's side, such as a son, father or brother, sometimes together with female relatives at two parts to one."],
+    ["Al-awl", "When the fixed shares add up to more than the whole estate, every share is reduced in proportion."],
+    ["Baitulmal", "The community fund administered by MUIS. It receives any remainder when there is no residuary heir."],
+    ["Wasiat", "An Islamic will. It can give up to one-third of the estate to people who aren't faraid heirs, or to charity, and appoint an executor."],
+    ["Hibah", "A gift made during your lifetime. MUIS treats CPF and insurance nominations as a form of hibah, so nominees receive the money outside faraid."],
+    ["Inheritance Certificate", "Issued by the Syariah Court. It lists the heirs and their exact shares, and is needed before the estate can be distributed."]
+  );
+  else rows.push(
+    ["Intestate Succession Act", "The law that decides who inherits from a non-Muslim who dies without a valid will."],
+    ["Letters of Administration", "The court order your family needs to manage your estate when there is no will."],
+    ["Executor", "The person your will appoints to carry out your wishes. Without a will, the court appoints an administrator."]
+  );
+  return `<dl class="gloss">${rows.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl>`;
 }
 function nav(){
-  return `<div class="nav">${state.step===0?`<button type="button" class="btn ghost" id="restart">Back</button>`:`<button type="button" class="btn ghost" data-nav="-1">Back</button>`}<button type="button" class="btn" data-nav="1">Continue</button></div>`;
+  return `<div class="nav"><button type="button" class="btn ghost" data-nav="-1">Back</button><button type="button" class="btn" data-nav="1">Continue</button></div>`;
 }
 function ring(s){
   const r=56, c=2*Math.PI*r, col = s>=80?"var(--good)":s>=50?"var(--warn)":"var(--crit)";
   return `<div class="ring" role="img" aria-label="Score ${s} out of 100"><svg width="132" height="132" viewBox="0 0 132 132"><circle cx="66" cy="66" r="${r}" fill="none" stroke="var(--line)" stroke-width="12"/><circle cx="66" cy="66" r="${r}" fill="none" stroke="${col}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c*s/100} ${c}"/></svg><div class="n"><b>${s}</b><small>out of 100</small></div></div>`;
 }
-const COL = {spouse:"var(--c1)", son:"var(--c2)", daughter:"var(--c3)", child:"var(--c2)", parent:"var(--c4)", sibling:"var(--c5)", other:"var(--c6)"};
-function distBar(rows){ return `<div class="bar" role="img" aria-label="Estate split">${rows.filter(r=>r.share>0).map(r=>`<span style="width:${r.share*100}%;background:${COL[r.g]}" title="${r.label} ${pct(r.share)}"></span>`).join("")}</div>`; }
+const COL = {spouse:"var(--c1)", child:"var(--c2)", grandchild:"var(--c3)", parent:"var(--c4)", sibling:"var(--c5)", extended:"var(--c5)", other:"var(--c6)"};
+function distBar(rows){ return `<div class="bar" role="img" aria-label="Estate split">${rows.map(r=>`<span style="width:${+r.share*100}%;background:${COL[r.g]}" title="${r.label} ${pct(+r.share)}"></span>`).join("")}</div>`; }
 function distTable(rows, est){
-  return `<div class="tblwrap"><table><thead><tr><th>Who</th><th>Basis</th><th class="r">Share</th><th class="r">Amount</th><th class="r">Each</th></tr></thead><tbody>${rows.map(r=>`<tr><td><span class="sw" style="background:${COL[r.g]}"></span>${r.label}</td><td class="muted">${r.basis}</td><td class="r">${pct(r.share)}</td><td class="r">${fmt(r.share*est)}</td><td class="r">${r.count>1?fmt(r.share*est/r.count):"—"}</td></tr>`).join("")}</tbody></table></div>`;
+  return `<div class="tblwrap"><table><thead><tr><th>Who</th><th class="r">Share</th><th class="r">Amount</th><th class="r">Each</th><th>Why</th></tr></thead><tbody>${rows.map(r=>`<tr><td><span class="sw" style="background:${COL[r.g]}"></span>${r.label}</td><td class="r"><b>${r.share}</b><br><span class="muted">${pct(+r.share)}</span></td><td class="r">${fmt(+r.share*est)}</td><td class="r">${r.count>1?fmt(+r.share*est/r.count):"—"}</td><td class="muted why">${r.basis}</td></tr>`).join("")}</tbody></table></div>`;
 }
 function gapRow(i){
   const lab = {crit:"Urgent", warn:"Worth fixing", good:"In place"}[i.sev];
@@ -315,105 +458,38 @@ function gapRow(i){
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 
-/* ---------- Faraid (simplified: spouse, children, parents, full siblings) ---------- */
-function faraid(a){
-  const male=a.gender==="male", married=a.married==="married";
-  const S=a.sons, D=a.daughters, B=a.brothers, Z=a.sisters;
-  const F=a.father==="yes", Mo=a.mother==="yes", K=S+D>0, sib=B+Z;
-  const rows=[]; let sp=0;
-  if (married){
-    sp = male ? (K?1/8:1/4) : (K?1/4:1/2);
-    const n = male ? a.wives : 1;
-    rows.push({g:"spouse", label: male ? (n>1?`Wives (${n})`:"Wife") : "Husband", count:n, share:sp, basis: male?(K?"1/8":"1/4"):(K?"1/4":"1/2")});
-  }
-  if (Mo){
-    let s, b;
-    if (K || sib>=2){ s=1/6; b="1/6"; }
-    else if (married && F){ s=(1-sp)/3; b="1/3 of remainder after spouse"; }
-    else { s=1/3; b="1/3"; }
-    rows.push({g:"parent", label:"Mother", count:1, share:s, basis:b});
-  }
-  let father = null;
-  if (F && K){ father={g:"parent", label:"Father", count:1, share:1/6, basis:"1/6"}; rows.push(father); }
-  if (S===0 && D>0) rows.push({g:"daughter", label: D>1?`Daughters (${D})`:"Daughter", count:D, share: D===1?1/2:2/3, basis: D===1?"1/2":"2/3 shared"});
-  const sibBlocked = S>0 || F;
-  if (!sibBlocked && !K && B===0 && Z>0) rows.push({g:"sibling", label: Z>1?`Sisters (${Z})`:"Sister", count:Z, share: Z===1?1/2:2/3, basis: Z===1?"1/2":"2/3 shared"});
-  let tot = rows.reduce((t,r)=>t+r.share,0), awl=false;
-  if (tot > 1+1e-9){ rows.forEach(r=>r.share/=tot); awl=true; tot=1; }
-  const R = 1-tot, notes=[];
-  if (R > 1e-9){
-    if (S>0){
-      const u=2*S+D;
-      rows.push({g:"son", label: S>1?`Sons (${S})`:"Son", count:S, share:R*2*S/u, basis:"Residue, 2 parts each"});
-      if (D>0) rows.push({g:"daughter", label: D>1?`Daughters (${D})`:"Daughter", count:D, share:R*D/u, basis:"Residue, 1 part each"});
-    } else if (F){
-      if (father){ father.share+=R; father.basis="1/6 + residue"; }
-      else rows.push({g:"parent", label:"Father", count:1, share:R, basis:"Residue"});
-    } else if (B>0){
-      const u=2*B+Z;
-      rows.push({g:"sibling", label: B>1?`Brothers (${B})`:"Brother", count:B, share:R*2*B/u, basis:"Residue, 2 parts each"});
-      if (Z>0) rows.push({g:"sibling", label: Z>1?`Sisters (${Z})`:"Sister", count:Z, share:R*Z/u, basis:"Residue, 1 part each"});
-    } else if (Z>0 && D>0){
-      rows.push({g:"sibling", label: Z>1?`Sisters (${Z})`:"Sister", count:Z, share:R, basis:"Residue (with daughters)"});
-    } else {
-      rows.push({g:"other", label:"Other male relatives, or Baitulmal", count:1, share:R, basis:"Residue"});
-    }
-  }
-  const spRow = rows.find(r=>r.g==="spouse");
-  if (spRow) notes.push(`Your ${male?(a.wives>1?"wives":"wife"):"husband"} would receive ${pct(spRow.share)} (${fmt(spRow.share*a.estate)}). Many couples assume the surviving spouse gets everything.`);
-  const ext = rows.filter(r=>r.g==="sibling"||r.g==="other").reduce((t,r)=>t+r.share,0);
-  if (ext>0) notes.push(`${pct(ext)} would go to ${rows.some(r=>r.g==="other")?"relatives outside your immediate family, or to Baitulmal":"your brothers and sisters"}. This is often the biggest surprise for families with daughters only, or with no children.`);
-  if (awl) notes.push("The fixed shares add up to more than the whole estate, so each is reduced proportionally (al-awl).");
-  return {rows, notes, caveat:"Simplified illustration covering spouse, children, parents and full siblings only. It leaves out grandchildren, half-siblings, debts, funeral costs and any valid wasiat. Actual shares are set out in the inheritance certificate issued by the Syariah Court."};
-}
-
-/* ---------- Intestate Succession Act (non-Muslims) ---------- */
-function intestacy(a){
-  const married=a.married==="married", K=kids(), P=(a.father==="yes")+(a.mother==="yes"), sib=a.brothers+a.sisters;
-  const rows=[], notes=[];
-  const kidRow = sh => ({g:"child", label: K>1?`Children (${K})`:"Child", count:K, share:sh, basis: married?"Half, shared equally":"Whole estate, shared equally"});
-  const parRow = sh => ({g:"parent", label: P>1?"Parents (2)":(a.father==="yes"?"Father":"Mother"), count:P, share:sh, basis: married?"Half, shared equally":"Whole estate"});
-  if (married){
-    if (K){ rows.push({g:"spouse",label:"Spouse",count:1,share:.5,basis:"Half"}); rows.push(kidRow(.5)); notes.push(`Your spouse would receive half (${fmt(a.estate/2)}), not the whole estate. The other half goes to your children${a.minor==="yes"?", and a share for a child under 21 would usually be held for them until they're older":""}.`); }
-    else if (P){ rows.push({g:"spouse",label:"Spouse",count:1,share:.5,basis:"Half"}); rows.push(parRow(.5)); notes.push(`With no children, your parents would take half (${fmt(a.estate/2)}), leaving your spouse with the other half.`); }
-    else rows.push({g:"spouse",label:"Spouse",count:1,share:1,basis:"Whole estate"});
-  } else {
-    if (K) rows.push(kidRow(1));
-    else if (P) rows.push(parRow(1));
-    else if (sib) rows.push({g:"sibling",label:`Brothers and sisters (${sib})`,count:sib,share:1,basis:"Whole estate, shared equally"});
-    else { rows.push({g:"other",label:"Grandparents, then uncles and aunts, then the State",count:1,share:1,basis:"Whole estate"}); notes.push("With no close family, your estate passes to more distant relatives, or to the Government if there are none."); }
-  }
-  if (kids()>0 && a.minor==="yes" && a.guardian!=="yes") notes.push("No guardian is named for your children under 21. If both parents passed away, the court would decide who raises them.");
-  return {rows, notes, caveat:"Simplified illustration of the Intestate Succession Act for spouse, children, parents and siblings. It ignores debts, estate costs and the children of a child who has passed away. CPF savings and nominated insurance follow their nominations, not this split."};
-}
-
 /* ---------- Scoring ---------- */
 function buildItems(){
-  const a=state.a, M=isM(), I=[];
+  const a=A(), M=isM(), I=[];
   const add=(o)=>{ o.sev = o.earned>=o.max ? "good" : o.earned===0 ? (o.zero||"crit") : "warn"; I.push(o); };
   add({title: M?"Wasiat":"Will", max:20, earned:{yes:20,notsure:5,no:0}[a.will],
-    body: M ? "Without a wasiat, no executor is appointed and you can't direct up to one-third of your estate to people outside faraid, such as an adopted child, stepchildren or a charity. Your family would also need to apply for Letters of Administration." : "Without a will, the Intestate Succession Act decides who inherits and no executor is appointed. Your family would need to apply for Letters of Administration, which usually takes longer.",
-    okText: M ? "You have a wasiat. Check that it names an executor and keeps any bequest to non-heirs within one-third." : "You have a will. In Singapore, getting married revokes an earlier will, so review it after major life events."});
+    body: M ? "Without a wasiat, no executor is appointed, and you can't leave anything to people who aren't faraid heirs, such as adopted children, stepchildren, family members who aren't Muslim, or a charity. A wasiat can direct up to one-third of your estate to them." : "Without a will, the Intestate Succession Act decides who inherits and no executor is appointed. Your family must apply to court for Letters of Administration, which usually takes longer.",
+    okText: M ? "You have a wasiat. Check that it names an executor and keeps gifts to non-heirs within one-third. A gift to a faraid heir needs the other heirs' consent." : "You have a will. In Singapore, getting married cancels a will made earlier, so review it after major life events."});
   add({title:"CPF nomination", max:15, earned:{yes:15,notsure:5,no:0}[a.cpf],
-    body:`Your will doesn't cover CPF savings. Without a nomination, they go to the Public Trustee's Office and are distributed under ${M?"Muslim law":"intestacy rules"}, which takes longer and is charged a fee.`,
-    okText: M ? "CPF nomination in place. For Muslims, how a nomination is treated depends on how it was made, so confirm yours does what you intend." : "CPF nomination in place. Review it whenever your family changes."});
+    body:`Your will doesn't cover CPF savings. Without a nomination, they go to the Public Trustee's Office, which distributes them ${M?"by faraid":"under the intestacy rules"}. This can take up to six months, and a fee is deducted.`,
+    okText: M ? "CPF nomination in place. Under MUIS's 2010 fatwa, a CPF nomination is a valid hibah, so your nominees receive the money directly, outside faraid. Review it whenever your family changes." : "CPF nomination in place. Review it whenever your family changes."});
   add({title:"Insurance nominations", max:15, earned:{all:15,some:7,none:0,nopol:3}[a.ins],
-    body: a.ins==="nopol" ? "With no policies, your family would rely entirely on the estate, which can take months to release." : `Policies without nominees form part of your estate and are only paid out after probate or Letters of Administration, which can take months.${M?" Muslims commonly use a conditional hibah assignment so payouts go directly to the people intended.":""}`,
-    okText:"All your policies have nominees, so payouts can reach your family without waiting for the estate to be settled."});
-  add({title:"Lasting Power of Attorney", max:15, earned:a.lpa==="yes"?15:0,
+    body: a.ins==="nopol" ? "With no policies, your family would rely entirely on your estate, which can take months to release." : `A policy without a nominee becomes part of your estate, so the payout waits for the estate to be settled. ${M?"Since MUIS's 2012 fatwa, an insurance nomination is treated as a hibah, so it pays your nominees directly.":"A nomination pays your nominees directly."}`,
+    okText:"All your policies have nominees, so payouts reach your family without waiting for the estate to be settled."});
+  add({title:"Lasting Power of Attorney", max:15, earned:yes("lpa")?15:0,
     body:"If you lose mental capacity without an LPA, your family must apply to court to be appointed your deputy before they can manage your bank accounts or property. This takes months and costs more.",
     okText:"You have an LPA, so someone you trust can act for you if you lose mental capacity."});
-  if (kids()>0 && a.minor==="yes") add({title:"Guardian for your children", max:15, earned:a.guardian==="yes"?15:0,
+  if (kids()>0 && yes("minor")) add({title:"Guardian for your children", max:15, earned:yes("guardian")?15:0,
     body:"Your children are under 21 and no guardian is named. If both parents passed away, the court would decide who raises them.",
     okText:"You've named a guardian for your children."});
-  if (M && a.property!=="none" && a.holding==="joint") add({title:"Jointly owned property", max:10, earned:{yes:10,notsure:3,no:0}[a.jtdoc], zero:"warn",
-    body:"For Muslims, whether a jointly owned property passes fully to the surviving owner or is divided under faraid depends on what the owners intended and documented. Without that, it can become a dispute among the heirs.",
-    okText:"You've documented what should happen to your jointly owned property."});
+  if (a.property!=="none") {
+    const pe = {joint:10, sole:4, tic:4, notsure:2}[a.holding];
+    add({title:"How your property is held", max:10, earned:pe, zero:"warn",
+      body: a.holding==="notsure" ? "Check how your property is held. It decides whether your share passes straight to your co-owner or becomes part of your estate."
+        : M ? "Your share of the property is part of your estate and will be divided by faraid. If you want your spouse to keep the home, ask about joint tenancy or a hibah, otherwise your spouse may have to buy out the other heirs or sell."
+            : "Your share of the property is part of your estate, so it passes under your will, or under the Intestate Succession Act if you have no will.",
+      okText: M ? "Held as joint tenants, so it passes to your co-owner by right of survivorship. MUIS's 2019 fatwa recognises this as valid, with no extra document needed." : "Held as joint tenants, so it passes to your co-owner automatically, outside your will."});
+  }
   if (M) add({title:"Hibah", max:10, earned:{yes:10,no:3,unknown:0}[a.hibah], zero:"warn",
-    body:"A hibah is a gift made during your lifetime. Many families use it so a spouse or daughters receive more than their faraid share, such as the family home or an insurance payout.",
-    okText:"You've made a hibah for what you want specific people to receive."});
-  if (!M && a.overseas==="yes") add({title:"Assets outside Singapore", max:5, earned:0, zero:"warn",
-    body:"Overseas assets may need a separate grant in that country, and a Singapore will may not be recognised there. Check whether you need a separate will.", okText:""});
+    body:"A hibah is a gift you make during your lifetime. Families use it so a spouse, daughter or other person receives something specific, such as the family home or a sum of money, beyond their faraid share.",
+    okText:"You've arranged a hibah for what you want particular people to receive."});
+  if (a.overseas==="yes") add({title:"Assets outside Singapore", max:5, earned:0, zero:"warn",
+    body:"Assets overseas may need a separate grant in that country, and a Singapore will may not be recognised there. Check whether you need a separate will.", okText:""});
   add({title:"Your family can find everything", max:10, earned:{yes:10,partly:5,no:0}[a.docs], zero:"warn",
     body:"Even with everything in place, your family has to find it. One record of your policies, accounts, nominations and contacts can save them weeks.",
     okText:"Your family knows where to find your documents."});
@@ -424,23 +500,37 @@ function buildItems(){
 }
 const score = I => Math.round(I.reduce((t,i)=>t+i.earned,0) / I.reduce((t,i)=>t+i.max,0) * 100);
 
+function familySummary(){
+  const a = A(), parts = [];
+  parts.push(married() ? (isM() && a.gender==="male" && a.wives>1 ? `Married (${a.wives} wives)` : "Married") : a.married==="single" ? "Single" : "Divorced/widowed");
+  if (isM()) { parts.push(`${a.sons} son(s), ${a.daughters} daughter(s)`); if (yes("nonMuslim")) parts.push("has non-Muslim family"); }
+  else { parts.push(`${a.children} child(ren)`); if (a.deceasedChildLines) parts.push(`${a.deceasedChildLines} deceased child line(s)`); }
+  if (kids()>0 && yes("minor")) parts.push("child under 21");
+  parts.push(`father ${yes("father")?"alive":"passed"}, mother ${yes("mother")?"alive":"passed"}`);
+  return parts.join(", ");
+}
+
 /* ---------- Render & events ---------- */
 function render(focus){
-  let h;
-  if (state.step<0) h = viewIntro();
-  else h = progress() + [viewFamily,viewArr,viewLead,viewReport][state.step]();
-  app.innerHTML = h;
+  const id = state.stepId;
+  app.innerHTML = id==="intro" ? viewIntro() : progress() + ({family:viewFamily, wider:viewWider, arr:viewArr, lead:viewLead, report:viewReport})[id]();
   if (focus){ const el = app.querySelector(focus); if (el) el.focus(); }
 }
-function go(step){ state.step=step; render(); window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"}); }
+function go(id){ state.stepId=id; render(); window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"}); }
+function move(d){
+  const ids = steps(), i = ids.indexOf(state.stepId);
+  if (i + d < 0) { state.path=null; return go("intro"); }
+  go(ids[Math.min(ids.length-1, i + d)]);
+}
 
 app.addEventListener("click", e=>{
   const t = e.target.closest("button"); if (!t) return;
-  if (t.dataset.path){ state.path=t.dataset.path; go(0); return; }
+  if (t.dataset.path){ state.path=t.dataset.path; go("family"); return; }
   if (t.dataset.k){ state.a[t.dataset.k]=t.dataset.v; render(`[data-k="${t.dataset.k}"][data-v="${t.dataset.v}"]`); return; }
   if (t.dataset.step){ const k=t.dataset.step; state.a[k]+= +t.dataset.d; render(`[data-step="${k}"][data-d="${t.dataset.d}"]`); return; }
-  if (t.dataset.nav){ readLead(); go(Math.max(0, state.step + +t.dataset.nav)); return; }
-  if (t.id==="restart"){ state.path=null; state.a={...DEFAULTS}; state.booked=false; go(-1); return; }
+  if (t.dataset.nav){ readLead(); move(+t.dataset.nav); return; }
+  if (t.id==="editAnswers"){ go("family"); return; }
+  if (t.id==="restart"){ state.path=null; state.a={...DEFAULTS}; state.booked=false; go("intro"); return; }
   if (t.id==="demoFill"){ state.lead={name:"Nurul Aisyah",mobile:"9123 4567",email:"nurul@example.com",consent:true}; render(); return; }
 });
 app.addEventListener("click", e=>{
@@ -464,15 +554,15 @@ app.addEventListener("submit", e=>{
   if (!/^[689]\d{7}$/.test(mob)) return err.textContent="Enter an 8-digit Singapore number, for example 8123 4567.";
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(L.email)) return err.textContent="Enter a valid email address, for example name@gmail.com.";
   if (!L.consent) return err.textContent="Tick the consent box so we can send you the report.";
-  const items = buildItems(), a = state.a;
-  send({type:"lead", name:L.name, mobile:mob, email:L.email, consent:"Yes", path:state.path==="muslim"?"Muslim":"General",
+  const items = buildItems(), a = A();
+  send({type:"lead", name:L.name, mobile:mob, email:L.email, consent:"Yes", path:isM()?"Muslim":"General",
     score:score(items),
     urgent:items.filter(i=>i.sev==="crit").map(i=>i.title).join(", "),
     other_gaps:items.filter(i=>i.sev==="warn").map(i=>i.title).join(", "),
-    family:`${a.married==="married"?"Married":a.married==="single"?"Single":"Divorced/widowed"}, ${a.sons} son(s), ${a.daughters} daughter(s)${kids()>0&&a.minor==="yes"?", has child under 21":""}`,
+    family:familySummary(),
     estate:a.estate, property:a.property==="none"?"None":`${a.property.toUpperCase()} (${a.holding})`,
     src:SRC, fc:fcLabel(), page:location.href.split("?")[0]});
-  go(3);
+  go("report");
 });
 render();
 </script>
