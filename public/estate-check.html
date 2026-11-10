@@ -392,21 +392,16 @@ function viewReport(){
   const gaps = items.filter(i=>i.sev!=="good").sort((x,y)=>(x.sev==="crit"?0:1)-(y.sev==="crit"?0:1) || (y.max-y.earned)-(x.max-x.earned));
   const goods = items.filter(i=>i.sev==="good");
   const nCrit = gaps.filter(g=>g.sev==="crit").length, nWarn = gaps.length - nCrit;
-  const extraNotes = [];
-  if (M && yes("nonMuslim")) extraNotes.push("Family members who aren't Muslim are not included above, because they can't inherit under faraid. A wasiat of up to one-third, a hibah or a CPF or insurance nomination can provide for them.");
-  if (a.property!=="none" && a.holding==="joint") extraNotes.push(M ? "Your property held as joint tenants is not part of this split. It passes to your co-owner by right of survivorship, which MUIS's 2019 fatwa recognises as valid." : "Your property held as joint tenants is not part of this split. It passes to your co-owner automatically.");
-  const intro = M
-    ? `How faraid would divide an estate of ${fmt(a.estate)}, after funeral costs, debts and any valid wasiat are paid.`
-    : `How the Intestate Succession Act would divide an estate of ${fmt(a.estate)} if you had no will, after funeral costs and debts are paid.${a.will==="yes"?" Your will replaces this split for the assets it covers.":""}`;
+  const extraNotes = reportNotes();
+  const intro = reportIntro();
   return `<div class="stack">
   <div><p class="muted">${name}'s your Estate Gap Check</p><h1 style="font-size:clamp(28px,5vw,38px);margin-top:6px">${M?"Muslim path":"General path"}</h1></div>
   <div class="card scorebox">${ring(s)}<div style="flex:1;min-width:220px"><span class="pill ${band[0]}">${band[1]}</span><p style="margin-top:10px">We found ${nCrit} urgent gap${nCrit===1?"":"s"} and ${nWarn} other${nWarn===1?"":"s"} worth fixing. ${goods.length} arrangement${goods.length===1?" is":"s are"} already in place.</p><p class="fine" style="margin-top:8px">The score shows how prepared your family is, not how much you own. See "How to read this report" below.</p></div></div>
+  ${state.lead.email?`<p class="callout">We're emailing a PDF copy of this report to <b>${esc(state.lead.email)}</b>. If it isn't in your inbox within a few minutes, check your spam or promotions folder.</p>`:""}
   <div class="card"><h3>If you passed away tomorrow</h3><p class="muted" style="margin-top:6px">${intro}</p>
   ${distBar(dist.rows)}${distTable(dist.rows, a.estate)}
   ${dist.notes.concat(extraNotes).map(n=>`<p class="callout" style="margin-top:14px">${n}</p>`).join("")}
-  <p class="fine" style="margin-top:14px">${M
-    ? "An illustration using the Shafi'i rules applied in Singapore, where any remainder with no residuary heir goes to Baitulmal. It covers the relatives you entered and leaves out more distant relatives such as great-grandchildren. The binding shares are those in the Inheritance Certificate issued by the Syariah Court."
-    : "An illustration of the Intestate Succession Act. It doesn't account for debts, estate costs or more distant relatives. CPF savings and insurance with a nominee go to the nominees, not by this split."}</p></div>
+  <p class="fine" style="margin-top:14px">${reportCaveat()}</p></div>
   <div class="card"><h3>Gaps to close, most urgent first</h3><div style="margin-top:12px">${gaps.length?gaps.map(gapRow).join(""):`<p class="muted">We didn't find any gaps from your answers.</p>`}</div></div>
   ${goods.length?`<div class="card"><h3>Already in place</h3><div style="margin-top:12px">${goods.map(gapRow).join("")}</div></div>`:""}
   <div class="cta"><h3>Close these gaps with a free 30-minute Estate Gap Review</h3><p>A SOUL Guild estate planner will go through this report with you and show you what to fix first${M?", including wasiat, hibah and nomination options":""}. You'll also get our Family Legacy Organiser, a single record of everything your family would need to find.</p>
@@ -416,6 +411,9 @@ function viewReport(){
   </div>`;
 }
 function glossary(M){
+  return `<dl class="gloss">${glossaryRows(M).map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl>`;
+}
+function glossaryRows(M){
   const rows = [
     ["Estate Readiness Score", "How many of the key arrangements you have in place, out of 100. Each item is weighted by how much its absence would affect your family. It measures preparation, not wealth."],
     ["Score bands", "80 to 100: well prepared. 50 to 79: some gaps to close. Below 50: significant gaps."],
@@ -438,7 +436,7 @@ function glossary(M){
     ["Letters of Administration", "The court order your family needs to manage your estate when there is no will."],
     ["Executor", "The person your will appoints to carry out your wishes. Without a will, the court appoints an administrator."]
   );
-  return `<dl class="gloss">${rows.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl>`;
+  return rows;
 }
 function nav(){
   return `<div class="nav"><button type="button" class="btn ghost" data-nav="-1">Back</button><button type="button" class="btn" data-nav="1">Continue</button></div>`;
@@ -500,6 +498,36 @@ function buildItems(){
 }
 const score = I => Math.round(I.reduce((t,i)=>t+i.earned,0) / I.reduce((t,i)=>t+i.max,0) * 100);
 
+function reportNotes(){
+  const a = A(), M = isM(), n = [];
+  if (M && yes("nonMuslim")) n.push("Family members who aren't Muslim are not included above, because they can't inherit under faraid. A wasiat of up to one-third, a hibah or a CPF or insurance nomination can provide for them.");
+  if (a.property!=="none" && a.holding==="joint") n.push(M ? "Your property held as joint tenants is not part of this split. It passes to your co-owner by right of survivorship, which MUIS's 2019 fatwa recognises as valid." : "Your property held as joint tenants is not part of this split. It passes to your co-owner automatically.");
+  return n;
+}
+function reportIntro(){
+  const a = A();
+  return isM()
+    ? `How faraid would divide an estate of ${fmt(a.estate)}, after funeral costs, debts and any valid wasiat are paid.`
+    : `How the Intestate Succession Act would divide an estate of ${fmt(a.estate)} if you had no will, after funeral costs and debts are paid.${a.will==="yes"?" Your will replaces this split for the assets it covers.":""}`;
+}
+function reportCaveat(){
+  return isM()
+    ? "An illustration using the Shafi'i rules applied in Singapore, where any remainder with no residuary heir goes to Baitulmal. It covers the relatives you entered and leaves out more distant relatives such as great-grandchildren. The binding shares are those in the Inheritance Certificate issued by the Syariah Court."
+    : "An illustration of the Intestate Succession Act. It doesn't account for debts, estate costs or more distant relatives. CPF savings and insurance with a nominee go to the nominees, not by this split.";
+}
+function reportData(){
+  const items = buildItems(), s = score(items), a = A(), M = isM(), dist = distribution();
+  const band = s>=80 ? "Well prepared" : s>=50 ? "Some gaps to close" : "Significant gaps";
+  const gaps = items.filter(i=>i.sev!=="good").sort((x,y)=>(x.sev==="crit"?0:1)-(y.sev==="crit"?0:1) || (y.max-y.earned)-(x.max-x.earned));
+  return {
+    path: M ? "Muslim path" : "General path", score: s, band, estate: fmt(a.estate), intro: reportIntro(),
+    rows: dist.rows.map(r=>({ label:r.label, share:String(r.share), pct:pct(+r.share), amount:fmt(+r.share*a.estate), each:r.count>1?fmt(+r.share*a.estate/r.count):"", why:r.basis })),
+    notes: dist.notes.concat(reportNotes()), caveat: reportCaveat(),
+    gaps: gaps.map(i=>({ title:i.title, sev:i.sev==="crit"?"Urgent":"Worth fixing", body:i.body })),
+    goods: items.filter(i=>i.sev==="good").map(i=>({ title:i.title, body:i.okText })),
+    glossary: glossaryRows(M)
+  };
+}
 function familySummary(){
   const a = A(), parts = [];
   parts.push(married() ? (isM() && a.gender==="male" && a.wives>1 ? `Married (${a.wives} wives)` : "Married") : a.married==="single" ? "Single" : "Divorced/widowed");
@@ -561,7 +589,7 @@ app.addEventListener("submit", e=>{
     other_gaps:items.filter(i=>i.sev==="warn").map(i=>i.title).join(", "),
     family:familySummary(),
     estate:a.estate, property:a.property==="none"?"None":`${a.property.toUpperCase()} (${a.holding})`,
-    src:SRC, fc:fcLabel(), page:location.href.split("?")[0]});
+    src:SRC, fc:fcLabel(), fc_code:FC, page:location.href.split("?")[0], report:reportData()});
   go("report");
 });
 render();

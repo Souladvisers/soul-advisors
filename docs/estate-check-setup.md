@@ -34,3 +34,12 @@ A free 3-minute lead magnet. Visitors take the Muslim (faraid) or general (Intes
 - **Rules covered:** blocking (hajb), al-awl, Umariyyatain, asabah ma'a al-ghayr (sisters with daughters), al-Musharraka, al-Akdariyya, a grandfather with siblings (Zayd method, shown as an estimate), and residue to Baitulmal (no radd, per Singapore Shafi'i practice).
 - **Exclusions:** relatives who aren't Muslim, adopted children, stepchildren and a daughter's children.
 - **Not covered:** great-grandchildren, the mu'adda refinements beyond the basic method, and missing persons, unborn children or simultaneous deaths. The Syariah Court's Inheritance Certificate is always the binding result.
+
+## Report email (v3)
+
+- After each lead is saved, the Apps Script turns the report into a PDF and emails it to the lead, with a short follow-up note.
+- The email is sent from pru.aarief@gmail.com, but shows the FC's name as the sender. Replies go to the FC's email from `public/data.json`, or to Arief if the FC has none. The FC also gets a BCC copy.
+- FC details always come from the site's team list, never from the form. Arief's client title is set in `CLIENT_TITLES`.
+- Spam limits: at most 80 report emails a day, and one per address every 6 hours.
+- The result is recorded in the **Report emailed** column (R) of the Leads tab.
+- To test, run `testReportEmail` in the Apps Script editor. After any change to the script, use **Deploy > Manage deployments > Edit > New version** so the URL stays the same.
