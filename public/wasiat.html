@@ -171,6 +171,16 @@ textarea{min-height:80px;resize:vertical}
     <div id="l-executors"></div>
     <button class="add" id="addExec" onclick="addItem('executors')">+ Add replacement executor</button>
     <div class="note info">An executor can also be one of your heirs. Choose someone you trust, who is organised and likely to outlive you.</div>
+    <div style="margin-top:18px">
+      <label class="check"><input type="checkbox" data-k="sepTrustee" id="chkSepTrustee"> Appoint a <b>separate trustee</b> to hold any minor child's share until age 21 (optional)</label>
+      <p class="lead" style="margin:6px 0 10px 26px;font-size:13px">By default your executor also acts as trustee. A separate trustee is useful if you want someone else—with different strengths—to manage the children's money.</p>
+    </div>
+    <div id="sepTrusteeFields" class="hidden">
+      <div class="item"><div class="ttl">Trustee</div>
+        <div class="row3"><div><label>Full name</label><input type="text" data-k="trustee.name"></div><div><label>NRIC</label><input type="text" data-k="trustee.nric"></div><div><label>Relationship</label><input type="text" data-k="trustee.rel" placeholder="e.g. brother"></div></div></div>
+      <div class="item"><div class="ttl">Alternate trustee (optional)</div>
+        <div class="row3"><div><label>Full name</label><input type="text" data-k="trustee2.name"></div><div><label>NRIC</label><input type="text" data-k="trustee2.nric"></div><div><label>Relationship</label><input type="text" data-k="trustee2.rel"></div></div></div>
+    </div>
   </section>
 
   <!-- STEP 4 -->
@@ -279,6 +289,7 @@ const DEFAULT = () => ({
   children:[],
   executors:[blankP()],
   guardian:blankP(), guardian2:blankP(),
+  sepTrustee:false, trustee:blankP(), trustee2:blankP(),
   hasW:false, wasiyyah:[],
   cpfNom:'yes', insNom:'yes', jointAcc:'no', jaHibah:true, jointProp:'no', jtHibah:true, lifetime:false,
   assets:[],
@@ -363,6 +374,7 @@ function applyShows(){
   const minor = S.children.some(c=>c.minor);
   document.getElementById('noMinor').classList.toggle('hidden', minor);
   document.getElementById('hasMinor').classList.toggle('hidden', !minor);
+  document.getElementById('sepTrusteeFields').classList.toggle('hidden', !S.sepTrustee);
 }
 
 /* ================= STEPS ================= */
@@ -405,7 +417,8 @@ function analyse(s){
   if(s.jointProp==='yes' && s.jtHibah) out.push('jt');
   if(s.lifetime) out.push('life');
   const assets = s.assets.filter(a=>a.desc.trim()||a.type);
-  return { g, P, married, minors, execs, W, out, assets, hasGuard: minors.length>0 };
+  const hasSepTrustee = s.sepTrustee && s.trustee.name.trim().length > 0;
+  return { g, P, married, minors, execs, W, out, assets, hasGuard: minors.length>0, hasSepTrustee };
 }
 
 function passesUnder(a, s, num){
@@ -426,7 +439,7 @@ function buildWill(s){
   // plan sections
   const plan = [
     ['def',true],['fam', A.married || s.children.length>0],['exec',true],['pow',true],['pay',true],['fun',s.funeral],
-    ['was',A.W.length>0],['guard',A.hasGuard],['out',A.out.length>0],['res',true],['sim',A.married],
+    ['was',A.W.length>0],['guard',A.hasGuard],['trus',A.hasSepTrustee],['out',A.out.length>0],['res',true],['sim',A.married],
     ['extra',!!s.extra.trim()],['sev',true],['nas',s.nasihat]
   ].filter(x=>x[1]).map(x=>x[0]);
   const num = {}; plan.forEach((id,i)=>num[id]=i+1);
@@ -445,7 +458,8 @@ function buildWill(s){
       H('Definitions and Interpretation');
       C('In this Will, unless the context otherwise requires:');
       const d = [
-        `“**Executor**” means the person or persons for the time being acting as executor and trustee under Clause ${num.exec}, whether original or substitute;`,
+        `”**Executor**” means the person or persons for the time being acting as executor and trustee under Clause ${num.exec}, whether original or substitute;`,
+        ...(A.hasSepTrustee ? [`”**Trustee**” means the person for the time being acting as trustee for minor children under Clause ${num.trus}, whether original or substitute;`] : []),
         '“**Faraid**” means the Islamic law of inheritance as applied by the Syariah Court of Singapore;',
         '“**Inheritance Certificate**” means the certificate issued by the Syariah Court of Singapore setting out my lawful heirs and their respective shares;',
         `“**Net Estate**” means my estate remaining after payment of the items set out in Clause ${num.pay};`,
@@ -538,7 +552,21 @@ function buildWill(s){
         'conserve any surplus monies for the child\u2019s future needs; and',
         'render an account of the condition of the child and of the child\u2019s estate, as and when directed by a court of competent jurisdiction or as required by law.'
       ]);
-      C('I request that my children be brought up in the Islamic faith, and that the share of any minor child be held on trust and applied towards that child\u2019s maintenance, education and welfare until he or she attains the age of twenty-one (21) years.');
+      C(`I request that my children be brought up in the Islamic faith, and that the share of any minor child be held on trust and applied towards that child\u2019s maintenance, education and welfare until he or she attains the age of twenty-one (21) years${A.hasSepTrustee ? `, in accordance with Clause ${num.trus}` : ' by my Executor'}.`);
+    }
+    if(id==='trus'){
+      H('Trust for Minor Children');
+      C(`I direct that the share of any child of mine who is below the age of twenty-one (21) years at the date of my death shall be transferred to and held by ${person(s.trustee, s.trustee.rel)} ("**Trustee**") upon trust until that child attains the age of twenty-one (21) years, applying the income and capital towards that child\u2019s maintenance, education and welfare as the Trustee thinks fit.`);
+      if(s.trustee2.name.trim()) C(`If the Trustee predeceases me, or is unable or unwilling to act or to continue to act, I appoint ${person(s.trustee2, s.trustee2.rel)}, to be the Trustee in his or her place.`);
+      C('The Trustee shall have full power to:');
+      L([
+        'invest or deposit the trust property in any investments authorised by law for the investment of trust funds in Singapore, and to vary such investments from time to time as the Trustee thinks fit;',
+        'apply the income and, where necessary, the capital of the trust property towards the maintenance, education, medical treatment and general welfare of the beneficiary;',
+        'open and operate bank accounts in the name of the trust or in the Trustee\u2019s own name on behalf of the beneficiary; and',
+        'do all other acts and things as may be necessary or expedient for the proper management and administration of the trust property.'
+      ]);
+      C('The Trustee shall keep proper accounts of all trust property and shall render an account to the beneficiary upon attaining the age of twenty-one (21) years, or at any time as directed by a court of competent jurisdiction.');
+      C('The Trustee shall not be liable for any loss to the trust property unless such loss arises from the Trustee\u2019s own fraud or wilful default.');
     }
     if(id==='out'){
       H('Assets Passing Outside this Will');
@@ -590,6 +618,7 @@ function buildWill(s){
     ...A.execs.map((e,i)=>[EXEC_TITLES[i].replace(' and Trustee','').replace('Sole ',''), `${ph(e.name,'Name')}${e.rel?` (${e.rel})`:''}, NRIC ${ph(e.nric,'NRIC')}`]),
   ];
   if(A.hasGuard) annex.push(['Guardian of minor children', ph(s.guardian.name,'Guardian') + (s.guardian2.name.trim()?`; alternate ${s.guardian2.name.trim()}`:'')]);
+  if(A.hasSepTrustee) annex.push(['Trustee for minor children’s shares', ph(s.trustee.name,'Trustee') + (s.trustee2.name.trim()?`; alternate ${s.trustee2.name.trim()}`:'')]);
   annex.push(['Wasiyyah', A.W.length ? A.W.map(w=>`${w.kind==='pct'?(w.value||'__')+'%':'S$'+(w.value?money(w.value):'__')} to ${ph(w.name,'Beneficiary')}`).join('; ') : 'None']);
   annex.push(['Residuary Estate','Lawful heirs according to Faraid, per the Inheritance Certificate']);
   const outLbl = {cpf:'CPF nomination',ins:'Insurance nominations',ja:'Joint bank accounts',jt:'Joint-tenancy property',life:'Lifetime hibah, trusts and waqf'};
