@@ -1720,18 +1720,35 @@ body.csb-session-on .csb-hide-field { display: none !important; }
         <div class="sp-grid">
           <div class="sp-form">
             <div class="sp-form-title">📊 CPF LIFE Plan Selector</div>
-            <div class="sp-form-sub">Compare Standard vs Escalating CPF LIFE plans. See your monthly payout, break-even age, and total lifetime payout side by side.</div>
+            <div class="sp-form-sub">Compare all three CPF LIFE plans — Basic, Standard, and Escalating. See monthly payouts, break-even ages, and total lifetime payout for each.</div>
 
             <div class="ret-section-hdr">CPF Retirement Account</div>
             <div class="al-field">
+              <label class="al-label">Year Client Turns 55</label>
+              <select class="al-input" id="cl-year55" onchange="updateCpflPresets();cpfLifeCalc()">
+                <option value="2025">2025</option>
+                <option value="2026" selected>2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+                <option value="2031">2031</option>
+                <option value="2032">2032</option>
+                <option value="2033">2033</option>
+                <option value="2034">2034</option>
+                <option value="2035">2035</option>
+              </select>
+              <div class="al-hint">BRS / FRS / ERS amounts auto-adjust for each year based on CPF's historical ~3.5% p.a. increase.</div>
+            </div>
+            <div class="al-field">
               <label class="al-label">Projected RA Balance at Age 55 (SGD)</label>
               <input class="al-input" type="number" id="cl-ra55" placeholder="e.g. 205800" oninput="cpfLifeCalc()">
-              <div class="al-hint">FRS is $205,800 · BRS $102,900 · ERS $308,700. Enter the client's projected RA at 55.</div>
+              <div class="al-hint" id="cl-ra-hint">FRS 2026: $205,800 · BRS $102,900 · ERS $308,700</div>
             </div>
             <div class="cpfl-preset-row">
-              <button class="cpfl-preset-btn" onclick="document.getElementById('cl-ra55').value=102900;cpfLifeCalc()">BRS — $102,900</button>
-              <button class="cpfl-preset-btn" onclick="document.getElementById('cl-ra55').value=205800;cpfLifeCalc()">FRS — $205,800</button>
-              <button class="cpfl-preset-btn" onclick="document.getElementById('cl-ra55').value=308700;cpfLifeCalc()">ERS — $308,700</button>
+              <button class="cpfl-preset-btn" id="cl-preset-brs" onclick="cpflSetPreset('brs')">BRS — $102,900</button>
+              <button class="cpfl-preset-btn" id="cl-preset-frs" onclick="cpflSetPreset('frs')">FRS — $205,800</button>
+              <button class="cpfl-preset-btn" id="cl-preset-ers" onclick="cpflSetPreset('ers')">ERS — $308,700</button>
             </div>
 
             <div class="ret-section-hdr">Payout Settings</div>
@@ -1754,7 +1771,7 @@ body.csb-session-on .csb-hide-field { display: none !important; }
             <button class="sp-calc-btn" onclick="cpfLifeCalc()">Compare Plans →</button>
           </div>
           <div id="cpflife-results">
-            <div class="sp-empty"><div class="sp-empty-icon">📊</div><div class="sp-empty-txt">Enter a projected RA balance at 55 — or tap BRS / FRS / ERS — to compare Standard vs Escalating CPF LIFE monthly payouts, break-even age and total lifetime payout.</div></div>
+            <div class="sp-empty"><div class="sp-empty-icon">📊</div><div class="sp-empty-txt">Select the year your client turns 55, then enter their projected RA balance (or tap a preset) to compare all three CPF LIFE plans — Basic, Standard and Escalating — with monthly payouts, break-even ages and total lifetime payout.</div></div>
           </div>
         </div>
       </div>
@@ -5001,8 +5018,37 @@ function switchRetTab(tab) {
   });
 }
 
+function cpflYearAmounts(year) {
+  // CPF increases BRS ~3.5%/yr from 2026 base; FRS = 2×BRS, ERS = 3×BRS
+  var factor = Math.pow(1.035, year - 2026);
+  var brs = Math.round(102900 * factor / 100) * 100;
+  return { brs: brs, frs: brs * 2, ers: brs * 3 };
+}
+
+function updateCpflPresets() {
+  var year = parseInt(document.getElementById('cl-year55').value) || 2026;
+  var a = cpflYearAmounts(year);
+  var bBtn = document.getElementById('cl-preset-brs');
+  var fBtn = document.getElementById('cl-preset-frs');
+  var eBtn = document.getElementById('cl-preset-ers');
+  if (bBtn) bBtn.textContent = 'BRS — $' + a.brs.toLocaleString();
+  if (fBtn) fBtn.textContent = 'FRS — $' + a.frs.toLocaleString();
+  if (eBtn) eBtn.textContent = 'ERS — $' + a.ers.toLocaleString();
+  var hint = document.getElementById('cl-ra-hint');
+  if (hint) hint.textContent = 'FRS ' + year + ': $' + a.frs.toLocaleString() + ' · BRS $' + a.brs.toLocaleString() + ' · ERS $' + a.ers.toLocaleString();
+}
+
+function cpflSetPreset(tier) {
+  var year = parseInt(document.getElementById('cl-year55').value) || 2026;
+  var a = cpflYearAmounts(year);
+  var val = tier === 'brs' ? a.brs : (tier === 'ers' ? a.ers : a.frs);
+  document.getElementById('cl-ra55').value = val;
+  cpfLifeCalc();
+}
+
 function cpfLifeCalc() {
   var ra55     = parseFloat(document.getElementById('cl-ra55').value)      || 0;
+  var year55   = parseInt(document.getElementById('cl-year55').value)      || 2026;
   var startAge = parseInt(document.getElementById('cl-start-age').value)   || 65;
   var lifeExp  = parseInt(document.getElementById('cl-life').value)        || 90;
   var res      = document.getElementById('cpflife-results');
@@ -5017,117 +5063,136 @@ function cpfLifeCalc() {
   var fmt  = function(n) { return '$' + Math.round(n).toLocaleString(); };
   var fmtK = function(n) { return n >= 1000000 ? '$' + (n/1000000).toFixed(2) + 'M' : '$' + Math.round(n/1000) + 'k'; };
 
-  // Standard Plan base at 65
-  var stdBase65 = estimateCpfLife(ra55);
-  // Escalating Plan starts ~90% of Standard at 65
+  // Scale RA to 2026 terms so estimateCpfLife works, then scale payout back
+  var yearFactor = Math.pow(1.035, year55 - 2026);
+  var ra55scaled = ra55 / yearFactor;
+  var stdBase65  = Math.round(estimateCpfLife(ra55scaled) * yearFactor);
+
+  // Basic Plan: ~73% of Standard (fixed for life; higher bequest to nominees)
+  var basBase65 = Math.round(stdBase65 * 0.73);
+  // Escalating Plan: starts ~90% of Standard, grows 2%/yr
   var escBase65 = Math.round(stdBase65 * 0.90);
 
-  // Each year of deferral beyond 65 raises payout ~7% (both plans)
+  // Each year of deferral beyond 65 raises payout ~7% (all plans)
   var deferYrs    = Math.max(0, startAge - 65);
   var deferFactor = Math.pow(1.07, deferYrs);
   var stdStart    = Math.round(stdBase65 * deferFactor);
+  var basStart    = Math.round(basBase65 * deferFactor);
   var escStart    = Math.round(escBase65 * deferFactor);
 
   // Build annual series
-  var ages = [], stdMo = [], escMo = [], stdCumul = [], escCumul = [];
-  var stdRun = 0, escRun = 0;
+  var ages = [], stdMo = [], basMo = [], escMo = [];
+  var stdCumul = [], basCumul = [], escCumul = [];
+  var stdRun = 0, basRun = 0, escRun = 0;
   for (var age = startAge; age <= lifeExp; age++) {
     var yr = age - startAge;
     var sp = stdStart;
+    var bp = basStart;
     var ep = Math.round(escStart * Math.pow(1.02, yr));
-    stdRun += sp * 12;
-    escRun += ep * 12;
+    stdRun += sp * 12; basRun += bp * 12; escRun += ep * 12;
     ages.push(age);
-    stdMo.push(sp);
-    escMo.push(ep);
-    stdCumul.push(stdRun);
-    escCumul.push(escRun);
+    stdMo.push(sp); basMo.push(bp); escMo.push(ep);
+    stdCumul.push(stdRun); basCumul.push(basRun); escCumul.push(escRun);
   }
 
-  // Find crossover ages
+  var last     = ages.length - 1;
+  var stdTotal = stdCumul[last];
+  var basTotal = basCumul[last];
+  var escTotal = escCumul[last];
+
+  // Find Escalating crossover vs Standard
   var moCross = null, cumCross = null;
   for (var i = 0; i < ages.length; i++) {
     if (moCross  === null && escMo[i]    >= stdMo[i])    moCross  = ages[i];
     if (cumCross === null && escCumul[i] >= stdCumul[i]) cumCross = ages[i];
   }
-  var last     = ages.length - 1;
-  var stdTotal = stdCumul[last];
-  var escTotal = escCumul[last];
 
-  // KPI tiles
-  var ts = 'style="background:var(--surface-2);border-radius:8px;padding:0.65rem 0.85rem;border-left:3px solid ';
-  var kpi = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.55rem;margin-bottom:1.2rem">'
-    + '<div ' + ts + '#7fc4e8"><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em">Standard — Start</div>'
-    + '<div style="font-size:1.3rem;font-weight:700;color:#7fc4e8;margin:.15rem 0">' + fmt(stdStart) + '</div>'
-    + '<div style="font-size:0.65rem;color:rgba(255,255,255,0.3)">per month from age ' + startAge + ' (fixed)</div></div>'
-    + '<div ' + ts + '#b89760"><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em">Escalating — Start</div>'
-    + '<div style="font-size:1.3rem;font-weight:700;color:#b89760;margin:.15rem 0">' + fmt(escStart) + '</div>'
-    + '<div style="font-size:0.65rem;color:rgba(255,255,255,0.3)">per month from age ' + startAge + ' → +2%/yr</div></div>'
-    + '<div ' + ts + '#7fc4e8"><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em">Standard — Total to ' + lifeExp + '</div>'
-    + '<div style="font-size:1.3rem;font-weight:700;color:#7fc4e8;margin:.15rem 0">' + fmtK(stdTotal) + '</div>'
-    + '<div style="font-size:0.65rem;color:rgba(255,255,255,0.3)">cumulative payout</div></div>'
-    + '<div ' + ts + '#b89760"><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em">Escalating — Total to ' + lifeExp + '</div>'
-    + '<div style="font-size:1.3rem;font-weight:700;color:#b89760;margin:.15rem 0">' + fmtK(escTotal) + '</div>'
-    + '<div style="font-size:0.65rem;color:rgba(255,255,255,0.3)">cumulative payout</div></div>'
+  // KPI tiles — 3-column, 2 rows (starting payout + total)
+  var ts = 'style="background:var(--surface-2);border-radius:8px;padding:0.6rem 0.75rem;border-left:3px solid ';
+  var ages55lbl = year55 !== 2026 ? ' (' + year55 + ')' : '';
+  var kpi = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.45rem;margin-bottom:1.1rem">'
+    // Basic
+    + '<div ' + ts + '#a78bfa"><div style="font-size:0.58rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em">Basic — Start</div>'
+    + '<div style="font-size:1.15rem;font-weight:700;color:#a78bfa;margin:.12rem 0">' + fmt(basStart) + '</div>'
+    + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.28)">per month · fixed · higher bequest</div></div>'
+    // Standard
+    + '<div ' + ts + '#7fc4e8"><div style="font-size:0.58rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em">Standard — Start</div>'
+    + '<div style="font-size:1.15rem;font-weight:700;color:#7fc4e8;margin:.12rem 0">' + fmt(stdStart) + '</div>'
+    + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.28)">per month · fixed · balanced</div></div>'
+    // Escalating
+    + '<div ' + ts + '#b89760"><div style="font-size:0.58rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em">Escalating — Start</div>'
+    + '<div style="font-size:1.15rem;font-weight:700;color:#b89760;margin:.12rem 0">' + fmt(escStart) + '</div>'
+    + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.28)">per month · +2%/yr · inflation hedge</div></div>'
+    // Totals row
+    + '<div ' + ts + '#a78bfa"><div style="font-size:0.58rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em">Basic — Total to ' + lifeExp + '</div>'
+    + '<div style="font-size:1.15rem;font-weight:700;color:#a78bfa;margin:.12rem 0">' + fmtK(basTotal) + '</div>'
+    + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.28)">cumulative payout</div></div>'
+    + '<div ' + ts + '#7fc4e8"><div style="font-size:0.58rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em">Standard — Total to ' + lifeExp + '</div>'
+    + '<div style="font-size:1.15rem;font-weight:700;color:#7fc4e8;margin:.12rem 0">' + fmtK(stdTotal) + '</div>'
+    + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.28)">cumulative payout</div></div>'
+    + '<div ' + ts + '#b89760"><div style="font-size:0.58rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em">Escalating — Total to ' + lifeExp + '</div>'
+    + '<div style="font-size:1.15rem;font-weight:700;color:#b89760;margin:.12rem 0">' + fmtK(escTotal) + '</div>'
+    + '<div style="font-size:0.62rem;color:rgba(255,255,255,0.28)">cumulative payout</div></div>'
     + '</div>';
 
-  // Break-even + recommendation
-  var diff = Math.abs(stdTotal - escTotal);
-  var beNote = '<div style="background:rgba(127,196,232,0.07);border:1px solid rgba(127,196,232,0.18);border-radius:8px;padding:0.65rem 0.9rem;margin-bottom:1.2rem;font-size:0.72rem;color:rgba(255,255,255,0.65);line-height:1.65">';
-  beNote += (moCross  ? '📈 Monthly payout overtakes Standard at <b>age ' + moCross  + '</b>. '
-                       : '📉 Monthly payout does not overtake Standard within this window. ');
-  beNote += (cumCross ? 'Cumulative break-even at <b>age ' + cumCross + '</b>. '
-                       : 'Escalating cumulative does not break even by age ' + lifeExp + '. ');
-  beNote += escTotal > stdTotal
-    ? 'By age ' + lifeExp + ', Escalating pays <b style="color:#b89760">' + fmt(diff) + ' more</b> total — <b style="color:#b89760">recommend Escalating Plan</b> for clients expecting longevity or concerned about inflation.'
-    : 'By age ' + lifeExp + ', Standard pays <b style="color:#7fc4e8">' + fmt(diff) + ' more</b> total — <b style="color:#7fc4e8">recommend Standard Plan</b> for clients who value higher early income or shorter planning horizon.';
+  // Best plan recommendation
+  var maxTotal = Math.max(stdTotal, basTotal, escTotal);
+  var bestPlan = maxTotal === escTotal ? '<b style="color:#b89760">Escalating Plan</b> (most total income by age ' + lifeExp + ')'
+    : maxTotal === stdTotal ? '<b style="color:#7fc4e8">Standard Plan</b> (most total income by age ' + lifeExp + ')'
+    : '<b style="color:#a78bfa">Basic Plan</b>';
+  var beNote = '<div style="background:rgba(127,196,232,0.07);border:1px solid rgba(127,196,232,0.18);border-radius:8px;padding:0.6rem 0.9rem;margin-bottom:1.1rem;font-size:0.71rem;color:rgba(255,255,255,0.65);line-height:1.65">';
+  beNote += (moCross ? '📈 Escalating monthly overtakes Standard at <b>age ' + moCross + '</b>. ' : '');
+  beNote += (cumCross ? 'Escalating cumulative break-even at <b>age ' + cumCross + '</b>. ' : 'Escalating does not break even vs Standard by age ' + lifeExp + '. ');
+  beNote += 'Recommend: ' + bestPlan + '. ';
+  beNote += 'Basic Plan preserves <b style="color:#a78bfa">' + fmt(ra55 - basTotal * 0.1) + '±</b> more as nominee bequest — suitable for clients who prioritise legacy over income.';
   beNote += '</div>';
 
   // Charts
-  var chart1 = drawCpfLifeChart(ages, stdMo, escMo, 'Monthly Payout Comparison (SGD / month)', false);
-  var chart2 = drawCpfLifeChart(ages, stdCumul, escCumul, 'Cumulative Payout (SGD total received)', true);
+  var chart1 = drawCpfLifeChart(ages, basMo, stdMo, escMo, 'Monthly Payout Comparison (SGD / month)', false);
+  var chart2 = drawCpfLifeChart(ages, basCumul, stdCumul, escCumul, 'Cumulative Payout (SGD total received)', true);
 
   // Snapshot table
   var snapAges = [70,75,80,85,90,95].filter(function(a){ return a >= startAge && a <= lifeExp; });
   var table = '';
   if (snapAges.length) {
     table += '<div style="font-size:0.63rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:0.5rem">Snapshot Table</div>'
-      + '<table style="width:100%;border-collapse:collapse;font-size:0.71rem"><thead><tr>'
-      + '<th style="text-align:left;padding:.38rem .5rem;border-bottom:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.35)">Age</th>'
-      + '<th style="text-align:right;padding:.38rem .5rem;border-bottom:1px solid rgba(255,255,255,0.09);color:#7fc4e8">Std /mo</th>'
-      + '<th style="text-align:right;padding:.38rem .5rem;border-bottom:1px solid rgba(255,255,255,0.09);color:#b89760">Esc /mo</th>'
-      + '<th style="text-align:right;padding:.38rem .5rem;border-bottom:1px solid rgba(255,255,255,0.09);color:rgba(127,196,232,.75)">Std cumul.</th>'
-      + '<th style="text-align:right;padding:.38rem .5rem;border-bottom:1px solid rgba(255,255,255,0.09);color:rgba(184,151,90,.75)">Esc cumul.</th>'
+      + '<table style="width:100%;border-collapse:collapse;font-size:0.68rem"><thead><tr>'
+      + '<th style="text-align:left;padding:.35rem .4rem;border-bottom:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.35)">Age</th>'
+      + '<th style="text-align:right;padding:.35rem .4rem;border-bottom:1px solid rgba(255,255,255,0.09);color:#a78bfa">Basic /mo</th>'
+      + '<th style="text-align:right;padding:.35rem .4rem;border-bottom:1px solid rgba(255,255,255,0.09);color:#7fc4e8">Std /mo</th>'
+      + '<th style="text-align:right;padding:.35rem .4rem;border-bottom:1px solid rgba(255,255,255,0.09);color:#b89760">Esc /mo</th>'
+      + '<th style="text-align:right;padding:.35rem .4rem;border-bottom:1px solid rgba(255,255,255,0.09);color:rgba(127,196,232,.7)">Std cumul.</th>'
+      + '<th style="text-align:right;padding:.35rem .4rem;border-bottom:1px solid rgba(255,255,255,0.09);color:rgba(184,151,90,.7)">Esc cumul.</th>'
       + '</tr></thead><tbody>';
     snapAges.forEach(function(a) {
       var i = ages.indexOf(a);
       if (i < 0) return;
       var hi = escCumul[i] > stdCumul[i] ? 'rgba(184,151,90,0.07)' : '';
       table += '<tr style="background:' + hi + '">'
-        + '<td style="padding:.35rem .5rem;border-bottom:1px solid rgba(255,255,255,0.05);font-weight:700;color:rgba(255,255,255,.7)">' + a + '</td>'
-        + '<td style="text-align:right;padding:.35rem .5rem;border-bottom:1px solid rgba(255,255,255,0.05);color:#7fc4e8">' + fmt(stdMo[i]) + '</td>'
-        + '<td style="text-align:right;padding:.35rem .5rem;border-bottom:1px solid rgba(255,255,255,0.05);color:#b89760">' + fmt(escMo[i]) + '</td>'
-        + '<td style="text-align:right;padding:.35rem .5rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(127,196,232,.75)">' + fmtK(stdCumul[i]) + '</td>'
-        + '<td style="text-align:right;padding:.35rem .5rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(184,151,90,.75)">' + fmtK(escCumul[i]) + '</td>'
+        + '<td style="padding:.32rem .4rem;border-bottom:1px solid rgba(255,255,255,0.05);font-weight:700;color:rgba(255,255,255,.7)">' + a + '</td>'
+        + '<td style="text-align:right;padding:.32rem .4rem;border-bottom:1px solid rgba(255,255,255,0.05);color:#a78bfa">' + fmt(basMo[i]) + '</td>'
+        + '<td style="text-align:right;padding:.32rem .4rem;border-bottom:1px solid rgba(255,255,255,0.05);color:#7fc4e8">' + fmt(stdMo[i]) + '</td>'
+        + '<td style="text-align:right;padding:.32rem .4rem;border-bottom:1px solid rgba(255,255,255,0.05);color:#b89760">' + fmt(escMo[i]) + '</td>'
+        + '<td style="text-align:right;padding:.32rem .4rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(127,196,232,.7)">' + fmtK(stdCumul[i]) + '</td>'
+        + '<td style="text-align:right;padding:.32rem .4rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(184,151,90,.7)">' + fmtK(escCumul[i]) + '</td>'
         + '</tr>';
     });
     table += '</tbody></table>';
   }
 
-  var disc = '<div style="font-size:0.62rem;color:rgba(255,255,255,0.22);margin-top:.85rem;line-height:1.55">ⓘ Standard Plan: fixed payout for life. Escalating Plan: starts ~10% lower, grows 2%/yr — better for longevity &amp; inflation. Deferral beyond 65 boosts both plans ~7%/yr (max age 70). Escalating start ratio and deferral factor are approximations; request client\'s CPF projection letter for exact figures. 2026 CPF LIFE rates.</div>';
+  var disc = '<div style="font-size:0.61rem;color:rgba(255,255,255,0.22);margin-top:.85rem;line-height:1.55">ⓘ <b>Basic Plan</b>: lower payout, higher bequest to nominees. <b>Standard Plan</b>: highest fixed payout for life. <b>Escalating Plan</b>: starts ~10% below Standard, grows 2%/yr — better for longevity &amp; inflation. Deferral beyond 65 boosts all plans ~7%/yr (max age 70). BRS/FRS/ERS adjusted at 3.5%/yr from 2026 base — approximate; verify at cpf.gov.sg. Basic Plan ratio ~0.73× and Escalating start ratio ~0.90× are actuarial estimates; request client\'s CPF projection letter for exact figures.</div>';
 
   res.innerHTML = kpi + beNote + chart1 + chart2 + table + disc;
 }
 
-function drawCpfLifeChart(ages, s1, s2, title, isCumul) {
+function drawCpfLifeChart(ages, s0, s1, s2, title, isCumul) {
   if (!ages || ages.length < 2) return '';
-  var W=500, H=200, PL=72, PR=20, PT=26, PB=32;
+  var W=540, H=210, PL=72, PR=20, PT=26, PB=32;
   var cW = W-PL-PR, cH = H-PT-PB;
 
-  var maxV = Math.max.apply(null, s1.concat(s2)) * 1.08;
+  var maxV = Math.max.apply(null, s0.concat(s1, s2)) * 1.08;
   if (maxV <= 0) maxV = 1;
 
-  // Compute nice y-tick step
   var rawStep = maxV / 5;
   var mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
   var step = Math.ceil(rawStep / mag) * mag;
@@ -5148,7 +5213,6 @@ function drawCpfLifeChart(ages, s1, s2, title, isCumul) {
   svg += '<rect width="' + W + '" height="' + H + '" rx="8" fill="rgba(0,0,0,0.22)"/>';
   svg += '<text x="' + (W/2) + '" y="' + (PT-9) + '" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.45)" font-family="system-ui,sans-serif">' + title + '</text>';
 
-  // Grid lines & Y labels
   yTicks.forEach(function(tv) {
     var ty = yS(tv);
     if (ty < PT - 4 || ty > PT + cH + 4) return;
@@ -5156,7 +5220,6 @@ function drawCpfLifeChart(ages, s1, s2, title, isCumul) {
     svg += '<text x="' + (PL-6) + '" y="' + (ty+3.5) + '" text-anchor="end" font-size="8.5" fill="rgba(255,255,255,0.3)" font-family="system-ui,sans-serif">' + fmtY(tv) + '</text>';
   });
 
-  // X axis + labels every 5 years
   svg += '<line x1="' + PL + '" x2="' + (PL+cW) + '" y1="' + (PT+cH) + '" y2="' + (PT+cH) + '" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
   ages.forEach(function(a, i) {
     if (a % 5 === 0) {
@@ -5164,7 +5227,7 @@ function drawCpfLifeChart(ages, s1, s2, title, isCumul) {
     }
   });
 
-  // Crossover vertical marker
+  // Escalating vs Standard crossover marker
   for (var ci = 1; ci < s2.length; ci++) {
     if (s2[ci] >= s1[ci]) {
       var cx = xS(ci);
@@ -5174,28 +5237,35 @@ function drawCpfLifeChart(ages, s1, s2, title, isCumul) {
     }
   }
 
-  // Area fills
+  // Area fills (subtle)
+  var a0pts = s0.map(function(v,i){ return xS(i)+','+yS(v); });
+  svg += '<polygon points="' + xS(0)+','+(PT+cH)+' '+a0pts.join(' ')+' '+xS(s0.length-1)+','+(PT+cH) + '" fill="rgba(167,139,250,0.06)"/>';
   var a1pts = s1.map(function(v,i){ return xS(i)+','+yS(v); });
-  svg += '<polygon points="' + xS(0)+','+(PT+cH)+' '+a1pts.join(' ')+' '+xS(s1.length-1)+','+(PT+cH) + '" fill="rgba(127,196,232,0.07)"/>';
+  svg += '<polygon points="' + xS(0)+','+(PT+cH)+' '+a1pts.join(' ')+' '+xS(s1.length-1)+','+(PT+cH) + '" fill="rgba(127,196,232,0.06)"/>';
   var a2pts = s2.map(function(v,i){ return xS(i)+','+yS(v); });
-  svg += '<polygon points="' + xS(0)+','+(PT+cH)+' '+a2pts.join(' ')+' '+xS(s2.length-1)+','+(PT+cH) + '" fill="rgba(184,151,90,0.07)"/>';
+  svg += '<polygon points="' + xS(0)+','+(PT+cH)+' '+a2pts.join(' ')+' '+xS(s2.length-1)+','+(PT+cH) + '" fill="rgba(184,151,90,0.06)"/>';
 
-  // Lines
-  svg += '<polyline points="' + a1pts.join(' ') + '" fill="none" stroke="#7fc4e8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+  // Lines — Basic dotted, Standard solid, Escalating dashed (monthly) or solid (cumul)
+  svg += '<polyline points="' + a0pts.join(' ') + '" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2,3"/>';
+  svg += '<polyline points="' + a1pts.join(' ') + '" fill="none" stroke="#7fc4e8" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
   svg += '<polyline points="' + a2pts.join(' ') + '" fill="none" stroke="#b89760" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"' + (isCumul?'':' stroke-dasharray="6,3"') + '/>';
 
   // End dots
   var li = ages.length - 1;
+  svg += '<circle cx="' + xS(li) + '" cy="' + yS(s0[li]) + '" r="3" fill="#a78bfa"/>';
   svg += '<circle cx="' + xS(li) + '" cy="' + yS(s1[li]) + '" r="3.5" fill="#7fc4e8"/>';
-  svg += '<circle cx="' + xS(li) + '" cy="' + yS(s2[li]) + '" r="3.5" fill="#b89760"/>';
+  svg += '<circle cx="' + xS(li) + '" cy="' + yS(s2[li]) + '" r="3" fill="#b89760"/>';
 
-  // Legend
+  // Legend (3 items)
   var lx = PL + 4;
-  svg += '<line x1="'+lx+'" x2="'+(lx+16)+'" y1="'+(PT-2)+'" y2="'+(PT-2)+'" stroke="#7fc4e8" stroke-width="2"/>';
-  svg += '<text x="'+(lx+20)+'" y="'+PT+'" font-size="8.5" fill="#7fc4e8" font-family="system-ui,sans-serif">Standard (fixed)</text>';
-  var lx2 = lx + 110;
-  svg += '<line x1="'+lx2+'" x2="'+(lx2+16)+'" y1="'+(PT-2)+'" y2="'+(PT-2)+'" stroke="#b89760" stroke-width="2"'+(isCumul?'':' stroke-dasharray="5,2"')+'/>';
-  svg += '<text x="'+(lx2+20)+'" y="'+PT+'" font-size="8.5" fill="#b89760" font-family="system-ui,sans-serif">Escalating (+2%/yr)</text>';
+  svg += '<line x1="'+lx+'" x2="'+(lx+14)+'" y1="'+(PT-2)+'" y2="'+(PT-2)+'" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="2,2"/>';
+  svg += '<text x="'+(lx+18)+'" y="'+PT+'" font-size="8.5" fill="#a78bfa" font-family="system-ui,sans-serif">Basic</text>';
+  var lx2 = lx + 68;
+  svg += '<line x1="'+lx2+'" x2="'+(lx2+14)+'" y1="'+(PT-2)+'" y2="'+(PT-2)+'" stroke="#7fc4e8" stroke-width="2.2"/>';
+  svg += '<text x="'+(lx2+18)+'" y="'+PT+'" font-size="8.5" fill="#7fc4e8" font-family="system-ui,sans-serif">Standard</text>';
+  var lx3 = lx2 + 82;
+  svg += '<line x1="'+lx3+'" x2="'+(lx3+14)+'" y1="'+(PT-2)+'" y2="'+(PT-2)+'" stroke="#b89760" stroke-width="2"'+(isCumul?'':' stroke-dasharray="5,2"')+'/>';
+  svg += '<text x="'+(lx3+18)+'" y="'+PT+'" font-size="8.5" fill="#b89760" font-family="system-ui,sans-serif">Escalating (+2%/yr)</text>';
 
   svg += '</svg>';
   return svg;
