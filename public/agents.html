@@ -1753,11 +1753,30 @@ body.csb-session-on .csb-hide-field { display: none !important; }
             </div>
           </div>
 
+          <div class="al-field-row" style="margin-top:0.55rem">
+            <div class="al-field">
+              <label class="al-label">Employment Type</label>
+              <select class="al-input" id="tax-emp-type" onchange="taxEmpTypeChange()">
+                <option value="employee">Salaried Employee</option>
+                <option value="sep">Self-Employed / Freelancer</option>
+                <option value="director">Company Director / Business Owner</option>
+              </select>
+            </div>
+            <div class="al-field">
+              <label class="al-label">Gender</label>
+              <select class="al-input" id="tax-gender" onchange="taxGenderChange()">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+          </div>
+
           <div class="ret-section-hdr">Income (Annual)</div>
           <div class="al-field-row">
-            <div class="al-field"><label class="al-label">Employment Income</label><input class="al-input" type="number" id="tax-income" placeholder="e.g. 72000" oninput="taxCalc()"><div class="al-hint">Auto-filled from Client Session × 12</div></div>
-            <div class="al-field"><label class="al-label">Bonus / Variable</label><input class="al-input" type="number" id="tax-bonus" placeholder="0" oninput="taxCalc()"></div>
+            <div class="al-field"><label class="al-label" id="tax-income-label">Employment Income</label><input class="al-input" type="number" id="tax-income" placeholder="e.g. 72000" oninput="taxCalc()"><div class="al-hint" id="tax-income-hint">Auto-filled from Client Session × 12</div></div>
+            <div class="al-field" id="tax-bonus-row"><label class="al-label">Bonus / Variable</label><input class="al-input" type="number" id="tax-bonus" placeholder="0" oninput="taxCalc()"></div>
             <div class="al-field"><label class="al-label">Other Income</label><input class="al-input" type="number" id="tax-other" placeholder="0" oninput="taxCalc()"><div class="al-hint">Rental, freelance, etc.</div></div>
+            <div class="al-field" id="tax-div-row" style="display:none"><label class="al-label">Dividends (not taxable) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">reference only</span></label><input class="al-input" type="number" id="tax-dividends" placeholder="0" oninput="taxCalc()"><div class="al-hint">SG one-tier: dividends are not personal income. Enter for structuring reference.</div></div>
           </div>
 
           <div class="ret-section-hdr">Auto-Granted Reliefs</div>
@@ -1790,10 +1809,21 @@ body.csb-session-on .csb-hide-field { display: none !important; }
             <input type="checkbox" id="tax-spouse" onchange="taxCalc()">
             <label for="tax-spouse">Spouse Relief <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$2,000 (spouse income &lt; $4,000)</span></label>
           </div>
-          <div class="tax-relief-row">
-            <label>Qualifying Child Relief (QCR) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$4,000 per child</span></label>
-            <input class="al-input" type="number" id="tax-children" placeholder="0" min="0" max="10" style="width:60px" oninput="taxCalc()">
-            <span style="font-size:0.72rem;color:rgba(255,255,255,0.38)">children</span>
+          <div class="tax-relief-row" style="flex-direction:column;align-items:flex-start;gap:0.3rem">
+            <label>Qualifying Child Relief (QCR) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$4,000 per eligible child</span></label>
+            <div style="display:flex;gap:0.45rem;flex-wrap:wrap;align-items:center">
+              <span style="font-size:0.72rem;color:rgba(255,255,255,0.5)">Child ages:</span>
+              <input class="al-input" type="number" id="tax-child-1" placeholder="age" min="0" max="30" style="width:56px" oninput="taxCalc()">
+              <input class="al-input" type="number" id="tax-child-2" placeholder="age" min="0" max="30" style="width:56px" oninput="taxCalc()">
+              <input class="al-input" type="number" id="tax-child-3" placeholder="age" min="0" max="30" style="width:56px" oninput="taxCalc()">
+              <input class="al-input" type="number" id="tax-child-4" placeholder="age" min="0" max="30" style="width:56px" oninput="taxCalc()">
+            </div>
+            <div style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin:0">Under 16: always eligible · 16–25: eligible if full-time student &amp; income &lt; $4,000</div>
+            <div id="tax-qcr-status" style="font-size:0.72rem;color:rgba(184,151,90,0.8);margin:0"></div>
+          </div>
+          <div class="tax-relief-row" id="tax-wmcr-row" style="display:none">
+            <input type="checkbox" id="tax-r-wmcr" onchange="taxCalc()">
+            <label for="tax-r-wmcr">Working Mother's Child Relief (WMCR) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">15% 1st · 20% 2nd · 25% 3rd+ child × earned income</span></label>
           </div>
           <div class="tax-relief-row">
             <input type="checkbox" id="tax-nsman" onchange="taxCalc()">
@@ -4440,6 +4470,27 @@ function eduCalc() {
 // ─────────────────────────────────────────────
 // TAX OPTIMISATION CALCULATOR
 // ─────────────────────────────────────────────
+function taxGenderChange() {
+  var g = document.getElementById('tax-gender') ? document.getElementById('tax-gender').value : 'male';
+  var wmcrRow = document.getElementById('tax-wmcr-row');
+  if (wmcrRow) wmcrRow.style.display = g === 'female' ? '' : 'none';
+  if (g === 'male') { var w = document.getElementById('tax-r-wmcr'); if (w) w.checked = false; }
+  taxCalc();
+}
+
+function taxEmpTypeChange() {
+  var t = document.getElementById('tax-emp-type') ? document.getElementById('tax-emp-type').value : 'employee';
+  var incLbl  = document.getElementById('tax-income-label');
+  var incHint = document.getElementById('tax-income-hint');
+  var bonusRow = document.getElementById('tax-bonus-row');
+  var divRow  = document.getElementById('tax-div-row');
+  if (incLbl)  incLbl.textContent  = t === 'sep' ? 'Net Trade Income (NTI)' : (t === 'director' ? 'Salary / Director Fees' : 'Employment Income');
+  if (incHint) incHint.textContent = t === 'sep' ? 'Revenue minus allowable business expenses' : (t === 'director' ? 'Salary drawn + director fees (dividends separate below)' : 'Auto-filled from Client Session × 12');
+  if (bonusRow) bonusRow.style.display = t === 'sep' ? 'none' : '';
+  if (divRow)  divRow.style.display   = t === 'director' ? '' : 'none';
+  taxCalc();
+}
+
 function calcSgTax(income) {
   if (income <= 0) return 0;
   var bands = [
@@ -4475,18 +4526,27 @@ function getMarginalRate(income) {
 
 function taxCalc() {
   var ageV = parseFloat(document.getElementById('tax-age').value) || 35;
+  var empType = document.getElementById('tax-emp-type') ? document.getElementById('tax-emp-type').value : 'employee';
   var annIncome = parseFloat(document.getElementById('tax-income').value) || 0;
-  var bonus     = parseFloat(document.getElementById('tax-bonus').value)  || 0;
+  var bonus     = empType !== 'sep' ? (parseFloat(document.getElementById('tax-bonus').value) || 0) : 0;
   var other     = parseFloat(document.getElementById('tax-other').value)  || 0;
   var totalIncome = annIncome + bonus + other;
   var fmt = function(n) { return '$' + Math.round(n).toLocaleString(); };
   var pct = function(n) { return n.toFixed(1) + '%'; };
 
-  // CPF employee contribution (OW ceiling $7,400/mo = $88,800/yr)
-  var empRate = ageV < 55 ? 0.20 : (ageV < 60 ? 0.155 : (ageV < 65 ? 0.105 : 0.075));
-  var owAnn = 7400 * 12;
-  var cpfEmpContrib = Math.min(annIncome, owAnn) * empRate;
-  var cpfRelief = Math.min(cpfEmpContrib, 37740);
+  // CPF / MediSave relief — different for SEP vs employee/director
+  var cpfRelief = 0;
+  if (empType === 'sep') {
+    // Self-employed: mandatory MediSave contribution on NTI
+    var msRate = ageV < 35 ? 0.08 : (ageV < 45 ? 0.085 : (ageV < 50 ? 0.09 : (ageV < 55 ? 0.095 : (ageV < 60 ? 0.085 : (ageV < 65 ? 0.08 : (ageV < 70 ? 0.065 : 0.05))))));
+    cpfRelief = Math.min(annIncome * msRate, 5500); // MACC ~$5,500 — verify at cpf.gov.sg annually
+  } else {
+    // Employee / Director (salaried): standard CPF OW contribution
+    var empRate = ageV < 55 ? 0.20 : (ageV < 60 ? 0.16 : (ageV < 65 ? 0.105 : (ageV < 70 ? 0.075 : 0.05)));
+    var owAnn = 7400 * 12;
+    var cpfEmpContrib = Math.min(annIncome, owAnn) * empRate;
+    cpfRelief = Math.min(cpfEmpContrib, 37740);
+  }
 
   // Earned Income Relief (auto by age)
   var eir = ageV < 55 ? 1000 : (ageV < 60 ? 6000 : 8000);
@@ -4494,7 +4554,8 @@ function taxCalc() {
   // Update auto-badge
   var autoBadge = document.getElementById('tax-auto-badge');
   if (autoBadge && totalIncome > 0) {
-    autoBadge.innerHTML = '⚙️ Earned Income Relief: <b>' + fmt(eir) + '</b>&nbsp;&nbsp;·&nbsp;&nbsp;CPF / PF Relief: <b>' + fmt(cpfRelief) + '</b>&nbsp;&nbsp;<span style="opacity:0.5;font-size:0.67rem">auto-granted by IRAS</span>';
+    var cpfLbl = empType === 'sep' ? 'MediSave Relief' : 'CPF / PF Relief';
+    autoBadge.innerHTML = '⚙️ Earned Income Relief: <b>' + fmt(eir) + '</b>&nbsp;&nbsp;·&nbsp;&nbsp;' + cpfLbl + ': <b>' + fmt(cpfRelief) + '</b>&nbsp;&nbsp;<span style="opacity:0.5;font-size:0.67rem">auto-granted by IRAS</span>';
   }
 
   var assessable = Math.max(totalIncome - cpfRelief, 0);
@@ -4516,8 +4577,36 @@ function taxCalc() {
 
   var spouseRel = document.getElementById('tax-spouse').checked ? 2000 : 0;
 
-  var qcrCount = parseInt(document.getElementById('tax-children').value) || 0;
+  // QCR — age-based eligibility
+  var childAges = ['tax-child-1','tax-child-2','tax-child-3','tax-child-4'].map(function(id,i) {
+    var el = document.getElementById(id); var v = el ? parseFloat(el.value) : NaN;
+    return isNaN(v) ? null : {age: v, idx: i+1};
+  }).filter(function(c){ return c !== null; });
+  var eligibleChildren = childAges.filter(function(c){ return c.age < 26; });
+  var qcrCount = eligibleChildren.length;
   var qcr = qcrCount * 4000;
+  var qcrStatus = document.getElementById('tax-qcr-status');
+  if (qcrStatus) {
+    if (childAges.length === 0) { qcrStatus.textContent = ''; }
+    else {
+      qcrStatus.innerHTML = childAges.map(function(c) {
+        if (c.age < 16)  return 'Child ' + c.idx + ' (age ' + c.age + '): eligible ✓';
+        if (c.age <= 25) return 'Child ' + c.idx + ' (age ' + c.age + '): eligible if full-time student ⚠';
+        return 'Child ' + c.idx + ' (age ' + c.age + '): not eligible ✗';
+      }).join(' &nbsp;·&nbsp; ');
+    }
+  }
+
+  // WMCR — working mothers only
+  var gender = document.getElementById('tax-gender') ? document.getElementById('tax-gender').value : 'male';
+  var wmcr = 0;
+  if (gender === 'female' && document.getElementById('tax-r-wmcr') && document.getElementById('tax-r-wmcr').checked) {
+    var earnedIncome = annIncome + bonus;
+    var wmcrPcts = [0.15, 0.20, 0.25];
+    var wmcrRaw = 0;
+    for (var ci = 0; ci < qcrCount; ci++) { wmcrRaw += wmcrPcts[Math.min(ci, 2)] * earnedIncome; }
+    wmcr = Math.min(wmcrRaw, earnedIncome);
+  }
 
   var nsmanAmt = document.getElementById('tax-nsman').checked ? (parseInt(document.getElementById('tax-nsman-type').value) || 1500) : 0;
 
@@ -4525,7 +4614,7 @@ function taxCalc() {
   var parentsNotStay = Math.min(parseInt(document.getElementById('tax-parents-not-staying').value) || 0, 2);
   var parentRel = parentsStaying * 9000 + parentsNotStay * 5500;
 
-  var totalClaimable = srs + cpfTopSelf + cpfTopFam + lifeIns + spouseRel + qcr + nsmanAmt + parentRel;
+  var totalClaimable = srs + cpfTopSelf + cpfTopFam + lifeIns + spouseRel + qcr + wmcr + nsmanAmt + parentRel;
   var totalReliefsOpt = Math.min(eir + totalClaimable, 80000);
   var totalReliefsBefore = eir;
 
@@ -4560,7 +4649,7 @@ function taxCalc() {
 
   var comp = '<table class="edu-table" style="margin-top:1rem"><thead><tr><th></th><th>Before</th><th>After Optimisation</th></tr></thead><tbody>'
     + '<tr><td>Total Income</td><td>' + fmt(totalIncome) + '</td><td>' + fmt(totalIncome) + '</td></tr>'
-    + '<tr><td>Less: CPF Relief (auto)</td><td>(' + fmt(cpfRelief) + ')</td><td>(' + fmt(cpfRelief) + ')</td></tr>'
+    + '<tr><td>Less: ' + (empType === 'sep' ? 'MediSave Relief (auto)' : 'CPF Relief (auto)') + '</td><td>(' + fmt(cpfRelief) + ')</td><td>(' + fmt(cpfRelief) + ')</td></tr>'
     + '<tr><td>Assessable Income</td><td>' + fmt(assessable) + '</td><td>' + fmt(assessable) + '</td></tr>'
     + '<tr><td>Less: Personal Reliefs</td><td>(' + fmt(totalReliefsBefore) + ')</td><td>(' + fmt(totalReliefsOpt) + ')</td></tr>'
     + '<tr><td>Chargeable Income</td><td>' + fmt(chargeableBefore) + '</td><td>' + fmt(chargeableAfter) + '</td></tr>'
@@ -4608,11 +4697,41 @@ function taxCalc() {
     var famGap = 8000 - (document.getElementById('tax-r-cpf-top-fam').checked ? Math.min(cpfTopFamRaw,8000) : 0);
     if (famGap > 0) wins.push('CPF top-up family (' + fmt(famGap) + ' more) → save <b>' + fmt(famGap * margR) + '/yr</b>');
   }
+  if (gender === 'female' && qcrCount > 0 && (!document.getElementById('tax-r-wmcr') || !document.getElementById('tax-r-wmcr').checked)) {
+    var earnedIncome2 = annIncome + bonus;
+    var wmcrPcts2 = [0.15, 0.20, 0.25]; var wmcrEst = 0;
+    for (var ci2 = 0; ci2 < qcrCount; ci2++) { wmcrEst += wmcrPcts2[Math.min(ci2,2)] * earnedIncome2; }
+    wmcrEst = Math.min(wmcrEst, earnedIncome2);
+    if (wmcrEst > 0) wins.push('Claim WMCR (~' + fmt(wmcrEst) + ' relief) → save <b>' + fmt(wmcrEst * getMarginalRate(chargeableAfter)) + '/yr</b>');
+  }
   var winsHtml = wins.length > 0
     ? '<div class="ret-section-hdr" style="margin-top:1rem">Quick Wins</div><ul style="padding-left:1.2rem;margin:0.4rem 0;font-size:0.77rem;color:rgba(255,255,255,0.8);line-height:1.7">' + wins.map(function(w){return '<li>' + w + '</li>';}).join('') + '</ul>'
     : '';
 
-  res.innerHTML = kpi + comp + margNote + srsHtml + cpfTopHtml + winsHtml;
+  var wmcrHtml = '';
+  if (gender === 'female' && wmcr > 0) {
+    wmcrHtml = '<div class="ret-section-hdr" style="margin-top:1rem">WMCR Breakdown</div>'
+      + '<div class="al-hint">Working Mother\'s Child Relief: <b>' + fmt(wmcr) + '</b> '
+      + '(1st child 15% · 2nd child 20% · 3rd+ child 25% × earned income, capped at earned income). '
+      + 'QCR + WMCR combined is capped at <b>$50,000 per child</b>. For maximum WMCR, ensure the other parent is not claiming QCR for the same child.</div>';
+  }
+  var dirHtml = '';
+  if (empType === 'director') {
+    var divs = parseFloat(document.getElementById('tax-dividends').value) || 0;
+    dirHtml = '<div class="ret-section-hdr" style="margin-top:1rem">Remuneration Structure</div>'
+      + '<div class="al-hint">Dividends paid from your company\'s retained profits are <b>not taxable</b> under SG\'s one-tier tax system.'
+      + (divs > 0 ? ' Dividends entered: <b>' + fmt(divs) + '</b> — excluded from the tax calculation above.' : '')
+      + ' Shifting income from director fees / salary to dividends reduces personal income tax. Optimal split depends on the corporate-to-personal tax differential at your income level. Consult a tax adviser on remuneration structuring.</div>';
+  }
+  var sepHtml = '';
+  if (empType === 'sep') {
+    sepHtml = '<div class="ret-section-hdr" style="margin-top:1rem">Self-Employed Notes</div>'
+      + '<div class="al-hint">MediSave ceiling is approximately <b>$5,500/yr</b> — confirm the current year\'s figure at cpf.gov.sg. '
+      + 'Since your compulsory CPF is MediSave-only, your CPF < $5,000 threshold is usually met — tick <b>Life Insurance Relief</b> above if you pay life premiums. '
+      + 'Voluntary CPF SA top-ups qualify for the CPF Cash Top-Up relief. '
+      + 'SRS is available to the self-employed and is the most powerful tax deferral tool for SEPs.</div>';
+  }
+  res.innerHTML = kpi + comp + margNote + srsHtml + cpfTopHtml + wmcrHtml + winsHtml + dirHtml + sepHtml;
 }
 
 // NEED ANALYSIS CALCULATOR
