@@ -146,9 +146,21 @@
     y += boxH + 22;
 
     T('REVIEW LOG', X0, y, {b:true, s:11}); T('Review every 3–5 years, or after a marriage, divorce, birth or death in the family.', X0+80, y, {i:true, s:9, c:[90,90,90]}); y += 8;
-    y = grid(y, [100, 140, W-240], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', ''], ['', '', '']], 10);
+    y = grid(y, [100, 140, W-240], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', '']], 10);
 
-    y = Math.max(y + 28, PH - 78);
+    y += 14;
+    const npad=5, ns=9.5, nlh=ns+2;
+    { const yr1=y; y+=npad;
+      const nl1=wrap('When to review or update this Will: (1) change in family structure — marriage, divorce, new child or death; (2) significant change in assets; (3) change in beneficiary needs. Contact your estate planner.', W-npad*2, ns);
+      nl1.forEach((ln,k)=>T(ln, X0+npad, y+k*nlh, {s:ns})); y+=nl1.length*nlh+npad;
+      doc.setDrawColor(170,170,170); doc.setLineWidth(0.3); doc.rect(X0,yr1,W,y-yr1); doc.setDrawColor(0); }
+    y += 7;
+    { const yr2=y; y+=npad;
+      const nl2=wrap('This Will is automatically revoked if you: (1) marry or remarry after signing — s.15 Wills Act 1838; (2) destroy this Will with intention to revoke; or (3) sign a new Will that expressly revokes this one.', W-npad*2, ns);
+      nl2.forEach((ln,k)=>T(ln, X0+npad, y+k*nlh, {s:ns})); y+=nl2.length*nlh+npad;
+      doc.setDrawColor(0); doc.setLineWidth(1); doc.rect(X0,yr2,W,y-yr2); doc.setLineWidth(0.4); }
+
+    y = Math.max(y + 14, PH - 68);
     const vl = wrap(d.GEN ? QUOTE_G : VERSE, W-40, 10); vl.forEach((ln,i)=>T(ln, PW/2, y + i*13, {i:true, s:10, align:'center', c:[90,90,90]}));
 
     /* page 2 — family checklist */
@@ -209,8 +221,10 @@
       P(r(`${blank(d.adv.name, 28)}   ·   Rep. No. ${blank(d.adv.rep, 12)}`, { s:21 }), { after:40 }),
       P(r(`Tel: ${blank(d.adv.phone, 12)}   ·   Email: ${blank(d.adv.email, 22)}`, { s:21 }), { after:200 }),
       P([r('REVIEW LOG  ', { b:true }), r('Review every 3–5 years, or after a marriage, divorce, birth or death in the family.', { i:true, s:18, c:'5A5A5A' })], { after:80 }),
-      grid([1800, 2500, TW-4300], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', ''], ['', '', '']]),
-      P(r(d.GEN ? QUOTE_G : VERSE, { i:true, s:19, c:'5A5A5A' }), { a:C, before:400 }),
+      grid([1800, 2500, TW-4300], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', '']]),
+      new Paragraph({ border:{top:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'},bottom:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'},left:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'},right:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'}}, spacing:{before:200,after:80,line:280}, indent:{left:80,right:80}, children:[r('When to review or update this Will: ',{b:true,s:19}),r('(1) change in family structure — marriage, divorce, new child or death; (2) significant change in assets; (3) change in beneficiary needs. Contact your estate planner.',{s:19})] }),
+      new Paragraph({ border:{top:{style:BorderStyle.SINGLE,size:10,color:'000000'},bottom:{style:BorderStyle.SINGLE,size:10,color:'000000'},left:{style:BorderStyle.SINGLE,size:10,color:'000000'},right:{style:BorderStyle.SINGLE,size:10,color:'000000'}}, spacing:{before:0,after:0,line:280}, indent:{left:80,right:80}, children:[r('This Will is automatically revoked if you: ',{b:true,s:19}),r('(1) marry or remarry after signing — s.15 Wills Act 1838; (2) destroy this Will with intention to revoke; or (3) sign a new Will that expressly revokes this one.',{s:19})] }),
+      P(r(d.GEN ? QUOTE_G : VERSE, { i:true, s:19, c:'5A5A5A' }), { a:C, before:280 }),
       new Paragraph({ children:[ new PageBreak() ] }),
     ];
     const page2 = [
