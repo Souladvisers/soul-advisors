@@ -172,11 +172,11 @@
 
     /* page 2 — family checklist */
     doc.addPage(); frame(); y = 92;
-    T(‘WHEN I PASS AWAY’, PW/2, y, {b:true, s:20, align:’center’, c:gold}); y += 20;
-    T(`A checklist for the family of ${d.name}`, PW/2, y, {i:true, s:11.5, align:’center’, c:gold}); y += 16;
+    T('WHEN I PASS AWAY', PW/2, y, {b:true, s:20, align:'center', c:gold}); y += 20;
+    T(`A checklist for the family of ${d.name}`, PW/2, y, {i:true, s:11.5, align:'center', c:gold}); y += 16;
     doc.setDrawColor(...gold); doc.setLineWidth(0.8); doc.line(PW/2-80, y, PW/2+80, y); doc.setLineWidth(0.3); doc.line(PW/2-80, y+4, PW/2+80, y+4); doc.setDrawColor(0); y += 20;
-    const intro = wrap((d.GEN ? ‘’ : ‘Inna lillahi wa inna ilayhi raji’un. ‘) + ‘Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.’, W, 10.5);
-    intro.forEach((ln,i)=>T(ln, PW/2, y + 14 + i*14, {s:10.5, align:’center’})); y += 14 + intro.length*14 + 18;
+    const intro = wrap((d.GEN ? '' : `Inna lillahi wa inna ilayhi raji'un. `) + 'Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.', W, 10.5);
+    intro.forEach((ln,i)=>T(ln, PW/2, y + 14 + i*14, {s:10.5, align:'center'})); y += 14 + intro.length*14 + 18;
     STEPS(d).forEach(([h, body], i) => {
       const lines = wrap(body, W-46, 10.5);
       doc.setFillColor(...gold); doc.circle(X0+11, y-3.5, 10, 'F'); T(String(i+1), X0+11, y, {b:true, s:11, align:'center', c:[255,255,255]});
