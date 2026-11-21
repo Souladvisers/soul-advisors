@@ -211,6 +211,7 @@ textarea{min-height:80px;resize:vertical}
   <section class="step" data-title="Inheritance">
     <h2>How I hope my heirs use their inheritance</h2>
     <p class="lead" data-tx="lead3">Faraid decides each heir's share. Here you can only express hopes about how they use it. Use words like "I hope" or "I request", not "give" or "must".</p>
+    <div data-only="islamic" class="note info">If you and your spouse jointly built assets during the marriage — such as an HDB flat, a jointly-run business, or shared savings — your spouse may have a <b>harta sepencarian</b> (Malay matrimonial property) claim to half of those assets before Faraid is applied. This is a legal matter your planner should assess. You may note your intentions here, but the final determination rests with the court.</div>
     <label>My general hopes</label>
     <div class="chips" data-target="hopes.general"><button>Pay off family debts first</button><button data-tx="chipA">Set aside for sadaqah jariah</button><button data-tx="chipB">Avoid riba-based investments</button><button>Keep the family home</button></div>
     <textarea data-k="hopes.general" data-txp="ph3" placeholder="e.g. I hope my heirs will use part of their inheritance for sadaqah jariah in my name."></textarea>
@@ -276,7 +277,7 @@ textarea{min-height:80px;resize:vertical}
       <label class="btn sec" style="margin:0">Load draft file<input type="file" accept=".json" onchange="loadDraft(this)" hidden></label>
       <button class="btn sec" onclick="if(confirm('Clear all fields?'))resetAll()">Clear form</button>
     </div>
-    <div class="note warn" style="margin-top:16px">Keep this memorandum with your will and tell your executor where it is. Review it every few years or after major life events. It does not need witnesses.</div>
+    <div class="note warn" style="margin-top:16px">Keep this memorandum in the same location as your will, but <b>do not attach it to the will</b>. If your will is submitted to court for probate, any document physically attached to it may become a public record. Store both in the same envelope or file, separately fastened. Tell your executor where they are. Review this memorandum every few years or after major life events. It does not need witnesses.</div>
   </section>
 
   <div class="nav"><button class="btn sec" id="prev" onclick="go(cur-1)">Back</button><button class="btn pri" id="next" onclick="go(cur+1)">Next</button></div>
@@ -328,7 +329,7 @@ const LISTS = {
     <div class="row"><div><label>Service</label><input type="text" data-f="svc" placeholder="e.g. Facebook, Gmail, Google Photos"></div>
     <div><label>My wish</label><select data-f="wish"><option>Close the account</option><option>Memorialise the account</option><option>Download photos for my family, then close</option><option>Transfer to a family member</option><option>No preference</option></select></div></div>` },
   contacts:{ max:20, item:()=>({role:'Financial consultant',name:'',contact:''}), title:i=>`Contact ${i+1}`, fields:()=>`
-    <div class="row3"><div><label>Role</label><select data-f="role"><option>Financial consultant</option><option>Lawyer</option><option>Accountant</option><option>Employer / HR</option><option>Business partner</option><option>Family / friend to notify</option><option>Other</option></select></div>
+    <div class="row3"><div><label>Role</label><select data-f="role"><option>Financial consultant</option><option>Lawyer</option><option>Imam / religious advisor</option><option>Accountant</option><option>Employer / HR</option><option>Business partner</option><option>Family / friend to notify</option><option>Other</option></select></div>
     <div><label>Name</label><input type="text" data-f="name"></div><div><label>Phone / email</label><input type="text" data-f="contact"></div></div>` },
   owe:{ max:20, item:()=>({who:'',amt:'',note:''}), title:i=>`Debt ${i+1}`, fields:()=>`
     <div class="row3"><div><label>Owed to</label><input type="text" data-f="who"></div><div><label>Amount (S$)</label><input type="text" data-f="amt"></div><div><label>Note</label><input type="text" data-f="note" placeholder="e.g. no written record"></div></div>` },
@@ -496,6 +497,7 @@ function buildMemo(s){
   C(`My original Will ${s.willAt.trim()?`is kept at ${s.willAt.trim()}`:'is kept at [[location]]'}.`);
   if(exs.length) C(`My Executor is ${exs.map((e,i)=>`**${e.name.trim()}**${e.rel?` (my ${e.rel})`:''}${e.phone?`, contactable at ${e.phone}`:''}`).join(', with replacement(s) ')}. I ask my family to support my Executor and to give ${exs.length>1?'them':'him or her'} the information and documents needed to administer my estate.`);
   else C('My Executor is named in my Will.');
+  if(!GEN) C('My Executor is advised that, for a Muslim estate in Singapore, the **Inheritance Certificate** (*Sijil Faraid*) must be obtained from the **Syariah Court of Singapore** before any distribution of estate assets. The Inheritance Certificate confirms each heir\'s entitlement under Faraid. My Executor should also obtain the Grant of Probate (or Letters of Administration with Will Annexed) from the Family Justice Courts. I request that no estate assets be distributed until the Inheritance Certificate is in hand.');
 
   const acc = s.accounts.filter(a=>a.inst.trim()), dig = s.digital.filter(d=>d.svc.trim()), con = s.contacts.filter(c=>c.name.trim());
   if(s.docs.where.trim()||acc.length||dig.length||s.docs.access.trim()||s.docs.crypto.trim()||con.length){
@@ -720,12 +722,12 @@ function loadSample(){
   S = DEFAULT();
   S.mode = 'islamic';
   S.t = { name:'Ahmad bin Abdullah', idType:'NRIC', nric:'S6012345A', gender:'M' };
-  S.willDate = '2025-10-01';
+  S.willDate = '1 October 2025';
   S.willAt = "M/s Al-Barakah Law LLC, 80 Raffles Place #12-01, Singapore 048624";
   S.executors = [{ name:'Nurul Izzah binte Ahmad', rel:'Daughter', phone:'+65 9123 4567' }];
   S.spouse = 'Zainab binte Ismail';
   S.family = ['Zainab binte Ismail', 'Muhammad Aqil bin Ahmad', 'Nurul Izzah binte Ahmad'];
-  S.care = { spouseHome:true, dependants:'Zainab requires monthly medication for hypertension. Budget approx. SGD 200/month.', upbringing:'Raise children with Islamic values; enrol in weekly Quran classes at the nearest mosque.', age:'21', trust:'Nurul Izzah binte Ahmad', guardian:'Nurul Izzah binte Ahmad' };
+  S.care = { spouseHome:true, dependants:'Zainab requires monthly medication for hypertension. Budget approx. SGD 200/month.', upbringing:'Raise children with Islamic values; enrol in weekly Quran classes at the nearest mosque.', age:'21', trust:'I hope my Executor uses the money only for their education, medical needs and daily living expenses, and does not release any lump sum before that age.', guardian:'Please keep my children in touch with both sides of the family and ensure they maintain their Islamic practices.' };
   S.hopes = { general:'I hope my children remain united, perform Quran khatam for me, and give to charity in my name.', business:'' };
   S.support = [
     { who:'Masjid Al-Falah', how:'Monthly donation of SGD 200 as sadaqah jariah' }
@@ -738,7 +740,7 @@ function loadSample(){
   S.docs = { where:'Fireproof safe in master bedroom — combination shared with Nurul Izzah', access:'Nurul Izzah has spare key' };
   S.accounts = [
     { inst:'DBS Bank', type:'Bank account', last4:'8821', note:'Main account; GIRO for utilities' },
-    { inst:'CPF Board', type:'CPF (OA/SA/MA/RA)', last4:'', note:'Nomination made to Zainab binte Ismail' },
+    { inst:'CPF Board', type:'CPF', last4:'', note:'Nomination made to Zainab binte Ismail' },
     { inst:'Prudential Singapore', type:'Insurance policy', last4:'5678', note:'Nomination made to Zainab binte Ismail' }
   ];
   S.digital = [
@@ -747,7 +749,7 @@ function loadSample(){
   ];
   S.contacts = [
     { role:'Imam / religious advisor', name:'Ustaz Abdullah', contact:'+65 9234 5678' },
-    { role:'Family lawyer', name:'Mr Rajan Krishnan', contact:'+65 6789 0123' }
+    { role:'Lawyer', name:'Mr Rajan Krishnan', contact:'+65 6789 0123' }
   ];
   S.owe = [{ who:'OCBC Bank', amt:'15000', note:'Car loan — monthly GIRO from DBS account' }];
   S.owed = [{ who:'Muhammad Aqil bin Ahmad', amt:'5000', note:'Personal loan given January 2024 — please forgive this debt' }];
