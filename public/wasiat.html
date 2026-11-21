@@ -741,31 +741,6 @@ function renderPreview(W){
     if(W.sched.some(r=>/see note/.test(r[4]))) h += `<p style="font-size:12px"><i>Note: the Testator has not confirmed the survivorship intention for this jointly-held property; that share may be subject to Faraid distribution.</i></p>`;
   }
   h += `<div class="pb"></div><p class="ctr"><b>ANNEX: SUMMARY OF WILL</b></p><table><tr><th style="width:36%">Item</th><th>Particulars</th></tr>${W.annex.map(r=>`<tr><td>${md(r[0])}</td><td>${md(r[1])}</td></tr>`).join('')}</table>`;
-  h += `<div class="pb"></div><p class="ctr"><b>EXECUTOR'S CHECKLIST</b></p>
-    <p style="font-size:12px"><i>For the guidance of the Executor. This checklist is not part of the operative Will and does not create legal obligations.</i></p>
-    <p style="font-size:13px;margin-top:12px"><b>Documents to gather</b></p>
-    <table><tr><th style="width:8%">No.</th><th>Document</th></tr>
-      <tr><td>1</td><td>Testator's death certificate</td></tr>
-      <tr><td>2</td><td>Testator's NRIC (original) and a certified copy</td></tr>
-      <tr><td>3</td><td>Testator's marriage certificate(s) or divorce certificate</td></tr>
-      <tr><td>4</td><td>NRIC or Birth Certificates of all living heirs (spouse, children, parents)</td></tr>
-      <tr><td>5</td><td>Death certificates of any predeceased parents, spouse or children</td></tr>
-      <tr><td>6</td><td>Original Will (this document) — keep it safe; a photocopy is not probatable</td></tr>
-      <tr><td>7</td><td>CPF statements and copy of CPF nomination</td></tr>
-      <tr><td>8</td><td>Insurance policies and nomination records</td></tr>
-      <tr><td>9</td><td>Bank statements, passbooks and account details</td></tr>
-      <tr><td>10</td><td>Property documents: HDB records, title deeds, mortgage statements</td></tr>
-      <tr><td>11</td><td>Any Hibah-Trust Deeds or other lifetime-gift documents</td></tr>
-    </table>
-    <p style="font-size:13px;margin-top:12px"><b>Steps for the Executor</b></p>
-    <table><tr><th style="width:10%">Step</th><th>Action</th></tr>
-      <tr><td>1</td><td>Register the death with ICA and obtain the death certificate</td></tr>
-      <tr><td>2</td><td><b>Syariah Court:</b> Apply for the Inheritance Certificate (<i>Sijil Faraid</i>) — mandatory for all Muslim estates. Bring heirs' NRICs and death certificates of predeceased family members</td></tr>
-      <tr><td>3</td><td><b>Family Justice Courts:</b> Apply for the Grant of Probate (or Letters of Administration with Will Annexed if needed). Engage a lawyer to assist</td></tr>
-      <tr><td>4</td><td>Notify CPF Board, insurers, banks, HDB and other institutions. Obtain access to frozen estate accounts through the court order</td></tr>
-      <tr><td>5</td><td>Settle debts in priority: funeral expenses → religious obligations (zakat, fidyah) → personal debts → estate administration costs</td></tr>
-      <tr><td>6</td><td>Distribute estate to heirs per the Inheritance Certificate shares, and give effect to any Wasiyyah, in accordance with this Will</td></tr>
-    </table>`;
   document.getElementById('paper').innerHTML = h;
   const blanks = (h.match(/<mark>/g)||[]).length;
   document.getElementById('pvStat').textContent = `${W.blocks.filter(b=>b.t==='h').length} clauses · ${blanks ? blanks+(blanks>1?' blanks':' blank')+' left' : 'all fields filled'}`;
@@ -870,29 +845,6 @@ async function downloadDocx(){
     if(W.sched.some(r=>/see note/.test(r[4]))) tail.push(p('*Note: the Testator has not confirmed the survivorship intention for this jointly-held property; that share may be subject to Faraid distribution.*',{run:{size:20},line:276}));
   }
   tail.push(brk(), center('**ANNEX: SUMMARY OF WILL**',{after:200}), grid([3000,6026], [['Item','Particulars'], ...W.annex]));
-  tail.push(brk(), center('**EXECUTOR\'S CHECKLIST**',{after:200}),
-    p('*For the guidance of the Executor. This checklist is not part of the operative Will and does not create legal obligations.*',{run:{size:20},line:276}),
-    p('**Documents to gather**',{align:AlignmentType.LEFT,after:80}),
-    grid([500,8526], [['No.','Document'],
-      ['1','Testator\'s death certificate'],
-      ['2','Testator\'s NRIC (original) and a certified copy'],
-      ['3','Testator\'s marriage certificate(s) or divorce certificate'],
-      ['4','NRIC or Birth Certificates of all living heirs (spouse, children, parents)'],
-      ['5','Death certificates of any predeceased parents, spouse or children'],
-      ['6','Original Will (this document) — keep it safe; a photocopy is not probatable'],
-      ['7','CPF statements and copy of CPF nomination'],
-      ['8','Insurance policies and nomination records'],
-      ['9','Bank statements, passbooks and account details'],
-      ['10','Property documents: HDB records, title deeds, mortgage statements'],
-      ['11','Any Hibah-Trust Deeds or other lifetime-gift documents']]),
-    p('**Steps for the Executor**',{align:AlignmentType.LEFT,after:80}),
-    grid([600,8426], [['Step','Action'],
-      ['1','Register the death with ICA and obtain the death certificate'],
-      ['2','**Syariah Court:** Apply for the Inheritance Certificate (*Sijil Faraid*) — mandatory for all Muslim estates. Bring heirs\' NRICs and death certificates of predeceased family members'],
-      ['3','**Family Justice Courts:** Apply for the Grant of Probate (or Letters of Administration with Will Annexed if needed). Engage a lawyer to assist'],
-      ['4','Notify CPF Board, insurers, banks, HDB and other institutions. Obtain access to frozen estate accounts through the court order'],
-      ['5','Settle debts in priority: funeral expenses → religious obligations (zakat, fidyah) → personal debts → estate administration costs'],
-      ['6','Distribute estate to heirs per the Inheritance Certificate shares, and give effect to any Wasiyyah, in accordance with this Will']]));
 
   const header = new Header({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({children:[PageNumber.CURRENT], font:FONT, size:SZ})]})]});
   const footer = new Footer({children:[new Paragraph({alignment:AlignmentType.RIGHT, children:[new TextRun({text:'Testator\u2019s initials: __________', font:FONT, size:18})]})]});
@@ -1076,30 +1028,6 @@ async function downloadPdf(){
   }
   newPage(); cTxt('ANNEX: SUMMARY OF WILL', 12, true, 10);
   table([160, 291.28], [['Item','Particulars'], ...W.annex]);
-
-  newPage(); cTxt('EXECUTOR\'S CHECKLIST', 12, true, 10);
-  para('*For the guidance of the Executor. This checklist is not part of the operative Will and does not create legal obligations.*', {size:10, lh:13});
-  para('**Documents to gather**', {align:'left', size:11, lh:15});
-  table([28, 423.28], [['No.','Document'],
-    ['1','Testator\'s death certificate'],
-    ['2','Testator\'s NRIC (original) and a certified copy'],
-    ['3','Testator\'s marriage certificate(s) or divorce certificate'],
-    ['4','NRIC or Birth Certificates of all living heirs (spouse, children, parents)'],
-    ['5','Death certificates of any predeceased parents, spouse or children'],
-    ['6','Original Will (this document) — keep it safe; a photocopy is not probatable'],
-    ['7','CPF statements and copy of CPF nomination'],
-    ['8','Insurance policies and nomination records'],
-    ['9','Bank statements, passbooks and account details'],
-    ['10','Property documents: HDB records, title deeds, mortgage statements'],
-    ['11','Any Hibah-Trust Deeds or other lifetime-gift documents']]);
-  para('**Steps for the Executor**', {align:'left', size:11, lh:15});
-  table([30, 421.28], [['Step','Action'],
-    ['1','Register the death with ICA and obtain the death certificate'],
-    ['2','Syariah Court: Apply for the Inheritance Certificate (Sijil Faraid) — mandatory for all Muslim estates. Bring heirs\' NRICs and death certificates of predeceased family members'],
-    ['3','Family Justice Courts: Apply for the Grant of Probate (or Letters of Administration with Will Annexed if needed). Engage a lawyer to assist'],
-    ['4','Notify CPF Board, insurers, banks, HDB and other institutions. Obtain access to frozen estate accounts through the court order'],
-    ['5','Settle debts in priority: funeral expenses → religious obligations (zakat, fidyah) → personal debts → estate administration costs'],
-    ['6','Distribute estate to heirs per the Inheritance Certificate shares, and give effect to any Wasiyyah, in accordance with this Will']]);
 
   doc.setProperties({ title:`Last Will and Testament of ${clean(W.TN)}`, creator: CONFIG.firmLine1 });
   doc.save(`${CONFIG.fileName}_${(s.t.name.trim()||'Draft').replace(/[^\w]+/g,'_')}.pdf`);
