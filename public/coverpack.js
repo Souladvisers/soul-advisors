@@ -1,4 +1,4 @@
-/* SOUL Advisors — Estate Planning File cover pack
+/* Estate Planning File cover pack
    Shared by /wasiat and /memorandum. Builds a 2-page cover (contents sheet +
    "When I pass away" family checklist) as PDF (jsPDF) or Word (docx).
    Client data is read from this browser tab only (sessionStorage). The
@@ -13,10 +13,11 @@
   /* ---------- adviser fields ---------- */
   function mount(boxId){
     const box = document.getElementById(boxId); if(!box) return;
-    const a = read('localStorage', ADV_KEY) || { name:'', rep:'', phone:'', email:'' };
+    const a = read('localStorage', ADV_KEY) || { firm:'', name:'', rep:'', phone:'', email:'' };
     box.innerHTML = `
       <h2 style="margin-top:26px;font-size:17px">Cover pack for printing</h2>
       <p class="lead" style="margin-bottom:6px">A cover sheet and a family checklist to place in front of the will and memorandum. Do not staple it to the will.</p>
+      <div class="row"><div style="grid-column:1/-1"><label>Firm / company name</label><input type="text" data-adv="firm" value="${esc(a.firm||'')}"></div></div>
       <div class="row"><div><label>Adviser name</label><input type="text" data-adv="name" value="${esc(a.name)}"></div>
         <div><label>Representative no.</label><input type="text" data-adv="rep" value="${esc(a.rep)}"></div></div>
       <div class="row"><div><label>Phone</label><input type="text" data-adv="phone" value="${esc(a.phone)}"></div>
@@ -59,7 +60,7 @@
       lifetime: !!(w && w.lifetime),
       khairat: (m && m.fun && m.fun.khairat || '').trim(),
       mosque: (m && m.fun && m.fun.mosque || '').trim(),
-      adv: { name:(adv.name||'').trim(), rep:(adv.rep||'').trim(), phone:(adv.phone||'').trim(), email:(adv.email||'').trim() },
+      adv: { firm:(adv.firm||'').trim(), name:(adv.name||'').trim(), rep:(adv.rep||'').trim(), phone:(adv.phone||'').trim(), email:(adv.email||'').trim() },
     };
   }
   const blank = (v, n=22) => v || '_'.repeat(n);
@@ -112,17 +113,19 @@
           c.forEach((ln,k)=>T(ln, x+pad, y+pad+s*0.85+k*lh, {s, b:i===0})); x += widths[j]; });
         if(onRow) onRow(i, y, h); y += h; }); return y; };
 
+    const sHead = (txt, x, y, s=11) => { T(txt, x, y, {b:true, s}); const tw=doc.getTextWidth(txt); doc.setDrawColor(...gold); doc.setLineWidth(0.7); doc.line(x, y+2.5, x+tw, y+2.5); doc.setDrawColor(0); doc.setLineWidth(0.4); };
+
     /* page 1 — cover */
     frame();
     let y = 92;
     if(!d.GEN) T('Bismillahirrahmanirrahim', PW/2, y, {i:true, s:12, align:'center'}); y += 36;
     T('ESTATE PLANNING FILE', PW/2, y, {b:true, s:24, align:'center'}); y += 22;
-    T(d.GEN ? 'Will, Wishes & Important Documents' : 'Dokumen Wasiat & Pesanan', PW/2, y, {i:true, s:13, align:'center', c:gold}); y += 24;
-    doc.setDrawColor(...gold); doc.setLineWidth(0.8); doc.line(PW/2-90, y, PW/2+90, y); doc.setDrawColor(0); y += 26;
+    T(d.GEN ? 'Will, Wishes & Important Documents' : 'Dokumen Wasiat & Pesanan', PW/2, y, {i:true, s:13, align:'center', c:gold}); y += 22;
+    doc.setDrawColor(...gold); doc.setLineWidth(1.0); doc.line(PW/2-100, y, PW/2+100, y); doc.setLineWidth(0.3); doc.line(PW/2-100, y+4, PW/2+100, y+4); doc.setDrawColor(0); y += 28;
     T(d.name.toUpperCase(), PW/2, y, {b:true, s:17, align:'center'}); y += 18;
     T(`Prepared on ${today()}`, PW/2, y, {s:10.5, align:'center', c:[90,90,90]}); y += 28;
 
-    T('CONTENTS OF THIS FILE', X0, y, {b:true, s:11}); y += 8;
+    sHead('CONTENTS OF THIS FILE', X0, y); y += 8;
     const cw = [26, 255, 95, W-26-255-95];
     const items = CONTENTS(d);
     y = grid(y, cw, [['', 'Document', 'Dated', 'Original     Copy'], ...items.map(c=>['', c[1], c[2]||'', ''])], 10, (i, ry, h) => {
@@ -130,7 +133,7 @@
       const cx = X0 + cw[0] + cw[1] + cw[2]; tick(cx + 18, mid, false); tick(cx + 62, mid, false); });
     y += 22;
 
-    T('WHERE THINGS ARE', X0, y, {b:true, s:11}); y += 8;
+    sHead('WHERE THINGS ARE', X0, y); y += 8;
     y = grid(y, [150, W-150], [['Item', 'Details'],
       ['Original Will kept at', blank(d.willAt, 40)],
       ['Other documents kept at', blank(d.docsAt, 40)],
@@ -138,14 +141,18 @@
       ['Copies held by', blank('', 40)]], 10);
     y += 22;
 
-    T('PREPARED BY', X0, y, {b:true, s:11}); y += 8;
-    const boxH = 62; doc.setFillColor(250,247,240); doc.setDrawColor(...gold); doc.setLineWidth(0.8); doc.rect(X0, y, W, boxH, 'FD'); doc.setDrawColor(0);
-    T('SOUL Advisors', X0+12, y+18, {b:true, s:12, c:gold});
-    T(`${blank(d.adv.name, 28)}${d.adv.rep ? '   ·   Rep. No. '+d.adv.rep : '   ·   Rep. No. ____________'}`, X0+12, y+35, {s:10.5});
-    T(`${d.adv.phone ? 'Tel: '+d.adv.phone : 'Tel: ____________'}${d.adv.email ? '   ·   '+d.adv.email : '   ·   Email: ______________________'}`, X0+12, y+50, {s:10.5});
+    sHead('PREPARED BY', X0, y); y += 8;
+    const hasFirm = !!d.adv.firm;
+    const boxH = hasFirm ? 72 : 58;
+    doc.setFillColor(250,247,240); doc.setDrawColor(...gold); doc.setLineWidth(0.8); doc.rect(X0, y, W, boxH, 'FD');
+    doc.setFillColor(...gold); doc.rect(X0, y, 3, boxH, 'F'); doc.setDrawColor(0);
+    let by = y + (hasFirm ? 16 : 10);
+    if(hasFirm){ T(d.adv.firm, X0+14, by, {b:true, s:13, c:gold}); by += 18; }
+    T(`${blank(d.adv.name, 28)}${d.adv.rep ? '   ·   Rep. No. '+d.adv.rep : '   ·   Rep. No. ____________'}`, X0+14, by, {s:10.5}); by += 15;
+    T(`${d.adv.phone ? 'Tel: '+d.adv.phone : 'Tel: ____________'}${d.adv.email ? '   ·   '+d.adv.email : '   ·   Email: ______________________'}`, X0+14, by, {s:10.5});
     y += boxH + 22;
 
-    T('REVIEW LOG', X0, y, {b:true, s:11}); T('Review every 3–5 years, or after a marriage, divorce, birth or death in the family.', X0+80, y, {i:true, s:9, c:[90,90,90]}); y += 8;
+    sHead('REVIEW LOG', X0, y); T('Review every 3–5 years, or after a marriage, divorce, birth or death in the family.', X0+80, y, {i:true, s:9, c:[90,90,90]}); y += 8;
     y = grid(y, [100, 140, W-240], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', '']], 10);
 
     y += 14;
@@ -165,10 +172,11 @@
 
     /* page 2 — family checklist */
     doc.addPage(); frame(); y = 92;
-    T('WHEN I PASS AWAY', PW/2, y, {b:true, s:20, align:'center'}); y += 20;
-    T(`A checklist for the family of ${d.name}`, PW/2, y, {i:true, s:11.5, align:'center', c:gold}); y += 18;
-    const intro = wrap((d.GEN ? '' : 'Inna lillahi wa inna ilayhi raji’un. ') + 'Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.', W, 10.5);
-    intro.forEach((ln,i)=>T(ln, PW/2, y + 14 + i*14, {s:10.5, align:'center'})); y += 14 + intro.length*14 + 18;
+    T(‘WHEN I PASS AWAY’, PW/2, y, {b:true, s:20, align:’center’, c:gold}); y += 20;
+    T(`A checklist for the family of ${d.name}`, PW/2, y, {i:true, s:11.5, align:’center’, c:gold}); y += 16;
+    doc.setDrawColor(...gold); doc.setLineWidth(0.8); doc.line(PW/2-80, y, PW/2+80, y); doc.setLineWidth(0.3); doc.line(PW/2-80, y+4, PW/2+80, y+4); doc.setDrawColor(0); y += 20;
+    const intro = wrap((d.GEN ? ‘’ : ‘Inna lillahi wa inna ilayhi raji’un. ‘) + ‘Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.’, W, 10.5);
+    intro.forEach((ln,i)=>T(ln, PW/2, y + 14 + i*14, {s:10.5, align:’center’})); y += 14 + intro.length*14 + 18;
     STEPS(d).forEach(([h, body], i) => {
       const lines = wrap(body, W-46, 10.5);
       doc.setFillColor(...gold); doc.circle(X0+11, y-3.5, 10, 'F'); T(String(i+1), X0+11, y, {b:true, s:11, align:'center', c:[255,255,255]});
@@ -182,12 +190,12 @@
     T('Important contacts', X0, y, {b:true, s:12}); y += 8;
     grid(y, [150, 170, W-320], [['Contact', 'Name', 'Phone'],
       ['Executor', d.ex.name || '', d.ex.phone || ''],
-      ['Adviser (SOUL Advisors)', d.adv.name || '', d.adv.phone || ''],
+      [(d.adv.firm || 'Adviser'), d.adv.name || '', d.adv.phone || ''],
       [d.GEN ? 'Funeral director' : 'Mosque / khairat', d.mosque || '', ''],
       ['Lawyer', '', '']], 10);
     T('This cover pack is a guide only. It is not part of the Will or the Memorandum of Wishes.', PW/2, PH-50, {i:true, s:8.5, align:'center', c:[110,110,110]});
 
-    doc.setProperties({ title:`Estate Planning File – ${d.name}`, creator:'SOUL Advisors' });
+    doc.setProperties({ title:`Estate Planning File – ${d.name}`, creator: d.adv.firm || 'Estate Planner' });
     doc.save(fname(d) + '.pdf');
   }
 
@@ -211,16 +219,16 @@
       P(r(d.GEN ? 'Will, Wishes & Important Documents' : 'Dokumen Wasiat & Pesanan', { i:true, s:26, c:GOLD }), { a:C, after:400 }),
       P(r(d.name.toUpperCase(), { b:true, s:34 }), { a:C, after:60 }),
       P(r(`Prepared on ${today()}`, { s:20, c:'5A5A5A' }), { a:C, after:400 }),
-      P(r('CONTENTS OF THIS FILE', { b:true }), { after:80 }),
+      P(r('CONTENTS OF THIS FILE', { b:true, c:GOLD }), { after:80 }),
       grid([600, 4300, 1700, 2426], [['', 'Document', 'Dated', 'Original / Copy'], ...CONTENTS(d).map(c=>[c[0] ? '☑' : '☐', c[1], c[2]||'', '☐ Original   ☐ Copy'])]),
-      P(r('WHERE THINGS ARE', { b:true }), { before:280, after:80 }),
+      P(r('WHERE THINGS ARE', { b:true, c:GOLD }), { before:280, after:80 }),
       grid([2700, TW-2700], [['Item', 'Details'], ['Original Will kept at', d.willAt], ['Other documents kept at', d.docsAt],
         ['Executor', d.ex.name ? `${d.ex.name}${d.ex.rel ? ' ('+d.ex.rel+')' : ''}${d.ex.phone ? ' · '+d.ex.phone : ''}` : ''], ['Copies held by', '']]),
-      P(r('PREPARED BY', { b:true }), { before:280, after:80 }),
-      P([r('SOUL Advisors', { b:true, c:GOLD })], { after:40 }),
+      P(r('PREPARED BY', { b:true, c:GOLD }), { before:280, after:80 }),
+      ...(d.adv.firm ? [P([r(d.adv.firm, { b:true, s:24, c:GOLD })], { after:40 })] : []),
       P(r(`${blank(d.adv.name, 28)}   ·   Rep. No. ${blank(d.adv.rep, 12)}`, { s:21 }), { after:40 }),
       P(r(`Tel: ${blank(d.adv.phone, 12)}   ·   Email: ${blank(d.adv.email, 22)}`, { s:21 }), { after:200 }),
-      P([r('REVIEW LOG  ', { b:true }), r('Review every 3–5 years, or after a marriage, divorce, birth or death in the family.', { i:true, s:18, c:'5A5A5A' })], { after:80 }),
+      P([r('REVIEW LOG  ', { b:true, c:GOLD }), r('Review every 3–5 years, or after a marriage, divorce, birth or death in the family.', { i:true, s:18, c:'5A5A5A' })], { after:80 }),
       grid([1800, 2500, TW-4300], [['Date', 'Reviewed by', 'Changes made'], ['', '', ''], ['', '', '']]),
       new Paragraph({ border:{top:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'},bottom:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'},left:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'},right:{style:BorderStyle.SINGLE,size:4,color:'aaaaaa'}}, spacing:{before:200,after:80,line:280}, indent:{left:80,right:80}, children:[r('When to review or update this Will: ',{b:true,s:19}),r('(1) change in family structure — marriage, divorce, new child or death; (2) significant change in assets; (3) change in beneficiary needs. Contact your estate planner.',{s:19})] }),
       new Paragraph({ border:{top:{style:BorderStyle.SINGLE,size:10,color:'000000'},bottom:{style:BorderStyle.SINGLE,size:10,color:'000000'},left:{style:BorderStyle.SINGLE,size:10,color:'000000'},right:{style:BorderStyle.SINGLE,size:10,color:'000000'}}, spacing:{before:0,after:0,line:280}, indent:{left:80,right:80}, children:[r('This Will is automatically revoked if you: ',{b:true,s:19}),r('(1) marry or remarry after signing — s.15 Wills Act 1838; (2) destroy this Will with intention to revoke; or (3) sign a new Will that expressly revokes this one.',{s:19})] }),
@@ -228,18 +236,18 @@
       new Paragraph({ children:[ new PageBreak() ] }),
     ];
     const page2 = [
-      P(r('WHEN I PASS AWAY', { b:true, s:40 }), { a:C, after:60 }),
+      P(r('WHEN I PASS AWAY', { b:true, s:40, c:GOLD }), { a:C, after:60 }),
       P(r(`A checklist for the family of ${d.name}`, { i:true, s:23, c:GOLD }), { a:C, after:200 }),
       P(r((d.GEN ? '' : 'Inna lillahi wa inna ilayhi raji’un. ') + 'Please keep this file safe and follow these steps in order. Do not unstaple, mark or remove pages from the original Will.', { s:21 }), { a:C, after:280 }),
       ...STEPS(d).flatMap(([h, body], i) => [
         P([r(`☐  ${i+1}.  `, { b:true, c:GOLD, s:24 }), r(h, { b:true, s:24 })], { after:40 }),
         new Paragraph({ indent:{ left:720 }, spacing:{ after:200 }, children:[ r(body, { s:21 }) ] }),
       ]),
-      P(r('Important contacts', { b:true, s:24 }), { before:120, after:80 }),
-      grid([2700, 3200, TW-5900], [['Contact', 'Name', 'Phone'], ['Executor', d.ex.name, d.ex.phone], ['Adviser (SOUL Advisors)', d.adv.name, d.adv.phone], [d.GEN ? 'Funeral director' : 'Mosque / khairat', d.mosque, ''], ['Lawyer', '', '']]),
+      P(r('Important contacts', { b:true, s:24, c:GOLD }), { before:120, after:80 }),
+      grid([2700, 3200, TW-5900], [['Contact', 'Name', 'Phone'], ['Executor', d.ex.name, d.ex.phone], [(d.adv.firm || 'Adviser'), d.adv.name, d.adv.phone], [d.GEN ? 'Funeral director' : 'Mosque / khairat', d.mosque, ''], ['Lawyer', '', '']]),
       P(r('This cover pack is a guide only. It is not part of the Will or the Memorandum of Wishes.', { i:true, s:17, c:'6E6E6E' }), { a:C, before:300 }),
     ];
-    const doc = new Document({ creator:'SOUL Advisors', title:`Estate Planning File – ${d.name}`,
+    const doc = new Document({ creator: d.adv.firm || 'Estate Planner', title:`Estate Planning File – ${d.name}`,
       sections:[{ properties:{ page:{ margin:{ top:1200, bottom:1100, left:1440, right:1440 },
         borders:{ pageBorderTop:{ style:BorderStyle.DOUBLE, size:6, color:GOLD, space:20 }, pageBorderBottom:{ style:BorderStyle.DOUBLE, size:6, color:GOLD, space:20 },
                   pageBorderLeft:{ style:BorderStyle.DOUBLE, size:6, color:GOLD, space:20 }, pageBorderRight:{ style:BorderStyle.DOUBLE, size:6, color:GOLD, space:20 } } } },
