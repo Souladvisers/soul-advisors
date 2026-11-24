@@ -2743,6 +2743,7 @@ body.csb-session-on .csb-hide-field { display: none !important; }
           <div class="sp-form-title">📋 Tax Optimisation</div>
           <div class="sp-form-sub">Singapore YA 2026. Compute your personal income tax, identify applicable reliefs, and model SRS / CPF top-up strategies to legally reduce your tax bill.</div>
 
+          <div id="tax-deadline-banner"></div>
           <div class="csb-session-badge" id="tax-session-badge"></div>
 
           <div class="ret-section-hdr">Client Profile</div>
@@ -2809,8 +2810,8 @@ body.csb-session-on .csb-hide-field { display: none !important; }
             <input class="al-input" type="number" id="tax-life-ins" placeholder="0" min="0" max="5000" oninput="document.getElementById('tax-r-life-ins').checked=true;taxCalc()">
           </div>
           <div class="tax-relief-row">
-            <input type="checkbox" id="tax-spouse" onchange="taxCalc()">
-            <label for="tax-spouse">Spouse Relief <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$2,000 (spouse income &lt; $4,000)</span></label>
+            <label>Spouse Annual Income <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">Spouse Relief $2,000 auto-applies if &lt; $4,000 (leave blank if no spouse)</span></label>
+            <input class="al-input" type="number" id="tax-spouse-income" placeholder="—" min="0" oninput="taxCalc()" style="width:110px">
           </div>
           <div class="tax-relief-row" style="flex-direction:column;align-items:flex-start;gap:0.3rem">
             <label>Qualifying Child Relief (QCR) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$4,000 per eligible child</span></label>
@@ -2888,6 +2889,17 @@ body.csb-session-on .csb-hide-field { display: none !important; }
             <input type="checkbox" id="tax-r-donation" onchange="taxCalc()">
             <label for="tax-r-donation">Donations to Approved IPCs <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">250% deduction · outside $80k relief cap</span></label>
             <input class="al-input" type="number" id="tax-donation" placeholder="0" min="0" oninput="document.getElementById('tax-r-donation').checked=true;taxCalc()">
+          </div>
+
+          <div class="ret-section-hdr" style="margin-top:1.2rem">Tax Rebates</div>
+          <div style="margin-bottom:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.38)">Rebates reduce actual tax payable dollar-for-dollar. Unused PTR carries forward indefinitely and can be shared with spouse.</div>
+          <div class="tax-relief-row" style="flex-direction:column;align-items:flex-start;gap:0.3rem">
+            <label>Parenthood Tax Rebate (PTR) <span style="color:rgba(255,255,255,0.38);font-size:0.68rem">$5,000 1st child · $10,000 2nd · $20,000 3rd+ (SC children only)</span></label>
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+              <input class="al-input" type="number" id="tax-ptr" placeholder="accumulated balance" min="0" style="width:170px" oninput="taxCalc()">
+              <button type="button" onclick="taxPtrSuggest()" style="font-size:0.7rem;padding:0.22rem 0.65rem;background:rgba(184,151,90,0.1);border:1px solid rgba(184,151,90,0.28);color:rgba(184,151,90,0.85);border-radius:4px;cursor:pointer">Suggest from children →</button>
+            </div>
+            <div id="tax-ptr-hint" style="font-size:0.68rem;color:rgba(255,255,255,0.32)">Enter total PTR available (sum of all children's PTR, less any already used).</div>
           </div>
 
           <div style="margin-top:1.1rem">
@@ -7223,6 +7235,38 @@ function eduCalc() {
 // ─────────────────────────────────────────────
 // TAX OPTIMISATION CALCULATOR
 // ─────────────────────────────────────────────
+// Tax deadline banner
+(function() {
+  var banner = document.getElementById('tax-deadline-banner');
+  if (!banner) return;
+  var now = new Date();
+  var dec31 = new Date(now.getFullYear(), 11, 31);
+  var days = Math.ceil((dec31 - now) / (1000 * 60 * 60 * 24));
+  if (days > 0 && days <= 90) {
+    var urgency = days <= 14 ? 'rgba(239,68,68,0.15)' : days <= 30 ? 'rgba(251,191,36,0.1)' : 'rgba(127,196,232,0.08)';
+    var border  = days <= 14 ? 'rgba(239,68,68,0.3)'  : days <= 30 ? 'rgba(251,191,36,0.25)' : 'rgba(127,196,232,0.2)';
+    var col     = days <= 14 ? 'rgba(239,68,68,0.9)'  : days <= 30 ? 'rgba(251,191,36,0.9)'  : 'rgba(127,196,232,0.85)';
+    banner.innerHTML = '<div style="margin-bottom:0.75rem;padding:0.45rem 0.75rem;background:'+urgency+';border:1px solid '+border+';border-radius:5px;font-size:0.74rem;color:'+col+'">⏰ <b>'+days+' days</b> left to maximise YA'+(now.getFullYear()+1)+' — SRS contributions and CPF Cash Top-Ups must be made by <b>31 Dec '+now.getFullYear()+'</b>.</div>';
+  }
+})();
+
+function taxPtrSuggest() {
+  var ptrAmounts = [5000, 10000, 20000];
+  var total = 0; var count = 0;
+  ['tax-child-1','tax-child-2','tax-child-3','tax-child-4'].forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (el && el.value.trim() !== '') { total += ptrAmounts[Math.min(i, 2)]; count++; }
+  });
+  var hint = document.getElementById('tax-ptr-hint');
+  if (count > 0) {
+    document.getElementById('tax-ptr').value = total;
+    if (hint) hint.textContent = 'Suggested $' + total.toLocaleString() + ' for ' + count + ' child(ren). Adjust if partially used or shared with spouse.';
+    taxCalc();
+  } else {
+    if (hint) hint.textContent = 'Enter child ages in the QCR section above first, then click again.';
+  }
+}
+
 function taxGenderChange() {
   var g = document.getElementById('tax-gender') ? document.getElementById('tax-gender').value : 'male';
   var wmcrRow = document.getElementById('tax-wmcr-row');
@@ -7247,6 +7291,86 @@ function taxEmpTypeChange() {
   if (bonusRow) bonusRow.style.display = t === 'sep' ? 'none' : '';
   if (divRow)  divRow.style.display   = t === 'director' ? '' : 'none';
   taxCalc();
+}
+
+function drawTaxBracketSvg(chargeableBefore, chargeableAfter) {
+  var bands = [
+    {lo:0,     hi:20000,  rate:0,    label:'0%'},
+    {lo:20000, hi:30000,  rate:2,    label:'2%'},
+    {lo:30000, hi:40000,  rate:3.5,  label:'3.5%'},
+    {lo:40000, hi:80000,  rate:7,    label:'7%'},
+    {lo:80000, hi:120000, rate:11.5, label:'11.5%'},
+    {lo:120000,hi:160000, rate:15,   label:'15%'},
+    {lo:160000,hi:200000, rate:18,   label:'18%'},
+    {lo:200000,hi:1e9,    rate:19,   label:'19%+'}
+  ];
+  var maxIncome = Math.max(chargeableBefore, chargeableAfter, 80000);
+  // find highest relevant band
+  var relevantBands = bands.filter(function(b){ return b.lo < maxIncome * 1.15; });
+  if (relevantBands.length === 0) relevantBands = bands.slice(0,4);
+  var capIncome = relevantBands[relevantBands.length-1].hi === 1e9
+    ? Math.max(maxIncome * 1.15, relevantBands[relevantBands.length-1].lo + 20000)
+    : relevantBands[relevantBands.length-1].hi;
+  var totalWidth = capIncome;
+  var W = 460, H = 72, barH = 28, barY = 20;
+  var colors = ['rgba(99,179,237,0.25)','rgba(99,179,237,0.4)','rgba(127,196,232,0.5)','rgba(184,151,90,0.45)','rgba(234,179,8,0.5)','rgba(249,115,22,0.45)','rgba(239,68,68,0.45)','rgba(220,38,38,0.5)'];
+  var svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:'+W+'px;display:block;margin:0.5rem 0 0.25rem">';
+  svg += '<rect width="'+W+'" height="'+H+'" rx="6" fill="rgba(0,0,0,0.18)"/>';
+  relevantBands.forEach(function(b, i) {
+    var hiCap = b.hi === 1e9 ? capIncome : b.hi;
+    var x = (b.lo / totalWidth) * W;
+    var w = Math.max(((hiCap - b.lo) / totalWidth) * W, 1);
+    var col = colors[Math.min(i, colors.length-1)];
+    svg += '<rect x="'+x.toFixed(1)+'" y="'+barY+'" width="'+w.toFixed(1)+'" height="'+barH+'" fill="'+col+'"/>';
+    if (w > 24) {
+      svg += '<text x="'+(x+w/2).toFixed(1)+'" y="'+(barY+barH/2+4).toFixed(1)+'" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,0.65)" font-family="system-ui,sans-serif">'+b.label+'</text>';
+    }
+  });
+  // band separators
+  relevantBands.forEach(function(b, i) {
+    if (i === 0) return;
+    var x = (b.lo / totalWidth) * W;
+    svg += '<line x1="'+x.toFixed(1)+'" y1="'+barY+'" x2="'+x.toFixed(1)+'" y2="'+(barY+barH)+'" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>';
+  });
+  // markers
+  function drawMarker(income, color, label, yOff) {
+    if (income <= 0) return '';
+    var x = Math.min((income / totalWidth) * W, W - 2);
+    var out = '<line x1="'+x.toFixed(1)+'" y1="'+(barY-3)+'" x2="'+x.toFixed(1)+'" y2="'+(barY+barH+3)+'" stroke="'+color+'" stroke-width="2"/>';
+    out += '<text x="'+x.toFixed(1)+'" y="'+(barY-5+yOff)+'" text-anchor="middle" font-size="8" fill="'+color+'" font-weight="600" font-family="system-ui,sans-serif">'+label+'</text>';
+    return out;
+  }
+  svg += drawMarker(chargeableBefore, 'rgba(255,255,255,0.55)', 'Before', 0);
+  svg += drawMarker(chargeableAfter,  'rgba(184,151,90,0.95)', 'After', 0);
+  // x-axis labels
+  relevantBands.forEach(function(b) {
+    var x = (b.lo / totalWidth) * W;
+    var lbl = b.lo >= 1000 ? '$'+(b.lo/1000)+'k' : '$0';
+    svg += '<text x="'+x.toFixed(1)+'" y="'+(barY+barH+10)+'" font-size="7.5" fill="rgba(255,255,255,0.3)" font-family="system-ui,sans-serif">'+lbl+'</text>';
+  });
+  svg += '</svg>';
+  return svg;
+}
+
+function drawSrsProjection(srsAnnual, marginalRate, currentAge) {
+  if (srsAnnual <= 0) return '';
+  var years = Math.min(Math.max(62 - currentAge, 5), 20);
+  var growthRate = 0.04;
+  var annualSaving = srsAnnual * marginalRate;
+  var fmt = function(n){ return '$'+Math.round(n).toLocaleString(); };
+  var html = '<div class="ret-section-hdr" style="margin-top:1rem">SRS 10-Year Projection</div>'
+    + '<div class="al-hint" style="margin-bottom:0.5rem">At current contribution of <b>'+fmt(srsAnnual)+'/yr</b>, assuming <b>4% p.a.</b> growth inside SRS.</div>'
+    + '<table class="edu-table" style="font-size:0.72rem"><thead><tr><th>Year</th><th>Annual Tax Saving</th><th>Cumulative Saving</th><th>SRS Balance</th></tr></thead><tbody>';
+  var cumSaving = 0, srsBalance = 0;
+  var checkpoints = [1,3,5,10,15,20].filter(function(y){ return y <= years || y === 10; }).slice(0,6);
+  checkpoints.forEach(function(yr) {
+    cumSaving = annualSaving * yr;
+    srsBalance = srsAnnual * (Math.pow(1+growthRate, yr) - 1) / growthRate;
+    html += '<tr><td>Yr '+yr+'</td><td>'+fmt(annualSaving)+'/yr</td><td style="color:#6ee7b7">'+fmt(cumSaving)+'</td><td style="color:rgba(184,151,90,0.9)">'+fmt(srsBalance)+'</td></tr>';
+  });
+  html += '</tbody></table>';
+  html += '<div class="al-hint" style="margin-top:0.4rem">At 62+: withdraw up to $40,000/yr — only 50% taxable, so effective rate is very low. SRS balance grows tax-deferred.</div>';
+  return html;
 }
 
 function calcSgTax(income) {
@@ -7333,7 +7457,9 @@ function taxCalc() {
   var lifeInsRaw = parseFloat(document.getElementById('tax-life-ins').value) || 0;
   var lifeIns = (document.getElementById('tax-r-life-ins').checked && cpfRelief < 5000) ? Math.min(lifeInsRaw, 5000) : 0;
 
-  var spouseRelBase = document.getElementById('tax-spouse').checked ? 2000 : 0;
+  var spouseIncomeEl = document.getElementById('tax-spouse-income');
+  var spouseIncomeRaw = spouseIncomeEl && spouseIncomeEl.value.trim() !== '' ? parseFloat(spouseIncomeEl.value) : NaN;
+  var spouseRelBase = (!isNaN(spouseIncomeRaw) && spouseIncomeRaw < 4000) ? 2000 : 0;
   var spouseHcap = document.getElementById('tax-r-spouse-hcap') && document.getElementById('tax-r-spouse-hcap').checked ? 5500 : 0;
   var spouseRel = spouseHcap > 0 ? spouseHcap : spouseRelBase;
 
@@ -7402,8 +7528,22 @@ function taxCalc() {
   var rebBefore = Math.min(taxBefore * 0.60, 200);
   var rebAfter  = Math.min(taxAfter  * 0.60, 200);
   var netBefore = Math.max(taxBefore - rebBefore, 0);
-  var netAfter  = Math.max(taxAfter  - rebAfter,  0);
+  var netAfterPrePTR = Math.max(taxAfter - rebAfter, 0);
+
+  // PTR — dollar-for-dollar rebate, excess carries forward
+  var ptrBalance = parseFloat(document.getElementById('tax-ptr') ? document.getElementById('tax-ptr').value : 0) || 0;
+  var ptrApplied = Math.min(ptrBalance, netAfterPrePTR);
+  var ptrCarryFwd = ptrBalance - ptrApplied;
+  var netAfter  = netAfterPrePTR - ptrApplied;
   var savings   = netBefore - netAfter;
+
+  // $80k relief cap warning
+  var rawTotalRelief = eir + totalClaimable;
+  var capWarning = '';
+  if (rawTotalRelief > 80000) {
+    var wasted = rawTotalRelief - 80000;
+    capWarning = '<div style="margin:0.6rem 0;padding:0.5rem 0.75rem;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.25);border-radius:5px;font-size:0.74rem;color:rgba(251,191,36,0.9)">⚠️ <b>Relief cap reached.</b> ' + fmt(wasted) + ' in reliefs exceeds the $80,000 cap and provides no tax benefit. Redirect to <b>Donations to IPCs</b> (outside cap) or review contribution strategy.</div>';
+  }
   var margBefore = getMarginalRate(chargeableBefore) * 100;
   var margAfter  = getMarginalRate(chargeableAfter)  * 100;
 
@@ -7419,7 +7559,8 @@ function taxCalc() {
     + '<div class="ret-kpi"><div class="ret-kpi-lbl">Tax After Optimisation</div><div class="ret-kpi-val" style="color:var(--accent)">' + fmt(netAfter) + '</div></div>'
     + '<div class="ret-kpi"><div class="ret-kpi-lbl">Annual Savings</div><div class="ret-kpi-val" style="color:#4caf50">' + fmt(savings) + '</div></div>'
     + '<div class="ret-kpi"><div class="ret-kpi-lbl">Effective Rate</div><div class="ret-kpi-val">' + pct(totalIncome > 0 ? netAfter/totalIncome*100 : 0) + '</div></div>'
-    + '</div>';
+    + '</div>'
+    + drawTaxBracketSvg(chargeableBefore, chargeableAfter);
 
   var donationRow = donationDeduct > 0
     ? '<tr><td>Less: Approved Donations (2.5×)</td><td>—</td><td>(' + fmt(donationDeduct) + ')</td></tr>'
@@ -7434,7 +7575,9 @@ function taxCalc() {
     + '<tr><td>Chargeable Income</td><td>' + fmt(chargeableBefore) + '</td><td>' + fmt(chargeableAfter) + '</td></tr>'
     + '<tr><td>Gross Tax</td><td>' + fmt(taxBefore) + '</td><td>' + fmt(taxAfter) + '</td></tr>'
     + '<tr><td>PIT Rebate (60%, max $200)</td><td>(' + fmt(rebBefore) + ')</td><td>(' + fmt(rebAfter) + ')</td></tr>'
+    + (ptrApplied > 0 ? '<tr><td>Parenthood Tax Rebate (PTR)</td><td>—</td><td>(' + fmt(ptrApplied) + ')</td></tr>' : '')
     + '<tr style="font-weight:600;color:var(--accent)"><td>Net Tax Payable</td><td>' + fmt(netBefore) + '</td><td>' + fmt(netAfter) + '</td></tr>'
+    + (ptrCarryFwd > 0 ? '<tr><td style="font-size:0.7rem;color:rgba(255,255,255,0.4)">PTR carry-forward</td><td>—</td><td style="font-size:0.7rem;color:rgba(255,255,255,0.45)">' + fmt(ptrCarryFwd) + '</td></tr>' : '')
     + '</tbody></table>';
 
   var margNote = '<div class="al-hint" style="margin-top:0.65rem">Marginal rate: <b>' + pct(margBefore) + '</b> → <b>' + pct(margAfter) + '</b> after optimisation. Every $1 of additional relief at marginal rate <b>' + pct(margAfter) + '</b> saves <b>' + pct(margAfter) + '</b> in tax. Total relief cap: $80,000.</div>';
@@ -7535,7 +7678,15 @@ function taxCalc() {
       courseFeeHtml += '<div class="al-hint" style="color:rgba(184,151,90,0.85)">Remaining cap: <b>' + fmt(5500 - courseFee) + '</b> — additional qualifying course spend saves a further <b>' + fmt((5500 - courseFee) * getMarginalRate(chargeableAfter)) + '</b>.</div>';
     }
   }
-  res.innerHTML = kpi + comp + margNote + srsHtml + cpfTopHtml + courseFeeHtml + donationHtml + wmcrHtml + winsHtml + dirHtml + sepHtml;
+  var srsProjectionHtml = drawSrsProjection(srs > 0 ? srs : (document.getElementById('tax-r-srs') && document.getElementById('tax-r-srs').checked ? Math.min(srsRaw, srsMax) : 0), getMarginalRate(chargeableAfter), ageV);
+  var ptrHtml = '';
+  if (ptrApplied > 0 || ptrCarryFwd > 0) {
+    ptrHtml = '<div class="ret-section-hdr" style="margin-top:1rem">Parenthood Tax Rebate</div>'
+      + '<div class="al-hint">PTR applied this YA: <b>' + fmt(ptrApplied) + '</b>.'
+      + (ptrCarryFwd > 0 ? ' Unused PTR <b>' + fmt(ptrCarryFwd) + '</b> carries forward to YA2027 — or transfer to spouse.' : ' Fully utilised this YA.')
+      + ' PTR is a one-off rebate ($5k 1st child · $10k 2nd · $20k 3rd+) that offsets actual tax payable with no income cap.</div>';
+  }
+  res.innerHTML = kpi + capWarning + comp + margNote + ptrHtml + srsHtml + srsProjectionHtml + cpfTopHtml + courseFeeHtml + donationHtml + wmcrHtml + winsHtml + dirHtml + sepHtml;
 }
 
 // NEED ANALYSIS CALCULATOR
